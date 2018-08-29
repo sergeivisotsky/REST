@@ -1,6 +1,5 @@
 package org.sergei.rest.dao;
 
-import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
