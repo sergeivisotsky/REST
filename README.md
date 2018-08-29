@@ -1,2 +1,2 @@
 # RESTful
-RESTful API implementation
+REST API implementation
