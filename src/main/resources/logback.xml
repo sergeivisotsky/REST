@@ -20,10 +20,10 @@
         </encoder>
     </appender>
 
-    <logger name="org.sergei.rest" level="info" />
+    <logger name="org.sergei.rest" level="info"/>
 
     <root level="info">
-        <appender-ref ref="file" />
-        <appender-ref ref="stdout" />
+        <appender-ref ref="file"/>
+        <appender-ref ref="stdout"/>
     </root>
 </configuration>
