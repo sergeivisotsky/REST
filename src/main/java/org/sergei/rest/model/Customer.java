@@ -1,4 +1,4 @@
-package org.sergei.rest.persistence.pojo;
+package org.sergei.rest.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -1,8 +1,8 @@
-package org.sergei.rest.persistence.service.impls;
+package org.sergei.rest.service.impls;
 
-import org.sergei.rest.persistence.dao.repos.CustomerDAO;
-import org.sergei.rest.persistence.pojo.Customer;
-import org.sergei.rest.persistence.service.repos.CustomerService;
+import org.sergei.rest.dao.repos.CustomerDAO;
+import org.sergei.rest.model.Customer;
+import org.sergei.rest.service.repos.CustomerService;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

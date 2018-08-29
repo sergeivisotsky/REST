@@ -1,6 +1,6 @@
-package org.sergei.rest.persistence.service.repos;
+package org.sergei.rest.service.repos;
 
-import org.sergei.rest.persistence.pojo.Customer;
+import org.sergei.rest.model.Customer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

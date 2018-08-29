@@ -1,7 +1,7 @@
-package org.sergei.rest.persistence.dao.impl;
+package org.sergei.rest.dao.impl;
 
-import org.sergei.rest.persistence.dao.repos.CustomerDAO;
-import org.sergei.rest.persistence.pojo.Customer;
+import org.sergei.rest.dao.repos.CustomerDAO;
+import org.sergei.rest.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
