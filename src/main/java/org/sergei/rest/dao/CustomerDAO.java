@@ -1,6 +1,6 @@
-package org.sergei.rest.dao.impl;
+package org.sergei.rest.dao;
 
-import org.sergei.rest.dao.repos.CustomerDAO;
+import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class CustomerDAOImpl implements CustomerDAO {
+public class CustomerDAO {
 
     private static final String SQL_SAVE_CUSTOMER = "INSERT INTO customers(first_name, last_name, age) VALUES(?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM customers";
@@ -29,7 +29,6 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
     public void save(Customer customer) {
         try {
             jdbcTemplate.update(SQL_SAVE_CUSTOMER, customer.getFirstName(), customer.getLastName(), customer.getAge());
@@ -38,7 +37,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
     }
 
-    @Override
     public List<Customer> findAll() {
         try {
             return jdbcTemplate.query(SQL_FIND_ALL, new CustomerRowMapper());
@@ -48,7 +46,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
     }
 
-    @Override
     public Customer findById(Long id) {
         try {
             return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new CustomerRowMapper(), id);
@@ -58,13 +55,11 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
     }
 
-    @Override
     public boolean existsById(Long customerId) {
         int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerId}, Integer.class);
         return count > 0;
     }
 
-    @Override
     public void updateRecord(Customer customer) {
         try {
             jdbcTemplate.update(SQL_UPDATE_CUSTOMER, customer.getCustomerId(), customer.getFirstName(),
@@ -74,7 +69,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
     }
 
-    @Override
     public void delete(Customer customer) {
         try {
             jdbcTemplate.update(SQL_DELETE, customer.getCustomerId());

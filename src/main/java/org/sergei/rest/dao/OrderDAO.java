@@ -1,6 +1,5 @@
-package org.sergei.rest.dao.impl;
+package org.sergei.rest.dao;
 
-import org.sergei.rest.dao.repos.OrderDAO;
 import org.sergei.rest.model.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class OrderDAOImpl implements OrderDAO {
+public class OrderDAO {
 
     private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, good, good_weight, price) VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM orders";
@@ -36,7 +35,6 @@ public class OrderDAOImpl implements OrderDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
     public void save(Long customerId, Order order) {
         try {
             jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getGood(),
@@ -46,7 +44,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public List<Order> findAll() {
         try {
             return jdbcTemplate.query(SQL_FIND_ALL, new OrderRowMapper());
@@ -56,7 +53,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public Order findById(Long id) {
         try {
             return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new OrderRowMapper(), id);
@@ -66,7 +62,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public Order findByCustomerIdAndOrderId(Long customerId, Long orderId) {
         try {
             return jdbcTemplate.queryForObject(SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID,
@@ -77,7 +72,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public List<Order> findAllByCustomerIdAndGood(Long customerId, String good) {
         try {
             return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_GOOD, new OrderRowMapper(), customerId, good);
@@ -87,7 +81,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public List<Order> findAllByGood(String good) {
         try {
             return jdbcTemplate.query(SQL_FIND_BY_GOOD, new OrderRowMapper(), good);
@@ -97,25 +90,21 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public boolean existsById(Long orderId) {
         int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_ORDER_ID, new Object[]{orderId}, Integer.class);
         return count > 0;
     }
 
-    @Override
     public boolean existsByGood(String good) {
         int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_GOOD, new Object[]{good}, Integer.class);
         return count > 0;
     }
 
-    @Override
     public boolean existsByCustomerId(Long customerId) {
         int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerId}, Integer.class);
         return count > 0;
     }
 
-    @Override
     public void updateRecord(Long customerId, Long orderId, Order order) {
         try {
             jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getGood(),
@@ -125,7 +114,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public void delete(Order order) {
         try {
             jdbcTemplate.update(SQL_DELETE, order.getOrderId());
@@ -134,7 +122,6 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    @Override
     public List<Order> findAllByCustomerId(Long id) {
         return jdbcTemplate.query(SQL_FIND_ALL_BY_CUSTOMER_ID, new OrderRowMapper(), id);
     }

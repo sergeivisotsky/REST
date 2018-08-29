@@ -2,7 +2,7 @@ package org.sergei.rest.api;
 
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
-import org.sergei.rest.service.repos.CustomerService;
+import org.sergei.rest.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
