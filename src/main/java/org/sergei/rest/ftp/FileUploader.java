@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 @Component
 public class FileUploader {
@@ -56,6 +53,43 @@ public class FileUploader {
             }
 
             inputStream.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        } finally {
+            try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage());
+            }
+        }
+    }
+
+    // Method to process file download from the server
+    public void downloadFile(String remoteFile) {
+        try {
+            // Connecting to the ftp server
+            ftpClient.connect(SERVER, PORT);
+            ftpClient.login(USERNAME, PASSWORD);
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+            // Remote file to be downloaded
+            File localFile = new File("D:/Users/Sergei/Documents/JavaProjects/REST/src/main/resources/tmp/" + remoteFile);
+
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(localFile));
+            boolean done = ftpClient.retrieveFile(remoteFile, outputStream);
+
+            if (done) {
+                LOGGER.info("File downloaded from the server");
+            } else {
+                LOGGER.error("Failed to download file from the server");
+            }
+
+            outputStream.close();
+
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         } finally {
