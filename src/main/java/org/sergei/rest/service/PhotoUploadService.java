@@ -35,19 +35,6 @@ public class PhotoUploadService {
                 commonsMultipartFile.getSize());
     }
 
-   /* public ResponseEntity<ByteArrayResource> downloadFileFromTheServer(Long customerId) throws IOException {
-        String fileName = photoUploadDAO.findFileNameByCustomerId(customerId);
-
-        fileUploader.downloadFile(fileName);
-
-        Path path = Paths.get("D:/Users/Sergei/Documents/JavaProjects/REST/src/main/resources/tmp/" + fileName);
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + path.getFileName().toString())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(data.length)
-                .body(resource);
-    }*/
-
     public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
         String fileName = photoUploadDAO.findFileNameByCustomerId(customerId);
 
