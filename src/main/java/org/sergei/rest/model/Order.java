@@ -9,21 +9,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Order {
 
-    @XmlElement(name = "orderId")
+    @XmlElement
     private Long orderId;
 
+    @XmlElement
     private Long customerId;
 
-    @XmlElement(name = "transId")
+    @XmlElement
     private Long transId;
 
-    @XmlElement(name = "good")
+    @XmlElement
     private String good;
 
-    @XmlElement(name = "goodWeight")
+    @XmlElement
     private double goodWeight;
 
-    @XmlElement(name = "price")
+    @XmlElement
     private double price;
 
     public Order() {

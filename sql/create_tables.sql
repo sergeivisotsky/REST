@@ -25,3 +25,18 @@ WITH (
 );
 ALTER TABLE public.orders
   OWNER TO service;
+
+CREATE TABLE public.photos
+(
+  photo_id bigserial NOT NULL primary key,
+  customer_id bigserial not null references customers(customer_id) on delete cascade,
+  file_name varchar(100),
+  file_url varchar(100),
+  file_type varchar(50),
+  file_size integer
+)
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE public.photos
+  OWNER TO service;

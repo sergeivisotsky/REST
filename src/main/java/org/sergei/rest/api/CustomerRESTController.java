@@ -2,11 +2,15 @@ package org.sergei.rest.api;
 
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
+import org.sergei.rest.model.PhotoUploadResponse;
 import org.sergei.rest.service.CustomerService;
+import org.sergei.rest.service.PhotoUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -17,6 +21,9 @@ public class CustomerRESTController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private PhotoUploadService photoUploadService;
 
     // Get all customers
     @GetMapping
@@ -36,6 +43,18 @@ public class CustomerRESTController {
         customerService.saveCustomer(customer);
 
         return new ResponseEntity<>(customer, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{customerId}/photo")
+    public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
+                                           @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
+        String fileDownloadUri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/api/v1/customers/" + customerId.toString() + "/photo/")
+                .path(commonsMultipartFile.getOriginalFilename())
+                .toUriString();
+
+        return photoUploadService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
     }
 
     // Update record

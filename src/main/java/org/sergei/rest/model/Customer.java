@@ -4,22 +4,21 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Customer {
 
-    @XmlElement(name = "customerId")
+    @XmlElement
     private Long customerId;
 
-    @XmlElement(name = "firstName")
+    @XmlElement
     private String firstName;
 
-    @XmlElement(name = "lastName")
+    @XmlElement
     private String lastName;
 
-    @XmlElement(name = "age")
+    @XmlElement
     private int age;
 
     public Customer() {

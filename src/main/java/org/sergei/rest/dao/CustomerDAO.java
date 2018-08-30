@@ -15,7 +15,6 @@ import java.util.List;
 
 @Repository
 public class CustomerDAO {
-
     private static final String SQL_SAVE_CUSTOMER = "INSERT INTO customers(first_name, last_name, age) VALUES(?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM customers";
     private static final String SQL_UPDATE_CUSTOMER = "UPDATE customers SET customer_id = ?, first_name = ?, last_name = ?, age = ?";
@@ -23,7 +22,7 @@ public class CustomerDAO {
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM customers WHERE customer_id = ?";
     private static final String SQL_DELETE = "DELETE FROM customers WHERE customer_id = ?";
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -31,8 +30,9 @@ public class CustomerDAO {
     public void save(Customer customer) {
         try {
             jdbcTemplate.update(SQL_SAVE_CUSTOMER, customer.getFirstName(), customer.getLastName(), customer.getAge());
+            LOGGER.info("Customer entity saved");
         } catch (DataAccessException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -40,7 +40,7 @@ public class CustomerDAO {
         try {
             return jdbcTemplate.query(SQL_FIND_ALL, new CustomerRowMapper());
         } catch (DataAccessException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             return null;
         }
     }
@@ -49,7 +49,7 @@ public class CustomerDAO {
         try {
             return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new CustomerRowMapper(), id);
         } catch (DataAccessException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             return null;
         }
     }
@@ -64,7 +64,7 @@ public class CustomerDAO {
             jdbcTemplate.update(SQL_UPDATE_CUSTOMER, customer.getCustomerId(), customer.getFirstName(),
                     customer.getLastName(), customer.getAge());
         } catch (DataAccessException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class CustomerDAO {
         try {
             jdbcTemplate.update(SQL_DELETE, customer.getCustomerId());
         } catch (DataAccessException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 

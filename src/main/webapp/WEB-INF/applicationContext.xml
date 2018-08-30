@@ -31,4 +31,10 @@
                      max-age="3600"/>
     </mvc:cors>
 
+    <bean name="FtpClient" id="ftpClient" class="org.apache.commons.net.ftp.FTPClient"/>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10000000"/>
+    </bean>
+
 </beans>
