@@ -55,6 +55,7 @@ public class CustomerRESTController {
         return new ResponseEntity<>(customer, HttpStatus.CREATED);
     }
 
+    // Upload photo method
     @PostMapping("/{customerId}/photo")
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
@@ -67,7 +68,7 @@ public class CustomerRESTController {
         return photoUploadService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
     }
 
-    // TODO: Download file from the FTP server
+    // download photo method
     @GetMapping("/{customerId}/photo")
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId, HttpServletRequest request) throws IOException {
         Resource resource = photoUploadService.downloadFileAsResource(customerId);
