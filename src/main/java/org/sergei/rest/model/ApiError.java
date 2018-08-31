@@ -37,6 +37,6 @@ public class ApiError {
     }
 
     public void setError(String error) {
-        this.error = error;
+        this.error = error'';
     }
 }
