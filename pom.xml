@@ -19,7 +19,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>REST_API</finalName>
+        <finalName>rest</finalName>
     </build>
     <properties>
         <org.springframework-version>5.0.4.RELEASE</org.springframework-version>
