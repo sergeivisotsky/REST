@@ -1,13 +1,13 @@
-package org.sergei.rest.exceptions.pojo;
+package org.sergei.rest.model;
 
 import java.util.Date;
 
-public class ErrorDetailsVO {
+public class ErrorDetails {
     private Date timestamp;
     private String message;
     private String details;
 
-    public ErrorDetailsVO(Date timestamp, String message, String details) {
+    public ErrorDetails(Date timestamp, String message, String details) {
         this.timestamp = timestamp;
         this.message = message;
         this.details = details;

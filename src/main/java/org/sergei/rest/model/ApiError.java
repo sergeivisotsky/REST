@@ -1,16 +1,16 @@
-package org.sergei.rest.exceptions.pojo;
+package org.sergei.rest.model;
 
 import org.springframework.http.HttpStatus;
 
-public class ApiErrorVO {
+public class ApiError {
     private HttpStatus status;
     private String message;
     private String error;
 
-    public ApiErrorVO() {
+    public ApiError() {
     }
 
-    public ApiErrorVO(HttpStatus status, String message, String error) {
+    public ApiError(HttpStatus status, String message, String error) {
         this.status = status;
         this.message = message;
         this.error = error;
