@@ -1,6 +1,7 @@
 package org.sergei.rest.api;
 
 import org.sergei.rest.exceptions.RecordNotFoundException;
+import org.sergei.rest.exceptions.TooLongFileNameException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.sergei.rest.service.CustomerService;
@@ -18,9 +19,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/v1/customers",
@@ -62,7 +63,6 @@ public class CustomerRESTController {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/v1/customers/" + customerId.toString() + "/photo/")
-                .path(commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoUploadService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
@@ -70,7 +70,8 @@ public class CustomerRESTController {
 
     // download photo method
     @GetMapping("/{customerId}/photo")
-    public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId, HttpServletRequest request) throws IOException {
+    public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
+                                                  HttpServletRequest request) throws IOException {
         Resource resource = photoUploadService.downloadFileAsResource(customerId);
 
         String contentType = null;

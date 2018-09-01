@@ -2,6 +2,7 @@ package org.sergei.rest.service;
 
 import org.sergei.rest.dao.PhotoUploadDAO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
+import org.sergei.rest.exceptions.TooLongFileNameException;
 import org.sergei.rest.ftp.FileUploader;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class PhotoUploadService {
 
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
                                                      CommonsMultipartFile commonsMultipartFile) {
+
+        if (fileDownloadUri.length() > 150) {
+            throw new TooLongFileNameException("Too long file name");
+        }
+
         fileUploader.uploadFile(commonsMultipartFile);
 
         photoUploadDAO.save(customerId, fileDownloadUri, commonsMultipartFile);
@@ -37,9 +43,7 @@ public class PhotoUploadService {
 
     public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
         String fileName = photoUploadDAO.findFileNameByCustomerId(customerId);
-
         fileUploader.downloadFile(fileName);
-
         Path filePath = Paths
                 .get("D:/Users/Sergei/Documents/JavaProjects/REST/src/main/resources/tmp/" + fileName)
                 .toAbsolutePath().normalize();

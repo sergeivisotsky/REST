@@ -78,6 +78,7 @@ public class FileUploader {
 
             // Remote file to be downloaded
             File localFile = new File("D:/Users/Sergei/Documents/JavaProjects/REST/src/main/resources/tmp/" + remoteFile);
+//            File localFile = new File("classpath:res/tmp" + remoteFile);
 
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(localFile));
             boolean done = ftpClient.retrieveFile(remoteFile, outputStream);

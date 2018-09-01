@@ -13,6 +13,7 @@ public class PhotoUploadDAO {
     private static final String SQL_SAVE_FILE = "INSERT INTO photos(customer_id, file_name, file_url, file_type, file_size) " +
             "VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_FIND_FILE_NAME_BY_CUST_ID = "SELECT file_name FROM photos WHERE customer_id = ?";
+    private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -32,5 +33,10 @@ public class PhotoUploadDAO {
 
     public String findFileNameByCustomerId(Long customerId) {
         return jdbcTemplate.queryForObject(SQL_FIND_FILE_NAME_BY_CUST_ID, new Object[]{customerId}, String.class);
+    }
+
+    public boolean existsByCustomerId(Long customerId) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerId}, Integer.class);
+        return count > 0;
     }
 }
