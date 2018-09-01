@@ -1,6 +1,6 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.dao.PhotoUploadDAO;
+import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.exceptions.TooLongFileNameException;
 import org.sergei.rest.ftp.FileUploader;
@@ -16,13 +16,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Repository
-public class PhotoUploadService {
+public class PhotoService {
 
     @Autowired
     private FileUploader fileUploader;
 
     @Autowired
-    private PhotoUploadDAO photoUploadDAO;
+    private PhotoDAO photoDAO;
 
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
                                                      CommonsMultipartFile commonsMultipartFile) {
@@ -33,7 +33,7 @@ public class PhotoUploadService {
 
         fileUploader.uploadFile(commonsMultipartFile);
 
-        photoUploadDAO.save(customerId, fileDownloadUri, commonsMultipartFile);
+        photoDAO.save(customerId, fileDownloadUri, commonsMultipartFile);
 
         return new PhotoUploadResponse(customerId,
                 commonsMultipartFile.getOriginalFilename(),
@@ -42,7 +42,7 @@ public class PhotoUploadService {
     }
 
     public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
-        String fileName = photoUploadDAO.findFileNameByCustomerId(customerId);
+        String fileName = photoDAO.findFileNameByCustomerId(customerId);
         fileUploader.downloadFile(fileName);
         Path filePath = Paths
                 .get("D:/Users/Sergei/Documents/JavaProjects/REST/src/main/resources/tmp/" + fileName)
@@ -55,5 +55,13 @@ public class PhotoUploadService {
         }
 
         return resource;
+    }
+
+    public void deletePhoto(Long customerId) {
+        if (!photoDAO.existsByCustomerId(customerId)) {
+            throw new ResourceNotFoundException("Photo not found");
+        }
+        String fileName = photoDAO.findFileNameByCustomerId(customerId);
+        fileUploader.deleteFile(fileName);
     }
 }

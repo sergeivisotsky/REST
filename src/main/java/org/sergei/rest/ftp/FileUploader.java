@@ -104,4 +104,34 @@ public class FileUploader {
             }
         }
     }
+
+    // Method to delete file from the server
+    public void deleteFile(String remoteFile) {
+        try {
+            // Connecting to the ftp server
+            ftpClient.connect(SERVER, PORT);
+            ftpClient.login(USERNAME, PASSWORD);
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+            boolean done = ftpClient.deleteFile(remoteFile);
+
+            if (done) {
+                LOGGER.info("File deleted from the server");
+            } else {
+                LOGGER.error("Failed to deleted file from the server");
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        } finally {
+            try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage());
+            }
+        }
+    }
 }
