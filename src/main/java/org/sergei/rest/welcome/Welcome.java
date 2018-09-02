@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Controller
 @ApiIgnore
+@Controller
 @RequestMapping
 public class Welcome {
 
