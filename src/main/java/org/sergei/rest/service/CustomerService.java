@@ -36,7 +36,7 @@ public class CustomerService {
         if (!customerDAO.existsById(id)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
-        customerDAO.updateRecord(customer);
+        customerDAO.updateRecord(customer, id);
         return customer;
     }
 

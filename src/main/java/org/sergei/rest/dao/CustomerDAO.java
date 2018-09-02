@@ -17,7 +17,7 @@ import java.util.List;
 public class CustomerDAO {
     private static final String SQL_SAVE_CUSTOMER = "INSERT INTO customers(first_name, last_name, age) VALUES(?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM customers";
-    private static final String SQL_UPDATE_CUSTOMER = "UPDATE customers SET customer_id = ?, first_name = ?, last_name = ?, age = ?";
+    private static final String SQL_UPDATE_CUSTOMER = "UPDATE customers SET first_name = ?, last_name = ?, age = ? WHERE customer_id = ?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM customers WHERE customer_id = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM customers WHERE customer_id = ?";
     private static final String SQL_DELETE = "DELETE FROM customers WHERE customer_id = ?";
@@ -59,10 +59,10 @@ public class CustomerDAO {
         return count > 0;
     }
 
-    public void updateRecord(Customer customer) {
+    public void updateRecord(Customer customer, Long customerId) {
         try {
-            jdbcTemplate.update(SQL_UPDATE_CUSTOMER, customer.getCustomerId(), customer.getFirstName(),
-                    customer.getLastName(), customer.getAge());
+            jdbcTemplate.update(SQL_UPDATE_CUSTOMER, customer.getFirstName(),
+                    customer.getLastName(), customer.getAge(), customerId);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
         }
