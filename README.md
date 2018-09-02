@@ -34,7 +34,7 @@ public class CustomerRESTController {
 }
 ```
 
-Starting from Spring 5.xx annotation `@RestController` appeared which include `@ResponseBody ` by default so that it is not required to write it.
+Starting from Spring 5.xx annotation `@RestController` appeared which includes `@ResponseBody ` by default so that it is not required to write it.
 
 #### Spring 5.xx
 ```java
