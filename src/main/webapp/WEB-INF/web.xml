@@ -5,6 +5,14 @@
          version="4.0">
 
     <display-name>REST API implementation</display-name>
+    <!--<filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/rest/api/*</url-pattern>
+    </filter-mapping>-->
 
     <listener>
         <listener-class>
@@ -14,34 +22,21 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
+        <param-value>/WEB-INF/REST_API-servlet.xml<!--,
+            /WEB-INF/REST_API-servlet-security.xml-->
+        </param-value>
     </context-param>
-
-    <servlet>
-        <servlet-name>REST_API_WELCOME</servlet-name>
-        <servlet-class>org.sergei.rest.welcome.Welcome</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>REST_API_WELCOME</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>REST_API</servlet-name>
         <servlet-class>
             org.springframework.web.servlet.DispatcherServlet
         </servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/applicationContext.xml</param-value>
-        </init-param>
-        <load-on-startup>2</load-on-startup>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>REST_API</servlet-name>
-        <url-pattern>/api/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 </web-app>

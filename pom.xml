@@ -60,20 +60,17 @@
             <scope>test</scope>
             <version>2.0.3.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.3.0.RELEASE</version>
+        </dependency>
 
         <!--PostgreSQL Driver-->
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>8.3-606.jdbc4</version>
-        </dependency>
-
-        <!-- Servlet -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Logging -->
