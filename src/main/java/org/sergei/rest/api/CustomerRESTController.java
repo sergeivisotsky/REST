@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/v1/customers",
+@RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
 public class CustomerRESTController {
 

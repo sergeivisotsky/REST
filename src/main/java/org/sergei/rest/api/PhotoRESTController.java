@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "/v1/customers",
+@RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
 public class PhotoRESTController {
 
