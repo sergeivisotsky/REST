@@ -80,7 +80,7 @@ public class FileOperations {
 
             // Remote file to be downloaded
             File localFile = new File("D:/Program files/servers/apache-tomcat-9.0.10_API/" +
-                    "webapps/static-api/tmp/" + remoteFile);
+                    "webapps/static/tmp/" + remoteFile);
 
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(localFile));
             boolean done = ftpClient.retrieveFile(remoteFile, outputStream);

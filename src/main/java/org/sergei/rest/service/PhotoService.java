@@ -45,7 +45,7 @@ public class PhotoService {
         String fileName = photoDAO.findFileNameByCustomerId(customerId);
         fileOperations.downloadFile(fileName);
         Path filePath = Paths
-                .get("D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static-api/tmp/" + fileName)
+                .get("D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/tmp/" + fileName)
                 .toAbsolutePath().normalize();
 
         Resource resource = new UrlResource(filePath.toUri());
