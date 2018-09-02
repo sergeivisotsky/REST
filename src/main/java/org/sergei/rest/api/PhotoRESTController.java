@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@Controller
+@RestController
 @RequestMapping(value = "/v1/customers",
         produces = {"application/json", "application/xml"})
 public class PhotoRESTController {
@@ -30,7 +29,6 @@ public class PhotoRESTController {
 
     // Upload photo method
     @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.POST)
-    @ResponseBody
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
@@ -43,7 +41,6 @@ public class PhotoRESTController {
 
     // download photo method
     @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.GET)
-    @ResponseBody
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
                                                   HttpServletRequest request) throws IOException {
         Resource resource = photoService.downloadFileAsResource(customerId);
@@ -67,7 +64,6 @@ public class PhotoRESTController {
     }
 
     @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.DELETE)
-    @ResponseBody
     public ResponseEntity<?> deletePhoto(@PathVariable("customerId") Long customerId) {
         photoService.deletePhoto(customerId);
         return new ResponseEntity<>(HttpStatus.OK);
