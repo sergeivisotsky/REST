@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping
-public class WelcomeController {
+public class Welcome {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
