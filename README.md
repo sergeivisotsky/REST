@@ -17,3 +17,33 @@ One more thing to memorize is if that it is required to produce media type it sh
 | @RequestMapping(value = "/url",  method = RequestMethod.GET, produces = {"application/json", "application/xml"}) | @GetMapping("/url", produces = {"application/json", "application/xml"}) |
 
 NOTE: `@RequestMapping` annotation by default is GET method by itself so that it may be written in this way `@RequestMapping("/url")`.
+
+### @Controller and @RestController annotation
+Before Spring 5.xx the way web declare controller to be restful was annotating it li regular controller `@Controller` and in each method was required to write `@ResponseBody`
+
+##### Spring 4.xx 
+```java
+@Controller
+@RequestMapping(value = "/v1/customers", produces = {"application/json", "application/xml"})
+public class CustomerRESTController {
+    @RequestMapping(value = "/{customerId}",  method = RequestMethod.GET, 
+    produces = {"application/json", "application/xml"})
+    public @ResponseBody Customer getCustomerById(@PathVariable("customerId") Long customerId) {
+        return customerService.getCustomerById(customerId);
+    }
+}
+```
+
+Starting from Spring 5.xx annotation `@RestController` appeared which include `@ResponseBody ` by default so that it is not required to write it.
+
+##### Spring 5.xx
+```java
+@RestController
+@RequestMapping(value = "/v1/customers", produces = {"application/json", "application/xml"})
+public class CustomerRESTController {
+    @GetMapping(value = "/{customerId}", produces = {"application/json", "application/xml"})
+    public Customer getCustomerById(@PathVariable("customerId") Long customerId) {
+        return customerService.getCustomerById(customerId);
+    }
+}
+```
