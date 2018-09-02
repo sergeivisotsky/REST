@@ -1,5 +1,5 @@
 # REST
-REST API implementation
+REST API implementation uaing Spring Framework
 
 ### Spring annotation depending on version
 | Http method | Spring 4.xx | Spring 5.xx |
@@ -47,3 +47,5 @@ public class CustomerRESTController {
     }
 }
 ```
+
+To document this API Swagger documentation auto-generation was used which is available by this url: [http://localhost:port/rest/api/swagger-ui.html](http://localhost:port/rest/api/swagger-ui.html)
