@@ -21,7 +21,7 @@ NOTE: `@RequestMapping` annotation by default is GET method by itself so that it
 ### @Controller and @RestController annotation
 Before Spring 5.xx the way web declare controller to be restful was annotating it li regular controller `@Controller` and in each method was required to write `@ResponseBody`
 
-##### Spring 4.xx 
+#### Spring 4.xx 
 ```java
 @Controller
 @RequestMapping(value = "/v1/customers", produces = {"application/json", "application/xml"})
@@ -36,7 +36,7 @@ public class CustomerRESTController {
 
 Starting from Spring 5.xx annotation `@RestController` appeared which include `@ResponseBody ` by default so that it is not required to write it.
 
-##### Spring 5.xx
+#### Spring 5.xx
 ```java
 @RestController
 @RequestMapping(value = "/v1/customers", produces = {"application/json", "application/xml"})
