@@ -16,4 +16,4 @@ One more thing to memorize is if that it is required to produce media type it sh
 | ----------- | ------------|
 | @RequestMapping(value = "/url",  method = RequestMethod.GET, produces = {"application/json", "application/xml"}) | @GetMapping("/url", produces = {"application/json", "application/xml"}) |
 
-NOTE: `@RequestMapping` annotation by default is GET method by itself.
+NOTE: `@RequestMapping` annotation by default is GET method by itself so that it may be written in this way `@RequestMapping("/url")`.
