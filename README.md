@@ -10,7 +10,7 @@ REST API implementation
 | DELETE | @RequestMapping(value = "/url",  method = RequestMethod.DELETE) | @DeleteMapping("/url") |
 | PATCH | @RequestMapping(value = "/url",  method = RequestMethod.PATCH) | @PatchMapping("/url") |
 
-One more thing to memorize is if it is required to produce media type it should be done like that
+One more thing to memorize is if that it is required to produce media type it should be done like that
 
 | Spring 4.xx | Spring 5.xx |
 | ----------- | ------------|
