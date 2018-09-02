@@ -12,7 +12,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.*;
 
 @Component
-public class FileUploader {
+public class FileOperations {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Value("${ftp.server}")
@@ -77,8 +77,8 @@ public class FileUploader {
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
             // Remote file to be downloaded
-            File localFile = new File("D:/Users/Sergei/Documents/JavaProjects/REST/src/main/resources/tmp/" + remoteFile);
-//            File localFile = new File("classpath:res/tmp" + remoteFile);
+            File localFile = new File("D:/Program files/servers/apache-tomcat-9.0.10_API/" +
+                    "webapps/static-api/tmp/" + remoteFile);
 
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(localFile));
             boolean done = ftpClient.retrieveFile(remoteFile, outputStream);

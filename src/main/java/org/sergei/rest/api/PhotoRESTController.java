@@ -64,7 +64,8 @@ public class PhotoRESTController {
     }
 
     @DeleteMapping("/{customerId}/photo")
-    public void deletePhoto(@PathVariable("customerId") Long customerId) {
+    public ResponseEntity<?> deletePhoto(@PathVariable("customerId") Long customerId) {
         photoService.deletePhoto(customerId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

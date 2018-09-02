@@ -3,7 +3,7 @@ package org.sergei.rest.service;
 import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.exceptions.TooLongFileNameException;
-import org.sergei.rest.ftp.FileUploader;
+import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 public class PhotoService {
 
     @Autowired
-    private FileUploader fileUploader;
+    private FileOperations fileOperations;
 
     @Autowired
     private PhotoDAO photoDAO;
@@ -31,7 +31,7 @@ public class PhotoService {
             throw new TooLongFileNameException("Too long file name");
         }
 
-        fileUploader.uploadFile(commonsMultipartFile);
+        fileOperations.uploadFile(commonsMultipartFile);
 
         photoDAO.save(customerId, fileDownloadUri, commonsMultipartFile);
 
@@ -43,9 +43,9 @@ public class PhotoService {
 
     public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
         String fileName = photoDAO.findFileNameByCustomerId(customerId);
-        fileUploader.downloadFile(fileName);
+        fileOperations.downloadFile(fileName);
         Path filePath = Paths
-                .get("D:/Users/Sergei/Documents/JavaProjects/REST/src/main/resources/tmp/" + fileName)
+                .get("D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static-api/tmp/" + fileName)
                 .toAbsolutePath().normalize();
 
         Resource resource = new UrlResource(filePath.toUri());
@@ -62,6 +62,6 @@ public class PhotoService {
             throw new ResourceNotFoundException("Photo not found");
         }
         String fileName = photoDAO.findFileNameByCustomerId(customerId);
-        fileUploader.deleteFile(fileName);
+        fileOperations.deleteFile(fileName);
     }
 }
