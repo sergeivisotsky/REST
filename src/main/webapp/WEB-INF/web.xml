@@ -5,6 +5,7 @@
          version="4.0">
 
     <display-name>REST API implementation</display-name>
+    <!--TODO: Implement oAuth2 up to the end so that it does not throw any exception-->
     <!--<filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
