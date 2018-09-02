@@ -1,4 +1,4 @@
-# RESTful
+# REST
 REST API implementation
 
 ### Spring annotation depending on version
