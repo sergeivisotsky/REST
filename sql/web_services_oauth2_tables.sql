@@ -1,3 +1,4 @@
+drop database if exists web_services_oauth;
 CREATE DATABASE web_services_oauth
 WITH OWNER = service
 ENCODING = 'UTF8'
@@ -6,12 +7,13 @@ LC_COLLATE = 'English_United States.1252'
 LC_CTYPE = 'English_United States.1252'
 CONNECTION LIMIT = -1;
 
+drop table if exists oauth_client_details;
 create table oauth_client_details(
-  client_id bigserial not null primary key,
-  authorized_grant_types varchar(100),
-  authorities varchar(100),
+  client_id varchar(300) primary key,
+  authorized_grant_types varchar(300),
+  authorities varchar(300),
   scope varchar(300),
-  client_secret varchar(500),
+  client_secret varchar(300),
   access_token_validity integer,
   refresh_token_validity integer
 )
@@ -22,12 +24,13 @@ WITH (
 ALTER TABLE public.oauth_client_details
   OWNER TO service;
 
+drop table if exists oauth_client_token;
 create table oauth_client_token(
-  token_id bigserial not null primary key,
-  client_id bigserial not null references oauth_client_details(client_id) on delete cascade,
-  token varchar(500),
-  authentication_id varchar(100) not null,
-  username varchar(50)
+  token_id varchar(300),
+  client_id varchar(300),
+  token bytea,
+  authentication_id varchar(300) primary key,
+  username varchar(300)
 )
 
 WITH (
@@ -36,14 +39,15 @@ OIDS=FALSE
 ALTER TABLE public.oauth_client_token
   OWNER TO service;
 
+drop table if exists oauth_access_token;
 create table oauth_access_token(
-  token_id bigserial not null primary key,
-  client_id bigserial not null references oauth_client_details(client_id) on delete cascade,
-  token varchar(500),
-  authentication_id varchar(100) not null,
-  username varchar(50),
-  authentification varchar(500),
-  refresh_token varchar(500)
+  token_id varchar(300),
+  client_id varchar(300),
+  token bytea,
+  authentication_id varchar(300) primary key,
+  username varchar(300),
+  authentification bytea,
+  refresh_token varchar(300)
 )
 
 WITH (
@@ -52,9 +56,23 @@ OIDS=FALSE
 ALTER TABLE public.oauth_access_token
   OWNER TO service;
 
+drop table if exists oauth_refresh_token;
+create table oauth_refresh_token(
+  token_id varchar(300),
+  token bytea,
+  authentification bytea
+)
+
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE public.oauth_refresh_token
+  OWNER TO service;
+
+drop table if exists oauth_code;
 create table oauth_code(
-  code varchar(500),
-  authentication varchar(50)
+  code varchar(300),
+  authentication bytea
 )
 
 WITH (

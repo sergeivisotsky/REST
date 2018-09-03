@@ -1,4 +1,5 @@
-﻿CREATE DATABASE web_services
+﻿drop database if exists web_services;
+CREATE DATABASE web_services
 WITH OWNER = service
 ENCODING = 'UTF8'
 TABLESPACE = pg_default
@@ -6,6 +7,7 @@ LC_COLLATE = 'English_United States.1252'
 LC_CTYPE = 'English_United States.1252'
 CONNECTION LIMIT = -1;
 
+drop table if exists customers;
 create table customers(
    customer_id bigserial not null primary key,
    first_name varchar(50),
@@ -19,6 +21,7 @@ WITH (
 ALTER TABLE public.customers
   OWNER TO service;
 
+drop table if exists orders;
 create table orders(
    order_id bigserial not null primary key,
    customer_id bigserial not null references customers(customer_id) on delete cascade,
@@ -34,7 +37,8 @@ WITH (
 ALTER TABLE public.orders
   OWNER TO service;
 
-CREATE TABLE public.photos
+drop table if exists photos;
+CREATE TABLE photos
 (
   photo_id bigserial NOT NULL primary key,
   customer_id bigserial not null references customers(customer_id) on delete cascade,
