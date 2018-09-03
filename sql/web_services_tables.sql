@@ -1,4 +1,12 @@
-﻿create table customers(
+﻿CREATE DATABASE web_services
+WITH OWNER = service
+ENCODING = 'UTF8'
+TABLESPACE = pg_default
+LC_COLLATE = 'English_United States.1252'
+LC_CTYPE = 'English_United States.1252'
+CONNECTION LIMIT = -1;
+
+create table customers(
    customer_id bigserial not null primary key,
    first_name varchar(50),
    last_name varchar(50),

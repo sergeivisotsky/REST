@@ -35,7 +35,6 @@
         <access-denied-handler ref="oauthAccessDeniedHandler"/>
     </http>
 
-
     <bean id="oauthAuthenticationEntryPoint"
           class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
         <property name="realmName" value="test"/>
@@ -78,7 +77,7 @@
                             xmlns="http://www.springframework.org/schema/security">
         <authentication-provider>
             <user-service id="userDetailsManager">
-                <user name="admin" password="123456" authorities="ROLE_APP"/>
+                <user name="admin" password="123456" authorities="ROLE_USER"/>
             </user-service>
         </authentication-provider>
     </authentication-manager>
@@ -156,4 +155,5 @@
 
     <oauth:expression-handler id="oauthExpressionHandler"/>
     <oauth:web-expression-handler id="oauthWebExpressionHandler"/>
+
 </beans>
