@@ -2,16 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:sec="http://www.springframework.org/schema/security" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:sec="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd ">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- This is default url to get a token from OAuth -->
-    <http pattern="/oauth2/token" create-session="stateless"
+    <http pattern="/oauth/token" create-session="stateless"
           authentication-manager-ref="clientAuthenticationManager"
           xmlns="http://www.springframework.org/schema/security">
         <intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
@@ -73,14 +71,13 @@
         <authentication-provider user-service-ref="clientDetailsUserService"/>
     </authentication-manager>
 
-
     <!-- This is simple authentication manager, with a hardcoded user/password
         combination. We can replace this with a user defined service to get few users
         credentials from DB -->
     <authentication-manager alias="authenticationManager"
                             xmlns="http://www.springframework.org/schema/security">
         <authentication-provider>
-            <user-service>
+            <user-service id="userDetailsManager">
                 <user name="admin" password="123456" authorities="ROLE_APP"/>
             </user-service>
         </authentication-provider>
@@ -90,7 +87,6 @@
           class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
         <constructor-arg ref="clientDetails"/>
     </bean>
-
 
     <!-- This defined token store, we have used inmemory tokenstore for now
         but this can be changed to a user defined one -->
@@ -107,13 +103,21 @@
         <property name="clientDetailsService" ref="clientDetails"/>
     </bean>
 
+    <!-- A user approval handler that remembers approval decisions by consulting existing tokens -->
+    <bean id="oAuth2RequestFactory"
+          class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
+        <constructor-arg ref="clientDetails"/>
+    </bean>
+
     <bean id="userApprovalHandler"
           class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler">
+        <property name="requestFactory" ref="oAuth2RequestFactory"/>
         <property name="tokenStore" ref="tokenStore"/>
     </bean>
 
     <oauth:authorization-server
-            client-details-service-ref="clientDetails" token-services-ref="tokenServices"
+            client-details-service-ref="clientDetails"
+            token-services-ref="tokenServices"
             user-approval-handler-ref="userApprovalHandler">
         <oauth:authorization-code/>
         <oauth:implicit/>
@@ -123,11 +127,12 @@
     </oauth:authorization-server>
 
     <oauth:resource-server id="resourceServerFilter"
-                           resource-id="test" token-services-ref="tokenServices"/>
+                           resource-id="test"
+                           token-services-ref="tokenServices"/>
 
     <oauth:client-details-service id="clientDetails">
         <!-- client -->
-        <oauth:client client-id="restapp"
+        <oauth:client client-id="rest-api-trusted"
                       authorized-grant-types="password,authorization_code,client_credentials,authorization_code,refresh-token,implicit,redirect"
                       authorities="ROLE_APP, ROLE_TRUSTED_CLIENT"
                       redirect-uri="/rest"
@@ -136,7 +141,7 @@
                       access-token-validity="30"
                       refresh-token-validity="600"/>
 
-        <!--<oauth:client client-id="restapp"
+        <!--<oauth:client client-id="rest-api-trusted"
                       authorized-grant-types="password,authorization_code,refresh_token,implicit"
                       secret="restapp" authorities="ROLE_APP"/>-->
 
