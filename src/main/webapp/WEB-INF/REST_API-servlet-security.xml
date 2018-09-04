@@ -51,7 +51,7 @@
     <bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
         <property name="tokenStore" ref="tokenStore"/>
         <property name="supportRefreshToken" value="true"/>
-        <property name="accessTokenValiditySeconds" value="300000"/>
+        <property name="accessTokenValiditySeconds" value="120"/>
         <property name="clientDetailsService" ref="clientDetails"/>
     </bean>
 
@@ -115,7 +115,9 @@
                       authorities="APP"
                       authorized-grant-types="password"
                       resource-ids="conference"
-                      scope="read,write,trust"/>
+                      scope="read,write,trust"
+                      access-token-validity="30"
+                      refresh-token-validity="600"/>
     </oauth:client-details-service>
 
     <!-- Global HTTP security -->

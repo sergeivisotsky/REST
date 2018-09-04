@@ -42,4 +42,7 @@
                      allowed-headers="accept, content-type, authorization, origin"
                      max-age="3600"/>
     </mvc:cors>
+
+    <!--Spring Security oAuth2 authentication configuration import-->
+    <import resource="REST_API-servlet-security.xml"/>
 </beans>
