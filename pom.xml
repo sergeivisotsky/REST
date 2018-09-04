@@ -8,19 +8,6 @@
     <artifactId>REST_API</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-        <finalName>rest</finalName>
-    </build>
     <properties>
         <org.springframework-version>5.0.4.RELEASE</org.springframework-version>
         <org.slf4j-version>1.7.5</org.slf4j-version>
@@ -185,4 +172,17 @@
             <version>2.7.0</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        <finalName>rest</finalName>
+    </build>
 </project>
