@@ -17,14 +17,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@RestController
+//@RestController
 @RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
 public class PhotoRESTController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
+//    @Autowired
     private PhotoService photoService;
 
     // Upload photo method

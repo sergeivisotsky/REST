@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-@Repository
+//@Repository
 public class PhotoDAO {
     private static final String SQL_SAVE_FILE = "INSERT INTO photos(customer_id, file_name, file_url, file_type, file_size) " +
             "VALUES (?, ?, ?, ?, ?)";

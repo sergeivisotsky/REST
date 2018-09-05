@@ -15,13 +15,13 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Repository
+//@Repository
 public class PhotoService {
 
-    @Autowired
+//    @Autowired
     private FileOperations fileOperations;
 
-    @Autowired
+//    @Autowired
     private PhotoDAO photoDAO;
 
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
