@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ImportResource;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-@ImportResource("classpath:REST_API-servlet.xml")
+@ImportResource("classpath:applicationContext.xml")
 public class SpringBootEntryPoint extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
