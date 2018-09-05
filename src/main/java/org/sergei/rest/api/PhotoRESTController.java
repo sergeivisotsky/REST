@@ -63,6 +63,7 @@ public class PhotoRESTController {
                 .body(resource);
     }
 
+    // FIXME: Doesn't work unable to find photo and its metadata by customer ID
     @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.DELETE)
     public ResponseEntity<?> deletePhoto(@PathVariable("customerId") Long customerId) {
         photoService.deletePhoto(customerId);

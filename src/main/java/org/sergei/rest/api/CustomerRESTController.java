@@ -17,8 +17,6 @@ import java.util.List;
         produces = {"application/json", "application/xml"})
 public class CustomerRESTController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     private CustomerService customerService;
 
