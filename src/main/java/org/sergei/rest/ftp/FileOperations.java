@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
@@ -33,7 +32,7 @@ public class FileOperations {
     private FTPClient ftpClient;
 
     // Method to perform file upload on the server
-    public void uploadFile(CommonsMultipartFile commonsMultipartFile) {
+    public void uploadFile(MultipartFile multipartFile) {
         try {
             // Connecting to the ftp server
             ftpClient.connect(SERVER, PORT);
@@ -41,10 +40,10 @@ public class FileOperations {
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
-            // Get local commonsMultipartFile to upload on the server
-            File localFile = new File(commonsMultipartFile.getOriginalFilename());
-            commonsMultipartFile.transferTo(localFile); // Transfers MultipartFile to a regular file
-            String remoteFile = commonsMultipartFile.getOriginalFilename();
+            // Get local multipartFile to upload on the server
+            File localFile = new File(multipartFile.getOriginalFilename());
+            multipartFile.transferTo(localFile); // Transfers MultipartFile to a regular file
+            String remoteFile = multipartFile.getOriginalFilename();
             InputStream inputStream = new FileInputStream(localFile);
             boolean done = ftpClient.storeFile(remoteFile, inputStream);
 
