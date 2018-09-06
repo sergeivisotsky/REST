@@ -57,7 +57,6 @@ public class PhotoService {
         return resource;
     }
 
-    // FIXME: Doesn't work unable to find photo and its metadata by customer ID
     public void deletePhoto(Long customerId) {
         if (!photoDAO.existsByCustomerId(customerId)) {
             throw new ResourceNotFoundException("Photo not found");
