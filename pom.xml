@@ -116,6 +116,11 @@
             <version>2.7.0</version>
         </dependency>
     </dependencies>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
