@@ -1,5 +1,5 @@
 # REST
-REST API implementation uaing Spring Framework
+REST API implementation using Spring Boot
 
 ### Spring annotation depending on version
 | Http method | Spring 4.xx | Spring 5.xx |
