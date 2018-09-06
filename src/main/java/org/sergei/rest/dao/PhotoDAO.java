@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Repository
@@ -22,10 +23,10 @@ public class PhotoDAO {
     private JdbcTemplate jdbcTemplate;
 
     public void save(Long customerId, String fileDownloadUri,
-                     CommonsMultipartFile commonsMultipartFile) {
+                     MultipartFile multipartFile) {
         try {
-            jdbcTemplate.update(SQL_SAVE_FILE, customerId, commonsMultipartFile.getOriginalFilename(),
-                    fileDownloadUri, commonsMultipartFile.getContentType(), commonsMultipartFile.getSize());
+            jdbcTemplate.update(SQL_SAVE_FILE, customerId, multipartFile.getOriginalFilename(),
+                    fileDownloadUri, multipartFile.getContentType(), multipartFile.getSize());
             LOGGER.info("Photo meta data was saved");
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
