@@ -1,5 +1,5 @@
 # REST
-REST API implementation uaing Spring MVC
+REST API implementation using Spring MVC
 
 ### Spring annotation depending on version
 | Http method | Spring 4.xx | Spring 5.xx |
