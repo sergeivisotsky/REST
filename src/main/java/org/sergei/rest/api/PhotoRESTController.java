@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,13 +31,13 @@ public class PhotoRESTController {
     // Upload photo method
     @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.POST)
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
-                                           @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
+                                           @RequestParam("file") MultipartFile MultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/v1/customers/" + customerId.toString() + "/photo/")
                 .toUriString();
 
-        return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
+        return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, MultipartFile);
     }
 
     // download photo method
