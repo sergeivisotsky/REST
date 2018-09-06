@@ -5,10 +5,8 @@ import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.exceptions.TooLongFileNameException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.PhotoUploadResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.net.MalformedURLException;
@@ -18,10 +16,10 @@ import java.nio.file.Paths;
 //@Repository
 public class PhotoService {
 
-//    @Autowired
+    //    @Autowired
     private FileOperations fileOperations;
 
-//    @Autowired
+    //    @Autowired
     private PhotoDAO photoDAO;
 
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
@@ -57,7 +55,6 @@ public class PhotoService {
         return resource;
     }
 
-    // FIXME: Doesn't work unable to find photo and its metadata by customer ID
     public void deletePhoto(Long customerId) {
         if (!photoDAO.existsByCustomerId(customerId)) {
             throw new ResourceNotFoundException("Photo not found");
