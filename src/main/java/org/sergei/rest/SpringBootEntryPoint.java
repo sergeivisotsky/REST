@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 
 @Configuration
+@ImportResource("classpath:applicationContext.xml")
 @SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class)
 public class SpringBootEntryPoint extends SpringBootServletInitializer {
     @Override

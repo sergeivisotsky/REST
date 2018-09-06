@@ -4,6 +4,7 @@ import org.sergei.rest.model.PhotoUploadResponse;
 import org.sergei.rest.service.PhotoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-//@RestController
+@RestController
 @CrossOrigin
 @RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
@@ -24,7 +25,7 @@ public class PhotoRESTController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    //    @Autowired
+    @Autowired
     private PhotoService photoService;
 
     // Upload photo method

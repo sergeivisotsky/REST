@@ -13,23 +13,23 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 
-//@Component
+@Component
 public class FileOperations {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-//    @Value("${ftp.server}")
+    @Value("${ftp.server}")
     private String SERVER;
 
-//    @Value("${ftp.port}")
+    @Value("${ftp.port}")
     private int PORT;
 
-//    @Value("${ftp.username}")
+    @Value("${ftp.username}")
     private String USERNAME;
 
-//    @Value("${ftp.password}")
+    @Value("${ftp.password}")
     private String PASSWORD;
 
-//    @Autowired
+    @Autowired
     private FTPClient ftpClient;
 
     // Method to perform file upload on the server
