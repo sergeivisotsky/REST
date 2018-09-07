@@ -42,19 +42,16 @@ public class PhotoService {
     }
 
     public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
+        if (!photoDAO.existsByCustomerId(customerId)) {
+            throw new ResourceNotFoundException("File not found");
+        }
         String fileName = photoDAO.findFileNameByCustomerId(customerId);
         fileOperations.downloadFile(fileName);
         Path filePath = Paths
                 .get("D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/tmp/" + fileName)
                 .toAbsolutePath().normalize();
 
-        Resource resource = new UrlResource(filePath.toUri());
-
-        if (!resource.exists()) {
-            throw new ResourceNotFoundException("File not found");
-        }
-
-        return resource;
+        return new UrlResource(filePath.toUri());
     }
 
     public void deletePhoto(Long customerId) {
