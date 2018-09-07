@@ -5,4 +5,5 @@
 
     <!--File download from FTP-->
     <bean name="FtpClient" id="ftpClient" class="org.apache.commons.net.ftp.FTPClient"/>
+
 </beans>
