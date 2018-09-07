@@ -1,5 +1,4 @@
 # REST
-
 REST API implementation using Spring Boot
 
 ### Spring annotation depending on version
