@@ -11,6 +11,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -26,20 +27,20 @@ public class PhotoService {
     private PhotoDAO photoDAO;
 
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
-                                                     MultipartFile multipartFile) {
+                                                     CommonsMultipartFile commonsMultipartFile) {
 
         if (fileDownloadUri.length() > 150) {
             throw new TooLongFileNameException("Too long file name");
         }
 
-        fileOperations.uploadFile(multipartFile);
+        fileOperations.uploadFile(commonsMultipartFile);
 
-        photoDAO.save(customerId, fileDownloadUri, multipartFile);
+        photoDAO.save(customerId, fileDownloadUri, commonsMultipartFile);
 
         return new PhotoUploadResponse(customerId,
-                multipartFile.getOriginalFilename(),
-                fileDownloadUri, multipartFile.getContentType(),
-                multipartFile.getSize());
+                commonsMultipartFile.getOriginalFilename(),
+                fileDownloadUri, commonsMultipartFile.getContentType(),
+                commonsMultipartFile.getSize());
     }
 
     public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
