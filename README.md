@@ -48,4 +48,4 @@ public class CustomerRESTController {
 }
 ```
 
-To document this API Swagger documentation auto-generation was used which is available by this url: [http://localhost:8080/rest/api/swagger-ui.html](http://localhost:8080/rest/api/swagger-ui.html)
+To document this API Swagger documentation auto-generation was used which is available by this url: [http://localhost:8080/rest/swagger-ui.html](http://localhost:8080/rest/swagger-ui.html)
