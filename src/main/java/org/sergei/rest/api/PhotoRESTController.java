@@ -64,7 +64,7 @@ public class PhotoRESTController {
     }
 
     @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deletePhoto(@PathVariable("customerId") Long customerId) {
+    public ResponseEntity<?> deletePhoto(@PathVariable("customerId") Long customerId) throws IOException {
         photoService.deletePhoto(customerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

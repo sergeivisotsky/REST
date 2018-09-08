@@ -2,8 +2,8 @@ package org.sergei.rest.service;
 
 import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.exceptions.FileNotFoundException;
-import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
+import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,14 +28,14 @@ public class PhotoService {
     @Autowired
     private FileOperations fileOperations;
 
-    @Autowired
-    private PhotoDAO photoDAO;
+    private final PhotoDAO photoDAO;
 
     private final Path fileStorageLocation;
 
     @Autowired
-    public PhotoService() {
+    public PhotoService(PhotoDAO photoDAO) {
         this.fileStorageLocation = Paths.get(STORAGE_PATH).toAbsolutePath().normalize();
+        this.photoDAO = photoDAO;
     }
 
     // Method to upload file on the server
@@ -68,10 +69,12 @@ public class PhotoService {
 
     // Method to download file from the server
     public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
-
         // Get filename by customer id written in database
+        /*if (!photoDAO.existsByCustomerId(customerId)) {
+            throw new FileNotFoundException("File not found");
+        }
+*/
         String fileName = photoDAO.findFileNameByCustomerId(customerId);
-
         Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 
@@ -84,12 +87,14 @@ public class PhotoService {
     }
 
     // Method to perform file deletion
-    public void deletePhoto(Long customerId) {
-        if (!photoDAO.existsByCustomerId(customerId)) {
+    public void deletePhoto(Long customerId) throws IOException {
+        /*if (!photoDAO.existsByCustomerId(customerId)) {
             throw new ResourceNotFoundException("File not found");
-        }
+        }*/
         String fileName = photoDAO.findFileNameByCustomerId(customerId);
-        fileOperations.deleteFile(fileName);
+        Path targetLocation = this.fileStorageLocation.resolve(fileName);
+        Files.deleteIfExists(targetLocation);
+
         photoDAO.deleteFileByCustomerId(customerId);
     }
 }
