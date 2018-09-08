@@ -3,6 +3,7 @@ package org.sergei.rest.service;
 import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
+import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -18,26 +19,29 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class PhotoService {
 
-    private static final String STORAGE_PATH = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/photo/";
+//    @Value("${file.tmp.path}")
+    private static final String TEMP_DIR_PATH = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/tmp";
 
     private final PhotoDAO photoDAO;
 
     private final Path fileStorageLocation;
 
+    private final FileOperations fileOperations;
+
     @Autowired
-    public PhotoService(PhotoDAO photoDAO) {
-        this.fileStorageLocation = Paths.get(STORAGE_PATH).toAbsolutePath().normalize();
+    public PhotoService(PhotoDAO photoDAO, FileOperations fileOperations) {
+        this.fileStorageLocation = Paths.get(TEMP_DIR_PATH).toAbsolutePath().normalize();
         this.photoDAO = photoDAO;
+        this.fileOperations = fileOperations;
     }
 
     // Method to upload file on the server
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
-                                                     CommonsMultipartFile commonsMultipartFile) throws Exception {
+                                                     CommonsMultipartFile commonsMultipartFile) {
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -52,8 +56,7 @@ public class PhotoService {
         }
 
         // Store files on the server directory
-        Path targetLocation = this.fileStorageLocation.resolve(fileName);
-        Files.copy(commonsMultipartFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        fileOperations.uploadFile(commonsMultipartFile);
 
         // Save file metadata into a database
         photoDAO.save(customerId, fileDownloadUri, commonsMultipartFile);
@@ -72,6 +75,9 @@ public class PhotoService {
         }
 */
         String fileName = photoDAO.findFileNameByCustomerId(customerId);
+
+        fileOperations.downloadFile(fileName);
+
         Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 
@@ -91,6 +97,8 @@ public class PhotoService {
         PhotoUploadResponse photoUploadResponse = photoDAO.findPhotoByCustomerId(customerId);
         Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());
         Files.deleteIfExists(targetLocation);
+
+        fileOperations.deleteFile(photoUploadResponse.getFileName());
 
         photoDAO.deleteFileByCustomerId(customerId);
 
