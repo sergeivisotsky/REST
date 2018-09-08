@@ -3,8 +3,6 @@ package org.sergei.rest.service;
 import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
-import org.sergei.rest.exceptions.ResourceNotFoundException;
-import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
