@@ -31,16 +31,25 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     protected final ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException e,
-                                                                              WebRequest request) {
+                                                                                 WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(TooLongFileNameException.class)
+    @ExceptionHandler(FileNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    protected final ResponseEntity<ErrorDetails> handleFileNotFoundException(FileNotFoundException e,
+                                                                             WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FileStorageException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
-    protected final ResponseEntity<ErrorDetails> handleTooLongFileNameException(TooLongFileNameException e,
-                                                                                 WebRequest request) {
+    protected final ResponseEntity<ErrorDetails> handleTooLongFileNameException(FileStorageException e,
+                                                                                WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_ACCEPTABLE);
     }

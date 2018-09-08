@@ -30,7 +30,7 @@ public class PhotoRESTController {
     // Upload photo method
     @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.POST)
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
-                                           @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
+                                           @RequestParam("file") CommonsMultipartFile commonsMultipartFile) throws Exception {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/v1/customers/" + customerId.toString() + "/photo/")

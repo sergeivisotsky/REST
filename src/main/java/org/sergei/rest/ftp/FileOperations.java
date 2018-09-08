@@ -12,6 +12,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.*;
 
 @Component
+@Deprecated
 public class FileOperations {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -68,6 +69,7 @@ public class FileOperations {
     }
 
     // Method to process file download from the server
+    @Deprecated
     public void downloadFile(String remoteFile) {
         try {
             // Connecting to the ftp server
@@ -106,6 +108,7 @@ public class FileOperations {
     }
 
     // Method to delete file from the server
+    @Deprecated
     public void deleteFile(String remoteFile) {
         try {
             // Connecting to the ftp server
