@@ -7,6 +7,8 @@ import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -82,14 +84,16 @@ public class PhotoService {
     }
 
     // Method to perform file deletion
-    public void deletePhoto(Long customerId) throws IOException {
+    public ResponseEntity<PhotoUploadResponse> deletePhoto(Long customerId) throws IOException {
         /*if (!photoDAO.existsByCustomerId(customerId)) {
             throw new ResourceNotFoundException("File not found");
         }*/
-        String fileName = photoDAO.findFileNameByCustomerId(customerId);
-        Path targetLocation = this.fileStorageLocation.resolve(fileName);
+        PhotoUploadResponse photoUploadResponse = photoDAO.findPhotoByCustomerId(customerId);
+        Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());
         Files.deleteIfExists(targetLocation);
 
         photoDAO.deleteFileByCustomerId(customerId);
+
+        return new ResponseEntity<>(photoUploadResponse, HttpStatus.OK);
     }
 }
