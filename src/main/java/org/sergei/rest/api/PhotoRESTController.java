@@ -33,7 +33,7 @@ public class PhotoRESTController {
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) throws Exception {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerId.toString() + "/photo/")
+                .path("/api/v1/customers/" + customerId.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
