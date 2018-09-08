@@ -25,9 +25,6 @@ public class PhotoService {
 
     private static final String STORAGE_PATH = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/photo/";
 
-    @Autowired
-    private FileOperations fileOperations;
-
     private final PhotoDAO photoDAO;
 
     private final Path fileStorageLocation;
