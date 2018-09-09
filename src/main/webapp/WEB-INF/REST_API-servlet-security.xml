@@ -21,12 +21,8 @@
         <access-denied-handler ref="oauthAccessDeniedHandler"/>
     </http>
 
-    <!--Unsecured endpoint-->
-    <sec:http pattern="/api/v1/customers/1/orders/7" security="none"/>
-
     <!-- This is where we tells spring security what URL should be protected
      and what roles have access to them -->
-
     <http pattern="/api/**" create-session="never"
           entry-point-ref="oauthAuthenticationEntryPoint"
           access-decision-manager-ref="accessDecisionManager"
@@ -171,4 +167,7 @@
 
     <oauth:expression-handler id="oauthExpressionHandler"/>
     <oauth:web-expression-handler id="oauthWebExpressionHandler"/>
+
+    <!--Unsecured endpoint-->
+    <sec:http pattern="/api/v1/customers/1/orders/7" security="none"/>
 </beans>
