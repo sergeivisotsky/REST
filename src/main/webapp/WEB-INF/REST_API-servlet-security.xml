@@ -6,54 +6,102 @@
 	    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 	    http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
 
-    <!-- HTTP Root Access configuration -->
-    <sec:http pattern="/api/**" create-session="never" access-decision-manager-ref="accessDecisionManager"
-              entry-point-ref="oauthAuthenticationEntryPoint" use-expressions="true" auto-config="true">
-        <sec:anonymous enabled="false"/>
-        <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER"/>
-        <sec:access-denied-handler ref="oauthAccessDeniedHandler"/>
-        <!--<sec:expression-handler ref="oauthWebExpressionHandler"/>-->
-    </sec:http>
+    <!-- This is default url provided by spring to get the tokens(access and refresh) from OAuth -->
+    <http pattern="/oauth/token" create-session="stateless"
+          authentication-manager-ref="clientAuthenticationManager"
+          xmlns="http://www.springframework.org/schema/security">
+        <intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
+        <anonymous enabled="false"/>
+        <http-basic entry-point-ref="clientAuthenticationEntryPoint"/>
 
-    <!-- OAuth2 Authentication Entry Point -->
+        <!-- include this only if you need to authenticate clients via request
+         parameters -->
+
+        <custom-filter ref="clientCredentialsTokenEndpointFilter"
+                       after="BASIC_AUTH_FILTER"/>
+        <access-denied-handler ref="oauthAccessDeniedHandler"/>
+    </http>
+
+    <!-- This is where we tells spring security what URL should be protected
+     and what roles have access to them -->
+
+    <http pattern="/api/**" create-session="never"
+          entry-point-ref="oauthAuthenticationEntryPoint"
+          access-decision-manager-ref="accessDecisionManager"
+          xmlns="http://www.springframework.org/schema/security">
+        <anonymous enabled="false"/>
+        <intercept-url pattern="/api/**" access="ROLE_OAUTH_CLIENT"/>
+        <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER"/>
+        <access-denied-handler ref="oauthAccessDeniedHandler"/>
+    </http>
+
+
     <bean id="oauthAuthenticationEntryPoint"
           class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
-        <property name="realmName" value="conference"/>
+        <property name="realmName" value="sample"/>
+    </bean>
+
+    <bean id="clientAuthenticationEntryPoint"
+          class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="realmName" value="sample/oauthClient"/>
+        <property name="typeName" value="Basic"/>
     </bean>
 
     <bean id="oauthAccessDeniedHandler"
           class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler"/>
 
-    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+    <bean id="clientCredentialsTokenEndpointFilter"
+          class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+        <property name="authenticationManager" ref="clientAuthenticationManager"/>
+    </bean>
+
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased"
+          xmlns="http://www.springframework.org/schema/beans">
         <constructor-arg>
             <list>
                 <bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter"/>
+                <bean class="org.springframework.security.access.vote.RoleVoter"/>
                 <bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
-                <bean class="org.springframework.security.web.access.expression.WebExpressionVoter">
-                    <property name="expressionHandler" ref="oauthWebExpressionHandler"/>
-                </bean>
             </list>
         </constructor-arg>
     </bean>
 
-    <oauth:web-expression-handler id="oauthWebExpressionHandler"/>
+    <authentication-manager id="clientAuthenticationManager"
+                            xmlns="http://www.springframework.org/schema/security">
+        <authentication-provider user-service-ref="clientDetailsUserService"/>
+    </authentication-manager>
 
-    <!-- OAuth2 Token Generation Services -->
-    <sec:http pattern="/oauth/token" create-session="stateless"
-              authentication-manager-ref="clientAuthenticationManager">
-        <sec:intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
-        <sec:anonymous enabled="false"/>
-        <sec:http-basic entry-point-ref="clientAuthenticationEntryPoint"/>
-        <sec:custom-filter ref="clientCredentialsTokenEndpointFilter" before="BASIC_AUTH_FILTER"/>
-        <sec:access-denied-handler ref="oauthAccessDeniedHandler"/>
-    </sec:http>
 
-    <bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
-        <property name="tokenStore" ref="tokenStore"/>
-        <property name="supportRefreshToken" value="true"/>
-        <property name="accessTokenValiditySeconds" value="120"/>
-        <property name="clientDetailsService" ref="clientDetails"/>
+    <!-- Here we have hard-coded user name and password details. We can replace this with a user defined service to get users
+     credentials from DB -->
+    <authentication-manager alias="authenticationManager"
+                            xmlns="http://www.springframework.org/schema/security">
+        <authentication-provider>
+            <user-service id="userDetailsService">
+                <user name="admin" password="123456" authorities="ROLE_OAUTH_CLIENT"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+    <bean id="clientDetailsUserService"
+          class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <constructor-arg ref="clientDetails"/>
     </bean>
+
+
+    <!--We have used JDBC tokenstore to store the tokens, we can use In Memory token store for development purpose -->
+    <!--<bean id="tokenStore"
+          class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+        <constructor-arg ref="jdbcTemplate" />
+    </bean>
+
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/web_services_oauth"/>
+        <property name="username" value="service"/>
+        <property name="password" value="service"/>
+    </bean>-->
 
     <bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore"/>
 
@@ -61,20 +109,29 @@
         <property name="tokenStore" ref="tokenStore"/>
     </bean>
 
-    <bean id="userApprovalHandler"
-          class="org.springframework.security.oauth2.provider.approval.ApprovalStoreUserApprovalHandler">
-        <property name="approvalStore" ref="approvalStore"/>
+    <!-- tokenServices bean for defining token based configurations, token validity etc -->
+    <bean id="tokenServices"
+          class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <property name="tokenStore" ref="tokenStore"/>
+        <property name="supportRefreshToken" value="true"/>
+        <property name="accessTokenValiditySeconds" value="120"/>
         <property name="clientDetailsService" ref="clientDetails"/>
-        <property name="requestFactory">
-            <bean class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
-                <constructor-arg index="0" ref="clientDetails"/>
-            </bean>
-        </property>
     </bean>
 
-    <!-- OAuth2 Authorization Server -->
-    <oauth:authorization-server client-details-service-ref="clientDetails" token-services-ref="tokenServices"
-                                user-approval-handler-ref="userApprovalHandler">
+    <bean id="requestFactory"
+          class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
+        <constructor-arg name="clientDetailsService" ref="clientDetails"/>
+    </bean>
+
+    <bean id="userApprovalHandler"
+          class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler">
+        <property name="tokenStore" ref="tokenStore"/>
+        <property name="requestFactory" ref="requestFactory"/>
+    </bean>
+
+    <oauth:authorization-server
+            client-details-service-ref="clientDetails" token-services-ref="tokenServices"
+            user-approval-handler-ref="userApprovalHandler">
         <oauth:authorization-code/>
         <oauth:implicit/>
         <oauth:refresh-token/>
@@ -82,63 +139,34 @@
         <oauth:password/>
     </oauth:authorization-server>
 
-    <!-- OAuth2 Protected Resources Server -->
-    <oauth:resource-server id="resourceServerFilter" resource-id="conference" token-services-ref="tokenServices"/>
+    <oauth:resource-server id="resourceServerFilter"
+                           resource-id="sample" token-services-ref="tokenServices"/>
 
-    <!-- OAuth2 Client Configuration -->
-    <bean id="clientCredentialsTokenEndpointFilter"
-          class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
-        <property name="authenticationManager" ref="clientAuthenticationManager"/>
-    </bean>
-
-    <bean id="clientAuthenticationEntryPoint"
-          class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
-        <property name="realmName" value="conference/client"/>
-        <property name="typeName" value="Basic"/>
-    </bean>
-
-    <bean id="clientDetailsUserService"
-          class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
-        <constructor-arg ref="clientDetails"/>
-    </bean>
-
-    <!-- OAuth2 Client's Authentication Manager -->
-    <sec:authentication-manager id="clientAuthenticationManager">
-        <sec:authentication-provider user-service-ref="clientDetailsUserService"/>
-    </sec:authentication-manager>
-
-    <!-- File based client details access -->
+    <!-- Client definition -->
     <oauth:client-details-service id="clientDetails">
-        <!-- Web Application clients -->
-        <oauth:client client-id="client"
-                      secret="secret"
-                      authorities="APP"
-                      authorized-grant-types="password"
-                      resource-ids="conference"
+        <!--<oauth:client client-id="trusted-client"
+                      authorized-grant-types="password,refresh_token,client_credentials"
+                      authorities="ROLE_OAUTH_CLIENT" scope="read,write,trust" secret="secret" />-->
+        <oauth:client client-id="trusted-client"
+                      authorized-grant-types="password,refresh_token,client_credentials"
+                      authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT, ROLE_OAUTH_CLIENT"
                       scope="read,write,trust"
-                      access-token-validity="30"
+                      access-token-validity="300"
                       refresh-token-validity="600"/>
+
+        <oauth:client client-id="trusted-client-with-secret"
+                      authorized-grant-types="password,authorization_code,refresh_token,implicit"
+                      secret="somesecret"
+                      authorities="ROLE_OAUTH_CLIENT"/>
+
     </oauth:client-details-service>
 
-    <!-- Global HTTP security -->
-    <sec:http auto-config="true" pattern="/**" use-expressions="true"
-              authentication-manager-ref="userAuthenticationManager">
-        <sec:intercept-url pattern="/**" access="isAuthenticated()"/>
-    </sec:http>
+    <sec:global-method-security
+            pre-post-annotations="enabled" proxy-target-class="true">
 
-    <!-- Spring Security Authentication Manager -->
-    <sec:authentication-manager alias="userAuthenticationManager">
-        <sec:authentication-provider>
-            <sec:user-service id="userDetailsManager">
-                <sec:user name="admin" password="123456" authorities="USER, ADMIN"/>
-            </sec:user-service>
-        </sec:authentication-provider>
-    </sec:authentication-manager>
-
-    <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
         <sec:expression-handler ref="oauthExpressionHandler"/>
     </sec:global-method-security>
 
     <oauth:expression-handler id="oauthExpressionHandler"/>
-
+    <oauth:web-expression-handler id="oauthWebExpressionHandler"/>
 </beans>

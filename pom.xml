@@ -161,18 +161,6 @@
             <version>2.5</version>
         </dependency>
 
-        <!--File upload on the remote server-->
-        <!--<dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.5.5</version>
-        </dependency>-->
-
         <!--Swagger dependency-->
         <dependency>
             <groupId>io.springfox</groupId>

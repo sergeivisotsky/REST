@@ -44,5 +44,5 @@
     </mvc:cors>
 
     <!--Spring Security oAuth2 authentication configuration import-->
-    <!--<import resource="REST_API-servlet-security.xml"/>-->
+    <import resource="REST_API-servlet-security.xml"/>
 </beans>
