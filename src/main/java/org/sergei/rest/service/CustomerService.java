@@ -33,6 +33,7 @@ public class CustomerService {
     }
 
     public Customer updateCustomer(Long id, Customer customer) {
+        customer.setCustomerId(id);
         if (!customerDAO.existsById(id)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
@@ -42,6 +43,7 @@ public class CustomerService {
 
     public Customer deleteCustomerById(Long id) {
         Customer customer = customerDAO.findById(id);
+        customer.setCustomerId(id);
         if (!customerDAO.existsById(id)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }

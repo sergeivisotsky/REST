@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderDAO {
     private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, good, good_weight, price) VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM orders";
-    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET good = ?, good_weight = ?, price = ? " +
+    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, good = ?, good_weight = ?, price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
     private static final String SQL_FIND_BY_CUSTOMER_ID_AND_GOOD = "SELECT * FROM orders WHERE customer_id = ? AND good = ?";

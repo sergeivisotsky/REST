@@ -44,15 +44,16 @@ public class CustomerRESTController {
     // Update record
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT,
             consumes = {"application/json", "application/xml"})
-    public Customer updateRecord(@PathVariable("id") Long id,
-                                 @RequestBody Customer customer) {
-        return customerService.updateCustomer(id, customer);
+    public ResponseEntity<Customer> updateRecord(@PathVariable("id") Long id,
+                                                 @RequestBody Customer customer) {
+        return new ResponseEntity<>(customerService.updateCustomer(id, customer), HttpStatus.ACCEPTED);
     }
 
     // Delete order by specific ID
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Customer> deleteCustomerById(@PathVariable("id") Long id) {
         Customer customer = customerService.deleteCustomerById(id);
+
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 }

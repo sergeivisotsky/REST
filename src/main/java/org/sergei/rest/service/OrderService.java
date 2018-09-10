@@ -1,11 +1,9 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.dao.OrderDAO;
+import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,6 +59,7 @@ public class OrderService {
     }
 
     public void saveOrder(Long customerId, Order order) {
+        order.setCustomerId(customerId);
         orderDAO.save(customerId, order);
     }
 
@@ -68,6 +67,8 @@ public class OrderService {
         if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsById(orderId)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
+        order.setOrderId(orderId);
+        order.setCustomerId(customerId);
         orderDAO.updateRecord(customerId, orderId, order);
         return order;
     }
@@ -77,6 +78,7 @@ public class OrderService {
         if (!orderDAO.existsById(id)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
+        order.setOrderId(id);
         orderDAO.delete(order);
 
         return order;
@@ -87,6 +89,9 @@ public class OrderService {
         if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsById(orderId)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
+
+        order.setOrderId(orderId);
+        order.setCustomerId(customerId);
         orderDAO.delete(order);
 
         return order;

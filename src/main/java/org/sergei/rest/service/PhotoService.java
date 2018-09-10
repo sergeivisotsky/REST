@@ -8,8 +8,6 @@ import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -23,7 +21,7 @@ import java.nio.file.Paths;
 @Service
 public class PhotoService {
 
-//    @Value("${file.tmp.path}")
+    //    @Value("${file.tmp.path}")
     private static final String TEMP_DIR_PATH = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/tmp";
 
     private final PhotoDAO photoDAO;
@@ -42,6 +40,8 @@ public class PhotoService {
     // Method to upload file on the server
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
                                                      CommonsMultipartFile commonsMultipartFile) {
+        PhotoUploadResponse photoUploadResponse = new PhotoUploadResponse();
+        photoUploadResponse.setCustomerId(customerId);
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -95,6 +95,7 @@ public class PhotoService {
             throw new ResourceNotFoundException("File not found");
         }*/
         PhotoUploadResponse photoUploadResponse = photoDAO.findPhotoByCustomerId(customerId);
+        photoUploadResponse.setCustomerId(customerId);
         Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());
         Files.deleteIfExists(targetLocation);
 

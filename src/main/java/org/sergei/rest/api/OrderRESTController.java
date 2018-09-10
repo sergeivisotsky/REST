@@ -1,6 +1,5 @@
 package org.sergei.rest.api;
 
-import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,9 @@ public class OrderRESTController {
     }
 
     // Get order by specific ID as a parameter
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
-    public Order getOrderById(@PathVariable("id") Long id) {
-        return orderService.getOrderById(id);
+    @RequestMapping(value = "/orders/{orderId}", method = RequestMethod.GET)
+    public Order getOrderById(@PathVariable("orderId") Long orderId) {
+        return orderService.getOrderById(orderId);
     }
 
     // Get order by customer id and order id
@@ -38,9 +37,9 @@ public class OrderRESTController {
     }
 
     // Get all orders by customer id
-    @RequestMapping(value = "/customers/{id}/orders", method = RequestMethod.GET)
-    public List<Order> getOrdersByCustomerId(@PathVariable("id") Long id) {
-        return orderService.getAllOrdersByCustomerId(id);
+    @RequestMapping(value = "/customers/{customerId}/orders", method = RequestMethod.GET)
+    public List<Order> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
+        return orderService.getAllOrdersByCustomerId(customerId);
     }
 
     // Get als orders by customer id and good
@@ -57,11 +56,11 @@ public class OrderRESTController {
     }
 
     // Add a new record
-    @RequestMapping(value = "/customers/{id}/orders", method = RequestMethod.POST,
+    @RequestMapping(value = "/customers/{customerId}/orders", method = RequestMethod.POST,
             consumes = {"application/json", "application/xml"})
-    public ResponseEntity createOrder(@PathVariable("id") Long id,
-                                      @RequestBody Order order) {
-        orderService.saveOrder(id, order);
+    public ResponseEntity<Order> createOrder(@PathVariable("customerId") Long customerId,
+                                             @RequestBody Order order) {
+        orderService.saveOrder(customerId, order);
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
@@ -69,25 +68,23 @@ public class OrderRESTController {
     // Update record
     @RequestMapping(value = "/customers/{customerId}/orders/{orderId}",
             method = RequestMethod.PUT, consumes = {"application/json", "application/xml"})
-    public Order updateRecord(@PathVariable("customerId") Long customerId,
-                              @PathVariable("orderId") Long orderId,
-                              @RequestBody Order order) {
-        return orderService.updateOrder(customerId, orderId, order);
+    public ResponseEntity<Order> updateRecord(@PathVariable("customerId") Long customerId,
+                                              @PathVariable("orderId") Long orderId,
+                                              @RequestBody Order order) {
+        return new ResponseEntity<>(orderService.updateOrder(customerId, orderId, order), HttpStatus.ACCEPTED);
     }
 
     // Delete order by specific ID
     @RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Order> deleteOrderById(@PathVariable("id") Long id) {
-        Order order = orderService.deleteOrderById(id);
-
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        return new ResponseEntity<>(orderService.deleteOrderById(id), HttpStatus.OK);
     }
 
     // Delete order by customer id and order id
     @RequestMapping(value = "/customers/{customerId}/orders/{orderId}", method = RequestMethod.DELETE)
     public ResponseEntity<Order> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
-                                                            @PathVariable("orderId") Long orderId) {
-        Order order  = orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId);
+                                                                   @PathVariable("orderId") Long orderId) {
+        Order order = orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId);
 
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
