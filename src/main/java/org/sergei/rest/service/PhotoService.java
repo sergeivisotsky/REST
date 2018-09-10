@@ -90,7 +90,7 @@ public class PhotoService {
     }
 
     // Method to perform file deletion
-    public ResponseEntity<PhotoUploadResponse> deletePhoto(Long customerId) throws IOException {
+    public PhotoUploadResponse deletePhoto(Long customerId) throws IOException {
         /*if (!photoDAO.existsByCustomerId(customerId)) {
             throw new ResourceNotFoundException("File not found");
         }*/
@@ -102,6 +102,6 @@ public class PhotoService {
 
         photoDAO.deleteFileByCustomerId(customerId);
 
-        return new ResponseEntity<>(photoUploadResponse, HttpStatus.OK);
+        return photoUploadResponse;
     }
 }

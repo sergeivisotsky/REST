@@ -40,13 +40,13 @@ public class CustomerService {
         return customer;
     }
 
-    public ResponseEntity<Customer> deleteCustomerById(Long id) {
+    public Customer deleteCustomerById(Long id) {
         Customer customer = customerDAO.findById(id);
         if (!customerDAO.existsById(id)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
         customerDAO.delete(customer);
 
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        return customer;
     }
 }

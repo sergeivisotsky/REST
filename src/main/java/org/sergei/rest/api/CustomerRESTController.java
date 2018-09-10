@@ -51,7 +51,8 @@ public class CustomerRESTController {
 
     // Delete order by specific ID
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteCustomerById(@PathVariable("id") Long id) {
-        return customerService.deleteCustomerById(id);
+    public ResponseEntity<Customer> deleteCustomerById(@PathVariable("id") Long id) {
+        Customer customer = customerService.deleteCustomerById(id);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 }

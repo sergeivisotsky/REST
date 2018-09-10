@@ -72,25 +72,23 @@ public class OrderService {
         return order;
     }
 
-    public ResponseEntity<Order> deleteOrderById(Long id) {
+    public Order deleteOrderById(Long id) {
         Order order = orderDAO.findById(id);
         if (!orderDAO.existsById(id)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
         orderDAO.delete(order);
 
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        return order;
     }
 
-    public ResponseEntity<Order> deleteOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
-
+    public Order deleteOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
         Order order = orderDAO.findByCustomerIdAndOrderId(customerId, orderId);
-
         if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsById(orderId)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
         orderDAO.delete(order);
 
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        return order;
     }
 }

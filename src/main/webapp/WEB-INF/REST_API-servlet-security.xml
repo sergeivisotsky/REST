@@ -148,11 +148,11 @@
                       authorized-grant-types="password,refresh_token,client_credentials"
                       authorities="ROLE_OAUTH_CLIENT" scope="read,write,trust" secret="secret" />-->
         <oauth:client client-id="trusted-client"
-                      authorized-grant-types="password,refresh_token,client_credentials"
+                      authorized-grant-types="password,client_credentials"
                       authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT, ROLE_OAUTH_CLIENT"
                       scope="read,write,trust"
-                      access-token-validity="300"
-                      refresh-token-validity="600"/>
+                      access-token-validity="86000000"
+                      refresh-token-validity="86000000"/>
 
         <oauth:client client-id="trusted-client-with-secret"
                       authorized-grant-types="password,authorization_code,refresh_token,implicit"

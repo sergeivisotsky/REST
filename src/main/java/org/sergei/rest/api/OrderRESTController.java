@@ -1,5 +1,6 @@
 package org.sergei.rest.api;
 
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,14 +77,18 @@ public class OrderRESTController {
 
     // Delete order by specific ID
     @RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteOrderById(@PathVariable("id") Long id) {
-        return orderService.deleteOrderById(id);
+    public ResponseEntity<Order> deleteOrderById(@PathVariable("id") Long id) {
+        Order order = orderService.deleteOrderById(id);
+
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     // Delete order by customer id and order id
     @RequestMapping(value = "/customers/{customerId}/orders/{orderId}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
+    public ResponseEntity<Order> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
                                                             @PathVariable("orderId") Long orderId) {
-        return orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId);
+        Order order  = orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId);
+
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 }
