@@ -3,8 +3,6 @@ package org.sergei.rest.api;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.service.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +19,19 @@ public class CustomerRESTController {
     private CustomerService customerService;
 
     // Get all customers
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
     // Get customer by specific ID as a parameter
-    @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
+    @GetMapping("/{customerId}")
     public Customer getCustomerById(@PathVariable("customerId") Long customerId) throws RecordNotFoundException {
         return customerService.getCustomerById(customerId);
     }
 
     // Add a new record
-    @RequestMapping(method = RequestMethod.POST,
-            consumes = {"application/json", "application/xml"})
+    @PostMapping(consumes = {"application/json", "application/xml"})
     public ResponseEntity addCustomer(@RequestBody Customer customer) {
         customerService.saveCustomer(customer);
 
@@ -42,15 +39,14 @@ public class CustomerRESTController {
     }
 
     // Update record
-    @RequestMapping(value = "/{customerId}", method = RequestMethod.PUT,
-            consumes = {"application/json", "application/xml"})
+    @PutMapping(value = "/{customerId}", consumes = {"application/json", "application/xml"})
     public ResponseEntity<Customer> updateRecord(@PathVariable("customerId") Long customerId,
                                                  @RequestBody Customer customer) {
         return new ResponseEntity<>(customerService.updateCustomer(customerId, customer), HttpStatus.ACCEPTED);
     }
 
     // Delete order by specific ID
-    @RequestMapping(value = "/{customerId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{customerId}")
     public ResponseEntity<Customer> deleteCustomerById(@PathVariable("customerId") Long customerId) {
         Customer customer = customerService.deleteCustomerById(customerId);
 

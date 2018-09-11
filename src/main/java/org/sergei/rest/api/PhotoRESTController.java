@@ -28,7 +28,7 @@ public class PhotoRESTController {
     private PhotoService photoService;
 
     // Upload photo method
-    @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.POST)
+    @PostMapping("/{customerId}/photo")
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
@@ -40,7 +40,7 @@ public class PhotoRESTController {
     }
 
     // download photo method
-    @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.GET)
+    @GetMapping("/{customerId}/photo")
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
                                                   HttpServletRequest request) throws IOException {
         Resource resource = photoService.downloadFileAsResource(customerId);
@@ -63,7 +63,7 @@ public class PhotoRESTController {
                 .body(resource);
     }
 
-    @RequestMapping(value = "/{customerId}/photo", method = RequestMethod.DELETE)
+    @DeleteMapping("/{customerId}/photo")
     public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId) throws IOException {
         PhotoUploadResponse photoUploadResponse = photoService.deletePhoto(customerId);
 

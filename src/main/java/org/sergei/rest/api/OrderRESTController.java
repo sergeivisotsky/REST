@@ -18,45 +18,45 @@ public class OrderRESTController {
     private OrderService orderService;
 
     // Get all orders
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    @GetMapping(value = "/orders")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     // Get order by specific ID as a parameter
-    @RequestMapping(value = "/orders/{orderId}", method = RequestMethod.GET)
+    @GetMapping("/orders/{orderId}")
     public Order getOrderById(@PathVariable("orderId") Long orderId) {
         return orderService.getOrderById(orderId);
     }
 
     // Get order by customer id and order id
-    @RequestMapping(value = "/customers/{customerId}/orders/{orderId}", method = RequestMethod.GET)
+    @GetMapping("/customers/{customerId}/orders/{orderId}")
     public Order getOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
                                                 @PathVariable("orderId") Long orderId) {
         return orderService.getOrderByCustomerIdAndOrderId(customerId, orderId);
     }
 
     // Get all orders by customer id
-    @RequestMapping(value = "/customers/{customerId}/orders", method = RequestMethod.GET)
+    @GetMapping("/customers/{customerId}/orders")
     public List<Order> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
         return orderService.getAllOrdersByCustomerId(customerId);
     }
 
     // Get als orders by customer id and good
-    @RequestMapping(value = "/customers/{customerId}/orders/order", method = RequestMethod.GET)
+    @GetMapping("/customers/{customerId}/orders/order")
     public List<Order> getOrderByCustomerIdAndGood(@PathVariable("customerId") Long customerId,
                                                    @RequestParam("good") String good) {
         return orderService.getAllOrdersByCustomerIdAndGood(customerId, good);
     }
 
     // Get all orders by good name
-    @RequestMapping(value = "/orders/order", method = RequestMethod.GET)
+    @GetMapping(value = "/orders/order")
     public List<Order> getOrdersByGood(@RequestParam("good") String good) {
         return orderService.getAllByGood(good);
     }
 
     // Add a new record
-    @RequestMapping(value = "/customers/{customerId}/orders", method = RequestMethod.POST,
+    @PostMapping(value = "/customers/{customerId}/orders",
             consumes = {"application/json", "application/xml"})
     public ResponseEntity<Order> createOrder(@PathVariable("customerId") Long customerId,
                                              @RequestBody Order order) {
@@ -66,8 +66,8 @@ public class OrderRESTController {
     }
 
     // Update record
-    @RequestMapping(value = "/customers/{customerId}/orders/{orderId}",
-            method = RequestMethod.PUT, consumes = {"application/json", "application/xml"})
+    @PutMapping(value = "/customers/{customerId}/orders/{orderId}",
+            consumes = {"application/json", "application/xml"})
     public ResponseEntity<Order> updateRecord(@PathVariable("customerId") Long customerId,
                                               @PathVariable("orderId") Long orderId,
                                               @RequestBody Order order) {
@@ -75,13 +75,13 @@ public class OrderRESTController {
     }
 
     // Delete order by specific ID
-    @RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/orders/{id}")
     public ResponseEntity<Order> deleteOrderById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(orderService.deleteOrderById(id), HttpStatus.OK);
     }
 
     // Delete order by customer id and order id
-    @RequestMapping(value = "/customers/{customerId}/orders/{orderId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/customers/{customerId}/orders/{orderId}")
     public ResponseEntity<Order> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
                                                                    @PathVariable("orderId") Long orderId) {
         Order order = orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId);
