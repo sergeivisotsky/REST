@@ -30,13 +30,13 @@ public class PhotoRESTController {
     @Autowired
     private PhotoService photoService;
 
-    // Upload photo method
+    // Upload one photo
     @PostMapping("/{customerId}/photo")
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerId.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
+                .path("/api/v1/customers/" + customerId.toString() + "/photos/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
