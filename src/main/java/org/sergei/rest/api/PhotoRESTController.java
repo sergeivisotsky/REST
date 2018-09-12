@@ -57,6 +57,15 @@ public class PhotoRESTController {
         return photoService.findAllUploadedPhotos(customerId);
     }
 
+    /**
+     * FIXME: Photo download by name and file deletion by its name
+     * @param customerId
+     * @param fileName
+     * @param request
+     * @return
+     * @throws IOException
+     */
+
     // TODO: File download by name
     // download photo method
     @GetMapping("/{customerId}/photos/{fileName:.+}")
@@ -83,6 +92,8 @@ public class PhotoRESTController {
                 .body(resource);
     }
 
+    // TODO: File deletion by name
+    // File deletion by name
     @DeleteMapping("/{customerId}/photos/{fileName:.+}")
     public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId,
                                                            @PathVariable("fileName") String fileName) throws IOException {
