@@ -12,6 +12,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class PhotoDAO {
@@ -21,6 +22,7 @@ public class PhotoDAO {
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE_BY_CUSTOMER_ID = "DELETE FROM photos WHERE customer_id = ?";
     private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
+    private static final String SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -40,6 +42,10 @@ public class PhotoDAO {
 
     public PhotoUploadResponse findPhotoByCustomerId(Long customerId) {
         return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
+    }
+
+    public List<PhotoUploadResponse> findAllPhotosByCustomerId(Long customerId) {
+        return jdbcTemplate.query(SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
     }
 
     public String findFileNameByCustomerId(Long customerId) {

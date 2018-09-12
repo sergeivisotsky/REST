@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class PhotoService {
@@ -65,6 +66,14 @@ public class PhotoService {
                 commonsMultipartFile.getOriginalFilename(),
                 fileDownloadUri, commonsMultipartFile.getContentType(),
                 commonsMultipartFile.getSize());
+    }
+
+    // Method to find all photos by customer iID
+    public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerId) {
+        /*if (!photoDAO.existsByCustomerId(customerId)) {
+            throw new FileNotFoundException("Photos no found");
+        }*/
+        return photoDAO.findAllPhotosByCustomerId(customerId);
     }
 
     // Method to download file from the server

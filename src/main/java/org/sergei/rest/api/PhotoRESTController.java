@@ -36,7 +36,7 @@ public class PhotoRESTController {
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerId.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
+                .path("/api/v1/customers/" + customerId.toString() + "/photos/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
@@ -51,9 +51,16 @@ public class PhotoRESTController {
                 .collect(Collectors.toList());
     }
 
+    // The response with all user photos
+    @GetMapping("/{customerId}/photos")
+    public List<PhotoUploadResponse> findAllCustomerPhotos(@PathVariable("customerId") Long customerId) {
+        return photoService.findAllUploadedPhotos(customerId);
+    }
+
     // download photo method
-    @GetMapping("/{customerId}/photo")
+    @GetMapping("/{customerId}/photos/{fileName:.+}")
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
+                                                  @PathVariable("fileName") String fileName,
                                                   HttpServletRequest request) throws IOException {
         Resource resource = photoService.downloadFileAsResource(customerId);
 
