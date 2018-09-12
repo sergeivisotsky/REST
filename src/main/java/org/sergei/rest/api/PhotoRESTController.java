@@ -36,7 +36,7 @@ public class PhotoRESTController {
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerId.toString() + "/photos/" + commonsMultipartFile.getOriginalFilename())
+                .path("/api/v1/customers/" + customerId.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
@@ -57,12 +57,13 @@ public class PhotoRESTController {
         return photoService.findAllUploadedPhotos(customerId);
     }
 
+    // TODO: File download by name
     // download photo method
     @GetMapping("/{customerId}/photos/{fileName:.+}")
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
                                                   @PathVariable("fileName") String fileName,
                                                   HttpServletRequest request) throws IOException {
-        Resource resource = photoService.downloadFileAsResource(customerId);
+        Resource resource = photoService.downloadFileAsResource(customerId, fileName);
 
         String contentType = null;
         try {
@@ -82,9 +83,10 @@ public class PhotoRESTController {
                 .body(resource);
     }
 
-    @DeleteMapping("/{customerId}/photo")
-    public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId) throws IOException {
-        PhotoUploadResponse photoUploadResponse = photoService.deletePhoto(customerId);
+    @DeleteMapping("/{customerId}/photos/{fileName:.+}")
+    public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId,
+                                                           @PathVariable("fileName") String fileName) throws IOException {
+        PhotoUploadResponse photoUploadResponse = photoService.deletePhoto(customerId, fileName);
 
         return new ResponseEntity<>(photoUploadResponse, HttpStatus.OK);
     }

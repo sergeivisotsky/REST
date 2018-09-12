@@ -77,13 +77,13 @@ public class PhotoService {
     }
 
     // Method to download file from the server
-    public Resource downloadFileAsResource(Long customerId) throws MalformedURLException {
+    public Resource downloadFileAsResource(Long customerId, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
         /*if (!photoDAO.existsByCustomerId(customerId)) {
             throw new FileNotFoundException("File not found");
         }
 */
-        String fileName = photoDAO.findFileNameByCustomerId(customerId);
+//        String fileName = photoDAO.findFileNameByCustomerId(customerId);
 
         fileOperations.downloadFile(fileName);
 
@@ -99,18 +99,19 @@ public class PhotoService {
     }
 
     // Method to perform file deletion
-    public PhotoUploadResponse deletePhoto(Long customerId) throws IOException {
+    public PhotoUploadResponse deletePhoto(Long customerId, String fileName) throws IOException {
         /*if (!photoDAO.existsByCustomerId(customerId)) {
             throw new ResourceNotFoundException("File not found");
         }*/
-        PhotoUploadResponse photoUploadResponse = photoDAO.findPhotoByCustomerId(customerId);
+        PhotoUploadResponse photoUploadResponse =
+                photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
         photoUploadResponse.setCustomerId(customerId);
         Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());
         Files.deleteIfExists(targetLocation);
 
         fileOperations.deleteFile(photoUploadResponse.getFileName());
 
-        photoDAO.deleteFileByCustomerId(customerId);
+        photoDAO.deleteFileByCustomerIdAndFileName(customerId, fileName);
 
         return photoUploadResponse;
     }

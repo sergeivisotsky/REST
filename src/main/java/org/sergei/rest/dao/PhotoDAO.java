@@ -23,6 +23,8 @@ public class PhotoDAO {
     private static final String SQL_DELETE_BY_CUSTOMER_ID = "DELETE FROM photos WHERE customer_id = ?";
     private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
     private static final String SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
+    private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_NAME = "SELECT * FROM photos WHERE customer_id = ? AND file_name = ?";
+    private static final String SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_NAME = "DELETE FROM photos WHERE customer_id = ? AND file_name = ?";
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -44,6 +46,10 @@ public class PhotoDAO {
         return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
     }
 
+    public PhotoUploadResponse findPhotoByCustomerIdAndFileName(Long customerId, String fileName) {
+        return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_NAME, new PhotoUploadResponseRowMapper(), customerId, fileName);
+    }
+
     public List<PhotoUploadResponse> findAllPhotosByCustomerId(Long customerId) {
         return jdbcTemplate.query(SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
     }
@@ -60,6 +66,14 @@ public class PhotoDAO {
     public void deleteFileByCustomerId(Long customerId) {
         try {
             jdbcTemplate.update(SQL_DELETE_BY_CUSTOMER_ID, customerId);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
+    }
+
+    public void deleteFileByCustomerIdAndFileName(Long customerId, String fileName) {
+        try {
+            jdbcTemplate.update(SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_NAME, customerId, fileName);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
