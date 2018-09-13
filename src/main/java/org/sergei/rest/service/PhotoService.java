@@ -83,14 +83,14 @@ public class PhotoService {
             throw new FileNotFoundException("File not found");
         }
 */
-//        String fileName = photoDAO.findFileNameByCustomerId(customerId);
+//        String fileNameResp = photoDAO.findPhotoMetaByCustomerIdAndFileName(customerId, fileName);
 
         fileOperations.downloadFile(fileName);
 
         Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 
-        // Check if file exists or not
+        // Check if file exists
         if (resource.exists()) {
             return resource;
         } else {

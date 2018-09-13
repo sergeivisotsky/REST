@@ -18,10 +18,9 @@ import java.util.List;
 public class PhotoDAO {
     private static final String SQL_SAVE_FILE = "INSERT INTO photos(customer_id, file_name, file_url, file_type, file_size) " +
             "VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_FILE_NAME_BY_CUST_ID = "SELECT file_name FROM photos WHERE customer_id = ?";
+//    private static final String SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME = "SELECT file_name FROM photos WHERE customer_id = ? AND file_name = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE_BY_CUSTOMER_ID = "DELETE FROM photos WHERE customer_id = ?";
-    private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
     private static final String SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
     private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_NAME = "SELECT * FROM photos WHERE customer_id = ? AND file_name = ?";
     private static final String SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_NAME = "DELETE FROM photos WHERE customer_id = ? AND file_name = ?";
@@ -42,10 +41,6 @@ public class PhotoDAO {
         }
     }
 
-    public PhotoUploadResponse findPhotoByCustomerId(Long customerId) {
-        return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
-    }
-
     public PhotoUploadResponse findPhotoByCustomerIdAndFileName(Long customerId, String fileName) {
         return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_NAME, new PhotoUploadResponseRowMapper(), customerId, fileName);
     }
@@ -54,22 +49,22 @@ public class PhotoDAO {
         return jdbcTemplate.query(SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
     }
 
-    public String findFileNameByCustomerId(Long customerId) {
-        return jdbcTemplate.queryForObject(SQL_FIND_FILE_NAME_BY_CUST_ID, new Object[]{customerId}, String.class);
-    }
+    /*public String findPhotoMetaByCustomerIdAndFileName(Long customerId, String fileName) {
+        return jdbcTemplate.queryForObject(SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME, new Object[]{customerId, fileName}, String.class);
+    }*/
 
     public boolean existsByCustomerId(Long customerId) {
         int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerId}, Integer.class);
         return count > 0;
     }
 
-    public void deleteFileByCustomerId(Long customerId) {
+    /*public void deleteFileByCustomerId(Long customerId) {
         try {
             jdbcTemplate.update(SQL_DELETE_BY_CUSTOMER_ID, customerId);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
-    }
+    }*/
 
     public void deleteFileByCustomerIdAndFileName(Long customerId, String fileName) {
         try {
