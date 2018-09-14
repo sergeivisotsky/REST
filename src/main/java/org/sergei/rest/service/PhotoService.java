@@ -99,12 +99,12 @@ public class PhotoService {
     }
 
     // Method to perform file deletion
-    public PhotoUploadResponse deletePhoto(Long customerId, String fileName) throws IOException {
+    public PhotoUploadResponse deletePhoto(Long customerId, Long photoId) throws IOException {
         /*if (!photoDAO.existsByCustomerId(customerId)) {
             throw new ResourceNotFoundException("File not found");
         }*/
         PhotoUploadResponse photoUploadResponse =
-                photoDAO.findPhotoMetaByCustomerIdAndFileName(customerId, fileName);
+                photoDAO.findPhotoMetaByCustomerIdAndFileId(customerId, photoId);
         photoUploadResponse.setCustomerId(customerId);
 
         // Delete photo from temp storage
@@ -112,7 +112,7 @@ public class PhotoService {
         Files.deleteIfExists(targetLocation);
 
         fileOperations.deleteFile(photoUploadResponse.getFileName()); // Delete file from the FTP server
-        photoDAO.deleteFileByCustomerIdAndFileName(customerId, fileName); // Delete file metadata from the database
+        photoDAO.deleteFileByCustomerIdAndFileName(customerId, photoId); // Delete file metadata from the database
 
         return photoUploadResponse;
     }

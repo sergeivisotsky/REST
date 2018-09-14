@@ -21,8 +21,8 @@ public class PhotoDAO {
     private static final String SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME = "SELECT file_name FROM photos WHERE customer_id = ? AND file_name = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
-    private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_NAME = "SELECT * FROM photos WHERE customer_id = ? AND file_name = ?";
-    private static final String SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_NAME = "DELETE FROM photos WHERE customer_id = ? AND file_name = ?";
+    private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_FILE_ID = "SELECT * FROM photos WHERE customer_id = ? AND photo_id = ?";
+    private static final String SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_ID = "DELETE FROM photos WHERE customer_id = ? AND photo_id = ?";
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -40,8 +40,8 @@ public class PhotoDAO {
         }
     }
 
-    public PhotoUploadResponse findPhotoMetaByCustomerIdAndFileName(Long customerId, String fileName) {
-        return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_NAME, new PhotoUploadResponseRowMapper(), customerId, fileName);
+    public PhotoUploadResponse findPhotoMetaByCustomerIdAndFileId(Long customerId, Long photoId) {
+        return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_FILE_ID, new PhotoUploadResponseRowMapper(), customerId, photoId);
     }
 
     public List<PhotoUploadResponse> findAllPhotosByCustomerId(Long customerId) {
@@ -57,9 +57,9 @@ public class PhotoDAO {
         return count > 0;
     }
 
-    public void deleteFileByCustomerIdAndFileName(Long customerId, String fileName) {
+    public void deleteFileByCustomerIdAndFileName(Long customerId, Long photoId) {
         try {
-            jdbcTemplate.update(SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_NAME, customerId, fileName);
+            jdbcTemplate.update(SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_ID, customerId, photoId);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }

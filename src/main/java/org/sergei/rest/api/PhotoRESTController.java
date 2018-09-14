@@ -82,12 +82,11 @@ public class PhotoRESTController {
                 .body(resource);
     }
 
-    // FIXME: File deletion by name
     // File deletion by name
-    @DeleteMapping(value = "/{customerId}/photos/{fileName:.+}"/*, produces = {"image/jpeg", "image/png"}*/)
+    @DeleteMapping(value = "/{customerId}/photos/{photoId}")
     public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId,
-                                                           @PathVariable("fileName") String fileName) throws IOException {
+                                                           @PathVariable("photoId") Long photoId) throws IOException {
 
-        return new ResponseEntity<>(photoService.deletePhoto(customerId, fileName), HttpStatus.OK);
+        return new ResponseEntity<>(photoService.deletePhoto(customerId, photoId), HttpStatus.OK);
     }
 }
