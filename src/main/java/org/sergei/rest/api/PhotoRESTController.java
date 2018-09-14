@@ -68,7 +68,7 @@ public class PhotoRESTController {
 
     // TODO: File download by name
     // download photo method
-    @GetMapping("/{customerId}/photos/{fileName:.+}")
+    @GetMapping(value = "/{customerId}/photos/{fileName:.+}", produces = "image/jpeg")
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
                                                   @PathVariable("fileName") String fileName,
                                                   HttpServletRequest request) throws IOException {
@@ -94,7 +94,7 @@ public class PhotoRESTController {
 
     // TODO: File deletion by name
     // File deletion by name
-    @DeleteMapping("/{customerId}/photos/{fileName:.+}")
+    @DeleteMapping(value = "/{customerId}/photos/{fileName:.+}")
     public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId,
                                                            @PathVariable("fileName") String fileName) throws IOException {
         PhotoUploadResponse photoUploadResponse = photoService.deletePhoto(customerId, fileName);

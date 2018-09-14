@@ -18,7 +18,7 @@ import java.util.List;
 public class PhotoDAO {
     private static final String SQL_SAVE_FILE = "INSERT INTO photos(customer_id, file_name, file_url, file_type, file_size) " +
             "VALUES (?, ?, ?, ?, ?)";
-//    private static final String SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME = "SELECT file_name FROM photos WHERE customer_id = ? AND file_name = ?";
+    private static final String SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME = "SELECT file_name FROM photos WHERE customer_id = ? AND file_name = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE_BY_CUSTOMER_ID = "DELETE FROM photos WHERE customer_id = ?";
     private static final String SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
@@ -49,9 +49,9 @@ public class PhotoDAO {
         return jdbcTemplate.query(SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
     }
 
-    /*public String findPhotoMetaByCustomerIdAndFileName(Long customerId, String fileName) {
+    public String findPhotoMetaByCustomerIdAndFileName(Long customerId, String fileName) {
         return jdbcTemplate.queryForObject(SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME, new Object[]{customerId, fileName}, String.class);
-    }*/
+    }
 
     public boolean existsByCustomerId(Long customerId) {
         int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerId}, Integer.class);
