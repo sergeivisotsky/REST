@@ -58,6 +58,7 @@ public class PhotoRESTController {
     }
 
     // download photo method by file name
+    @Deprecated
     @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
                                                   @PathVariable("fileName") String fileName,
