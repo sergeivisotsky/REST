@@ -36,7 +36,7 @@ public class PhotoRESTController {
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerId.toString() + "/photos/" + commonsMultipartFile.getOriginalFilename())
+                .path("/api/v1/customers/" + customerId.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
@@ -57,12 +57,37 @@ public class PhotoRESTController {
         return photoService.findAllUploadedPhotos(customerId);
     }
 
-    // download photo method
-    @GetMapping(value = "/{customerId}/photos/{fileName:.+}", produces = {"image/jpeg", "image/png"})
+    // download photo method by file name
+    @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
                                                   @PathVariable("fileName") String fileName,
                                                   HttpServletRequest request) throws IOException {
         Resource resource = photoService.downloadFileAsResource(customerId, fileName);
+
+        String contentType = null;
+        try {
+            contentType = request.getSession().getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            LOGGER.info("Could not determine file type");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+    // download photo method by file name
+    @GetMapping(value = "/{customerId}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
+    public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerId") Long customerId,
+                                                  @PathVariable("photoId") Long photoId,
+                                                  HttpServletRequest request) throws IOException {
+        Resource resource = photoService.downloadFileAsResourceByFileId(customerId, photoId);
 
         String contentType = null;
         try {

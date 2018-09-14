@@ -76,7 +76,7 @@ public class PhotoService {
         return photoDAO.findAllPhotosByCustomerId(customerId);
     }
 
-    // Method to download file from the server
+    // Method to download file from the server by file name
     public Resource downloadFileAsResource(Long customerId, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
         /*if (!photoDAO.existsByCustomerId(customerId)) {
@@ -84,6 +84,28 @@ public class PhotoService {
         }
 */
         String fileNameResp = photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
+
+        fileOperations.downloadFile(fileNameResp);
+
+        Path filePath = this.fileStorageLocation.resolve(fileNameResp).normalize();
+        Resource resource = new UrlResource(filePath.toUri());
+
+        // Check if file exists
+        if (resource.exists()) {
+            return resource;
+        } else {
+            throw new FileNotFoundException("File not found");
+        }
+    }
+
+    // Method to download file from the server by file ID
+    public Resource downloadFileAsResourceByFileId(Long customerId, Long photoId) throws MalformedURLException {
+        // Get filename by customer id written in database
+        /*if (!photoDAO.existsByCustomerId(customerId)) {
+            throw new FileNotFoundException("File not found");
+        }
+*/
+        String fileNameResp = photoDAO.findPhotoMetaByCustomerIdAndFileId(customerId, photoId).getFileName();
 
         fileOperations.downloadFile(fileNameResp);
 
