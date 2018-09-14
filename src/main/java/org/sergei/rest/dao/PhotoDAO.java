@@ -41,7 +41,7 @@ public class PhotoDAO {
         }
     }
 
-    public PhotoUploadResponse findPhotoByCustomerIdAndFileName(Long customerId, String fileName) {
+    public PhotoUploadResponse findPhotoMetaByCustomerIdAndFileName(Long customerId, String fileName) {
         return jdbcTemplate.queryForObject(SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_NAME, new PhotoUploadResponseRowMapper(), customerId, fileName);
     }
 
@@ -49,7 +49,7 @@ public class PhotoDAO {
         return jdbcTemplate.query(SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
     }
 
-    public String findPhotoMetaByCustomerIdAndFileName(Long customerId, String fileName) {
+    public String findPhotoByCustomerIdAndFileName(Long customerId, String fileName) {
         return jdbcTemplate.queryForObject(SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME, new Object[]{customerId, fileName}, String.class);
     }
 

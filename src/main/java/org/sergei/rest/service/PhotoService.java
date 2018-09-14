@@ -83,7 +83,7 @@ public class PhotoService {
             throw new FileNotFoundException("File not found");
         }
 */
-        String fileNameResp = photoDAO.findPhotoMetaByCustomerIdAndFileName(customerId, fileName);
+        String fileNameResp = photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
 
         fileOperations.downloadFile(fileNameResp);
 
@@ -104,14 +104,15 @@ public class PhotoService {
             throw new ResourceNotFoundException("File not found");
         }*/
         PhotoUploadResponse photoUploadResponse =
-                photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
+                photoDAO.findPhotoMetaByCustomerIdAndFileName(customerId, fileName);
         photoUploadResponse.setCustomerId(customerId);
+
+        // Delete photo from temp storage
         Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());
         Files.deleteIfExists(targetLocation);
 
-        fileOperations.deleteFile(photoUploadResponse.getFileName());
-
-        photoDAO.deleteFileByCustomerIdAndFileName(customerId, fileName);
+        fileOperations.deleteFile(photoUploadResponse.getFileName()); // Delete file from the FTP server
+        photoDAO.deleteFileByCustomerIdAndFileName(customerId, fileName); // Delete file metadata from the database
 
         return photoUploadResponse;
     }

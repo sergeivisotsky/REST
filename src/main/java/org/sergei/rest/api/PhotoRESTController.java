@@ -57,18 +57,8 @@ public class PhotoRESTController {
         return photoService.findAllUploadedPhotos(customerId);
     }
 
-    /**
-     * FIXME: Photo download by name and file deletion by its name
-     * @param customerId
-     * @param fileName
-     * @param request
-     * @return
-     * @throws IOException
-     */
-
-    // TODO: File download by name
     // download photo method
-    @GetMapping(value = "/{customerId}/photos/{fileName:.+}", produces = "image/jpeg")
+    @GetMapping(value = "/{customerId}/photos/{fileName:.+}", produces = {"image/jpeg", "image/png"})
     public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
                                                   @PathVariable("fileName") String fileName,
                                                   HttpServletRequest request) throws IOException {
@@ -92,13 +82,12 @@ public class PhotoRESTController {
                 .body(resource);
     }
 
-    // TODO: File deletion by name
+    // FIXME: File deletion by name
     // File deletion by name
-    @DeleteMapping(value = "/{customerId}/photos/{fileName:.+}")
+    @DeleteMapping(value = "/{customerId}/photos/{fileName:.+}"/*, produces = {"image/jpeg", "image/png"}*/)
     public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId,
                                                            @PathVariable("fileName") String fileName) throws IOException {
-        PhotoUploadResponse photoUploadResponse = photoService.deletePhoto(customerId, fileName);
 
-        return new ResponseEntity<>(photoUploadResponse, HttpStatus.OK);
+        return new ResponseEntity<>(photoService.deletePhoto(customerId, fileName), HttpStatus.OK);
     }
 }
