@@ -85,8 +85,8 @@ public class PhotoRESTController {
     // download photo method by file name
     @GetMapping(value = "/{customerId}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
     public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerId") Long customerId,
-                                                  @PathVariable("photoId") Long photoId,
-                                                  HttpServletRequest request) throws IOException {
+                                                      @PathVariable("photoId") Long photoId,
+                                                      HttpServletRequest request) throws IOException {
         Resource resource = photoService.downloadFileAsResourceByFileId(customerId, photoId);
 
         String contentType = null;
