@@ -1,0 +1,27 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <title>Hello AngularJS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="js/main.js"></script>
+</head>
+
+<body>
+<oauth
+        site="http://localhost:8080/rest"
+        client-id="clientId"
+        redirect-uri="http://localhost:8080/spring-security-oauth-ui-implicit/index"
+        scope="read"
+        template="oauthTemplate">
+</oauth>
+<div ng-controller="OrderInfo">
+    <h3>Order:</h3>
+    <p>ID: {{order.orderId}}</p>
+    <p>Transaction ID: {{order.transId}}</p>
+    <p>Customer ID: {{order.customerId}}</p>
+    <p>Good: {{order.good}}</p>
+    <p>Good weight: {{order.goodWeight}}</p>
+    <p>Price: {{order.price}}</p>
+</div>
+</body>
+</html>

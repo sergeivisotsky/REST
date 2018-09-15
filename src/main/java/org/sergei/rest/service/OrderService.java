@@ -20,15 +20,17 @@ public class OrderService {
 
     public Order getOrderById(Long id) {
         if (!orderDAO.existsById(id)) {
-            throw new RecordNotFoundException("No record with this parameters found");
+            throw new RecordNotFoundException("No order with this ID found");
         }
 
         return orderDAO.findById(id);
     }
 
     public Order getOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
-        if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsById(orderId)) {
-            throw new RecordNotFoundException("No record with this parameters found");
+        if (!orderDAO.existsByCustomerId(customerId)) {
+            throw new RecordNotFoundException("No customer with this ID found");
+        } else if (!orderDAO.existsById(orderId)) {
+            throw new RecordNotFoundException("No order with this ID found");
         }
 
         return orderDAO.findByCustomerIdAndOrderId(customerId, orderId);
@@ -36,7 +38,7 @@ public class OrderService {
 
     public List<Order> getAllOrdersByCustomerId(Long id) {
         if (!orderDAO.existsByCustomerId(id)) {
-            throw new RecordNotFoundException("No record with this parameters found");
+            throw new RecordNotFoundException("No customer with this ID found");
         }
 
         return orderDAO.findAllByCustomerId(id);
@@ -44,7 +46,7 @@ public class OrderService {
 
     public List<Order> getAllOrdersByCustomerIdAndGood(Long customerId, String good) {
         if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsByGood(good)) {
-            throw new RecordNotFoundException("No record with this parameters found");
+            throw new RecordNotFoundException("No order or customer with this ID found");
         }
 
         return orderDAO.findAllByCustomerIdAndGood(customerId, good);
@@ -52,7 +54,7 @@ public class OrderService {
 
     public List<Order> getAllByGood(String good) {
         if (!orderDAO.existsByGood(good)) {
-            throw new RecordNotFoundException("No record with this parameters found");
+            throw new RecordNotFoundException("No order with this good name");
         }
 
         return orderDAO.findAllByGood(good);
@@ -64,8 +66,10 @@ public class OrderService {
     }
 
     public Order updateOrder(Long customerId, Long orderId, Order order) {
-        if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsById(orderId)) {
-            throw new RecordNotFoundException("Record with this parameters not found");
+        if (!orderDAO.existsByCustomerId(customerId)) {
+            throw new RecordNotFoundException("No customer with this ID found");
+        } else if (!orderDAO.existsById(orderId)) {
+            throw new RecordNotFoundException("No order with this ID found");
         }
         order.setOrderId(orderId);
         order.setCustomerId(customerId);
@@ -76,7 +80,7 @@ public class OrderService {
     public Order deleteOrderById(Long id) {
         Order order = orderDAO.findById(id);
         if (!orderDAO.existsById(id)) {
-            throw new RecordNotFoundException("Record with this parameters not found");
+            throw new RecordNotFoundException("No order with this ID found");
         }
         order.setOrderId(id);
         orderDAO.delete(order);
@@ -86,8 +90,10 @@ public class OrderService {
 
     public Order deleteOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
         Order order = orderDAO.findByCustomerIdAndOrderId(customerId, orderId);
-        if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsById(orderId)) {
-            throw new RecordNotFoundException("Record with this parameters not found");
+        if (!orderDAO.existsByCustomerId(customerId)) {
+            throw new RecordNotFoundException("No customer with this ID found");
+        } else if (!orderDAO.existsById(orderId)) {
+            throw new RecordNotFoundException("No order with this ID found");
         }
 
         order.setOrderId(orderId);
