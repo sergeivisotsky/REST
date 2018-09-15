@@ -58,7 +58,7 @@ public class PhotoRESTController {
     }
 
     // download photo method by file name
-    @Deprecated
+    // FIXME: Could not find acceptable representation
     @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
     public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerId") Long customerId,
                                                         @PathVariable("fileName") String fileName,

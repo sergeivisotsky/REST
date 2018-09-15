@@ -50,7 +50,6 @@ public class PhotoDAO {
         return jdbcTemplate.query(SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID, new PhotoUploadResponseRowMapper(), customerId);
     }
 
-    @Deprecated
     public String findPhotoByCustomerIdAndFileName(Long customerId, String fileName) {
         return jdbcTemplate.queryForObject(SQL_FIND_FILE_NAME_BY_CUST_ID_FILE_NAME, new Object[]{customerId, fileName}, String.class);
     }

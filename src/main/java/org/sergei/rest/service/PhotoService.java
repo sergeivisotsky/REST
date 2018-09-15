@@ -77,7 +77,6 @@ public class PhotoService {
     }
 
     // Method to download file from the server by file name
-    @Deprecated
     public Resource downloadFileAsResourceByName(Long customerId, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
         if (!photoDAO.existsByCustomerId(customerId)) {
