@@ -58,11 +58,12 @@ public class PhotoRESTController {
     }
 
     // download photo method by file name
+    @Deprecated
     @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
-    public ResponseEntity<Resource> downloadPhoto(@PathVariable("customerId") Long customerId,
-                                                  @PathVariable("fileName") String fileName,
-                                                  HttpServletRequest request) throws IOException {
-        Resource resource = photoService.downloadFileAsResource(customerId, fileName);
+    public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerId") Long customerId,
+                                                        @PathVariable("fileName") String fileName,
+                                                        HttpServletRequest request) throws IOException {
+        Resource resource = photoService.downloadFileAsResourceByName(customerId, fileName);
 
         String contentType = null;
         try {
