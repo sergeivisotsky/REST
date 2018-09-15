@@ -23,6 +23,8 @@ public class PhotoDAO {
     private static final String SQL_FIND_ALL_PHOTOS_BY_CUSTOMER_ID = "SELECT * FROM photos WHERE customer_id = ?";
     private static final String SQL_FIND_PHOTO_BY_CUSTOMER_ID_AND_FILE_ID = "SELECT * FROM photos WHERE customer_id = ? AND photo_id = ?";
     private static final String SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_ID = "DELETE FROM photos WHERE customer_id = ? AND photo_id = ?";
+    private static final String SQL_EXISTS_BY_PHOTO_ID = "SELECT count(*) FROM photos WHERE photo_id = ?";
+    private static final String SQL_EXISTS_BY_PHOTO_NAME = "SELECT count(*) FROM photos WHERE file_name = ?";
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -55,6 +57,18 @@ public class PhotoDAO {
 
     public boolean existsByCustomerId(Long customerId) {
         int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerId}, Integer.class);
+        return count > 0;
+    }
+
+    public boolean existsByPhotoId(Long photoId) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PHOTO_ID, new Object[]{photoId}, Integer.class);
+
+        return count > 0;
+    }
+
+    public boolean existsByPhotoName(String photoName) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PHOTO_NAME, new Object[]{photoName}, Integer.class);
+
         return count > 0;
     }
 

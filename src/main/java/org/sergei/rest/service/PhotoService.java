@@ -71,7 +71,7 @@ public class PhotoService {
     // Method to find all photos by customer iID
     public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerId) {
         /*if (!photoDAO.existsByCustomerId(customerId)) {
-            throw new FileNotFoundException("Photos no found");
+            throw new FileNotFoundException("Customer with this ID not found");
         }*/
         return photoDAO.findAllPhotosByCustomerId(customerId);
     }
@@ -80,10 +80,12 @@ public class PhotoService {
     @Deprecated
     public Resource downloadFileAsResourceByName(Long customerId, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
-        /*if (!photoDAO.existsByCustomerId(customerId)) {
-            throw new FileNotFoundException("File not found");
+        if (!photoDAO.existsByCustomerId(customerId)) {
+            throw new FileNotFoundException("Customer with this ID not found");
+        } else if (!photoDAO.existsByPhotoName(fileName)) {
+            throw new FileNotFoundException("Photo with this name not found");
         }
-*/
+
         String fileNameResp = photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
 
         fileOperations.downloadFile(fileNameResp);
@@ -103,9 +105,11 @@ public class PhotoService {
     public Resource downloadFileAsResourceByFileId(Long customerId, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
         /*if (!photoDAO.existsByCustomerId(customerId)) {
-            throw new FileNotFoundException("File not found");
-        }
-*/
+            throw new FileNotFoundException("Customer with this ID not found");
+        } else if (!photoDAO.existsByPhotoId(photoId)) {
+            throw new FileNotFoundException("Photo with this name not found");
+        }*/
+
         String fileNameResp = photoDAO.findPhotoMetaByCustomerIdAndFileId(customerId, photoId).getFileName();
 
         fileOperations.downloadFile(fileNameResp);
@@ -124,7 +128,7 @@ public class PhotoService {
     // Method to perform file deletion
     public PhotoUploadResponse deletePhoto(Long customerId, Long photoId) throws IOException {
         /*if (!photoDAO.existsByCustomerId(customerId)) {
-            throw new ResourceNotFoundException("File not found");
+            throw new FileNotFoundException("Customer with this ID not found");
         }*/
         PhotoUploadResponse photoUploadResponse =
                 photoDAO.findPhotoMetaByCustomerIdAndFileId(customerId, photoId);
