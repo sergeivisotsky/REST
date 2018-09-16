@@ -56,7 +56,7 @@ public class PhotoRESTController {
     public List<PhotoUploadResponse> findAllCustomerPhotos(@PathVariable("customerId") Long customerId) {
         return photoService.findAllUploadedPhotos(customerId);
     }
-/*Test*/
+
     // download photo method by file name
     // FIXME: Could not find acceptable representation
     @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
