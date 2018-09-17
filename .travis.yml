@@ -11,3 +11,4 @@ jdk:
 branches:
   only:
   - master
+  - rest-dev
