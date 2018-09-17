@@ -87,18 +87,18 @@
         <constructor-arg ref="clientDetails"/>
     </bean>
 
-    <!--We have used JDBC tokenstore to store the tokens, we can use In Memory token store for development purpose -->
+    <!--We have used JDBC tokenStore to store the tokens, we can use In Memory token store for development purpose -->
     <!--<bean id="tokenStore"
           class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
-        <constructor-arg ref="jdbcTemplate" />
+        <constructor-arg ref="jdbcTemplateOauth" />
     </bean>
 
-    <bean id="jdbcTemplate"
+    <bean id="jdbcTemplateOauth"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/web_services_oauth"/>
-        <property name="username" value="service"/>
-        <property name="password" value="service"/>
+        <property name="driverClassName" value="${spring.datasource.driverClassName}"/>
+        <property name="url" value="${spring.tokenstore.datasource.url}"/>
+        <property name="username" value="${spring.tokenstore.datasource.username}"/>
+        <property name="password" value="${spring.tokenstore.datasource.password}"/>
     </bean>-->
 
     <bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore"/>
