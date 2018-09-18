@@ -88,7 +88,7 @@
     </bean>
 
     <!--We have used JDBC tokenStore to store the tokens, we can use In Memory token store for development purpose -->
-    <bean id="tokenStore"
+    <!--<bean id="tokenStore"
           class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
         <constructor-arg ref="jdbcTemplateOauth" />
     </bean>
@@ -99,9 +99,9 @@
         <property name="url" value="${spring.tokenstore.datasource.url}"/>
         <property name="username" value="${spring.tokenstore.datasource.username}"/>
         <property name="password" value="${spring.tokenstore.datasource.password}"/>
-    </bean>
+    </bean>-->
 
-    <!--<bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore"/>-->
+    <bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore"/>
 
     <bean id="approvalStore" class="org.springframework.security.oauth2.provider.approval.TokenApprovalStore">
         <property name="tokenStore" ref="tokenStore"/>

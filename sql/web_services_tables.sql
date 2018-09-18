@@ -7,7 +7,7 @@ create table web_services.customers (
   first_name  varchar(50),
   last_name   varchar(50),
   age         integer,
-  primary key(customer_id)
+  primary key (customer_id)
 );
 
 drop table if exists web_services.orders;
@@ -18,9 +18,9 @@ create table web_services.orders (
   good        varchar(50),
   good_weight double precision,
   price       double precision,
-  primary key(order_id),
+  primary key (order_id),
   foreign key (customer_id)
-  references web_services.customers(customer_id)
+  references web_services.customers (customer_id)
   on update no action on delete cascade
 );
 
@@ -33,8 +33,8 @@ CREATE TABLE web_services.photos
   file_url    varchar(150),
   file_type   varchar(50),
   file_size   integer,
-  primary key(photo_id),
+  primary key (photo_id),
   foreign key (customer_id)
-  references web_services.customers(customer_id)
+  references web_services.customers (customer_id)
   on update no action on delete cascade
 );
