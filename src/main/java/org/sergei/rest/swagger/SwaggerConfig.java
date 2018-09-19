@@ -19,6 +19,10 @@ import java.util.Collections;
 
 import static org.springframework.security.oauth2.provider.token.AccessTokenConverter.CLIENT_ID;
 
+/**
+ * TODO: Authentication using oAuth2 in Swagger UI
+ * https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+ * */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -50,7 +54,7 @@ public class SwaggerConfig {
         GrantType grantType = new AuthorizationCodeGrantBuilder()
                 .tokenEndpoint(new TokenEndpoint(AUTH_SERVER, "access_token"))
                 .tokenRequestEndpoint(
-                        new TokenRequestEndpoint(AUTH_SERVER + "/authorize", CLIENT_ID, CLIENT_ID))
+                        new TokenRequestEndpoint(AUTH_SERVER, CLIENT_ID, CLIENT_ID))
                 .build();
 
         return new OAuthBuilder().name("spring_oauth")
@@ -61,16 +65,16 @@ public class SwaggerConfig {
 
     private AuthorizationScope[] scopes() {
         return new AuthorizationScope[]{
-                new AuthorizationScope("read", "for read operations"),
-                new AuthorizationScope("write", "for write operations"),
-                new AuthorizationScope("foo", "Access foo API")};
+                new AuthorizationScope("read", "read operations"),
+                new AuthorizationScope("write", "write operations"),
+                new AuthorizationScope("trust", "trust operations")};
     }
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(
                         Collections.singletonList(new SecurityReference("spring_oauth", scopes())))
-                .forPaths(PathSelectors.regex("/foos.*"))
+                .forPaths(PathSelectors.regex("/api.*"))
                 .build();
     }
 }

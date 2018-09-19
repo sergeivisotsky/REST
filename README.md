@@ -57,8 +57,6 @@ But it is also able to put everything in database using JDBC tokenstore.
 How to authorize:
 1. Go to the following address - `http://localhost:8080/rest/oauth/token?grant_type=password&client_id=trusted-client&username=admin&password=123456` where `grant_type` is the way you are going to authorize, `client_id` is the client where the way of our authorization is declared `username` and `password` obviously are going to be user name and password
 2. After that address `http://localhost:8080/rest/oauth/token?client_id=trusted-client&grant_type=refresh_token&refresh_token=token` is valid and as the value of the `refresh_token` refresh token should be written which can be taken from the response of the step `1.`. 
-* NOTE: Refresh token is valid for 5 minutes
 3. The last step is going to be access any API endpoint with the valid access token. As an example of accessing the list of all customers `http://localhost:8080/rest/api/v1/customers?access_token=token` and the value of `access_token` is going to be generated access_token from the response in step `2.`.
-* NOTE: Access token is valid for 10 minutes
 
 TODO: Implementation of `refresh_token` and `access_token` using JDBC tokenstore.
