@@ -1,20 +1,18 @@
 <!doctype html>
 <html ng-app="app">
 <head>
-    <title>Hello AngularJS</title>
+    <title>Anglular REST client</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
     <script src="js/main.js"></script>
 </head>
 
 <body>
-<div ng-controller="OrderInfo">
+<div ng-controller="CustomerInfo">
     <h3>Order:</h3>
-    <p>ID: {{order.orderId}}</p>
-    <p>Transaction ID: {{order.transId}}</p>
-    <p>Customer ID: {{order.customerId}}</p>
-    <p>Good: {{order.good}}</p>
-    <p>Good weight: {{order.goodWeight}}</p>
-    <p>Price: {{order.price}}</p>
+    <p>Customer ID: {{customer.customerId}}</p>
+    <p>First name: {{customer.firstName}}</p>
+    <p>Last name: {{customer.lastName}}</p>
+    <p>Age: {{customer.age}}</p>
 </div>
 </body>
 </html>

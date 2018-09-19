@@ -32,9 +32,9 @@ class CustomerRESTControllerTest {
 
     @Before
     public void setUp() {
-        Customer customer = new Customer("John", "Smith", 25);
+        /*Customer customer = new Customer("John", "Smith", 25);
         customer.setCustomerId(1L);
         when(customerDAO.save(Mockito.any(Customer.class))).thenReturn(customer);
-        when(customerDAO.findById(1L)).thenReturn(customer);
+        when(customerDAO.findById(1L)).thenReturn(customer);*/
     }
 }
