@@ -52,7 +52,7 @@ To document this API Swagger documentation auto-generation was used which is ava
 
 #### This REST API uses oAuth2 to access all the endpoints
 In this case we are using in-memory clients, username, password, refresh_toke and access_token.
-But it is also able to put everything in database using JDBC tokenstore. 
+But it is also able to put everything in database using JDBC tokenStore. 
 
 How to authorize:
 1. Go to the following address - `http://localhost:8080/rest/oauth/token?grant_type=password&client_id=trusted-client&username=admin&password=123456` where `grant_type` is the way you are going to authorize, `client_id` is the client where the way of our authorization is declared `username` and `password` obviously are going to be user name and password
