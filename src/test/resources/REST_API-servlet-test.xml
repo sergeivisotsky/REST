@@ -10,9 +10,9 @@
 
     <mvc:annotation-driven/>
     <context:component-scan base-package="org.sergei.rest"/>
-    <context:property-placeholder location="classpath:/app.properties"/>
+    <context:property-placeholder location="classpath:app.properties"/>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean id="dataSourceTest" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${spring.datasource.driverClassName}"/>
         <property name="url" value="${spring.datasource.url}"/>
         <property name="username" value="${spring.datasource.username}"/>
@@ -20,7 +20,7 @@
     </bean>
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="dataSourceTest"/>
     </bean>
 
     <!--File download from FTP-->
@@ -30,16 +30,4 @@
         <property name="maxUploadSize" value="10000000"/>
     </bean>
 
-    <!--Swagger API documentation configuration-->
-    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
-    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
-
-    <!--CORS dependency so that service be available to the client application-->
-    <mvc:cors>
-        <mvc:mapping path="/**"
-                     allowed-origins="*"
-                     allowed-methods="GET, POST, PUT, DELETE"
-                     allowed-headers="accept, content-type, authorization, origin"
-                     max-age="3600"/>
-    </mvc:cors>
 </beans>
