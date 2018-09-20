@@ -2,8 +2,6 @@ package org.sergei.rest.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.AuthorizationCodeGrantBuilder;
-import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -14,19 +12,20 @@ import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.springframework.security.oauth2.provider.token.AccessTokenConverter.CLIENT_ID;
 
 /**
  * TODO: Authentication using oAuth2 in Swagger UI
  * https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
- * */
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    private static final String AUTH_SERVER = "http://localhost:8080/rest/oauth/token";
+    private static final String AUTH_SERVER = "http://localhost:8080/rest/";
     private static final String CLIENT_SECRET = "client_secret";
 
     @Bean
@@ -36,7 +35,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(Collections.singletonList(securityScheme()))
+                .securitySchemes(Collections.singletonList(securitySchema()))
                 .securityContexts(Collections.singletonList(securityContext()));
     }
 
@@ -50,31 +49,33 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private SecurityScheme securityScheme() {
-        GrantType grantType = new AuthorizationCodeGrantBuilder()
-                .tokenEndpoint(new TokenEndpoint(AUTH_SERVER, "access_token"))
-                .tokenRequestEndpoint(
-                        new TokenRequestEndpoint(AUTH_SERVER, CLIENT_ID, CLIENT_ID))
-                .build();
+    private SecurityScheme securitySchema() {
+        List<AuthorizationScope> authorizationScopeList = new ArrayList<>();
+        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
+        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
+        authorizationScopeList.add(new AuthorizationScope("write", "write all"));
 
-        return new OAuthBuilder().name("spring_oauth")
-                .grantTypes(Collections.singletonList(grantType))
-                .scopes(Arrays.asList(scopes()))
-                .build();
+        List<GrantType> grantTypes = new ArrayList<>();
+        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(AUTH_SERVER + "/oauth/token");
+
+        grantTypes.add(grantType);
+
+        return new OAuth("oauth2schema", authorizationScopeList, grantTypes);
     }
 
-    private AuthorizationScope[] scopes() {
-        return new AuthorizationScope[]{
-                new AuthorizationScope("read", "read operations"),
-                new AuthorizationScope("write", "write operations"),
-                new AuthorizationScope("trust", "trust operations")};
+    private List<SecurityReference> defaultAuth() {
+
+        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[3];
+        authorizationScopes[0] = new AuthorizationScope("read", "read all");
+        authorizationScopes[1] = new AuthorizationScope("trust", "trust all");
+        authorizationScopes[2] = new AuthorizationScope("write", "write all");
+
+        return Collections.singletonList(new SecurityReference("oauth2schema", authorizationScopes));
     }
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(
-                        Collections.singletonList(new SecurityReference("spring_oauth", scopes())))
-                .forPaths(PathSelectors.regex("/api.*"))
-                .build();
+                        defaultAuth()).forPaths(PathSelectors.ant("/api/**")).build();
     }
 }
