@@ -44,7 +44,7 @@ public class SwaggerConfig {
         return SecurityConfigurationBuilder.builder()
                 .clientId(CLIENT_ID)
                 .clientSecret(CLIENT_SECRET)
-                .scopeSeparator(" ")
+                .scopeSeparator("")
                 .useBasicAuthenticationWithAccessCodeGrant(true)
                 .build();
     }
@@ -74,8 +74,10 @@ public class SwaggerConfig {
     }
 
     private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(
-                        defaultAuth()).forPaths(PathSelectors.ant("/api/**")).build();
+        return SecurityContext
+                .builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.ant("/api/**"))
+                .build();
     }
 }
