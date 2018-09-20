@@ -90,7 +90,7 @@
     <!--We have used JDBC tokenStore to store the tokens, we can use In Memory token store for development purpose -->
     <bean id="tokenStore"
           class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
-        <constructor-arg ref="jdbcTemplateOauth" />
+        <constructor-arg ref="jdbcTemplateOauth"/>
     </bean>
 
     <bean id="jdbcTemplateOauth"
@@ -142,25 +142,15 @@
 
     <!-- Client definition -->
     <oauth:client-details-service id="clientDetails">
-        <!--<oauth:client client-id="trusted-client"
-                      authorized-grant-types="password,refresh_token,client_credentials"
-                      authorities="ROLE_OAUTH_CLIENT" scope="read,write,trust" secret="secret" />-->
         <oauth:client client-id="trusted-client"
                       authorized-grant-types="password,client_credentials"
                       authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT, ROLE_OAUTH_CLIENT"
                       scope="read,write,trust"
+                      secret="client-secret"
                       access-token-validity="86000000"/>
-
-        <oauth:client client-id="trusted-client-with-secret"
-                      authorized-grant-types="password,authorization_code,refresh_token,implicit"
-                      secret="somesecret"
-                      authorities="ROLE_OAUTH_CLIENT"/>
-
     </oauth:client-details-service>
 
-    <sec:global-method-security
-            pre-post-annotations="enabled" proxy-target-class="true">
-
+    <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
         <sec:expression-handler ref="oauthExpressionHandler"/>
     </sec:global-method-security>
 

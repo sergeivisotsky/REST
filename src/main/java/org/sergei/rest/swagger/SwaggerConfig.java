@@ -56,9 +56,12 @@ public class SwaggerConfig {
         authorizationScopeList.add(new AuthorizationScope("write", "write all"));
 
         List<GrantType> grantTypes = new ArrayList<>();
-        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(AUTH_SERVER + "/oauth/token");
+//        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(AUTH_SERVER + "/oauth/token");
+        final TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(AUTH_SERVER + "oauth/authorize", "trusted-client", "client-secret");
+        final TokenEndpoint tokenEndpoint = new TokenEndpoint(AUTH_SERVER + "oauth/token", "access_token");
+        AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint);
 
-        grantTypes.add(grantType);
+        grantTypes.add(authorizationCodeGrant);
 
         return new OAuth("oauth2schema", authorizationScopeList, grantTypes);
     }
