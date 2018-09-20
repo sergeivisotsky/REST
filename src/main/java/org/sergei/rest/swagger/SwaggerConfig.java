@@ -1,5 +1,6 @@
 package org.sergei.rest.swagger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -18,14 +19,12 @@ import java.util.List;
 
 import static org.springframework.security.oauth2.provider.token.AccessTokenConverter.CLIENT_ID;
 
-/**
- * TODO: Authentication using oAuth2 in Swagger UI
- * https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
- */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    private static final String AUTH_SERVER = "http://localhost:8080/rest/";
+
+    @Value("${config.oauth2.accessTokenUri}")
+    private String authServer;
     private static final String CLIENT_SECRET = "client_secret";
 
     @Bean
@@ -56,12 +55,8 @@ public class SwaggerConfig {
         authorizationScopeList.add(new AuthorizationScope("write", "write all"));
 
         List<GrantType> grantTypes = new ArrayList<>();
-//        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(AUTH_SERVER + "/oauth/token");
-        final TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(AUTH_SERVER + "oauth/authorize", "trusted-client", "client-secret");
-        final TokenEndpoint tokenEndpoint = new TokenEndpoint(AUTH_SERVER + "oauth/token", "access_token");
-        AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint);
-
-        grantTypes.add(authorizationCodeGrant);
+        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant(authServer);
+        grantTypes.add(grantType);
 
         return new OAuth("oauth2schema", authorizationScopeList, grantTypes);
     }

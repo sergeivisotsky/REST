@@ -146,7 +146,7 @@
                       authorized-grant-types="password,client_credentials"
                       authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT, ROLE_OAUTH_CLIENT"
                       scope="read,write,trust"
-                      secret="client-secret"
+                      secret="trusted-client-secret"
                       access-token-validity="86000000"/>
     </oauth:client-details-service>
 
