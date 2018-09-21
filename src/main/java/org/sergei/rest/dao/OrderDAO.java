@@ -20,11 +20,11 @@ public class OrderDAO {
     private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
-    private static final String SQL_FIND_BY_CUSTOMER_ID_AND_GOOD = "SELECT * FROM orders WHERE customer_id = ? AND product = ?";
+    private static final String SQL_FIND_BY_CUSTOMER_ID_AND_PRODUCT = "SELECT * FROM orders WHERE customer_id = ? AND product = ?";
     private static final String SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID = "SELECT * FROM orders WHERE customer_id = ? AND order_id = ?";
-    private static final String SQL_FIND_BY_GOOD = "SELECT * FROM orders WHERE product = ?";
+    private static final String SQL_FIND_BY_PRODUCT = "SELECT * FROM orders WHERE product = ?";
     private static final String SQL_EXISTS_BY_ORDER_ID = "SELECT count(*) FROM orders WHERE order_id = ?";
-    private static final String SQL_EXISTS_BY_GOOD = "SELECT count(*) FROM orders WHERE product = ?";
+    private static final String SQL_EXISTS_BY_PRODUCT = "SELECT count(*) FROM orders WHERE product = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE = "DELETE FROM orders WHERE order_id = ?";
     private static final String SQL_FIND_ALL_BY_CUSTOMER_ID = "SELECT * FROM orders WHERE customer_id = ?";
@@ -74,7 +74,7 @@ public class OrderDAO {
 
     public List<Order> findAllByCustomerIdAndProduct(Long customerId, String good) {
         try {
-            return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_GOOD, new OrderRowMapper(), customerId, good);
+            return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_PRODUCT, new OrderRowMapper(), customerId, good);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             return null;
@@ -83,7 +83,7 @@ public class OrderDAO {
 
     public List<Order> findAllByProduct(String good) {
         try {
-            return jdbcTemplate.query(SQL_FIND_BY_GOOD, new OrderRowMapper(), good);
+            return jdbcTemplate.query(SQL_FIND_BY_PRODUCT, new OrderRowMapper(), good);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             return null;
@@ -96,7 +96,7 @@ public class OrderDAO {
     }
 
     public boolean existsByProduct(String product) {
-        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_GOOD, new Object[]{product}, Integer.class);
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PRODUCT, new Object[]{product}, Integer.class);
         return count > 0;
     }
 
