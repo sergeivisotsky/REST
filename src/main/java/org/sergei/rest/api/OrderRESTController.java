@@ -44,15 +44,15 @@ public class OrderRESTController {
 
     // Get als orders by customer id and product
     @GetMapping("/customers/{customerId}/orders/order")
-    public List<Order> getOrderByCustomerIdAndGood(@PathVariable("customerId") Long customerId,
-                                                   @RequestParam("product") String product) {
+    public List<Order> getOrderByCustomerIdAndProduct(@PathVariable("customerId") Long customerId,
+                                                      @RequestParam("product") String product) {
         return orderService.getAllOrdersByCustomerIdAndProduct(customerId, product);
     }
 
-    // Get all orders by good name
+    // Get all orders by product name
     @GetMapping(value = "/orders/order")
-    public List<Order> getOrdersByGood(@RequestParam("good") String good) {
-        return orderService.getAllByGood(good);
+    public List<Order> getOrdersByProduct(@RequestParam("product") String product) {
+        return orderService.getAllByProduct(product);
     }
 
     // Add a new record

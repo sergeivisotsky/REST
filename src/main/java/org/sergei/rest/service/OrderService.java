@@ -44,20 +44,20 @@ public class OrderService {
         return orderDAO.findAllByCustomerId(id);
     }
 
-    public List<Order> getAllOrdersByCustomerIdAndProduct(Long customerId, String good) {
-        if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsByProduct(good)) {
+    public List<Order> getAllOrdersByCustomerIdAndProduct(Long customerId, String product) {
+        if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsByProduct(product)) {
             throw new RecordNotFoundException("No order or customer with this ID found");
         }
 
-        return orderDAO.findAllByCustomerIdAndProduct(customerId, good);
+        return orderDAO.findAllByCustomerIdAndProduct(customerId, product);
     }
 
-    public List<Order> getAllByGood(String good) {
-        if (!orderDAO.existsByProduct(good)) {
-            throw new RecordNotFoundException("No order with this good name");
+    public List<Order> getAllByProduct(String product) {
+        if (!orderDAO.existsByProduct(product)) {
+            throw new RecordNotFoundException("No order with this product name");
         }
 
-        return orderDAO.findAllByProduct(good);
+        return orderDAO.findAllByProduct(product);
     }
 
     public void saveOrder(Long customerId, Order order) {

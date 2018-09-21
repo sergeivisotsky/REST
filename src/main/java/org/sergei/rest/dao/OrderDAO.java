@@ -72,18 +72,18 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> findAllByCustomerIdAndProduct(Long customerId, String good) {
+    public List<Order> findAllByCustomerIdAndProduct(Long customerId, String product) {
         try {
-            return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_PRODUCT, new OrderRowMapper(), customerId, good);
+            return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_PRODUCT, new OrderRowMapper(), customerId, product);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             return null;
         }
     }
 
-    public List<Order> findAllByProduct(String good) {
+    public List<Order> findAllByProduct(String product) {
         try {
-            return jdbcTemplate.query(SQL_FIND_BY_PRODUCT, new OrderRowMapper(), good);
+            return jdbcTemplate.query(SQL_FIND_BY_PRODUCT, new OrderRowMapper(), product);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             return null;
