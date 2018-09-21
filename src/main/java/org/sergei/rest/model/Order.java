@@ -19,10 +19,10 @@ public class Order {
     private Long transId;
 
     @XmlElement
-    private String good;
+    private String product;
 
     @XmlElement
-    private double goodWeight;
+    private double productWeight;
 
     @XmlElement
     private double price;
@@ -30,10 +30,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long transId, String good, double goodWeight, double price) {
+    public Order(Long transId, String product, double productWeight, double price) {
         this.transId = transId;
-        this.good = good;
-        this.goodWeight = goodWeight;
+        this.product = product;
+        this.productWeight = productWeight;
         this.price = price;
     }
 
@@ -53,20 +53,20 @@ public class Order {
         this.transId = transId;
     }
 
-    public String getGood() {
-        return good;
+    public String getProduct() {
+        return product;
     }
 
-    public void setGood(String good) {
-        this.good = good;
+    public void setProduct(String product) {
+        this.product = product;
     }
 
-    public double getGoodWeight() {
-        return goodWeight;
+    public double getProductWeight() {
+        return productWeight;
     }
 
-    public void setGoodWeight(double goodWeight) {
-        this.goodWeight = goodWeight;
+    public void setProductWeight(double productWeight) {
+        this.productWeight = productWeight;
     }
 
     public Long getCustomerId() {

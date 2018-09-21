@@ -42,11 +42,11 @@ public class OrderRESTController {
         return orderService.getAllOrdersByCustomerId(customerId);
     }
 
-    // Get als orders by customer id and good
+    // Get als orders by customer id and product
     @GetMapping("/customers/{customerId}/orders/order")
     public List<Order> getOrderByCustomerIdAndGood(@PathVariable("customerId") Long customerId,
-                                                   @RequestParam("good") String good) {
-        return orderService.getAllOrdersByCustomerIdAndGood(customerId, good);
+                                                   @RequestParam("product") String product) {
+        return orderService.getAllOrdersByCustomerIdAndProduct(customerId, product);
     }
 
     // Get all orders by good name

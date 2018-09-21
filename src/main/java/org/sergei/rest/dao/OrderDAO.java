@@ -15,16 +15,16 @@ import java.util.List;
 
 @Repository
 public class OrderDAO {
-    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, good, good_weight, price) VALUES(?, ?, ?, ?, ?)";
+    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, product, product_weight, price) VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM orders";
-    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, good = ?, good_weight = ?, price = ? " +
+    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
-    private static final String SQL_FIND_BY_CUSTOMER_ID_AND_GOOD = "SELECT * FROM orders WHERE customer_id = ? AND good = ?";
+    private static final String SQL_FIND_BY_CUSTOMER_ID_AND_GOOD = "SELECT * FROM orders WHERE customer_id = ? AND product = ?";
     private static final String SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID = "SELECT * FROM orders WHERE customer_id = ? AND order_id = ?";
-    private static final String SQL_FIND_BY_GOOD = "SELECT * FROM orders WHERE good = ?";
+    private static final String SQL_FIND_BY_GOOD = "SELECT * FROM orders WHERE product = ?";
     private static final String SQL_EXISTS_BY_ORDER_ID = "SELECT count(*) FROM orders WHERE order_id = ?";
-    private static final String SQL_EXISTS_BY_GOOD = "SELECT count(*) FROM orders WHERE good = ?";
+    private static final String SQL_EXISTS_BY_GOOD = "SELECT count(*) FROM orders WHERE product = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE = "DELETE FROM orders WHERE order_id = ?";
     private static final String SQL_FIND_ALL_BY_CUSTOMER_ID = "SELECT * FROM orders WHERE customer_id = ?";
@@ -36,8 +36,8 @@ public class OrderDAO {
 
     public void save(Long customerId, Order order) {
         try {
-            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getGood(),
-                    order.getGoodWeight(), order.getPrice());
+            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getProduct(),
+                    order.getProductWeight(), order.getPrice());
             LOGGER.info("Order entity saved");
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
@@ -72,7 +72,7 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> findAllByCustomerIdAndGood(Long customerId, String good) {
+    public List<Order> findAllByCustomerIdAndProduct(Long customerId, String good) {
         try {
             return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_GOOD, new OrderRowMapper(), customerId, good);
         } catch (DataAccessException e) {
@@ -81,7 +81,7 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> findAllByGood(String good) {
+    public List<Order> findAllByProduct(String good) {
         try {
             return jdbcTemplate.query(SQL_FIND_BY_GOOD, new OrderRowMapper(), good);
         } catch (DataAccessException e) {
@@ -95,8 +95,8 @@ public class OrderDAO {
         return count > 0;
     }
 
-    public boolean existsByGood(String good) {
-        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_GOOD, new Object[]{good}, Integer.class);
+    public boolean existsByProduct(String product) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_GOOD, new Object[]{product}, Integer.class);
         return count > 0;
     }
 
@@ -107,8 +107,8 @@ public class OrderDAO {
 
     public void updateRecord(Long customerId, Long orderId, Order order) {
         try {
-            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getGood(),
-                    order.getGoodWeight(), order.getPrice(), customerId, orderId);
+            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getProduct(),
+                    order.getProductWeight(), order.getPrice(), customerId, orderId);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
         }
@@ -135,8 +135,8 @@ public class OrderDAO {
             order.setOrderId(rs.getLong("order_id"));
             order.setCustomerId(rs.getLong("customer_id"));
             order.setTransId(rs.getLong("trans_id"));
-            order.setGood(rs.getString("good"));
-            order.setGoodWeight(rs.getDouble("good_weight"));
+            order.setProduct(rs.getString("product"));
+            order.setProductWeight(rs.getDouble("product_weight"));
             order.setPrice(rs.getDouble("price"));
 
             return order;

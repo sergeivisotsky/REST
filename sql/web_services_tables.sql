@@ -12,12 +12,12 @@ CREATE TABLE web_services.customers (
 
 DROP TABLE IF EXISTS web_services.orders;
 CREATE TABLE web_services.orders (
-  order_id    BIGINT AUTO_INCREMENT UNIQUE NOT NULL,
-  customer_id BIGINT NOT NULL,
-  trans_id    BIGINT NOT NULL,
-  good        VARCHAR(50),
-  good_weight DOUBLE PRECISION,
-  price       DOUBLE PRECISION,
+  order_id       BIGINT AUTO_INCREMENT UNIQUE NOT NULL,
+  customer_id    BIGINT NOT NULL,
+  trans_id       BIGINT NOT NULL,
+  product        VARCHAR(50),
+  product_weight DOUBLE PRECISION,
+  price          DOUBLE PRECISION,
   PRIMARY KEY (order_id),
   FOREIGN KEY (customer_id)
   REFERENCES web_services.customers (customer_id)
