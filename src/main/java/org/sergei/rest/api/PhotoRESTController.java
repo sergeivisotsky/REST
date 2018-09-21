@@ -30,6 +30,12 @@ public class PhotoRESTController {
     @Autowired
     private PhotoService photoService;
 
+    // The response with all user photos
+    @GetMapping("/{customerId}/photo")
+    public List<PhotoUploadResponse> findAllCustomerPhotos(@PathVariable("customerId") Long customerId) {
+        return photoService.findAllUploadedPhotos(customerId);
+    }
+
     // Upload one photo
     @PostMapping("/{customerId}/photo")
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
@@ -51,14 +57,7 @@ public class PhotoRESTController {
                 .collect(Collectors.toList());
     }
 
-    // The response with all user photos
-    @GetMapping("/{customerId}/photos")
-    public List<PhotoUploadResponse> findAllCustomerPhotos(@PathVariable("customerId") Long customerId) {
-        return photoService.findAllUploadedPhotos(customerId);
-    }
-
     // download photo method by file name
-    // FIXME: Could not find acceptable representation
     @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
     public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerId") Long customerId,
                                                         @PathVariable("fileName") String fileName,
