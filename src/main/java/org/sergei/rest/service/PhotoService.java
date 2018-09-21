@@ -126,9 +126,11 @@ public class PhotoService {
 
     // Method to perform file deletion
     public PhotoUploadResponse deletePhoto(Long customerId, Long photoId) throws IOException {
-        /*if (!photoDAO.existsByCustomerId(customerId)) {
+        if (!photoDAO.existsByCustomerId(customerId)) {
             throw new FileNotFoundException("Customer with this ID not found");
-        }*/
+        } else if (!photoDAO.existsByPhotoId(photoId)) {
+            throw new FileNotFoundException("Photo with this ID not found");
+        }
         PhotoUploadResponse photoUploadResponse =
                 photoDAO.findPhotoMetaByCustomerIdAndFileId(customerId, photoId);
         photoUploadResponse.setCustomerId(customerId);
