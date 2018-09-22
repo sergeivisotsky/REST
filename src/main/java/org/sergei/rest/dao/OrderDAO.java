@@ -12,17 +12,15 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
 public class OrderDAO {
     private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, product_id, trans_id, total_price) VALUES(?, ?, ?, ?)";
-    private static final String SQL_FIND_ALL = "SELECT orders.order_id, orders.customer_id, orders.product_id, orders.trans_id, orders.total_price," +
-            " products.category, products.product_name, products.product_weight, products.product_price FROM rest_services.orders" +
-            " AS orders LEFT JOIN rest_services.products as products ON orders.product_id = products.product_id " +
-            "UNION ALL SELECT orders.order_id, orders.customer_id, orders.product_id, orders.trans_id, orders.total_price," +
-            " products.category, products.product_name, products.product_weight, products.product_price FROM rest_services.orders" +
-            " AS orders RIGHT JOIN rest_services.products as products ON orders.product_id = products.product_id";
+    private static final String SQL_FIND_ALL = "SELECT orders.order_id, orders.customer_id, orders.product_id, orders.trans_id, orders.total_price, " +
+            "products.category, products.product_name, products.product_weight, products.product_price " +
+            "FROM rest_services.orders LEFT JOIN rest_services.products ON orders.product_id = products.product_id";
     private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product_id = ?, total_price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
@@ -141,14 +139,20 @@ public class OrderDAO {
             order.setTransId(rs.getLong("trans_id"));
             order.setTotalPrice(rs.getFloat("total_price"));
 
-            Product product = new Product();
+            List<Product> products = new LinkedList<>();
 
-            product.setProductId(rs.getLong("product_id"));
-            product.setCategory(rs.getString("category"));
-            product.setProductName(rs.getString("product_name"));
-            product.setProductWeight(rs.getFloat("product_weight"));
-            product.setProductPrice(rs.getFloat("product_price"));
+            Product product;
+            while (rs.next()) {
+                product = new Product();
+                product.setProductId(rs.getLong("product_id"));
+                product.setCategory(rs.getString("category"));
+                product.setProductName(rs.getString("product_name"));
+                product.setProductWeight(rs.getFloat("product_weight"));
+                product.setProductPrice(rs.getFloat("product_price"));
+                products.add(product);
+            }
 
+            order.setProducts(products);
             return order;
         }
     }

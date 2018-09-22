@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -21,12 +22,16 @@ public class Order {
     @XmlElement
     private float totalPrice;
 
+    @XmlElement
+    private List<Product> products;
+
     public Order() {
     }
 
-    public Order(Long transId, float totalPrice) {
+    public Order(Long transId, float totalPrice, List<Product> products) {
         this.transId = transId;
         this.totalPrice = totalPrice;
+        this.products = products;
     }
 
     public Long getOrderId() {
@@ -59,5 +64,13 @@ public class Order {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
