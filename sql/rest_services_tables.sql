@@ -1,8 +1,8 @@
-﻿DROP DATABASE IF EXISTS web_services;
-CREATE DATABASE web_services /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+﻿DROP DATABASE IF EXISTS rest_services;
+CREATE DATABASE rest_services /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
 
-DROP TABLE IF EXISTS web_services.customers;
-CREATE TABLE web_services.customers (
+DROP TABLE IF EXISTS rest_services.customers;
+CREATE TABLE rest_services.customers (
   customer_id bigint AUTO_INCREMENT UNIQUE NOT NULL,
   first_name  VARCHAR(50),
   last_name   VARCHAR(50),
@@ -10,8 +10,8 @@ CREATE TABLE web_services.customers (
   PRIMARY KEY (customer_id)
 );
 
-DROP TABLE IF EXISTS web_services.orders;
-CREATE TABLE web_services.orders (
+DROP TABLE IF EXISTS rest_services.orders;
+CREATE TABLE rest_services.orders (
   order_id       BIGINT AUTO_INCREMENT UNIQUE NOT NULL,
   customer_id    BIGINT NOT NULL,
   trans_id       BIGINT NOT NULL,
@@ -20,12 +20,12 @@ CREATE TABLE web_services.orders (
   price          DOUBLE PRECISION,
   PRIMARY KEY (order_id),
   FOREIGN KEY (customer_id)
-  REFERENCES web_services.customers (customer_id)
+  REFERENCES rest_services.customers (customer_id)
   ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS web_services.photos;
-CREATE TABLE web_services.photos
+DROP TABLE IF EXISTS rest_services.photos;
+CREATE TABLE rest_services.photos
 (
   photo_id    BIGINT AUTO_INCREMENT UNIQUE NOT NULL,
   customer_id BIGINT NOT NULL,
@@ -35,6 +35,6 @@ CREATE TABLE web_services.photos
   file_size   integer,
   PRIMARY KEY (photo_id),
   FOREIGN KEY (customer_id)
-  REFERENCES web_services.customers (customer_id)
+  REFERENCES rest_services.customers (customer_id)
   ON UPDATE NO ACTION ON DELETE CASCADE
 );
