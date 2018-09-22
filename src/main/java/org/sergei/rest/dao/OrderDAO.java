@@ -1,6 +1,7 @@
 package org.sergei.rest.dao;
 
 import org.sergei.rest.model.Order;
+import org.sergei.rest.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,14 @@ import java.util.List;
 
 @Repository
 public class OrderDAO {
-    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, product, product_weight, price) VALUES(?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_ALL = "SELECT * FROM orders";
-    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
+    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, product_id, trans_id, total_price) VALUES(?, ?, ?, ?)";
+    private static final String SQL_FIND_ALL = "SELECT orders.order_id, orders.customer_id, orders.product_id, orders.trans_id, orders.total_price," +
+            " products.category, products.product_name, products.product_weight, products.product_price FROM rest_services.orders" +
+            " AS orders LEFT JOIN rest_services.products as products ON orders.product_id = products.product_id " +
+            "UNION ALL SELECT orders.order_id, orders.customer_id, orders.product_id, orders.trans_id, orders.total_price," +
+            " products.category, products.product_name, products.product_weight, products.product_price FROM rest_services.orders" +
+            " AS orders RIGHT JOIN rest_services.products as products ON orders.product_id = products.product_id";
+    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product_id = ?, total_price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
     private static final String SQL_FIND_BY_CUSTOMER_ID_AND_PRODUCT = "SELECT * FROM orders WHERE customer_id = ? AND product = ?";
@@ -36,8 +42,7 @@ public class OrderDAO {
 
     public void save(Long customerId, Order order) {
         try {
-            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getProduct(),
-                    order.getProductWeight(), order.getPrice());
+            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getTotalPrice());
             LOGGER.info("Order entity saved");
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
@@ -107,8 +112,7 @@ public class OrderDAO {
 
     public void updateRecord(Long customerId, Long orderId, Order order) {
         try {
-            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getProduct(),
-                    order.getProductWeight(), order.getPrice(), customerId, orderId);
+            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getTotalPrice(), customerId, orderId);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
         }
@@ -135,9 +139,15 @@ public class OrderDAO {
             order.setOrderId(rs.getLong("order_id"));
             order.setCustomerId(rs.getLong("customer_id"));
             order.setTransId(rs.getLong("trans_id"));
-            order.setProduct(rs.getString("product"));
-            order.setProductWeight(rs.getDouble("product_weight"));
-            order.setPrice(rs.getDouble("price"));
+            order.setTotalPrice(rs.getFloat("total_price"));
+
+            Product product = new Product();
+
+            product.setProductId(rs.getLong("product_id"));
+            product.setCategory(rs.getString("category"));
+            product.setProductName(rs.getString("product_name"));
+            product.setProductWeight(rs.getFloat("product_weight"));
+            product.setProductPrice(rs.getFloat("product_price"));
 
             return order;
         }
