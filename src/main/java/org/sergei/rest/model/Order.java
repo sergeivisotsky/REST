@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -19,22 +20,18 @@ public class Order {
     private Long transId;
 
     @XmlElement
-    private String product;
+    private float totalPrice;
 
     @XmlElement
-    private double productWeight;
-
-    @XmlElement
-    private double price;
+    private List<Product> products;
 
     public Order() {
     }
 
-    public Order(Long transId, String product, double productWeight, double price) {
+    public Order(Long transId, float totalPrice, List<Product> products) {
         this.transId = transId;
-        this.product = product;
-        this.productWeight = productWeight;
-        this.price = price;
+        this.totalPrice = totalPrice;
+        this.products = products;
     }
 
     public Long getOrderId() {
@@ -53,22 +50,6 @@ public class Order {
         this.transId = transId;
     }
 
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public double getProductWeight() {
-        return productWeight;
-    }
-
-    public void setProductWeight(double productWeight) {
-        this.productWeight = productWeight;
-    }
-
     public Long getCustomerId() {
         return customerId;
     }
@@ -77,11 +58,19 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public double getPrice() {
-        return price;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
