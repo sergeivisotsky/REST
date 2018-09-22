@@ -26,8 +26,7 @@ Before Spring 5.xx the way web declare controller to be restful was annotating i
 @Controller
 @RequestMapping(value = "/v1/customers", produces = {"application/json", "application/xml"})
 public class CustomerRESTController {
-    @RequestMapping(value = "/{customerId}",  method = RequestMethod.GET, 
-    produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/{customerId}",  method = RequestMethod.GET)
     public @ResponseBody Customer getCustomerById(@PathVariable("customerId") Long customerId) {
         return customerService.getCustomerById(customerId);
     }
@@ -41,7 +40,7 @@ Starting from Spring 5.xx annotation `@RestController` appeared which includes `
 @RestController
 @RequestMapping(value = "/v1/customers", produces = {"application/json", "application/xml"})
 public class CustomerRESTController {
-    @GetMapping(value = "/{customerId}", produces = {"application/json", "application/xml"})
+    @GetMapping("/{customerId}")
     public Customer getCustomerById(@PathVariable("customerId") Long customerId) {
         return customerService.getCustomerById(customerId);
     }
