@@ -56,4 +56,4 @@ But it is also able to do everything in-memory.
 
 How to authorize:
 1. Go to the following address - `http://localhost:8080/rest/oauth/token?grant_type=password&client_id=CLIENT_ID&client_secret=CLIENT-SECRET&username=USERNAME&password=PASSWORD`
-2. The next step is to have an access to the any API endpoint with the valid access token. As an example of accessing the list of all customers `http://localhost:8080/rest/api/v1/customers?access_token=ACCESS_TOKEN` and the value of `access_token` is going to be generated access_token from the response in step `1.`.
+2. The next step is to have an access to the any API endpoint with the valid access token. As an example of accessing the list of all customers `http://localhost:8080/rest/api/v1/customers?access_token=ACCESS_TOKEN` and the value of `access_token` is going to be generated `ACCESS_TOKEN` from the response in step `1.`.
