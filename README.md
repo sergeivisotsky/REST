@@ -55,5 +55,5 @@ In this case all access token are stored into the database. To perform authoriza
 But it is also able to do everything in-memory.
 
 How to authorize:
-1. Go to the following address - `http://localhost:8080/rest/oauth/token?grant_type=password&client_id=trusted-client&client_secret=trusted-client-secret&username=admin&password=123456` where `grant_type` is the way you are going to authorize, `client_id` is the client where the way of our authorization is declared `client_secret` `username` and `password` obviously are going to be user name and password
-2. The next step is to have an access to the any API endpoint with the valid access token. As an example of accessing the list of all customers `http://localhost:8080/rest/api/v1/customers?access_token=token` and the value of `access_token` is going to be generated access_token from the response in step `1.`.
+1. Go to the following address - `http://localhost:8080/rest/oauth/token?grant_type=password&client_id=CLIENT_ID&client_secret=CLIENT-SECRET&username=USERNAME&password=PASSWORD`
+2. The next step is to have an access to the any API endpoint with the valid access token. As an example of accessing the list of all customers `http://localhost:8080/rest/api/v1/customers?access_token=ACCESS_TOKEN` and the value of `access_token` is going to be generated `ACCESS_TOKEN` from the response in step `1.`.
