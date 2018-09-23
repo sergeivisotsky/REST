@@ -141,7 +141,6 @@
                            resource-id="sample" token-services-ref="tokenServices"/>
 
     <!-- Client definition -->
-
     <oauth:client-details-service id="clientDetails">
         <oauth:client client-id="trusted-client"
                       authorized-grant-types="password,refresh_token,client_credentials"
