@@ -17,7 +17,7 @@ CREATE TABLE rest_services.orders (
   trans_id       BIGINT NOT NULL,
   product        VARCHAR(50),
   product_weight FLOAT,
-  price          FLOAT,
+  price          decimal(10, 2),
   PRIMARY KEY (order_id),
   FOREIGN KEY (customer_id)
   REFERENCES rest_services.customers (customer_id)

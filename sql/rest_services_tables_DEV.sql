@@ -10,32 +10,6 @@ CREATE TABLE rest_services_dev.customers (
   PRIMARY KEY (customer_id)
 );
 
-DROP TABLE IF EXISTS rest_services_dev.products;
-CREATE TABLE rest_services_dev.products (
-  product_id     bigint AUTO_INCREMENT UNIQUE NOT NULL,
-  product_name   VARCHAR(50),
-  category       VARCHAR(50),
-  product_weight FLOAT,
-  price          decimal(10, 2),
-  PRIMARY KEY (product_id)
-);
-
-DROP TABLE IF EXISTS rest_services_dev.orders;
-CREATE TABLE rest_services_dev.orders (
-  order_id    BIGINT AUTO_INCREMENT UNIQUE NOT NULL,
-  customer_id BIGINT NOT NULL,
-  product_id  BIGINT NOT NULL,
-  trans_id    BIGINT NOT NULL,
-  total_price decimal(10, 2),
-  PRIMARY KEY (order_id),
-  FOREIGN KEY (customer_id)
-  REFERENCES rest_services_dev.customers (customer_id)
-  ON UPDATE NO ACTION ON DELETE CASCADE,
-  FOREIGN KEY (product_id)
-  REFERENCES rest_services_dev.products (product_id)
-  ON UPDATE NO ACTION ON DELETE CASCADE
-);
-
 DROP TABLE IF EXISTS rest_services_dev.photos;
 CREATE TABLE rest_services_dev.photos
 (
@@ -48,5 +22,44 @@ CREATE TABLE rest_services_dev.photos
   PRIMARY KEY (photo_id),
   FOREIGN KEY (customer_id)
   REFERENCES rest_services_dev.customers (customer_id)
+  ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS rest_services_dev.orders;
+CREATE TABLE rest_services_dev.orders (
+  order_id      BIGINT NOT NULL,
+  customer_id   BIGINT NOT NULL,
+  order_date DATE NOT NULL,
+  required_date DATE   NOT NULL,
+  shipped_date  DATE DEFAULT NULL,
+  `status` varchar (15
+) NOT NULL,
+  PRIMARY KEY (order_id),
+  FOREIGN KEY (customer_id)
+  REFERENCES rest_services_dev.customers (customer_id)
+  ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS rest_services_dev.products;
+CREATE TABLE rest_services_dev.products (
+  product_code  VARCHAR(15) NOT NULL,
+  product_name  VARCHAR(70) NOT NULL,
+  productLine   varchar(50) NOT NULL,
+  productVendor varchar(50) NOT NULL,
+  price         decimal(10, 2),
+  PRIMARY KEY (product_code)
+);
+
+DROP TABLE IF EXISTS rest_services_dev.order_details;
+CREATE TABLE rest_services_dev.order_details (
+  order_id     BIGINT         NOT NULL,
+  product_code VARCHAR(15)    NOT NULL,
+  quantity     INT (30) NOT NULL,
+  price        DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (order_id)
+  REFERENCES rest_services_dev.orders (order_id)
+  ON UPDATE NO ACTION ON DELETE CASCADE,
+  FOREIGN KEY (product_code)
+  REFERENCES rest_services_dev.products (product_code)
   ON UPDATE NO ACTION ON DELETE CASCADE
 );
