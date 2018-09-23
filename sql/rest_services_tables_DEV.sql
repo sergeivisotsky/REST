@@ -44,8 +44,8 @@ DROP TABLE IF EXISTS rest_services_dev.products;
 CREATE TABLE rest_services_dev.products (
   product_code  VARCHAR(15) NOT NULL,
   product_name  VARCHAR(70) NOT NULL,
-  productLine   varchar(50) NOT NULL,
-  productVendor varchar(50) NOT NULL,
+  product_line   varchar(50) NOT NULL,
+  product_vendor varchar(50) NOT NULL,
   price         decimal(10, 2),
   PRIMARY KEY (product_code)
 );
