@@ -22,15 +22,15 @@ public class Order {
     private String product;
 
     @XmlElement
-    private double productWeight;
+    private float productWeight;
 
     @XmlElement
-    private double price;
+    private float price;
 
     public Order() {
     }
 
-    public Order(Long transId, String product, double productWeight, double price) {
+    public Order(Long transId, String product, float productWeight, float price) {
         this.transId = transId;
         this.product = product;
         this.productWeight = productWeight;
@@ -65,7 +65,7 @@ public class Order {
         return productWeight;
     }
 
-    public void setProductWeight(double productWeight) {
+    public void setProductWeight(float productWeight) {
         this.productWeight = productWeight;
     }
 
@@ -81,7 +81,7 @@ public class Order {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 }
