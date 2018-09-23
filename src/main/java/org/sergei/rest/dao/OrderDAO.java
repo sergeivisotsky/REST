@@ -1,7 +1,6 @@
 package org.sergei.rest.dao;
 
 import org.sergei.rest.model.Order;
-import org.sergei.rest.model.OrderDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,29 +11,30 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 @Repository
 public class OrderDAO {
     private static final String SQL_FIND_ALL = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
-            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id";
+            "INNER JOIN order_details ON orders.order_id = order_details.order_id";
     private static final String SQL_FIND_BY_ID = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
-            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id = ?";
+            "INNER JOIN order_details ON orders.order_id = order_details.order_id and orders.order_id = ?";
     private static final String SQL_FIND_ALL_BY_CUSTOMER_ID = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
-            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id WHERE customer_id = ?";
+            "INNER JOIN order_details ON orders.order_id = order_details.order_id AND orders.customer_id = ?";
     private static final String SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
-            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id WHERE orders.customer_id = ? AND orders.order_id = ?";
-    private static final String SQL_FIND_BY_PRODUCT = "SELECT * FROM orders WHERE product = ?";
+            "INNER JOIN order_details ON orders.order_id = order_details.order_id WHERE orders.customer_id = ? AND orders.order_id = ?";
+    private static final String SQL_FIND_BY_PRODUCT_CODE = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
+            "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
+            "INNER JOIN order_details ON orders.order_id = order_details.order_id WHERE order_details.product_code = ?";
+    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(order_id, customer_id, order_date, required_date, shipped_date, status) VALUES(?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
-    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, product, product_weight, price) VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_EXISTS_BY_ORDER_ID = "SELECT count(*) FROM orders WHERE order_id = ?";
-    private static final String SQL_EXISTS_BY_PRODUCT = "SELECT count(*) FROM orders WHERE product = ?";
+    private static final String SQL_EXISTS_BY_PRODUCT_CODE = "SELECT count(*) FROM products WHERE product_code = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE = "DELETE FROM orders WHERE order_id = ?";
 
@@ -43,18 +43,8 @@ public class OrderDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void save(Long customerId, Order order) {
-        try {
-            jdbcTemplate.update(SQL_SAVE_ORDER, customerId);
-            LOGGER.info("Order entity saved");
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-        }
-    }
-
     public List<Order> findAll() {
         try {
-            LOGGER.info("Selected");
             return jdbcTemplate.query(SQL_FIND_ALL, new OrderRowMapper());
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
@@ -80,12 +70,21 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> findAllByProduct(String product) {
+    public List<Order> findAllByProductCode(String product_code) {
         try {
-            return jdbcTemplate.query(SQL_FIND_BY_PRODUCT, new OrderRowMapper(), product);
+            return jdbcTemplate.query(SQL_FIND_BY_PRODUCT_CODE, new OrderRowMapper(), product_code);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             return null;
+        }
+    }
+
+    public void saveOrder(Long customerId, Order order) {
+        try {
+            jdbcTemplate.update(SQL_SAVE_ORDER, customerId);
+            LOGGER.info("Order entity saved");
+        } catch (DataAccessException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -94,8 +93,8 @@ public class OrderDAO {
         return count > 0;
     }
 
-    public boolean existsByProduct(String product) {
-        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PRODUCT, new Object[]{product}, Integer.class);
+    public boolean existsByProductCode(String productCode) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PRODUCT_CODE, new Object[]{productCode}, Integer.class);
         return count > 0;
     }
 
@@ -136,11 +135,10 @@ public class OrderDAO {
             order.setRequiredDate(rs.getDate("required_date"));
             order.setShippedDate(rs.getDate("shipped_date"));
             order.setStatus(rs.getString("status"));
-            /*order.setProductCode(rs.getString("product_code"));
-            order.setQuantityOrdered(rs.getString("quantity_ordered"));
-            order.setPrice(rs.getBigDecimal("price"));*/
-
-            List<OrderDetails> orderDetailsList = new LinkedList<>();
+            order.setProductCode(rs.getString("product_code"));
+            order.setQuantityOrdered(rs.getInt("quantity_ordered"));
+            order.setPrice(rs.getBigDecimal("price"));
+            /*List<OrderDetails> orderDetailsList = new LinkedList<>();
             OrderDetails orderDetails;
 
             while (rs.next()) {
@@ -153,7 +151,7 @@ public class OrderDAO {
                 orderDetailsList.add(orderDetails);
             }
 
-            order.setOrderDetails(orderDetailsList);
+            order.setOrderDetails(orderDetailsList);*/
 
             return order;
         }

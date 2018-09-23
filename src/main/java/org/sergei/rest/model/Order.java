@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -34,30 +35,33 @@ public class Order {
     @XmlElement
     private String status;
 
-    @XmlElement
-    private List<OrderDetails> orderDetails;
-
     /*@XmlElement
+    private List<OrderDetails> orderDetails;*/
+
+    @XmlElement
     private String productCode;
 
     @XmlElement
     private int quantityOrdered;
 
     @XmlElement
-    private BigDecimal price;*/
+    private BigDecimal price;
 
     public Order() {
     }
 
     public Order(Long orderId, Long customerId, Date orderDate,
-                 Date requiredDate, Date shippedDate, String status, List<OrderDetails> orderDetails) {
+                 Date requiredDate, Date shippedDate, String status,
+                 String productCode, int quantityOrdered, BigDecimal price) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;
         this.shippedDate = shippedDate;
         this.status = status;
-        this.orderDetails = orderDetails;
+        this.productCode = productCode;
+        this.quantityOrdered = quantityOrdered;
+        this.price = price;
     }
 
     public Long getOrderId() {
@@ -108,11 +112,35 @@ public class Order {
         this.status = status;
     }
 
-    public List<OrderDetails> getOrderDetails() {
+   /* public List<OrderDetails> getOrderDetails() {
         return orderDetails;
     }
 
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
+    }*/
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public int getQuantityOrdered() {
+        return quantityOrdered;
+    }
+
+    public void setQuantityOrdered(int quantityOrdered) {
+        this.quantityOrdered = quantityOrdered;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

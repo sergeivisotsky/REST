@@ -44,17 +44,17 @@ public class OrderService {
         return orderDAO.findAllByCustomerId(id);
     }
 
-    public List<Order> getAllByProduct(String product) {
-        if (!orderDAO.existsByProduct(product)) {
-            throw new RecordNotFoundException("No order with this product name");
+    public List<Order> getAllByProductCode(String productCode) {
+        if (!orderDAO.existsByProductCode(productCode)) {
+            throw new RecordNotFoundException("No order with this productCode code found");
         }
 
-        return orderDAO.findAllByProduct(product);
+        return orderDAO.findAllByProductCode(productCode);
     }
 
     public void saveOrder(Long customerId, Order order) {
         order.setCustomerId(customerId);
-        orderDAO.save(customerId, order);
+        orderDAO.saveOrder(customerId, order);
     }
 
     public Order updateOrder(Long customerId, Long orderId, Order order) {

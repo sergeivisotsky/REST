@@ -42,10 +42,10 @@ public class OrderRESTController {
         return new ResponseEntity<>(orderService.getAllOrdersByCustomerId(customerId), HttpStatus.OK);
     }
 
-    // Get all orders by product name
+    // Get all orders by product code
     @GetMapping(value = "/orders/order")
-    public List<Order> getOrdersByProduct(@RequestParam("product") String product) {
-        return orderService.getAllByProduct(product);
+    public List<Order> getOrdersByProductCode(@RequestParam("prod-code") String productCode) {
+        return orderService.getAllByProductCode(productCode);
     }
 
     // Add a new record
