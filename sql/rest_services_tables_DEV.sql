@@ -10,6 +10,15 @@ CREATE TABLE rest_services.customers (
   PRIMARY KEY (customer_id)
 );
 
+DROP TABLE IF EXISTS rest_services_dev.products;
+CREATE TABLE rest_services_dev.products (
+  product_id     bigint AUTO_INCREMENT UNIQUE NOT NULL,
+  product_name   VARCHAR(50),
+  product_weight FLOAT,
+  price          FLOAT,
+  PRIMARY KEY (product_id)
+);
+
 DROP TABLE IF EXISTS rest_services.orders;
 CREATE TABLE rest_services.orders (
   order_id       BIGINT AUTO_INCREMENT UNIQUE NOT NULL,
@@ -17,7 +26,7 @@ CREATE TABLE rest_services.orders (
   trans_id       BIGINT NOT NULL,
   product        VARCHAR(50),
   product_weight DOUBLE PRECISION,
-  price          DOUBLE PRECISION,
+  total_price    DOUBLE PRECISION,
   PRIMARY KEY (order_id),
   FOREIGN KEY (customer_id)
   REFERENCES rest_services.customers (customer_id)

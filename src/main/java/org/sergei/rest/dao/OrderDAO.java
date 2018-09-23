@@ -136,8 +136,8 @@ public class OrderDAO {
             order.setCustomerId(rs.getLong("customer_id"));
             order.setTransId(rs.getLong("trans_id"));
             order.setProduct(rs.getString("product"));
-            order.setProductWeight(rs.getDouble("product_weight"));
-            order.setPrice(rs.getDouble("price"));
+            order.setProductWeight(rs.getFloat("product_weight"));
+            order.setPrice(rs.getFloat("price"));
 
             return order;
         }
