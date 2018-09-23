@@ -20,14 +20,14 @@ public class CustomerRESTController {
 
     // Get all customers
     @GetMapping
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
     // Get customer by specific ID as a parameter
     @GetMapping("/{customerId}")
-    public Customer getCustomerById(@PathVariable("customerId") Long customerId) throws RecordNotFoundException {
-        return customerService.getCustomerById(customerId);
+    public ResponseEntity<Customer> getCustomerById(@PathVariable("customerId") Long customerId) throws RecordNotFoundException {
+        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
     // Add a new record

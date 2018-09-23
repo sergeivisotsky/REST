@@ -44,14 +44,6 @@ public class OrderService {
         return orderDAO.findAllByCustomerId(id);
     }
 
-    public List<Order> getAllOrdersByCustomerIdAndProduct(Long customerId, String product) {
-        if (!orderDAO.existsByCustomerId(customerId) || !orderDAO.existsByProduct(product)) {
-            throw new RecordNotFoundException("No order or customer with this ID found");
-        }
-
-        return orderDAO.findAllByCustomerIdAndProduct(customerId, product);
-    }
-
     public List<Order> getAllByProduct(String product) {
         if (!orderDAO.existsByProduct(product)) {
             throw new RecordNotFoundException("No order with this product name");

@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS rest_services_dev.orders;
 CREATE TABLE rest_services_dev.orders (
   order_id      BIGINT NOT NULL,
   customer_id   BIGINT NOT NULL,
-  order_date DATE NOT NULL,
+  order_date    DATE   NOT NULL,
   required_date DATE   NOT NULL,
   shipped_date  DATE DEFAULT NULL,
   `status` varchar (15
@@ -42,11 +42,11 @@ CREATE TABLE rest_services_dev.orders (
 
 DROP TABLE IF EXISTS rest_services_dev.products;
 CREATE TABLE rest_services_dev.products (
-  product_code  VARCHAR(15) NOT NULL,
-  product_name  VARCHAR(70) NOT NULL,
+  product_code   VARCHAR(15) NOT NULL,
+  product_name   VARCHAR(70) NOT NULL,
   product_line   varchar(50) NOT NULL,
   product_vendor varchar(50) NOT NULL,
-  price         decimal(10, 2),
+  price          decimal(10, 2),
   PRIMARY KEY (product_code)
 );
 
@@ -54,7 +54,7 @@ DROP TABLE IF EXISTS rest_services_dev.order_details;
 CREATE TABLE rest_services_dev.order_details (
   order_id     BIGINT         NOT NULL,
   product_code VARCHAR(15)    NOT NULL,
-  quantity     INT (30) NOT NULL,
+  quantity_ordered     INT (30) NOT NULL,
   price        DECIMAL(10, 2) NOT NULL,
   FOREIGN KEY (order_id)
   REFERENCES rest_services_dev.orders (order_id)

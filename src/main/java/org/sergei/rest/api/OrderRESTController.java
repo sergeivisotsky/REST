@@ -19,8 +19,8 @@ public class OrderRESTController {
 
     // Get all orders
     @GetMapping(value = "/orders")
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
     }
 
     // Get order by specific ID as a parameter
@@ -38,15 +38,8 @@ public class OrderRESTController {
 
     // Get all orders by customer id
     @GetMapping("/customers/{customerId}/orders")
-    public List<Order> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
-        return orderService.getAllOrdersByCustomerId(customerId);
-    }
-
-    // Get als orders by customer id and product
-    @GetMapping("/customers/{customerId}/orders/order")
-    public List<Order> getOrderByCustomerIdAndProduct(@PathVariable("customerId") Long customerId,
-                                                      @RequestParam("product") String product) {
-        return orderService.getAllOrdersByCustomerIdAndProduct(customerId, product);
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
+        return new ResponseEntity<>(orderService.getAllOrdersByCustomerId(customerId), HttpStatus.OK);
     }
 
     // Get all orders by product name

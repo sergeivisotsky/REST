@@ -32,12 +32,13 @@ public class PhotoRESTController {
 
     // The response with all user photos
     @GetMapping("/{customerId}/photo")
-    public List<PhotoUploadResponse> findAllCustomerPhotos(@PathVariable("customerId") Long customerId) {
-        return photoService.findAllUploadedPhotos(customerId);
+    public ResponseEntity<List<PhotoUploadResponse>> findAllCustomerPhotos(@PathVariable("customerId") Long customerId) {
+        return new ResponseEntity<>(photoService.findAllUploadedPhotos(customerId), HttpStatus.OK);
     }
 
     // Upload one photo
     @PostMapping("/{customerId}/photo")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
@@ -50,6 +51,7 @@ public class PhotoRESTController {
 
     // Upload multiple photos
     @PostMapping("/{customerId}/photos")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public List<PhotoUploadResponse> uploadMultiplePhotos(@PathVariable("customerId") Long customerId,
                                                           @RequestParam("files") CommonsMultipartFile[] files) {
         return Arrays.stream(files)

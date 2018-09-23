@@ -15,19 +15,26 @@ import java.util.List;
 
 @Repository
 public class OrderDAO {
-    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, product, product_weight, price) VALUES(?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_ALL = "SELECT * FROM orders";
+    private static final String SQL_FIND_ALL = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
+            "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
+            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id";
+    private static final String SQL_FIND_BY_ID = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
+            "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
+            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id = ?";
+    private static final String SQL_FIND_ALL_BY_CUSTOMER_ID = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
+            "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
+            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id WHERE customer_id = ?";
+    private static final String SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID = "SELECT orders.order_id, orders.customer_id, orders.order_date, orders.required_date, " +
+            "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
+            "RIGHT JOIN order_details ON orders.order_id = order_details.order_id WHERE orders.customer_id = ? AND orders.order_id = ?";
+    private static final String SQL_FIND_BY_PRODUCT = "SELECT * FROM orders WHERE product = ?";
     private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
-    private static final String SQL_FIND_BY_CUSTOMER_ID_AND_PRODUCT = "SELECT * FROM orders WHERE customer_id = ? AND product = ?";
-    private static final String SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID = "SELECT * FROM orders WHERE customer_id = ? AND order_id = ?";
-    private static final String SQL_FIND_BY_PRODUCT = "SELECT * FROM orders WHERE product = ?";
+    private static final String SQL_SAVE_ORDER = "INSERT INTO orders(customer_id, trans_id, product, product_weight, price) VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_EXISTS_BY_ORDER_ID = "SELECT count(*) FROM orders WHERE order_id = ?";
     private static final String SQL_EXISTS_BY_PRODUCT = "SELECT count(*) FROM orders WHERE product = ?";
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE = "DELETE FROM orders WHERE order_id = ?";
-    private static final String SQL_FIND_ALL_BY_CUSTOMER_ID = "SELECT * FROM orders WHERE customer_id = ?";
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -36,7 +43,7 @@ public class OrderDAO {
 
     public void save(Long customerId, Order order) {
         try {
-            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getPrice());
+            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getPrice());
             LOGGER.info("Order entity saved");
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
@@ -45,6 +52,7 @@ public class OrderDAO {
 
     public List<Order> findAll() {
         try {
+            LOGGER.info("Selected");
             return jdbcTemplate.query(SQL_FIND_ALL, new OrderRowMapper());
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
@@ -65,15 +73,6 @@ public class OrderDAO {
         try {
             return jdbcTemplate.queryForObject(SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID,
                     new OrderRowMapper(), customerId, orderId);
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
-    }
-
-    public List<Order> findAllByCustomerIdAndProduct(Long customerId, String product) {
-        try {
-            return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_PRODUCT, new OrderRowMapper(), customerId, product);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             return null;
@@ -106,7 +105,7 @@ public class OrderDAO {
 
     public void updateRecord(Long customerId, Long orderId, Order order) {
         try {
-            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getPrice(), customerId, orderId);
+            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getPrice(), customerId, orderId);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
         }
@@ -132,8 +131,12 @@ public class OrderDAO {
 
             order.setOrderId(rs.getLong("order_id"));
             order.setCustomerId(rs.getLong("customer_id"));
-            order.setTransId(rs.getLong("trans_id"));
-            order.setPrice(rs.getBigDecimal("total_price"));
+            order.setOrderDate(rs.getDate("order_date"));
+            order.setRequiredDate(rs.getDate("required_date"));
+            order.setShippedDate(rs.getDate("shipped_date"));
+            order.setStatus(rs.getString("status"));
+            order.setProductCode(rs.getString("product_code"));
+            order.setPrice(rs.getBigDecimal("price"));
 
             return order;
         }
