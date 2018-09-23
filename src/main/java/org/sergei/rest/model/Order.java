@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -25,12 +26,12 @@ public class Order {
     private float productWeight;
 
     @XmlElement
-    private float price;
+    private BigDecimal price;
 
     public Order() {
     }
 
-    public Order(Long transId, String product, float productWeight, float price) {
+    public Order(Long transId, String product, float productWeight, BigDecimal price) {
         this.transId = transId;
         this.product = product;
         this.productWeight = productWeight;
@@ -77,11 +78,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }
