@@ -25,15 +25,15 @@ public class OrderRESTController {
 
     // Get order by specific ID as a parameter
     @GetMapping("/orders/{orderId}")
-    public Order getOrderById(@PathVariable("orderId") Long orderId) {
-        return orderService.getOrderById(orderId);
+    public ResponseEntity<List<Order>> getOrderById(@PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(orderService.getOrderById(orderId), HttpStatus.OK);
     }
 
     // Get order by customer id and order id
     @GetMapping("/customers/{customerId}/orders/{orderId}")
-    public Order getOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
+    public ResponseEntity<List<Order>> getOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
                                                 @PathVariable("orderId") Long orderId) {
-        return orderService.getOrderByCustomerIdAndOrderId(customerId, orderId);
+        return new ResponseEntity<>(orderService.getOrderByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
     }
 
     // Get all orders by customer id
@@ -67,7 +67,7 @@ public class OrderRESTController {
         return new ResponseEntity<>(orderService.updateOrder(customerId, orderId, order), HttpStatus.ACCEPTED);
     }
 
-    // Delete order by specific ID
+    /*// Delete order by specific ID
     @DeleteMapping("/orders/{id}")
     public ResponseEntity<Order> deleteOrderById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(orderService.deleteOrderById(id), HttpStatus.OK);
@@ -80,5 +80,5 @@ public class OrderRESTController {
         Order order = orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId);
 
         return new ResponseEntity<>(order, HttpStatus.OK);
-    }
+    }*/
 }

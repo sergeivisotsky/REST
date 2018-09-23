@@ -18,7 +18,7 @@ public class OrderService {
         return orderDAO.findAll();
     }
 
-    public Order getOrderById(Long id) {
+    public List<Order> getOrderById(Long id) {
         if (!orderDAO.existsById(id)) {
             throw new RecordNotFoundException("No order with this ID found");
         }
@@ -26,7 +26,7 @@ public class OrderService {
         return orderDAO.findById(id);
     }
 
-    public Order getOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
+    public List<Order> getOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
         if (!orderDAO.existsByCustomerId(customerId)) {
             throw new RecordNotFoundException("No customer with this ID found");
         } else if (!orderDAO.existsById(orderId)) {
@@ -65,11 +65,11 @@ public class OrderService {
         }
         order.setOrderId(orderId);
         order.setCustomerId(customerId);
-        orderDAO.updateRecord(customerId, orderId, order);
+//        orderDAO.updateRecord(customerId, orderId, order);
         return order;
     }
 
-    public Order deleteOrderById(Long id) {
+    /*public Order deleteOrderById(Long id) {
         Order order = orderDAO.findById(id);
         if (!orderDAO.existsById(id)) {
             throw new RecordNotFoundException("No order with this ID found");
@@ -93,5 +93,5 @@ public class OrderService {
         orderDAO.delete(order);
 
         return order;
-    }
+    }*/
 }
