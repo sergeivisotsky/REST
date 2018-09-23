@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -19,22 +21,18 @@ public class Order {
     private Long transId;
 
     @XmlElement
-    private String product;
+    private BigDecimal price;
 
     @XmlElement
-    private float productWeight;
-
-    @XmlElement
-    private float price;
+    private List<Product> products;
 
     public Order() {
     }
 
-    public Order(Long transId, String product, float productWeight, float price) {
+    public Order(Long transId, BigDecimal price, List<Product> products) {
         this.transId = transId;
-        this.product = product;
-        this.productWeight = productWeight;
         this.price = price;
+        this.products = products;
     }
 
     public Long getOrderId() {
@@ -53,22 +51,6 @@ public class Order {
         this.transId = transId;
     }
 
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public double getProductWeight() {
-        return productWeight;
-    }
-
-    public void setProductWeight(float productWeight) {
-        this.productWeight = productWeight;
-    }
-
     public Long getCustomerId() {
         return customerId;
     }
@@ -77,11 +59,19 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

@@ -36,8 +36,7 @@ public class OrderDAO {
 
     public void save(Long customerId, Order order) {
         try {
-            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getProduct(),
-                    order.getProductWeight(), order.getPrice());
+            jdbcTemplate.update(SQL_SAVE_ORDER, customerId, order.getTransId(), order.getPrice());
             LOGGER.info("Order entity saved");
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
@@ -107,8 +106,7 @@ public class OrderDAO {
 
     public void updateRecord(Long customerId, Long orderId, Order order) {
         try {
-            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getProduct(),
-                    order.getProductWeight(), order.getPrice(), customerId, orderId);
+            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getTransId(), order.getPrice(), customerId, orderId);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
         }
@@ -135,9 +133,7 @@ public class OrderDAO {
             order.setOrderId(rs.getLong("order_id"));
             order.setCustomerId(rs.getLong("customer_id"));
             order.setTransId(rs.getLong("trans_id"));
-            order.setProduct(rs.getString("product"));
-            order.setProductWeight(rs.getFloat("product_weight"));
-            order.setPrice(rs.getFloat("price"));
+            order.setPrice(rs.getBigDecimal("total_price"));
 
             return order;
         }
