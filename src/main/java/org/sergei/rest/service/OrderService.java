@@ -66,39 +66,38 @@ public class OrderService {
     // Update order by customer and order numbers
     public Order updateOrder(Long customerNumber, Long orderNumber, Order order) {
         if (!orderDAO.existsByCustomerNumber(customerNumber)) {
+            throw new RecordNotFoundException("No customer with this number found");
+        } else if (!orderDAO.existsByNumber(orderNumber)) {
+            throw new RecordNotFoundException("No order with this number found");
+        }
+        order.setOrderNumber(orderNumber);
+        order.setCustomerNumber(customerNumber);
+        orderDAO.updateRecord(customerNumber, orderNumber, order);
+        return order;
+    }
+
+    public List<Order> deleteOrderByNumber(Long orderNumber) {
+        List<Order> order = orderDAO.findByNumber(orderNumber);
+        if (!orderDAO.existsByNumber(orderNumber)) {
+            throw new RecordNotFoundException("No order with this ID found");
+        }
+
+        orderDAO.deleteByOrderNumber(orderNumber);
+
+        return order;
+    }
+
+    public List<Order> deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
+        List<Order> order = orderDAO.findByCustomerAndOrderNumbers(customerNumber, orderNumber);
+        if (!orderDAO.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No customer with this ID found");
         } else if (!orderDAO.existsByNumber(orderNumber)) {
             throw new RecordNotFoundException("No order with this ID found");
         }
-        order.setOrderNumber(orderNumber);
-        order.setCustomerNumber(customerNumber);
-//        orderDAO.updateRecord(customerNumber, orderNumber, order);
-        return order;
-    }
 
-    /*public Order deleteOrderById(Long id) {
-        Order order = orderDAO.findByNumber(id);
-        if (!orderDAO.existsByNumber(id)) {
-            throw new RecordNotFoundException("No order with this ID found");
-        }
-        order.setOrderNumber(id);
-        orderDAO.delete(order);
+
+        orderDAO.deleteByCustomerAndOrderNumbers(customerNumber, orderNumber);
 
         return order;
     }
-
-    public Order deleteOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
-        Order order = orderDAO.findByCustomerAndOrderNumbers(customerId, orderId);
-        if (!orderDAO.existsByCustomerNumber(customerId)) {
-            throw new RecordNotFoundException("No customer with this ID found");
-        } else if (!orderDAO.existsByNumber(orderId)) {
-            throw new RecordNotFoundException("No order with this ID found");
-        }
-
-        order.setOrderNumber(orderId);
-        order.setCustomerNumber(customerId);
-        orderDAO.delete(order);
-
-        return order;
-    }*/
 }

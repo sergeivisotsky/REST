@@ -97,7 +97,7 @@ public class FileOperations {
         }
     }
 
-    // Method to delete file from the server
+    // Method to deleteByOrderNumber file from the server
     public void deleteFile(String remoteFile) {
         try {
             // Connecting to the ftp server

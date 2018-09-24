@@ -39,8 +39,8 @@ public class OrderDAO {
 
     private static final String SQL_SAVE_ORDER_DETAILS = "INSERT INTO order_details(order_number, product_code, quantity_ordered, price) VALUES (?, ?, ?, ?)";
 
-    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
-            "WHERE customer_id = ? AND order_id = ?";
+    private static final String SQL_UPDATE_ORDER = "UPDATE orders SET order_number = ?, customer_number = ?, order_date = ?, required_date = ?, " +
+            "shipped_date = ?, status = ? WHERE customer_number = ? AND order_number = ?";
 
     private static final String SQL_EXISTS_BY_ORDER_NUMBER = "SELECT count(*) FROM orders WHERE order_number = ?";
 
@@ -48,7 +48,13 @@ public class OrderDAO {
 
     private static final String SQL_EXISTS_BY_CUSTOMER_NUMBER = "SELECT count(*) FROM orders WHERE customer_number = ?";
 
-    private static final String SQL_DELETE_ORDERS = "DELETE FROM orders WHERE order_number = ?";
+    private static final String SQL_UPDATE_ORDER_DETAILS = "UPDATE order_details SET order_number = ?, product_code  = ?, quantity_ordered = ?, price = ? WHERE order_number = ?";
+
+    private static final String SQL_DELETE_ORDERS_BY_ORDER_NUMBER = "DELETE FROM orders WHERE order_number = ?";
+
+    private static final String SQL_DELETE_ORDERS_BY_CUSTOMER_ORDER_NUMBERS = "DELETE FROM orders WHERE customer_number = ? AND order_number = ?";
+
+    private static final String SQL_DELETE_ORDERS_DETAILS = "DELETE FROM order_details WHERE order_number = ?";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -87,9 +93,9 @@ public class OrderDAO {
     }
 
     // Find all orders by the given product number
-    public List<Order> findAllByProductCode(String product_code) {
+    public List<Order> findAllByProductCode(String productCode) {
         try {
-            return jdbcTemplate.query(SQL_FIND_BY_PRODUCT_CODE, new OrderRowMapper(), product_code);
+            return jdbcTemplate.query(SQL_FIND_BY_PRODUCT_CODE, new OrderRowMapper(), productCode);
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
             return null;
@@ -133,18 +139,32 @@ public class OrderDAO {
     }
 
     // Update order data by customer and order numbers
-    /*public void updateRecord(Long customerId, Long orderId, Order order) {
+    public void updateRecord(Long customerNumber, Long orderNumber, Order order) {
         try {
-            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getPrice(), customerId, orderId);
+            jdbcTemplate.update(SQL_UPDATE_ORDER, order.getOrderNumber(), order.getCustomerNumber(), order.getOrderDate(),
+                    order.getRequiredDate(), order.getShippedDate(), order.getStatus(), customerNumber, orderNumber);
+            jdbcTemplate.update(SQL_UPDATE_ORDER_DETAILS, order.getOrderNumber(), order.getProductCode(), order.getQuantityOrdered(),
+                    order.getPrice(), orderNumber);
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }
-    }*/
+    }
 
-    // Delete order
-    public void delete(Order order) {
+    // Delete order by order number
+    public void deleteByOrderNumber(Long orderNumber) {
         try {
-            jdbcTemplate.update(SQL_DELETE_ORDERS, order.getOrderNumber());
+            jdbcTemplate.update(SQL_DELETE_ORDERS_BY_ORDER_NUMBER, orderNumber);
+            jdbcTemplate.update(SQL_DELETE_ORDERS_DETAILS, orderNumber);
+        } catch (DataAccessException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    // Delete order by order and customer numbers
+    public void deleteByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
+        try {
+            jdbcTemplate.update(SQL_DELETE_ORDERS_BY_CUSTOMER_ORDER_NUMBERS, customerNumber, orderNumber);
+            jdbcTemplate.update(SQL_DELETE_ORDERS_DETAILS, orderNumber);
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }
