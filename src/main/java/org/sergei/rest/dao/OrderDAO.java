@@ -42,12 +42,6 @@ public class OrderDAO {
     private static final String SQL_UPDATE_ORDER = "UPDATE orders SET order_number = ?, customer_number = ?, order_date = ?, required_date = ?, " +
             "shipped_date = ?, status = ? WHERE customer_number = ? AND order_number = ?";
 
-    private static final String SQL_EXISTS_BY_ORDER_NUMBER = "SELECT count(*) FROM orders WHERE order_number = ?";
-
-    private static final String SQL_EXISTS_BY_PRODUCT_CODE = "SELECT count(*) FROM products WHERE product_code = ?";
-
-    private static final String SQL_EXISTS_BY_CUSTOMER_NUMBER = "SELECT count(*) FROM orders WHERE customer_number = ?";
-
     private static final String SQL_UPDATE_ORDER_DETAILS = "UPDATE order_details SET order_number = ?, product_code  = ?, quantity_ordered = ?, price = ? WHERE order_number = ?";
 
     private static final String SQL_DELETE_ORDERS_BY_ORDER_NUMBER = "DELETE FROM orders WHERE order_number = ?";
@@ -55,6 +49,12 @@ public class OrderDAO {
     private static final String SQL_DELETE_ORDERS_BY_CUSTOMER_ORDER_NUMBERS = "DELETE FROM orders WHERE customer_number = ? AND order_number = ?";
 
     private static final String SQL_DELETE_ORDERS_DETAILS = "DELETE FROM order_details WHERE order_number = ?";
+
+    private static final String SQL_EXISTS_BY_ORDER_NUMBER = "SELECT count(*) FROM orders WHERE order_number = ?";
+
+    private static final String SQL_EXISTS_BY_PRODUCT_CODE = "SELECT count(*) FROM products WHERE product_code = ?";
+
+    private static final String SQL_EXISTS_BY_CUSTOMER_NUMBER = "SELECT count(*) FROM orders WHERE customer_number = ?";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -119,24 +119,6 @@ public class OrderDAO {
         }
     }
 
-    // Checks if order with this number exists
-    public boolean existsByNumber(Long orderNumber) {
-        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_ORDER_NUMBER, new Object[]{orderNumber}, Integer.class);
-        return count > 0;
-    }
-
-    // Checks if order with this product code
-    public boolean existsByProductCode(String productCode) {
-        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PRODUCT_CODE, new Object[]{productCode}, Integer.class);
-        return count > 0;
-    }
-
-    // Checks if order with this customer number exists
-    public boolean existsByCustomerNumber(Long customerNumber) {
-        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_NUMBER, new Object[]{customerNumber}, Integer.class);
-        return count > 0;
-    }
-
     // Update order data by customer and order numbers
     public void updateRecord(Long customerNumber, Long orderNumber, Order order) {
         try {
@@ -167,6 +149,24 @@ public class OrderDAO {
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }
+    }
+
+    // Checks if order with this number exists
+    public boolean existsByNumber(Long orderNumber) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_ORDER_NUMBER, new Object[]{orderNumber}, Integer.class);
+        return count > 0;
+    }
+
+    // Checks if order with this product code
+    public boolean existsByProductCode(String productCode) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_PRODUCT_CODE, new Object[]{productCode}, Integer.class);
+        return count > 0;
+    }
+
+    // Checks if order with this customer number exists
+    public boolean existsByCustomerNumber(Long customerNumber) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_NUMBER, new Object[]{customerNumber}, Integer.class);
+        return count > 0;
     }
 
     private static final class OrderRowMapper implements RowMapper<Order> {

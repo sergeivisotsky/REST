@@ -15,29 +15,25 @@ import java.util.List;
 
 @Repository
 public class CustomerDAO {
-    private static final String SQL_SAVE_CUSTOMER = "INSERT INTO customers(first_name, last_name, age) VALUES(?, ?, ?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM customers";
-    private static final String SQL_UPDATE_CUSTOMER = "UPDATE customers SET first_name = ?, last_name = ?, age = ? WHERE customer_number = ?";
+
     private static final String SQL_FIND_BY_ID = "SELECT * FROM customers WHERE customer_number = ?";
-    private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM customers WHERE customer_number = ?";
+
+    private static final String SQL_SAVE_CUSTOMER = "INSERT INTO customers(first_name, last_name, age) VALUES(?, ?, ?)";
+
+    private static final String SQL_UPDATE_CUSTOMER = "UPDATE customers SET first_name = ?, last_name = ?, age = ? WHERE customer_number = ?";
+
     private static final String SQL_DELETE = "DELETE FROM customers WHERE customer_number = ?";
+
+    private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM customers WHERE customer_number = ?";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // Save customer
-    public void save(Customer customer) {
-        try {
-            jdbcTemplate.update(SQL_SAVE_CUSTOMER, customer.getCustomerNumber(), customer.getFirstName(),
-                    customer.getLastName(), customer.getAge());
-        } catch (DataAccessException e) {
-            logger.error(e.getMessage());
-        }
-    }
-
     // Find all customers
+
     public List<Customer> findAll() {
         try {
             return jdbcTemplate.query(SQL_FIND_ALL, new CustomerRowMapper());
@@ -57,10 +53,14 @@ public class CustomerDAO {
         }
     }
 
-    // Check if customer exists by the given number
-    public boolean existsByNumber(Long customerNumber) {
-        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerNumber}, Integer.class);
-        return count > 0;
+    // Save customer
+    public void save(Customer customer) {
+        try {
+            jdbcTemplate.update(SQL_SAVE_CUSTOMER, customer.getCustomerNumber(), customer.getFirstName(),
+                    customer.getLastName(), customer.getAge());
+        } catch (DataAccessException e) {
+            logger.error(e.getMessage());
+        }
     }
 
     // Update customer data by number
@@ -80,6 +80,12 @@ public class CustomerDAO {
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }
+    }
+
+    // Check if customer exists by the given number
+    public boolean existsByNumber(Long customerNumber) {
+        int count = jdbcTemplate.queryForObject(SQL_EXISTS_BY_CUSTOMER_ID, new Object[]{customerNumber}, Integer.class);
+        return count > 0;
     }
 
     private static final class CustomerRowMapper implements RowMapper<Customer> {
