@@ -18,7 +18,7 @@ public class OrderRESTController {
     private OrderService orderService;
 
     // Get all orders
-    @GetMapping(value = "/orders")
+    @GetMapping("/orders")
     public ResponseEntity<List<Order>> getAllOrders() {
         return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
     }
@@ -42,9 +42,8 @@ public class OrderRESTController {
         return new ResponseEntity<>(orderService.getOrderByCustomerAndOrderNumbers(customerNumber, orderNumber), HttpStatus.OK);
     }
 
-
     // Get all orders by product code
-    @GetMapping(value = "/orders/order")
+    @GetMapping("/orders/order")
     public List<Order> getOrdersByProductCode(@RequestParam("prod-code") String productCode) {
         return orderService.getAllByProductCode(productCode);
     }

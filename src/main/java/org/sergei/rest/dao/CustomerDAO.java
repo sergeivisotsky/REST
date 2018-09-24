@@ -32,7 +32,6 @@ public class CustomerDAO {
         try {
             jdbcTemplate.update(SQL_SAVE_CUSTOMER, customer.getCustomerNumber(), customer.getFirstName(),
                     customer.getLastName(), customer.getAge());
-            logger.info("Customer entity saved");
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }

@@ -37,7 +37,6 @@ public class PhotoDAO {
         try {
             jdbcTemplate.update(SQL_SAVE_FILE, customerNumber, commonsMultipartFile.getOriginalFilename(),
                     fileDownloadUri, commonsMultipartFile.getContentType(), commonsMultipartFile.getSize());
-            logger.info("Photo meta data was saved");
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }

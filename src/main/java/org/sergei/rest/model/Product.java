@@ -11,13 +11,16 @@ import java.math.BigDecimal;
 public class Product {
 
     @XmlElement
-    private Long productNumber;
+    private String productCode;
 
     @XmlElement
     private String productName;
 
     @XmlElement
-    private float productWeight;
+    private String productLine;
+
+    @XmlElement
+    private String productVendor;
 
     @XmlElement
     private BigDecimal price;
@@ -25,18 +28,19 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productName, float productWeight, BigDecimal price) {
+    public Product(String productName, String productLine, String productVendor, BigDecimal price) {
         this.productName = productName;
-        this.productWeight = productWeight;
+        this.productLine = productLine;
+        this.productVendor = productVendor;
         this.price = price;
     }
 
-    public Long getProductNumber() {
-        return productNumber;
+    public String getProductCode() {
+        return productCode;
     }
 
-    public void setProductNumber(Long productNumber) {
-        this.productNumber = productNumber;
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getProductName() {
@@ -47,12 +51,20 @@ public class Product {
         this.productName = productName;
     }
 
-    public float getProductWeight() {
-        return productWeight;
+    public String getProductLine() {
+        return productLine;
     }
 
-    public void setProductWeight(float productWeight) {
-        this.productWeight = productWeight;
+    public void setProductLine(String productLine) {
+        this.productLine = productLine;
+    }
+
+    public String getProductVendor() {
+        return productVendor;
+    }
+
+    public void setProductVendor(String productVendor) {
+        this.productVendor = productVendor;
     }
 
     public BigDecimal getPrice() {

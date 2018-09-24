@@ -114,7 +114,6 @@ public class OrderDAO {
                     order.getRequiredDate(), order.getShippedDate(), order.getStatus());
             jdbcTemplate.update(SQL_SAVE_ORDER_DETAILS, order.getOrderNumber(), order.getProductCode(),
                     order.getQuantityOrdered(), order.getPrice());
-            logger.info("Order entity saved");
         } catch (DataAccessException e) {
             logger.error(e.getMessage());
         }
