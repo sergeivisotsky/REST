@@ -31,6 +31,7 @@ public class OrderDAO {
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
             "INNER JOIN order_details ON orders.order_id = order_details.order_id WHERE order_details.product_code = ?";
     private static final String SQL_SAVE_ORDER = "INSERT INTO orders(order_id, customer_id, order_date, required_date, shipped_date, status) VALUES(?, ?, ?, ?, ?, ?)";
+    private static final String SQL_SAVE_ORDER_DETAILS = "INSERT INTO order_details(order_id, product_code, quantity_ordered, price) VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
     private static final String SQL_EXISTS_BY_ORDER_ID = "SELECT count(*) FROM orders WHERE order_id = ?";
@@ -38,7 +39,7 @@ public class OrderDAO {
     private static final String SQL_EXISTS_BY_CUSTOMER_ID = "SELECT count(*) FROM orders WHERE customer_id = ?";
     private static final String SQL_DELETE = "DELETE FROM orders WHERE order_id = ?";
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -47,7 +48,7 @@ public class OrderDAO {
         try {
             return jdbcTemplate.query(SQL_FIND_ALL, new OrderRowMapper());
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
             return null;
         }
     }
@@ -56,7 +57,7 @@ public class OrderDAO {
         try {
             return jdbcTemplate.query(SQL_FIND_BY_ID, new OrderRowMapper(), id);
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
             return null;
         }
     }
@@ -65,7 +66,7 @@ public class OrderDAO {
         try {
             return jdbcTemplate.query(SQL_FIND_BY_CUSTOMER_ID_AND_ORDER_ID, new OrderRowMapper(), customerId, orderId);
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
             return null;
         }
     }
@@ -74,17 +75,28 @@ public class OrderDAO {
         try {
             return jdbcTemplate.query(SQL_FIND_BY_PRODUCT_CODE, new OrderRowMapper(), product_code);
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
             return null;
         }
     }
 
     public void saveOrder(Long customerId, Order order) {
         try {
-            jdbcTemplate.update(SQL_SAVE_ORDER, customerId);
-            LOGGER.info("Order entity saved");
+            jdbcTemplate.update(SQL_SAVE_ORDER, order.getOrderId(), customerId, order.getOrderDate(),
+                    order.getRequiredDate(), order.getShippedDate(), order.getStatus());
+            logger.info("Order entity saved");
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
+        }
+    }
+
+    public void saveOrderDetails(Order order) {
+        try {
+            jdbcTemplate.update(SQL_SAVE_ORDER_DETAILS, order.getOrderId(), order.getProductCode(),
+                    order.getQuantityOrdered(), order.getPrice());
+            logger.info("Order details saved");
+        } catch (DataAccessException e) {
+            logger.error(e.getMessage());
         }
     }
 
@@ -107,7 +119,7 @@ public class OrderDAO {
         try {
             jdbcTemplate.update(SQL_UPDATE_ORDER, order.getPrice(), customerId, orderId);
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }*/
 
@@ -115,7 +127,7 @@ public class OrderDAO {
         try {
             jdbcTemplate.update(SQL_DELETE, order.getOrderId());
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 

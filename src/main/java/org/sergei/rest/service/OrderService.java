@@ -55,6 +55,7 @@ public class OrderService {
     public void saveOrder(Long customerId, Order order) {
         order.setCustomerId(customerId);
         orderDAO.saveOrder(customerId, order);
+        orderDAO.saveOrderDetails(order);
     }
 
     public Order updateOrder(Long customerId, Long orderId, Order order) {

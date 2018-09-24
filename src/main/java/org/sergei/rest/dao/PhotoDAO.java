@@ -26,7 +26,7 @@ public class PhotoDAO {
     private static final String SQL_EXISTS_BY_PHOTO_ID = "SELECT count(*) FROM photos WHERE photo_id = ?";
     private static final String SQL_EXISTS_BY_PHOTO_NAME = "SELECT count(*) FROM photos WHERE file_name = ?";
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -36,9 +36,9 @@ public class PhotoDAO {
         try {
             jdbcTemplate.update(SQL_SAVE_FILE, customerId, commonsMultipartFile.getOriginalFilename(),
                     fileDownloadUri, commonsMultipartFile.getContentType(), commonsMultipartFile.getSize());
-            LOGGER.info("Photo meta data was saved");
+            logger.info("Photo meta data was saved");
         } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class PhotoDAO {
         try {
             jdbcTemplate.update(SQL_DELETE_BY_CUSTOMER_ID_AND_FILE_ID, customerId, photoId);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
