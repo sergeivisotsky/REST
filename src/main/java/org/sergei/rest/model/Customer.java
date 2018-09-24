@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Customer {
 
     @XmlElement
-    private Long customerId;
+    private Long customerNumber;
 
     @XmlElement
     private String firstName;
@@ -30,12 +30,12 @@ public class Customer {
         this.age = age;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getCustomerNumber() {
+        return customerNumber;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerNumber(Long customerNumber) {
+        this.customerNumber = customerNumber;
     }
 
     public String getFirstName() {

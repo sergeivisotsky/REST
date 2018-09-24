@@ -24,23 +24,25 @@ public class OrderRESTController {
     }
 
     // Get order by specific ID as a parameter
-    @GetMapping("/orders/{orderId}")
-    public ResponseEntity<List<Order>> getOrderById(@PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.getOrderById(orderId), HttpStatus.OK);
-    }
-
-    // Get order by customer id and order id
-    @GetMapping("/customers/{customerId}/orders/{orderId}")
-    public ResponseEntity<List<Order>> getOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
-                                                @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.getOrderByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
+    @GetMapping("/orders/{orderNumber}")
+    public ResponseEntity<List<Order>> getOrderById(@PathVariable("orderNumber") Long orderNumber) {
+        return new ResponseEntity<>(orderService.getOrderByNumber(orderNumber), HttpStatus.OK);
     }
 
     // Get all orders by customer id
-    @GetMapping("/customers/{customerId}/orders")
-    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(orderService.getAllOrdersByCustomerId(customerId), HttpStatus.OK);
+    @GetMapping("/customers/{customerNumber}/orders")
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customerNumber") Long customerNumber) {
+        return new ResponseEntity<>(orderService.getAllOrdersByCustomerNumber(customerNumber), HttpStatus.OK);
     }
+
+    // Get order by customer id and order id
+    @GetMapping("/customers/{customerNumber}/orders/{orderNumber}")
+    public ResponseEntity<List<Order>> getOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Long customerNumber,
+                                                @PathVariable("orderNumber") Long orderNumber) {
+        return new ResponseEntity<>(orderService.getOrderByCustomerAndOrderNumbers(customerNumber, orderNumber), HttpStatus.OK);
+    }
+
+
 
     // Get all orders by product code
     @GetMapping(value = "/orders/order")
@@ -49,22 +51,22 @@ public class OrderRESTController {
     }
 
     // Add a new record
-    @PostMapping(value = "/customers/{customerId}/orders",
+    @PostMapping(value = "/customers/{customerNumber}/orders",
             consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Order> createOrder(@PathVariable("customerId") Long customerId,
+    public ResponseEntity<Order> createOrder(@PathVariable("customerNumber") Long customerNumber,
                                              @RequestBody Order order) {
-        orderService.saveOrder(customerId, order);
+        orderService.saveOrder(customerNumber, order);
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     // Update record
-    @PutMapping(value = "/customers/{customerId}/orders/{orderId}",
+    @PutMapping(value = "/customers/{customerNumber}/orders/{orderNumber}",
             consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Order> updateRecord(@PathVariable("customerId") Long customerId,
-                                              @PathVariable("orderId") Long orderId,
+    public ResponseEntity<Order> updateRecord(@PathVariable("customerNumber") Long customerNumber,
+                                              @PathVariable("orderNumber") Long orderNumber,
                                               @RequestBody Order order) {
-        return new ResponseEntity<>(orderService.updateOrder(customerId, orderId, order), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(orderService.updateOrder(customerNumber, orderNumber, order), HttpStatus.ACCEPTED);
     }
 
     /*// Delete order by specific ID
@@ -74,10 +76,10 @@ public class OrderRESTController {
     }
 
     // Delete order by customer id and order id
-    @DeleteMapping("/customers/{customerId}/orders/{orderId}")
-    public ResponseEntity<Order> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
-                                                                   @PathVariable("orderId") Long orderId) {
-        Order order = orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId);
+    @DeleteMapping("/customers/{customerNumber}/orders/{orderNumber}")
+    public ResponseEntity<Order> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Long customerNumber,
+                                                                   @PathVariable("orderNumber") Long orderNumber) {
+        Order order = orderService.deleteOrderByCustomerIdAndOrderId(customerNumber, orderNumber);
 
         return new ResponseEntity<>(order, HttpStatus.OK);
     }*/

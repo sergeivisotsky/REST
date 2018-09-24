@@ -8,17 +8,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Order {
 
     @XmlElement
-    private Long orderId;
+    private Long orderNumber;
 
     @XmlElement
-    private Long customerId;
+    private Long customerNumber;
 
     @XmlElement
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -50,11 +49,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long orderId, Long customerId, Date orderDate,
+    public Order(Long orderNumber, Long customerNumber, Date orderDate,
                  Date requiredDate, Date shippedDate, String status,
                  String productCode, int quantityOrdered, BigDecimal price) {
-        this.orderId = orderId;
-        this.customerId = customerId;
+        this.orderNumber = orderNumber;
+        this.customerNumber = customerNumber;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;
         this.shippedDate = shippedDate;
@@ -64,20 +63,20 @@ public class Order {
         this.price = price;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Long getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setOrderNumber(Long orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getCustomerNumber() {
+        return customerNumber;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerNumber(Long customerNumber) {
+        this.customerNumber = customerNumber;
     }
 
     public Date getOrderDate() {

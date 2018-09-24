@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class Product {
 
     @XmlElement
-    private Long productId;
+    private Long productNumber;
 
     @XmlElement
     private String productName;
@@ -31,12 +31,12 @@ public class Product {
         this.price = price;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getProductNumber() {
+        return productNumber;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductNumber(Long productNumber) {
+        this.productNumber = productNumber;
     }
 
     public String getProductName() {

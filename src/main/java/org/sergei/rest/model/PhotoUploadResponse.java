@@ -12,7 +12,7 @@ public class PhotoUploadResponse {
     private Long photoId;
 
     @XmlElement
-    private Long customerId;
+    private Long customerNumber;
 
     @XmlElement
     private String fileName;
@@ -29,9 +29,9 @@ public class PhotoUploadResponse {
     public PhotoUploadResponse() {
     }
 
-    public PhotoUploadResponse(Long customerId, String fileName, String fileUrl,
+    public PhotoUploadResponse(Long customerNumber, String fileName, String fileUrl,
                                String fileType, Long fileSize) {
-        this.customerId = customerId;
+        this.customerNumber = customerNumber;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.fileType = fileType;
@@ -46,12 +46,12 @@ public class PhotoUploadResponse {
         this.photoId = photoId;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getCustomerNumber() {
+        return customerNumber;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerNumber(Long customerNumber) {
+        this.customerNumber = customerNumber;
     }
 
     public String getFileName() {

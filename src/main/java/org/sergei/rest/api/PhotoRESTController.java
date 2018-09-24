@@ -31,28 +31,28 @@ public class PhotoRESTController {
     private PhotoService photoService;
 
     // The response with all user photos
-    @GetMapping("/{customerId}/photo")
-    public ResponseEntity<List<PhotoUploadResponse>> findAllCustomerPhotos(@PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(photoService.findAllUploadedPhotos(customerId), HttpStatus.OK);
+    @GetMapping("/{customerNumber}/photo")
+    public ResponseEntity<List<PhotoUploadResponse>> findAllCustomerPhotos(@PathVariable("customerNumber") Long customerNumber) {
+        return new ResponseEntity<>(photoService.findAllUploadedPhotos(customerNumber), HttpStatus.OK);
     }
 
     // Upload one photo
-    @PostMapping("/{customerId}/photo")
+    @PostMapping("/{customerNumber}/photo")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public PhotoUploadResponse uploadPhoto(@PathVariable("customerId") Long customerId,
+    public PhotoUploadResponse uploadPhoto(@PathVariable("customerNumber") Long customerNumber,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerId.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
+                .path("/api/v1/customers/" + customerNumber.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
-        return photoService.uploadFileOnTheServer(customerId, fileDownloadUri, commonsMultipartFile);
+        return photoService.uploadFileOnTheServer(customerNumber, fileDownloadUri, commonsMultipartFile);
     }
 
     // Upload multiple photos
-    @PostMapping("/{customerId}/photos")
+    @PostMapping("/{customerNumber}/photos")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<PhotoUploadResponse> uploadMultiplePhotos(@PathVariable("customerId") Long customerId,
+    public List<PhotoUploadResponse> uploadMultiplePhotos(@PathVariable("customerNumber") Long customerId,
                                                           @RequestParam("files") CommonsMultipartFile[] files) {
         return Arrays.stream(files)
                 .map(file -> uploadPhoto(customerId, file))
@@ -60,11 +60,11 @@ public class PhotoRESTController {
     }
 
     // download photo method by file name
-    @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
-    public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerId") Long customerId,
+    @GetMapping(value = "/{customerNumber}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
+    public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerNumber") Long customerNumber,
                                                         @PathVariable("fileName") String fileName,
                                                         HttpServletRequest request) throws IOException {
-        Resource resource = photoService.downloadFileAsResourceByName(customerId, fileName);
+        Resource resource = photoService.downloadFileAsResourceByName(customerNumber, fileName);
 
         String contentType = null;
         try {
@@ -85,11 +85,11 @@ public class PhotoRESTController {
     }
 
     // download photo method by file name
-    @GetMapping(value = "/{customerId}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
-    public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerId") Long customerId,
+    @GetMapping(value = "/{customerNumber}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
+    public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerNumber") Long customerNumber,
                                                       @PathVariable("photoId") Long photoId,
                                                       HttpServletRequest request) throws IOException {
-        Resource resource = photoService.downloadFileAsResourceByFileId(customerId, photoId);
+        Resource resource = photoService.downloadFileAsResourceByFileId(customerNumber, photoId);
 
         String contentType = null;
         try {
@@ -110,10 +110,10 @@ public class PhotoRESTController {
     }
 
     // File deletion by name
-    @DeleteMapping(value = "/{customerId}/photos/{photoId}")
-    public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerId") Long customerId,
+    @DeleteMapping(value = "/{customerNumber}/photos/{photoId}")
+    public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerNumber") Long customerNumber,
                                                            @PathVariable("photoId") Long photoId) throws IOException {
 
-        return new ResponseEntity<>(photoService.deletePhoto(customerId, photoId), HttpStatus.OK);
+        return new ResponseEntity<>(photoService.deletePhoto(customerNumber, photoId), HttpStatus.OK);
     }
 }

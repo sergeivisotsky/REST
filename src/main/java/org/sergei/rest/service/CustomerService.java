@@ -4,8 +4,6 @@ import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,35 +14,39 @@ public class CustomerService {
     @Autowired
     private CustomerDAO customerDAO;
 
+    // Get all customers
     public List<Customer> getAllCustomers() {
         return customerDAO.findAll();
     }
 
-    public Customer getCustomerById(Long customerId) {
-        if (!customerDAO.existsById(customerId)) {
+    public Customer getCustomerByNumber(Long customerNumber) {
+        if (!customerDAO.existsByNumber(customerNumber)) {
             throw new RecordNotFoundException("No record with this parameters found");
         }
 
-        return customerDAO.findById(customerId);
+        return customerDAO.findByNumber(customerNumber);
     }
 
+    // Save customer
     public void saveCustomer(Customer customer) {
         customerDAO.save(customer);
     }
 
-    public Customer updateCustomer(Long id, Customer customer) {
-        customer.setCustomerId(id);
-        if (!customerDAO.existsById(id)) {
+    // Update customer by customer number
+    public Customer updateCustomer(Long customerNumber, Customer customer) {
+        customer.setCustomerNumber(customerNumber);
+        if (!customerDAO.existsByNumber(customerNumber)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
-        customerDAO.updateRecord(customer, id);
+        customerDAO.updateRecord(customer, customerNumber);
         return customer;
     }
 
-    public Customer deleteCustomerById(Long id) {
-        Customer customer = customerDAO.findById(id);
-        customer.setCustomerId(id);
-        if (!customerDAO.existsById(id)) {
+    // Delete customer by number
+    public Customer deleteCustomerByNumber(Long customerNumber) {
+        Customer customer = customerDAO.findByNumber(customerNumber);
+        customer.setCustomerNumber(customerNumber);
+        if (!customerDAO.existsByNumber(customerNumber)) {
             throw new RecordNotFoundException("Record with this parameters not found");
         }
         customerDAO.delete(customer);
