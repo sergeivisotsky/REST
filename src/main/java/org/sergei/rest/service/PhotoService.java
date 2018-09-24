@@ -42,7 +42,7 @@ public class PhotoService {
     public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
                                                      CommonsMultipartFile commonsMultipartFile) {
         PhotoUploadResponse photoUploadResponse = new PhotoUploadResponse();
-        photoUploadResponse.setCustomerId(customerId);
+        photoUploadResponse.setCustomerNumber(customerId);
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -68,24 +68,24 @@ public class PhotoService {
                 commonsMultipartFile.getSize());
     }
 
-    // Method to find all photos by customer iID
-    public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerId) {
-        if (!photoDAO.existsByCustomerId(customerId)) {
-            throw new FileNotFoundException("Customer with this ID not found");
+    // Method to find all photos by customer number
+    public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerNumber) {
+        if (!photoDAO.existsByCustomerNumber(customerNumber)) {
+            throw new FileNotFoundException("Customer with this number not found");
         }
-        return photoDAO.findAllPhotosByCustomerId(customerId);
+        return photoDAO.findAllPhotosByCustomerNumber(customerNumber);
     }
 
     // Method to download file from the server by file name
-    public Resource downloadFileAsResourceByName(Long customerId, String fileName) throws MalformedURLException {
+    public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
-        /*if (!photoDAO.existsByCustomerId(customerId)) {
+        /*if (!photoDAO.existsByCustomerNumber(customerNumber)) {
             throw new FileNotFoundException("Customer with this ID not found");
         } else if (!photoDAO.existsByPhotoName(fileName)) {
             throw new FileNotFoundException("Photo with this name not found");
         }*/
 
-        String fileNameResp = photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
+        String fileNameResp = photoDAO.findPhotoByCustomerNumberAndFileName(customerNumber, fileName);
 
         fileOperations.downloadFile(fileNameResp);
 
@@ -103,13 +103,13 @@ public class PhotoService {
     // Method to download file from the server by file ID
     public Resource downloadFileAsResourceByFileId(Long customerId, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        /*if (!photoDAO.existsByCustomerId(customerId)) {
+        /*if (!photoDAO.existsByCustomerNumber(customerId)) {
             throw new FileNotFoundException("Customer with this ID not found");
         } else if (!photoDAO.existsByPhotoId(photoId)) {
             throw new FileNotFoundException("Photo with this ID not found");
         }*/
 
-        String fileNameResp = photoDAO.findPhotoMetaByCustomerIdAndFileId(customerId, photoId).getFileName();
+        String fileNameResp = photoDAO.findPhotoMetaByCustomerNumberAndFileId(customerId, photoId).getFileName();
 
         fileOperations.downloadFile(fileNameResp);
 
@@ -124,23 +124,23 @@ public class PhotoService {
         }
     }
 
-    // Method to perform file deletion
-    public PhotoUploadResponse deletePhoto(Long customerId, Long photoId) throws IOException {
-        if (!photoDAO.existsByCustomerId(customerId)) {
-            throw new FileNotFoundException("Customer with this ID not found");
+    // Method to perform file deletion by customer number and photo ID
+    public PhotoUploadResponse deletePhoto(Long customerNumber, Long photoId) throws IOException {
+        if (!photoDAO.existsByCustomerNumber(customerNumber)) {
+            throw new FileNotFoundException("Customer with this number not found");
         } else if (!photoDAO.existsByPhotoId(photoId)) {
             throw new FileNotFoundException("Photo with this ID not found");
         }
         PhotoUploadResponse photoUploadResponse =
-                photoDAO.findPhotoMetaByCustomerIdAndFileId(customerId, photoId);
-        photoUploadResponse.setCustomerId(customerId);
+                photoDAO.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId);
+        photoUploadResponse.setCustomerNumber(customerNumber);
 
         // Delete photo from temp storage
         Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());
         Files.deleteIfExists(targetLocation);
 
         fileOperations.deleteFile(photoUploadResponse.getFileName()); // Delete file from the FTP server
-        photoDAO.deleteFileByCustomerIdAndFileName(customerId, photoId); // Delete file metadata from the database
+        photoDAO.deleteFileByCustomerNumberAndFileId(customerNumber, photoId); // Delete file metadata from the database
 
         return photoUploadResponse;
     }

@@ -20,14 +20,14 @@ public class CustomerRESTController {
 
     // Get all customers
     @GetMapping
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
     // Get customer by specific ID as a parameter
-    @GetMapping("/{customerId}")
-    public Customer getCustomerById(@PathVariable("customerId") Long customerId) throws RecordNotFoundException {
-        return customerService.getCustomerById(customerId);
+    @GetMapping("/{customerNumber}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable("customerNumber") Long customerNumber) throws RecordNotFoundException {
+        return new ResponseEntity<>(customerService.getCustomerByNumber(customerNumber), HttpStatus.OK);
     }
 
     // Add a new record
@@ -39,16 +39,16 @@ public class CustomerRESTController {
     }
 
     // Update record
-    @PutMapping(value = "/{customerId}", consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Customer> updateRecord(@PathVariable("customerId") Long customerId,
+    @PutMapping(value = "/{customerNumber}", consumes = {"application/json", "application/xml"})
+    public ResponseEntity<Customer> updateRecord(@PathVariable("customerNumber") Long customerNumber,
                                                  @RequestBody Customer customer) {
-        return new ResponseEntity<>(customerService.updateCustomer(customerId, customer), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(customerService.updateCustomer(customerNumber, customer), HttpStatus.ACCEPTED);
     }
 
     // Delete order by specific ID
-    @DeleteMapping("/{customerId}")
-    public ResponseEntity<Customer> deleteCustomerById(@PathVariable("customerId") Long customerId) {
-        Customer customer = customerService.deleteCustomerById(customerId);
+    @DeleteMapping("/{customerNumber}")
+    public ResponseEntity<Customer> deleteCustomerById(@PathVariable("customerNumber") Long customerNumber) {
+        Customer customer = customerService.deleteCustomerByNumber(customerNumber);
 
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
