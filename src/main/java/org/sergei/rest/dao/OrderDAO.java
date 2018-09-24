@@ -18,25 +18,36 @@ public class OrderDAO {
     private static final String SQL_FIND_ALL = "SELECT orders.order_number, orders.customer_number, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
             "INNER JOIN order_details ON orders.order_number = order_details.order_number";
+
     private static final String SQL_FIND_BY_NUMBER = "SELECT orders.order_number, orders.customer_number, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
             "INNER JOIN order_details ON orders.order_number = order_details.order_number and orders.order_number = ?";
+
     private static final String SQL_FIND_ALL_BY_CUSTOMER_NUMBER = "SELECT orders.order_number, orders.customer_number, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
             "INNER JOIN order_details ON orders.order_number = order_details.order_number AND orders.customer_number = ?";
+
     private static final String SQL_FIND_BY_CUSTOMER_AND_ORDER_NUMBERS = "SELECT orders.order_number, orders.customer_number, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
             "INNER JOIN order_details ON orders.order_number = order_details.order_number WHERE orders.customer_number = ? AND orders.order_number = ?";
+
     private static final String SQL_FIND_BY_PRODUCT_CODE = "SELECT orders.order_number, orders.customer_number, orders.order_date, orders.required_date, " +
             "orders.shipped_date, orders.status, order_details.product_code, order_details.quantity_ordered, order_details.price FROM orders " +
             "INNER JOIN order_details ON orders.order_number = order_details.order_number WHERE order_details.product_code = ?";
+
     private static final String SQL_SAVE_ORDER = "INSERT INTO orders(order_number, customer_number, order_date, required_date, shipped_date, status) VALUES(?, ?, ?, ?, ?, ?)";
+
     private static final String SQL_SAVE_ORDER_DETAILS = "INSERT INTO order_details(order_number, product_code, quantity_ordered, price) VALUES (?, ?, ?, ?)";
+
     private static final String SQL_UPDATE_ORDER = "UPDATE orders SET trans_id = ?, product = ?, product_weight = ?, price = ? " +
             "WHERE customer_id = ? AND order_id = ?";
+
     private static final String SQL_EXISTS_BY_ORDER_NUMBER = "SELECT count(*) FROM orders WHERE order_number = ?";
+
     private static final String SQL_EXISTS_BY_PRODUCT_CODE = "SELECT count(*) FROM products WHERE product_code = ?";
+
     private static final String SQL_EXISTS_BY_CUSTOMER_NUMBER = "SELECT count(*) FROM orders WHERE customer_number = ?";
+
     private static final String SQL_DELETE_ORDERS = "DELETE FROM orders WHERE order_number = ?";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
