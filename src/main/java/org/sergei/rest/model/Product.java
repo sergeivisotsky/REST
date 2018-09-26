@@ -19,23 +19,23 @@ public class Product implements Serializable {
 
     @XmlElement
     @Id
-    @Column(name = "product_code")
+    @Column(name = "product_code", length = 15)
     private String productCode;
 
     @XmlElement
-    @Column(name = "product_name")
+    @Column(name = "product_name", length = 70)
     private String productName;
 
     @XmlElement
-    @Column(name = "product_line")
+    @Column(name = "product_line", length = 50)
     private String productLine;
 
     @XmlElement
-    @Column(name = "product_vendor")
+    @Column(name = "product_vendor", length = 50)
     private String productVendor;
 
     @XmlElement
-    @Column(name = "price")
+    @Column(name = "price", precision=10, scale=2)
     private BigDecimal price;
 
     public Product() {

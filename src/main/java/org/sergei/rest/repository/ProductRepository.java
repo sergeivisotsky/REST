@@ -9,12 +9,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product WHERE productCode = :productCode")
+    @Query(value = "SELECT * FROM products WHERE product_code = :productCode", nativeQuery = true)
     Product findByCode(@Param("productCode") String productCode);
 
-    @Query("DELETE FROM Product WHERE productCode = :productCode")
+    @Query(value = "DELETE FROM products WHERE product_code = :productCode", nativeQuery = true)
     void deleteProductByProductCode(@Param("productCode") String productCode);
 
-    @Query("SELECT CASE WHEN count(p) > 0 THEN true ELSE false END FROM Product p WHERE p.productCode = :productCode")
+    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM products WHERE c.product_code = :productCode")
     boolean existsByProductCode(@Param("productCode") String productCode);
 }

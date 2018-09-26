@@ -25,7 +25,7 @@ public class OrderDetails implements Serializable {
     private Integer quantityOrdered;
 
     @XmlElement
-    @Column(name = "price")
+    @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
     public OrderDetails() {
