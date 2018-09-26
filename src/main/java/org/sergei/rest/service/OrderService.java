@@ -22,38 +22,38 @@ public class OrderService {
 
     // Get order by number
     public List<Order> getOrderByNumber(Long orderNumber) {
-        if (!orderRepository.existsByNumber(orderNumber)) {
+        /*if (!orderRepository.existsByNumber(orderNumber)) {
             throw new RecordNotFoundException("No order with this ID found");
-        }
+        }*/
 
         return orderRepository.findByNumber(orderNumber);
     }
 
     // Get order by customer and order numbers
     public List<Order> getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
-        if (!orderRepository.existsByCustomerNumber(customerNumber)) {
+        /*if (!orderRepository.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         } else if (!orderRepository.existsByNumber(orderNumber)) {
             throw new RecordNotFoundException("No order with this number found");
-        }
+        }*/
 
         return orderRepository.findByCustomerAndOrderNumbers(customerNumber, orderNumber);
     }
 
     // Get all orders by customer number
     public List<Order> getAllOrdersByCustomerNumber(Long customerNumber) {
-        if (!orderRepository.existsByCustomerNumber(customerNumber)) {
+        /*if (!orderRepository.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No orders for this customer found");
-        }
+        }*/
 
         return orderRepository.findAllByCustomerNumber(customerNumber);
     }
 
     // Get all orders by product code
     public List<Order> getAllByProductCode(String productCode) {
-        if (!orderRepository.existsByProductCode(productCode)) {
+        /*if (!orderRepository.existsByProductCode(productCode)) {
             throw new RecordNotFoundException("No order with this productCode code found");
-        }
+        }*/
 
         return orderRepository.findAllByProductCode(productCode);
     }
@@ -66,11 +66,11 @@ public class OrderService {
 
     // Update order by customer and order numbers
     public Order updateOrder(Long customerNumber, Long orderNumber, Order order) {
-        if (!orderRepository.existsByCustomerNumber(customerNumber)) {
+        /*if (!orderRepository.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         } else if (!orderRepository.existsByNumber(orderNumber)) {
             throw new RecordNotFoundException("No order with this number found");
-        }
+        }*/
         order.setOrderNumber(orderNumber);
         orderRepository.save(order);
         return order;
@@ -78,9 +78,9 @@ public class OrderService {
 
     public List<Order> deleteOrderByNumber(Long orderNumber) {
         List<Order> order = orderRepository.findByNumber(orderNumber);
-        if (!orderRepository.existsByNumber(orderNumber)) {
+        /*if (!orderRepository.existsByNumber(orderNumber)) {
             throw new RecordNotFoundException("No order with this ID found");
-        }
+        }*/
 
         orderRepository.deleteByOrderNumber(orderNumber);
 
@@ -89,12 +89,11 @@ public class OrderService {
 
     public List<Order> deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
         List<Order> order = orderRepository.findByCustomerAndOrderNumbers(customerNumber, orderNumber);
-        if (!orderRepository.existsByCustomerNumber(customerNumber)) {
+        /*if (!orderRepository.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No customer with this ID found");
         } else if (!orderRepository.existsByNumber(orderNumber)) {
             throw new RecordNotFoundException("No order with this ID found");
-        }
-
+        }*/
 
         orderRepository.deleteByCustomerAndOrderNumbers(customerNumber, orderNumber);
 

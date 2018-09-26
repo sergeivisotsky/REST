@@ -14,7 +14,7 @@ public interface PhotoRepository extends JpaRepository<PhotoUploadResponse, Long
     // TODO: existsByPhotoId
     // TODO: existsByCustomerNumber
 
-    @Query(value = "SELECT CASE WHEN count(*) > 0 THEN true ELSE false END FROM photos WHERE customer_number = :customerNumber", nativeQuery = true)
+//    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM PhotoUploadResponse c WHERE c.customer = :customerNumber")
     boolean existsByCustomerNumber(Long customerNumber);
 
     @Query(value = "SELECT FROM photos WHERE customer_number = :customerNumber", nativeQuery = true)
@@ -28,7 +28,7 @@ public interface PhotoRepository extends JpaRepository<PhotoUploadResponse, Long
     PhotoUploadResponse findPhotoMetaByCustomerNumberAndFileId(@Param("customerNumber") Long customerNumber,
                                                                @Param("photoId") Long photoId);
 
-    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM photos c WHERE c.photo_id = :photoId")
+//    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM photos c WHERE c.photo_id = :photoId")
     boolean existsByPhotoId(@Param("photoId") Long photoId);
 
     @Query(value = "DELETE FROM photos WHERE customer_number = :customerNumber AND photo_id = :photoId", nativeQuery = true)

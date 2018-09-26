@@ -12,3 +12,4 @@ branches:
   only:
   - master
   - rest-dev
+  - rest-dev-jpa

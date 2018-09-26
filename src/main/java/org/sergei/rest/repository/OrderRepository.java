@@ -32,12 +32,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     void deleteByCustomerAndOrderNumbers(@Param("customerNumber") Long customerNumber,
                                          @Param("orderNumber") Long orderNumber);
 
-    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM orders WHERE c.order_number= :orderNumber")
+//    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM Order c WHERE c.orderNumber = :orderNumber")
     boolean existsByNumber(@Param("orderNumber") Long orderNumber);
 
-    @Query(value = "SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM orders c WHERE customer_number = :customerNumber", nativeQuery = true)
+//    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM Order c WHERE c.customer = :customerNumber")
     boolean existsByCustomerNumber(@Param("customerNumber") Long customerNumber);
 
-    @Query(value = "SELECT CASE WHEN count(*) > 0 THEN true ELSE false END FROM orders INNER JOIN order_details o on orders.order_number = o.order_number WHERE product_code = :productCode", nativeQuery = true)
+    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM Order c INNER JOIN OrderDetails on Order.orderNumber - OrderDetails.orderNumber  WHERE c.product_code = :productCode")
     boolean existsByProductCode(@Param("productCode") String productCode);
 }

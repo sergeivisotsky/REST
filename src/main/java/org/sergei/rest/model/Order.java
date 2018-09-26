@@ -53,33 +53,19 @@ public class Order implements Serializable {
     @XmlElement
     @OneToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "order_number")
     private List<OrderDetails> orderDetails;
-
-    /*@XmlElement
-    private String productCode;
-
-    @XmlElement
-    private int quantityOrdered;
-
-    @XmlElement
-    private BigDecimal price;*/
 
     public Order() {
     }
 
     public Order(Long orderNumber, Customer customer, Date orderDate,
-                 Date requiredDate, Date shippedDate, String status/*,
-                 String productCode, int quantityOrdered, BigDecimal price*/) {
+                 Date requiredDate, Date shippedDate, String status) {
         this.orderNumber = orderNumber;
         this.customer = customer;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;
         this.shippedDate = shippedDate;
         this.status = status;
-        /*this.productCode = productCode;
-        this.quantityOrdered = quantityOrdered;
-        this.price = price;*/
     }
 
     public Long getOrderNumber() {
@@ -137,28 +123,4 @@ public class Order implements Serializable {
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
     }
-
-    /*public String getProductCode() {
-        return productCode;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
-
-    public int getQuantityOrdered() {
-        return quantityOrdered;
-    }
-
-    public void setQuantityOrdered(int quantityOrdered) {
-        this.quantityOrdered = quantityOrdered;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }*/
 }

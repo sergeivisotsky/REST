@@ -20,11 +20,11 @@ public class Customer implements Serializable {
     private Long customerNumber;
 
     @XmlElement
-    @Column(name = "first_name")
+    @Column(name = "first_name", length = 50)
     private String firstName;
 
     @XmlElement
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 50)
     private String lastName;
 
     @XmlElement
