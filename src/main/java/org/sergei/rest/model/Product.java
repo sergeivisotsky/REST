@@ -1,28 +1,41 @@
 package org.sergei.rest.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Product {
+@Entity
+@Table(name = "product")
+public class Product implements Serializable {
 
     @XmlElement
+    @Id
+    @Column(name = "product_code")
     private String productCode;
 
     @XmlElement
+    @Column(name = "product_name")
     private String productName;
 
     @XmlElement
+    @Column(name = "product_line")
     private String productLine;
 
     @XmlElement
+    @Column(name = "product_vendor")
     private String productVendor;
 
     @XmlElement
+    @Column(name = "price")
     private BigDecimal price;
 
     public Product() {

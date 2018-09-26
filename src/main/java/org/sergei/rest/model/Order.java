@@ -1,66 +1,85 @@
 package org.sergei.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Order {
+@Entity
+@Table(name = "orders")
+public class Order implements Serializable {
 
     @XmlElement
+    @Id
+    @Column(name = "order_number")
     private Long orderNumber;
 
     @XmlElement
-    private Long customerNumber;
+    @ManyToOne
+    @JoinColumn(name = "customer_number")
+    private Customer customer;
 
     @XmlElement
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "order_date")
+    @CreationTimestamp
     private Date orderDate;
 
     @XmlElement
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "required_date")
+    @CreationTimestamp
     private Date requiredDate;
 
     @XmlElement
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "shipped_date")
+    @CreationTimestamp
     private Date shippedDate;
 
     @XmlElement
+    @Column(name = "status")
     private String status;
 
-    /*@XmlElement
-    private List<OrderDetails> orderDetails;*/
-
     @XmlElement
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_number")
+    private List<OrderDetails> orderDetails;
+
+    /*@XmlElement
     private String productCode;
 
     @XmlElement
     private int quantityOrdered;
 
     @XmlElement
-    private BigDecimal price;
+    private BigDecimal price;*/
 
     public Order() {
     }
 
-    public Order(Long orderNumber, Long customerNumber, Date orderDate,
-                 Date requiredDate, Date shippedDate, String status,
-                 String productCode, int quantityOrdered, BigDecimal price) {
+    public Order(Long orderNumber, Customer customer, Date orderDate,
+                 Date requiredDate, Date shippedDate, String status/*,
+                 String productCode, int quantityOrdered, BigDecimal price*/) {
         this.orderNumber = orderNumber;
-        this.customerNumber = customerNumber;
+        this.customer = customer;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;
         this.shippedDate = shippedDate;
         this.status = status;
-        this.productCode = productCode;
+        /*this.productCode = productCode;
         this.quantityOrdered = quantityOrdered;
-        this.price = price;
+        this.price = price;*/
     }
 
     public Long getOrderNumber() {
@@ -71,12 +90,12 @@ public class Order {
         this.orderNumber = orderNumber;
     }
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Date getOrderDate() {
@@ -111,15 +130,15 @@ public class Order {
         this.status = status;
     }
 
-   /* public List<OrderDetails> getOrderDetails() {
+    public List<OrderDetails> getOrderDetails() {
         return orderDetails;
     }
 
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
-    }*/
+    }
 
-    public String getProductCode() {
+    /*public String getProductCode() {
         return productCode;
     }
 
@@ -141,5 +160,5 @@ public class Order {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
+    }*/
 }

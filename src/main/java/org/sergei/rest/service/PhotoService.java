@@ -4,6 +4,7 @@ import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
 import org.sergei.rest.ftp.FileOperations;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -39,10 +40,10 @@ public class PhotoService {
     }
 
     // Method to upload file on the server
-    public PhotoUploadResponse uploadFileOnTheServer(Long customerId, String fileDownloadUri,
+    public PhotoUploadResponse uploadFileOnTheServer(Customer customerId, String fileDownloadUri,
                                                      CommonsMultipartFile commonsMultipartFile) {
         PhotoUploadResponse photoUploadResponse = new PhotoUploadResponse();
-        photoUploadResponse.setCustomerNumber(customerId);
+        photoUploadResponse.setCustomer(customerId);
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -69,7 +70,7 @@ public class PhotoService {
     }
 
     // Method to find all photos by customer number
-    public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerNumber) {
+    public List<PhotoUploadResponse> findAllUploadedPhotos(Customer customerNumber) {
         if (!photoDAO.existsByCustomerNumber(customerNumber)) {
             throw new FileNotFoundException("Customer with this number not found");
         }
@@ -101,7 +102,7 @@ public class PhotoService {
     }
 
     // Method to download file from the server by file ID
-    public Resource downloadFileAsResourceByFileId(Long customerId, Long photoId) throws MalformedURLException {
+    public Resource downloadFileAsResourceByFileId(Customer customerId, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
         /*if (!photoDAO.existsByCustomerNumber(customerId)) {
             throw new FileNotFoundException("Customer with this ID not found");
@@ -125,7 +126,7 @@ public class PhotoService {
     }
 
     // Method to perform file deletion by customer number and photo ID
-    public PhotoUploadResponse deletePhoto(Long customerNumber, Long photoId) throws IOException {
+    public PhotoUploadResponse deletePhoto(Customer customerNumber, Long photoId) throws IOException {
         if (!photoDAO.existsByCustomerNumber(customerNumber)) {
             throw new FileNotFoundException("Customer with this number not found");
         } else if (!photoDAO.existsByPhotoId(photoId)) {
@@ -133,7 +134,7 @@ public class PhotoService {
         }
         PhotoUploadResponse photoUploadResponse =
                 photoDAO.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId);
-        photoUploadResponse.setCustomerNumber(customerNumber);
+        photoUploadResponse.setCustomer(customerNumber);
 
         // Delete photo from temp storage
         Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());

@@ -1,5 +1,6 @@
 package org.sergei.rest.model;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -7,31 +8,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@Entity
+@Table(name = "photos")
 public class PhotoUploadResponse {
     @XmlElement
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "photo_id")
     private Long photoId;
 
     @XmlElement
-    private Long customerNumber;
+    @Column(name = "customer_number")
+    private Customer customer;
 
     @XmlElement
+    @Column(name = "file_name")
     private String fileName;
 
     @XmlElement
+    @Column(name = "file_url")
     private String fileUrl;
 
     @XmlElement
+    @Column(name = "file_type")
     private String fileType;
 
     @XmlElement
+    @Column(name = "file_size")
     private Long fileSize;
 
     public PhotoUploadResponse() {
     }
 
-    public PhotoUploadResponse(Long customerNumber, String fileName, String fileUrl,
+    public PhotoUploadResponse(Customer customer, String fileName, String fileUrl,
                                String fileType, Long fileSize) {
-        this.customerNumber = customerNumber;
+        this.customer = customer;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.fileType = fileType;
@@ -46,12 +57,12 @@ public class PhotoUploadResponse {
         this.photoId = photoId;
     }
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public String getFileName() {

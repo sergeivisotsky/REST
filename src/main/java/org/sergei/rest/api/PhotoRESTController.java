@@ -1,5 +1,6 @@
 package org.sergei.rest.api;
 
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.PhotoUploadResponse;
 import org.sergei.rest.service.PhotoService;
 import org.slf4j.Logger;
@@ -32,14 +33,14 @@ public class PhotoRESTController {
 
     // The response with all user photos
     @GetMapping("/{customerNumber}/photo")
-    public ResponseEntity<List<PhotoUploadResponse>> findAllCustomerPhotos(@PathVariable("customerNumber") Long customerNumber) {
+    public ResponseEntity<List<PhotoUploadResponse>> findAllCustomerPhotos(@PathVariable("customerNumber") Customer customerNumber) {
         return new ResponseEntity<>(photoService.findAllUploadedPhotos(customerNumber), HttpStatus.OK);
     }
 
     // Upload one photo
     @PostMapping("/{customerNumber}/photo")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public PhotoUploadResponse uploadPhoto(@PathVariable("customerNumber") Long customerNumber,
+    public PhotoUploadResponse uploadPhoto(@PathVariable("customerNumber") Customer customerNumber,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
@@ -52,7 +53,7 @@ public class PhotoRESTController {
     // Upload multiple photos
     @PostMapping("/{customerNumber}/photos")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<PhotoUploadResponse> uploadMultiplePhotos(@PathVariable("customerNumber") Long customerId,
+    public List<PhotoUploadResponse> uploadMultiplePhotos(@PathVariable("customerNumber") Customer customerId,
                                                           @RequestParam("files") CommonsMultipartFile[] files) {
         return Arrays.stream(files)
                 .map(file -> uploadPhoto(customerId, file))
@@ -86,7 +87,7 @@ public class PhotoRESTController {
 
     // download photo method by file name
     @GetMapping(value = "/{customerNumber}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
-    public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerNumber") Customer customerNumber,
                                                       @PathVariable("photoId") Long photoId,
                                                       HttpServletRequest request) throws IOException {
         Resource resource = photoService.downloadFileAsResourceByFileId(customerNumber, photoId);
@@ -111,7 +112,7 @@ public class PhotoRESTController {
 
     // File deletion by name
     @DeleteMapping(value = "/{customerNumber}/photos/{photoId}")
-    public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<PhotoUploadResponse> deletePhoto(@PathVariable("customerNumber") Customer customerNumber,
                                                            @PathVariable("photoId") Long photoId) throws IOException {
 
         return new ResponseEntity<>(photoService.deletePhoto(customerNumber, photoId), HttpStatus.OK);

@@ -2,6 +2,7 @@ package org.sergei.rest.service;
 
 import org.sergei.rest.dao.OrderDAO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class OrderService {
     }
 
     // Get order by customer and order numbers
-    public List<Order> getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
+    public List<Order> getOrderByCustomerAndOrderNumbers(Customer customerNumber, Long orderNumber) {
         if (!orderDAO.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         } else if (!orderDAO.existsByNumber(orderNumber)) {
@@ -40,7 +41,7 @@ public class OrderService {
     }
 
     // Get all orders by customer number
-    public List<Order> getAllOrdersByCustomerNumber(Long customerNumber) {
+    public List<Order> getAllOrdersByCustomerNumber(Customer customerNumber) {
         if (!orderDAO.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No orders for this customer found");
         }
@@ -58,20 +59,20 @@ public class OrderService {
     }
 
     // Save order
-    public void saveOrder(Long customerNumber, Order order) {
-        order.setCustomerNumber(customerNumber);
+    public void saveOrder(Customer customerNumber, Order order) {
+        order.setCustomer(customerNumber);
         orderDAO.saveOrder(order);
     }
 
     // Update order by customer and order numbers
-    public Order updateOrder(Long customerNumber, Long orderNumber, Order order) {
+    public Order updateOrder(Customer customerNumber, Long orderNumber, Order order) {
         if (!orderDAO.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         } else if (!orderDAO.existsByNumber(orderNumber)) {
             throw new RecordNotFoundException("No order with this number found");
         }
         order.setOrderNumber(orderNumber);
-        order.setCustomerNumber(customerNumber);
+        order.setCustomer(customerNumber);
         orderDAO.updateRecord(customerNumber, orderNumber, order);
         return order;
     }
@@ -87,7 +88,7 @@ public class OrderService {
         return order;
     }
 
-    public List<Order> deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
+    public List<Order> deleteOrderByCustomerIdAndOrderId(Customer customerNumber, Long orderNumber) {
         List<Order> order = orderDAO.findByCustomerAndOrderNumbers(customerNumber, orderNumber);
         if (!orderDAO.existsByCustomerNumber(customerNumber)) {
             throw new RecordNotFoundException("No customer with this ID found");

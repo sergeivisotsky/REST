@@ -1,33 +1,49 @@
 package org.sergei.rest.model;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Customer {
+@Entity
+@Table(name = "customers")
+public class Customer implements Serializable {
 
     @XmlElement
+    @Id
+    @Column(name = "customer_number")
     private Long customerNumber;
 
     @XmlElement
+    @Column(name = "first_name")
     private String firstName;
 
     @XmlElement
+    @Column(name = "last_name")
     private String lastName;
 
     @XmlElement
-    private int age;
+    @Column(name = "age")
+    private Integer age;
+
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_number")
+    private List<Order> orders;
 
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, int age) {
+    public Customer(String firstName, String lastName, Integer age, List<Order> orders) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+        this.orders = orders;
     }
 
     public Long getCustomerNumber() {
@@ -58,7 +74,15 @@ public class Customer {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

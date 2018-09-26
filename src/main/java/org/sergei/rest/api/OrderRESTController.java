@@ -1,5 +1,6 @@
 package org.sergei.rest.api;
 
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,13 @@ public class OrderRESTController {
 
     // Get all orders by customer orderNumber
     @GetMapping("/customers/{customerNumber}/orders")
-    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customerNumber") Long customerNumber) {
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customerNumber") Customer customerNumber) {
         return new ResponseEntity<>(orderService.getAllOrdersByCustomerNumber(customerNumber), HttpStatus.OK);
     }
 
     // Get order by customer orderNumber and order orderNumber
     @GetMapping("/customers/{customerNumber}/orders/{orderNumber}")
-    public ResponseEntity<List<Order>> getOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<List<Order>> getOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Customer customerNumber,
                                                                       @PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.getOrderByCustomerAndOrderNumbers(customerNumber, orderNumber), HttpStatus.OK);
     }
@@ -51,7 +52,7 @@ public class OrderRESTController {
     // Add a new record
     @PostMapping(value = "/customers/{customerNumber}/orders",
             consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Order> createOrder(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<Order> createOrder(@PathVariable("customerNumber") Customer customerNumber,
                                              @RequestBody Order order) {
         orderService.saveOrder(customerNumber, order);
 
@@ -61,7 +62,7 @@ public class OrderRESTController {
     // Update record
     @PutMapping(value = "/customers/{customerNumber}/orders/{orderNumber}",
             consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Order> updateRecord(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<Order> updateRecord(@PathVariable("customerNumber") Customer customerNumber,
                                               @PathVariable("orderNumber") Long orderNumber,
                                               @RequestBody Order order) {
         return new ResponseEntity<>(orderService.updateOrder(customerNumber, orderNumber, order), HttpStatus.ACCEPTED);
@@ -75,7 +76,7 @@ public class OrderRESTController {
 
     // Delete order by customer number and order number
     @DeleteMapping("/customers/{customerNumber}/orders/{orderNumber}")
-    public ResponseEntity<List<Order>> deleteOrderByCustomerNumberAndOrderNumber(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<List<Order>> deleteOrderByCustomerNumberAndOrderNumber(@PathVariable("customerNumber") Customer customerNumber,
                                                                                  @PathVariable("orderNumber") Long orderNumber) {
         List<Order> order = orderService.deleteOrderByCustomerIdAndOrderId(customerNumber, orderNumber);
 
