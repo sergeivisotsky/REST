@@ -1,6 +1,5 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

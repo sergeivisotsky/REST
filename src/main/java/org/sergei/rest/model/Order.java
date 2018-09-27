@@ -1,6 +1,7 @@
 package org.sergei.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -76,6 +77,7 @@ public class Order implements Serializable {
         this.orderNumber = orderNumber;
     }
 
+    @JsonIgnore
     public Customer getCustomer() {
         return customer;
     }
