@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @XmlRootElement
@@ -52,10 +53,13 @@ public class Order implements Serializable {
     private String status;
 
     @XmlElement
-    @OneToMany(fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JoinColumn(name = "product_code")
-    private List<OrderDetails> orderDetails;
+    private List<OrderDetails> orderDetails = new LinkedList<>();
 
     public Order() {
     }

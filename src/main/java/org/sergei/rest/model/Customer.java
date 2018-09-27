@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 @XmlRootElement
@@ -33,16 +34,22 @@ public class Customer implements Serializable {
     @Column(name = "age")
     private Integer age;
 
-    @OneToMany(fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JoinColumn(name = "order_number")
     @XmlElement
-    private List<Order> orders;
+    private List<Order> orders = new LinkedList<>();
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JoinColumn(name = "photo_id")
-    private List<PhotoUploadResponse> photoUploadResponses;
+    private List<PhotoUploadResponse> photoUploadResponses = new LinkedList<>();
 
     public Customer() {
     }
