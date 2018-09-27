@@ -20,10 +20,6 @@ public class CustomerService {
     }
 
     public Customer getCustomerByNumber(Long customerNumber) {
-        /*if (!customerRepository.existsByCustomerNumber(customerNumber)) {
-            throw new RecordNotFoundException("No record with this parameters found");
-        }*/
-
         return customerRepository.findByCustomerNumber(customerNumber);
     }
 
@@ -35,9 +31,6 @@ public class CustomerService {
     // Update customer by customer number
     public Customer updateCustomer(Long customerNumber, Customer customer) {
         customer.setCustomerNumber(customerNumber);
-        /*if (!customerRepository.existsByCustomerNumber(customerNumber)) {
-            throw new RecordNotFoundException("Record with this parameters not found");
-        }*/
         customerRepository.save(customer);
         return customer;
     }
@@ -46,9 +39,6 @@ public class CustomerService {
     public Customer deleteCustomerByNumber(Long customerNumber) {
         Customer customer = customerRepository.findByCustomerNumber(customerNumber);
         customer.setCustomerNumber(customerNumber);
-        if (!customerRepository.existsByCustomerNumber(customerNumber)) {
-            throw new RecordNotFoundException("Record with this parameters not found");
-        }
         customerRepository.delete(customer);
 
         return customer;

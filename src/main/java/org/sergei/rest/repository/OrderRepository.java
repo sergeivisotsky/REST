@@ -1,5 +1,6 @@
 package org.sergei.rest.repository;
 
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,13 +32,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "DELETE FROM orders WHERE customer_number = :customerNumber AND order_number = :orderNumber", nativeQuery = true)
     void deleteByCustomerAndOrderNumbers(@Param("customerNumber") Long customerNumber,
                                          @Param("orderNumber") Long orderNumber);
-
-//    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM Order c WHERE c.orderNumber = :orderNumber")
-    boolean existsByNumber(@Param("orderNumber") Long orderNumber);
-
-//    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM Order c WHERE c.customer = :customerNumber")
-    boolean existsByCustomerNumber(@Param("customerNumber") Long customerNumber);
-
-    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM Order c INNER JOIN OrderDetails on Order.orderNumber - OrderDetails.orderNumber  WHERE c.product_code = :productCode")
-    boolean existsByProductCode(@Param("productCode") String productCode);
 }

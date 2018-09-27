@@ -21,9 +21,6 @@ public class ProductService {
 
     // Find product by product code
     public Product findByCode(String productCode) {
-        /*if (!productRepository.existsByProductCode(productCode)) {
-            throw new ResourceNotFoundException("Product with this code not found");
-        }*/
         return productRepository.findByCode(productCode);
     }
 
@@ -34,9 +31,6 @@ public class ProductService {
 
     // Update product by code
     public Product updateProduct(String productCode, Product product) {
-        /*if (!productRepository.existsByProductCode(productCode)) {
-            throw new ResourceNotFoundException("No product with this code found");
-        }*/
         productRepository.save(product);
 
         return product;
@@ -45,10 +39,6 @@ public class ProductService {
     // Delete product by code
 
     public Product deleteProduct(String productCode) {
-        /*if (!productRepository.existsByProductCode(productCode)) {
-            throw new ResourceNotFoundException("No product with this code found");
-        }*/
-
         Product product = productRepository.findByCode(productCode);
         productRepository.deleteProductByProductCode(productCode);
 

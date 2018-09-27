@@ -75,21 +75,12 @@ public class PhotoService {
 
     // Method to find all photos by customer number
     public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerNumber) {
-        if (!photoRepository.existsByCustomerNumber(customerNumber)) {
-            throw new FileNotFoundException("Customer with this number not found");
-        }
         return photoRepository.findAllPhotosByCustomerNumber(customerNumber);
     }
 
     // Method to download file from the server by file name
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
-        /*if (!photoRepository.existsByCustomerNumber(customerNumber)) {
-            throw new FileNotFoundException("Customer with this ID not found");
-        } else if (!photoRepository.existsByPhotoName(fileName)) {
-            throw new FileNotFoundException("Photo with this name not found");
-        }*/
-
         String fileNameResp = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName).getFileName();
 
         fileOperations.downloadFile(fileNameResp);
@@ -108,12 +99,6 @@ public class PhotoService {
     // Method to download file from the server by file ID
     public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        /*if (!photoRepository.existsByCustomerNumber(customerNumber)) {
-            throw new FileNotFoundException("Customer with this ID not found");
-        } else if (!photoRepository.existsByPhotoId(photoId)) {
-            throw new FileNotFoundException("Photo with this ID not found");
-        }*/
-
         String fileNameResp = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId).getFileName();
 
         fileOperations.downloadFile(fileNameResp);
@@ -131,11 +116,6 @@ public class PhotoService {
 
     // Method to perform file deletion by customer number and photo ID
     public PhotoUploadResponse deletePhoto(Long customerNumber, Long photoId) throws IOException {
-        if (!photoRepository.existsByCustomerNumber(customerNumber)) {
-            throw new FileNotFoundException("Customer with this number not found");
-        } else if (!photoRepository.existsByPhotoId(photoId)) {
-            throw new FileNotFoundException("Photo with this ID not found");
-        }
         PhotoUploadResponse photoUploadResponse =
                 photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId);
 

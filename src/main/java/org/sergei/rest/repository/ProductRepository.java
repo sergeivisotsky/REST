@@ -14,7 +14,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "DELETE FROM products WHERE product_code = :productCode", nativeQuery = true)
     void deleteProductByProductCode(@Param("productCode") String productCode);
-
-//    @Query("SELECT CASE WHEN count(c) > 0 THEN true ELSE false END FROM products WHERE c.product_code = :productCode")
-    boolean existsByProductCode(@Param("productCode") String productCode);
 }
