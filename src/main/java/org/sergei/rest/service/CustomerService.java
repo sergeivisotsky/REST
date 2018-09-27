@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -45,10 +44,9 @@ public class CustomerService {
 
     // Delete customer by number
     public Customer deleteCustomerByNumber(Long customerNumber) {
-        Customer customer = customerRepository.findByCustomerNumber(customerNumber);
-        customer.setCustomerNumber(customerNumber);
-        customerRepository.delete(customer);
-
-        return customer;
+        return customerRepository.findById(customerNumber).map(customer -> {
+            customerRepository.delete(customer);
+            return customer;
+        }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
     }
 }

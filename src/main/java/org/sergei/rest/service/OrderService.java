@@ -1,7 +1,6 @@
 package org.sergei.rest.service;
 
 import org.sergei.rest.exceptions.RecordNotFoundException;
-import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +20,27 @@ public class OrderService {
     }
 
     // Get order by number
-    public List<Order> getOrderByNumber(Long orderNumber) {
-        return orderRepository.findByNumber(orderNumber);
+    public Order getOrderByNumber(Long orderNumber) {
+        return orderRepository.findById(orderNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
     }
 
     // Get order by customer and order numbers
     public List<Order> getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
-        return orderRepository.findByCustomerAndOrderNumbers(customerNumber, orderNumber);
+        return orderRepository.findByCustomerAndOrderNumbers(customerNumber, orderNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No record with this parameters found"));
     }
 
     // Get all orders by customer number
     public List<Order> getAllOrdersByCustomerNumber(Long customerNumber) {
-        return orderRepository.findAllByCustomerNumber(customerNumber);
+        return orderRepository.findAllByCustomerNumber(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No record with this parameters found"));
     }
 
     // Get all orders by product code
     public List<Order> getAllByProductCode(String productCode) {
-        return orderRepository.findAllByProductCode(productCode);
+        return orderRepository.findAllByProductCode(productCode)
+                .orElseThrow(() -> new RecordNotFoundException("No product with this code found"));
     }
 
     // Save order
@@ -61,7 +64,8 @@ public class OrderService {
     }
 
     public List<Order> deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
-        List<Order> order = orderRepository.findByCustomerAndOrderNumbers(customerNumber, orderNumber);
+        List<Order> order = orderRepository.findByCustomerAndOrderNumbers(customerNumber, orderNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No record with this parameters found"));
         orderRepository.deleteByCustomerAndOrderNumbers(customerNumber, orderNumber);
 
         return order;

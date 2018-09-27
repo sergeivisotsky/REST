@@ -2,6 +2,7 @@ package org.sergei.rest.service;
 
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
+import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.PhotoUploadResponse;
@@ -75,17 +76,21 @@ public class PhotoService {
 
     // Method to find all photos by customer number
     public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerNumber) {
-        return photoRepository.findAllPhotosByCustomerNumber(customerNumber);
+        return photoRepository.findAllPhotosByCustomerNumber(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
     }
 
     // Method to download file from the server by file name
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
-        String fileNameResp = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName).getFileName();
+        PhotoUploadResponse photoUploadResponse = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName)
+                .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
 
-        fileOperations.downloadFile(fileNameResp);
+        String responseFileName = photoUploadResponse.getFileName();
 
-        Path filePath = this.fileStorageLocation.resolve(fileNameResp).normalize();
+        fileOperations.downloadFile(responseFileName);
+
+        Path filePath = this.fileStorageLocation.resolve(responseFileName).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 
         // Check if file exists
@@ -99,11 +104,14 @@ public class PhotoService {
     // Method to download file from the server by file ID
     public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        String fileNameResp = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId).getFileName();
+        PhotoUploadResponse photoUploadResponse = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
+                .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
 
-        fileOperations.downloadFile(fileNameResp);
+        String responseFileName = photoUploadResponse.getFileName();
 
-        Path filePath = this.fileStorageLocation.resolve(fileNameResp).normalize();
+        fileOperations.downloadFile(responseFileName);
+
+        Path filePath = this.fileStorageLocation.resolve(responseFileName).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 
         // Check if file exists
@@ -117,13 +125,16 @@ public class PhotoService {
     // Method to perform file deletion by customer number and photo ID
     public PhotoUploadResponse deletePhoto(Long customerNumber, Long photoId) throws IOException {
         PhotoUploadResponse photoUploadResponse =
-                photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId);
+                photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
+                        .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
+
+        String responseFileName = photoUploadResponse.getFileName();
 
         // Delete photo from temp storage
-        Path targetLocation = this.fileStorageLocation.resolve(photoUploadResponse.getFileName());
+        Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
         Files.deleteIfExists(targetLocation);
 
-        fileOperations.deleteFile(photoUploadResponse.getFileName()); // Delete file from the FTP server
+        fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
         photoRepository.deleteFileByCustomerNumberAndFileId(customerNumber, photoId); // Delete file metadata from the database
 
         return photoUploadResponse;

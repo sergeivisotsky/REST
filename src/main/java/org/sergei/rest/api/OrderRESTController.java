@@ -26,7 +26,7 @@ public class OrderRESTController {
 
     // Get order by specific ID as a parameter
     @GetMapping("/orders/{orderNumber}")
-    public ResponseEntity<List<Order>> getOrderById(@PathVariable("orderNumber") Long orderNumber) {
+    public ResponseEntity<Order> getOrderById(@PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.getOrderByNumber(orderNumber), HttpStatus.OK);
     }
 
