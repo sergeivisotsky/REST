@@ -1,6 +1,8 @@
 package org.sergei.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -19,6 +21,7 @@ public class Customer implements Serializable {
 
     @XmlElement
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_number")
     private Long customerNumber;
 
@@ -39,16 +42,17 @@ public class Customer implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "order_number")
+    @JoinColumn(name = "customer_number")
     @XmlElement
     private List<Order> orders = new LinkedList<>();
 
     @JsonIgnore
     @OneToMany(
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "photo_id")
+    @JoinColumn(name = "customer_number")
     private List<PhotoUploadResponse> photoUploadResponses = new LinkedList<>();
 
     public Customer() {

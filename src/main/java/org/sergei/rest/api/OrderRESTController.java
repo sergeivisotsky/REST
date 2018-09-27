@@ -1,6 +1,5 @@
 package org.sergei.rest.api;
 
-import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class OrderRESTController {
 
     // Get order by customer orderNumber and order orderNumber
     @GetMapping("/customers/{customerNumber}/orders/{orderNumber}")
-    public ResponseEntity<List<Order>> getOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<Order> getOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Long customerNumber,
                                                                       @PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.getOrderByCustomerAndOrderNumbers(customerNumber, orderNumber), HttpStatus.OK);
     }
@@ -54,9 +53,7 @@ public class OrderRESTController {
             consumes = {"application/json", "application/xml"})
     public ResponseEntity<Order> createOrder(@PathVariable("customerNumber") Long customerNumber,
                                              @RequestBody Order order) {
-        orderService.saveOrder(customerNumber, order);
-
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return new ResponseEntity<>(orderService.saveOrder(customerNumber, order), HttpStatus.CREATED);
     }
 
     // Update record
@@ -70,16 +67,15 @@ public class OrderRESTController {
 
     // Delete order by number
     @DeleteMapping("/orders/{orderNumber}")
-    public ResponseEntity<List<Order>> deleteOrderByNumber(@PathVariable("orderNumber") Long orderNumber) {
+    public ResponseEntity<Order> deleteOrderByNumber(@PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.deleteOrderByNumber(orderNumber), HttpStatus.OK);
     }
 
     // Delete order by customer number and order number
     @DeleteMapping("/customers/{customerNumber}/orders/{orderNumber}")
-    public ResponseEntity<List<Order>> deleteOrderByCustomerNumberAndOrderNumber(@PathVariable("customerNumber") Long customerNumber,
-                                                                                 @PathVariable("orderNumber") Long orderNumber) {
-        List<Order> order = orderService.deleteOrderByCustomerIdAndOrderId(customerNumber, orderNumber);
+    public ResponseEntity<Order> deleteOrderByCustomerNumberAndOrderNumber(@PathVariable("customerNumber") Long customerNumber,
+                                                                           @PathVariable("orderNumber") Long orderNumber) {
 
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        return new ResponseEntity<>(orderService.deleteOrderByCustomerIdAndOrderId(customerNumber, orderNumber), HttpStatus.OK);
     }
 }

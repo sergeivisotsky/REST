@@ -2,9 +2,12 @@ package org.sergei.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,11 +27,6 @@ public class Order implements Serializable {
     @Id
     @Column(name = "order_number")
     private Long orderNumber;
-
-    @XmlElement
-    @ManyToOne
-    @JoinColumn(name = "customer_number")
-    private Customer customer;
 
     @XmlElement
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -60,6 +58,12 @@ public class Order implements Serializable {
     )
     @JoinColumn(name = "product_code")
     private List<OrderDetails> orderDetails = new LinkedList<>();
+
+    @XmlElement
+    @ManyToOne
+    @JoinColumn(name = "customer_number")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Customer customer;
 
     public Order() {
     }

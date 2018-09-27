@@ -44,10 +44,15 @@ public class PhotoService {
         this.fileOperations = fileOperations;
     }
 
+    // Method to find all photos by customer number
+    public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerNumber) {
+        return photoRepository.findAllPhotosByCustomerNumber(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
+    }
+
     // Method to upload file on the server
     public PhotoUploadResponse uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
                                                      CommonsMultipartFile commonsMultipartFile) {
-
 
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
@@ -79,12 +84,6 @@ public class PhotoService {
         photoRepository.save(photoUploadResponse);
 
         return photoUploadResponse;
-    }
-
-    // Method to find all photos by customer number
-    public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerNumber) {
-        return photoRepository.findAllPhotosByCustomerNumber(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
     }
 
     // Method to download file from the server by file name

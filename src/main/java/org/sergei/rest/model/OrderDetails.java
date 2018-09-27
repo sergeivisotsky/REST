@@ -17,7 +17,7 @@ public class OrderDetails implements Serializable {
     @XmlElement
     @Id
     @ManyToOne
-    @JoinColumn(name = "product_code")
+    @JoinColumn(name = "product_code", nullable = false)
     private Product product;
 
     @ManyToOne
