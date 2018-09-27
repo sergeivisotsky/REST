@@ -1,5 +1,6 @@
 package org.sergei.rest.service;
 
+import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class ProductService {
 
     // Find product by product code
     public Product findByCode(String productCode) {
-        return productRepository.findByCode(productCode);
+        return productRepository.findByCode(productCode)
+                .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
     }
 
     // Save new product
@@ -29,18 +31,23 @@ public class ProductService {
     }
 
     // Update product by code
-    public Product updateProduct(String productCode, Product product) {
-        productRepository.save(product);
-
-        return product;
+    public Product updateProduct(String productCode, Product productRequest) {
+        return productRepository.findByCode(productCode)
+                .map(product -> {
+                    product.setProductCode(productRequest.getProductCode());
+                    product.setProductName(productRequest.getProductName());
+                    product.setProductLine(productRequest.getProductLine());
+                    product.setProductVendor(productRequest.getProductVendor());
+                    product.setPrice(productRequest.getPrice());
+                    return productRepository.save(product);
+                }).orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
     }
 
     // Delete product by code
-
     public Product deleteProduct(String productCode) {
-        Product product = productRepository.findByCode(productCode);
-        productRepository.deleteProductByProductCode(productCode);
-
-        return product;
+        return productRepository.findByCode(productCode).map(product -> {
+            productRepository.delete(product);
+            return product;
+        }).orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
     }
 }
