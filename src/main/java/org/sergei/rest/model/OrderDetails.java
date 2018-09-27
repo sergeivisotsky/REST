@@ -18,7 +18,11 @@ public class OrderDetails implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "product_code")
-    private Product productCode;
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "order_number")
+    private Order order;
 
     @XmlElement
     @Column(name = "quantity_ordered")
@@ -31,18 +35,19 @@ public class OrderDetails implements Serializable {
     public OrderDetails() {
     }
 
-    public OrderDetails(Product productCode, Integer quantityOrdered, BigDecimal price) {
-        this.productCode = productCode;
+    public OrderDetails(Product product, Integer quantityOrdered, BigDecimal price, Order order) {
+        this.product = product;
         this.quantityOrdered = quantityOrdered;
         this.price = price;
+        this.order = order;
     }
 
-    public Product getProductCode() {
-        return productCode;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductCode(Product productCode) {
-        this.productCode = productCode;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public int getQuantityOrdered() {
@@ -59,5 +64,13 @@ public class OrderDetails implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class Product implements Serializable {
 
     @XmlElement

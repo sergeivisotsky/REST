@@ -54,6 +54,7 @@ public class Order implements Serializable {
     @XmlElement
     @OneToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_code")
     private List<OrderDetails> orderDetails;
 
     public Order() {

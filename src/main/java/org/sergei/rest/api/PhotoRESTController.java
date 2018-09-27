@@ -40,7 +40,7 @@ public class PhotoRESTController {
     // Upload one photo
     @PostMapping("/{customerNumber}/photo")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public PhotoUploadResponse uploadPhoto(@PathVariable("customerNumber") Customer customerNumber,
+    public PhotoUploadResponse uploadPhoto(@PathVariable("customerNumber") Long customerNumber,
                                            @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
@@ -53,10 +53,10 @@ public class PhotoRESTController {
     // Upload multiple photos
     @PostMapping("/{customerNumber}/photos")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<PhotoUploadResponse> uploadMultiplePhotos(@PathVariable("customerNumber") Customer customerId,
+    public List<PhotoUploadResponse> uploadMultiplePhotos(@PathVariable("customerNumber") Long customerNumber,
                                                           @RequestParam("files") CommonsMultipartFile[] files) {
         return Arrays.stream(files)
-                .map(file -> uploadPhoto(customerId, file))
+                .map(file -> uploadPhoto(customerNumber, file))
                 .collect(Collectors.toList());
     }
 

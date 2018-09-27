@@ -6,6 +6,7 @@ import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.PhotoUploadResponse;
+import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -29,23 +30,32 @@ public class PhotoService {
 
     private final PhotoRepository photoRepository;
 
+    private final CustomerRepository customerRepository;
+
     private final Path fileStorageLocation;
 
     private final FileOperations fileOperations;
 
     @Autowired
-    public PhotoService(PhotoRepository photoRepository, FileOperations fileOperations) {
+    public PhotoService(PhotoRepository photoRepository, CustomerRepository customerRepository, FileOperations fileOperations) {
         this.fileStorageLocation = Paths.get(TEMP_DIR_PATH).toAbsolutePath().normalize();
         this.photoRepository = photoRepository;
+        this.customerRepository = customerRepository;
         this.fileOperations = fileOperations;
     }
 
     // Method to upload file on the server
-    public PhotoUploadResponse uploadFileOnTheServer(Customer customerId, String fileDownloadUri,
+    public PhotoUploadResponse uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
                                                      CommonsMultipartFile commonsMultipartFile) {
+
+
+        Customer customer = customerRepository.findById(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+
         PhotoUploadResponse photoUploadResponse = new PhotoUploadResponse();
 
-        photoUploadResponse.setCustomer(customerId);
+        photoUploadResponse.setCustomer(customer);
+        photoUploadResponse.setFileName(commonsMultipartFile.getName());
         photoUploadResponse.setFileUrl(fileDownloadUri);
         photoUploadResponse.setFileType(commonsMultipartFile.getContentType());
         photoUploadResponse.setFileSize(commonsMultipartFile.getSize());
@@ -68,10 +78,7 @@ public class PhotoService {
         // Save file metadata into a database
         photoRepository.save(photoUploadResponse);
 
-        return new PhotoUploadResponse(customerId,
-                commonsMultipartFile.getOriginalFilename(),
-                fileDownloadUri, commonsMultipartFile.getContentType(),
-                commonsMultipartFile.getSize());
+        return photoUploadResponse;
     }
 
     // Method to find all photos by customer number

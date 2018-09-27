@@ -22,7 +22,7 @@
     </http>
 
     <!--Unsecured endpoint-->
-    <sec:http pattern="/api/v1/customers/5" security="none"/>
+    <sec:http pattern="/api/v1/customers/1" security="none"/>
 
     <!-- This is where we tells spring security what URL should be protected
      and what roles have access to them -->

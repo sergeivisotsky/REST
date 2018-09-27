@@ -1,5 +1,7 @@
 package org.sergei.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,16 +36,24 @@ public class Customer implements Serializable {
     @OneToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_number")
+    @XmlElement
     private List<Order> orders;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "photo_id")
+    private List<PhotoUploadResponse> photoUploadResponses;
 
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, Integer age, List<Order> orders) {
+    public Customer(String firstName, String lastName, Integer age,
+                    List<Order> orders, List<PhotoUploadResponse> photoUploadResponses) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.orders = orders;
+        this.photoUploadResponses = photoUploadResponses;
     }
 
     public Long getCustomerNumber() {
@@ -84,5 +94,13 @@ public class Customer implements Serializable {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public List<PhotoUploadResponse> getPhotoUploadResponses() {
+        return photoUploadResponses;
+    }
+
+    public void setPhotoUploadResponses(List<PhotoUploadResponse> photoUploadResponses) {
+        this.photoUploadResponses = photoUploadResponses;
     }
 }

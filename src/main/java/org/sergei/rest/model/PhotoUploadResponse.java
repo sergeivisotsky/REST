@@ -18,7 +18,8 @@ public class PhotoUploadResponse {
     private Long photoId;
 
     @XmlElement
-    @Column(name = "customer_number")
+    @ManyToOne
+    @JoinColumn(name = "customer_number")
     private Customer customer;
 
     @XmlElement

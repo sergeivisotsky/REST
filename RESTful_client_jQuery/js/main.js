@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: "http://localhost:8080/rest/api/v1/customers/5",
+        url: "http://localhost:8080/rest/api/v1/customers/1",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
