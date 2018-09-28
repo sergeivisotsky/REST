@@ -2,12 +2,11 @@ package org.sergei.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -50,13 +49,13 @@ public class Order implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @XmlElement
     @OneToMany(
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     @JoinColumn(name = "product_code")
+    @XmlElement
     private List<OrderDetails> orderDetails = new LinkedList<>();
 
     @XmlElement

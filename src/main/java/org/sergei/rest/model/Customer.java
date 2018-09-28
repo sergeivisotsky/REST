@@ -1,8 +1,6 @@
 package org.sergei.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -46,7 +44,6 @@ public class Customer implements Serializable {
     @XmlElement
     private List<Order> orders = new LinkedList<>();
 
-    @JsonIgnore
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -107,6 +104,7 @@ public class Customer implements Serializable {
         this.orders = orders;
     }
 
+    @JsonIgnore
     public List<PhotoUploadResponse> getPhotoUploadResponses() {
         return photoUploadResponses;
     }

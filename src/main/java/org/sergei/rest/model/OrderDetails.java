@@ -15,8 +15,8 @@ import java.math.BigDecimal;
 public class OrderDetails implements Serializable {
 
     @XmlElement
-    @Id
     @ManyToOne
+    @Id
     @JoinColumn(name = "product_code")
     private Product product;
 
