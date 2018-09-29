@@ -1,28 +1,33 @@
 package org.sergei.rest.model;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "order_details")
 public class OrderDetails implements Serializable {
 
-    @XmlElement
-    @ManyToOne
-    @Id
-    @JoinColumn(name = "product_code")
-    private Product product;
+    private static final long serialVersionUID = 1L;
 
+    @XmlElement
+    @Id
     @ManyToOne
     @JoinColumn(name = "order_number")
     private Order order;
+
+    @XmlElement
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "product_code")
+    private Product product;
+
+    /*@ManyToOne
+    @JoinColumn(name = "customer_number")
+    private Customer customer;*/
 
     @XmlElement
     @Column(name = "quantity_ordered")
@@ -35,11 +40,12 @@ public class OrderDetails implements Serializable {
     public OrderDetails() {
     }
 
-    public OrderDetails(Product product, Integer quantityOrdered, BigDecimal price, Order order) {
+    public OrderDetails(Product product, Integer quantityOrdered, BigDecimal price, Order order, Customer customer) {
         this.product = product;
         this.quantityOrdered = quantityOrdered;
         this.price = price;
         this.order = order;
+//        this.customer = customer;
     }
 
     public Product getProduct() {
@@ -57,6 +63,14 @@ public class OrderDetails implements Serializable {
     public void setQuantityOrdered(Integer quantityOrdered) {
         this.quantityOrdered = quantityOrdered;
     }
+
+    /*public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }*/
 
     public BigDecimal getPrice() {
         return price;

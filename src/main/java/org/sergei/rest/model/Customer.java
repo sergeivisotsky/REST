@@ -3,19 +3,17 @@ package org.sergei.rest.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "customers")
 public class Customer implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @XmlElement
     @Id
@@ -41,7 +39,6 @@ public class Customer implements Serializable {
             orphanRemoval = true
     )
     @JoinColumn(name = "customer_number")
-    @XmlElement
     private List<Order> orders = new LinkedList<>();
 
     @OneToMany(
@@ -96,6 +93,8 @@ public class Customer implements Serializable {
         this.age = age;
     }
 
+    @XmlElementWrapper(name = "orders")
+    @XmlElement(name = "order")
     public List<Order> getOrders() {
         return orders;
     }

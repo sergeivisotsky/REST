@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 @Table(name = "products")
 public class Product implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @XmlElement
     @Id
     @Column(name = "product_code", length = 15)

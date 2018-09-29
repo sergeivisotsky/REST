@@ -7,9 +7,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,10 +16,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "orders")
 public class Order implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @XmlElement
     @Id
@@ -54,8 +54,7 @@ public class Order implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "product_code")
-    @XmlElement
+    @JoinColumn(name = "order_number")
     private List<OrderDetails> orderDetails = new LinkedList<>();
 
     @XmlElement
@@ -126,6 +125,8 @@ public class Order implements Serializable {
         this.status = status;
     }
 
+    @XmlElementWrapper(name = "orderDetails")
+    @XmlElement(name = "info")
     public List<OrderDetails> getOrderDetails() {
         return orderDetails;
     }
