@@ -36,7 +36,7 @@ public class OrderService {
     // Get all orders
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-        return getOrdersByistWithParam(orders);
+        return getOrdersByListWithParam(orders);
     }
 
     // Get order by number
@@ -85,17 +85,17 @@ public class OrderService {
         }
         List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
 
-        return getOrdersByistWithParam(orders);
+        return getOrdersByListWithParam(orders);
     }
 
     // Get all orders by product code
     public List<OrderDTO> getAllByProductCode(String productCode) {
         List<Order> orders = orderRepository.findAllByProductCode(productCode);
-        return getOrdersByistWithParam(orders);
+        return getOrdersByListWithParam(orders);
     }
 
     // Service class to get order by specific parameter
-    private List<OrderDTO> getOrdersByistWithParam(List<Order> orders) {
+    private List<OrderDTO> getOrdersByListWithParam(List<Order> orders) {
         List<OrderDTO> response = new LinkedList<>();
 
         for (Order order : orders) {
