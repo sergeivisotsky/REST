@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "SELECT * FROM orders WHERE customer_number = :customerNumber", nativeQuery = true)
-    Optional<List<Order>> findAllByCustomerNumber(@Param("customerNumber") Long customerNumber);
+    List<Order> findAllByCustomerNumber(@Param("customerNumber") Long customerNumber);
 
     @Query(value = "SELECT * FROM orders INNER JOIN order_details o on orders.order_number = o.order_number WHERE product_code = :productCode", nativeQuery = true)
-    Optional<List<Order>> findAllByProductCode(@Param("productCode") String productCode);
+    List<Order> findAllByProductCode(@Param("productCode") String productCode);
 }

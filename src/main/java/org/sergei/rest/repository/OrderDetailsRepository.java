@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface OrderDetailsRepository extends JpaRepository<OrderDetails, Long> {
 
     @Query(value = "SELECT * FROM order_details WHERE order_number = :orderNumber", nativeQuery = true)
-    Optional<List<OrderDetails>> findAllByOrderNumber(@Param("orderNumber") Long orderNumber);
+    List<OrderDetails> findAllByOrderNumber(@Param("orderNumber") Long orderNumber);
 }

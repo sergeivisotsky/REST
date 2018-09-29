@@ -1,14 +1,28 @@
 package org.sergei.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 
+@JsonRootName("orderDetails")
+@XmlRootElement(name = "orderDetails")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderDetailsDTO {
+
+    @XmlElement
+    @XmlTransient
+    @JsonIgnore
     private Long orderNumber;
 
+    @XmlElement
     private String productCode;
 
+    @XmlElement
     private Integer quantityOrdered;
 
+    @XmlElement
     private BigDecimal price;
 
     public OrderDetailsDTO() {

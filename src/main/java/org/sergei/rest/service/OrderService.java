@@ -43,14 +43,12 @@ public class OrderService {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         }
-        return orderRepository.findAllByCustomerNumber(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No record with this parameters found"));
+        return orderRepository.findAllByCustomerNumber(customerNumber);
     }
 
     // Get all orders by product code
     public List<Order> getAllByProductCode(String productCode) {
-        return orderRepository.findAllByProductCode(productCode)
-                .orElseThrow(() -> new RecordNotFoundException("No product with this code found"));
+        return orderRepository.findAllByProductCode(productCode);
     }
 
     // Save order

@@ -1,17 +1,27 @@
 package org.sergei.rest.dto;
 
+import javax.xml.bind.annotation.*;
 import java.util.LinkedList;
 import java.util.List;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CustomerDTO {
+
+    @XmlElement
     private Long customerNumber;
 
+    @XmlElement
     private String firstName;
 
+    @XmlElement
     private String lastName;
 
+    @XmlElement
     private Integer age;
 
+    @XmlElementWrapper(name = "orders")
+    @XmlElement(name = "order")
     private List<OrderDTO> orders = new LinkedList<>();
 
     public CustomerDTO() {

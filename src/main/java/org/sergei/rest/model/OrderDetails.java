@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@XmlRootElement
 @Entity
 @Table(name = "order_details")
 @IdClass(OrderDetails.class)
@@ -14,13 +13,11 @@ public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @XmlElement
     @Id
     @ManyToOne
     @JoinColumn(name = "order_number")
     private Order order;
 
-    @XmlElement
     @Id
     @ManyToOne
     @JoinColumn(name = "product_code")
@@ -30,11 +27,9 @@ public class OrderDetails implements Serializable {
     @JoinColumn(name = "customer_number")
     private Customer customer;*/
 
-    @XmlElement
     @Column(name = "quantity_ordered")
     private Integer quantityOrdered;
 
-    @XmlElement
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 

@@ -11,32 +11,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @XmlElement
     @Id
     @Column(name = "product_code", length = 15)
     private String productCode;
 
-    @XmlElement
     @Column(name = "product_name", length = 70)
     private String productName;
 
-    @XmlElement
     @Column(name = "product_line", length = 50)
     private String productLine;
 
-    @XmlElement
     @Column(name = "product_vendor", length = 50)
     private String productVendor;
 
-    @XmlElement
     @Column(name = "price", precision=10, scale=2)
     private BigDecimal price;
 

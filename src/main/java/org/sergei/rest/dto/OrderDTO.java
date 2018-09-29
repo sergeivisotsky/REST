@@ -1,18 +1,35 @@
 package org.sergei.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderDTO {
+
+    @XmlElement
     private Long orderNumber;
 
+    @XmlElement
+    @XmlSchemaType(name="date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date orderDate;
 
+    @XmlElement
+    @XmlSchemaType(name="date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date requiredDate;
 
+    @XmlElement
+    @XmlSchemaType(name="date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date shippedDate;
 
+    @XmlElement
     private String status;
 
     private List<OrderDetailsDTO> orderDetailsDTO = new LinkedList<>();

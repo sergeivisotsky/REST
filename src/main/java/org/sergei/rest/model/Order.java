@@ -15,37 +15,28 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-@XmlRootElement
 @Entity
 @Table(name = "orders")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @XmlElement
     @Id
     @Column(name = "order_number")
     private Long orderNumber;
 
-    @XmlElement
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "order_date")
     @CreationTimestamp
     private Date orderDate;
 
-    @XmlElement
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "required_date")
     @CreationTimestamp
     private Date requiredDate;
 
-    @XmlElement
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "shipped_date")
     @CreationTimestamp
     private Date shippedDate;
 
-    @XmlElement
     @Column(name = "status")
     private String status;
 
@@ -58,7 +49,6 @@ public class Order implements Serializable {
     @JoinColumn(name = "order_number")
     private List<OrderDetails> orderDetails = new LinkedList<>();
 
-    @XmlElement
     @ManyToOne
     @JoinColumn(name = "customer_number")
     @OnDelete(action = OnDeleteAction.CASCADE)

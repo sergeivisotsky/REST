@@ -8,34 +8,29 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-@XmlRootElement
 @Entity
 @Table(name = "customers")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @XmlElement
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_number")
     private Long customerNumber;
 
-    @XmlElement
     @Column(name = "first_name", length = 50)
     private String firstName;
 
-    @XmlElement
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @XmlElement
     @Column(name = "age")
     private Integer age;
 
     @JsonIgnore
     @OneToMany(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -95,8 +90,6 @@ public class Customer implements Serializable {
         this.age = age;
     }
 
-    @XmlElementWrapper(name = "orders")
-    @XmlElement(name = "order")
     public List<Order> getOrders() {
         return orders;
     }

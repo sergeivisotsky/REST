@@ -36,8 +36,54 @@ public class CustomerService {
     }
 
     // Get all customers
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> getAllCustomers() {
+        List<CustomerDTO> response = new LinkedList<>();
+
+        List<Customer> customers = customerRepository.findAll();
+
+        for (Customer customer : customers) {
+            CustomerDTO customerDTO = new CustomerDTO();
+            customerDTO.setCustomerNumber(customer.getCustomerNumber());
+            customerDTO.setFirstName(customer.getFirstName());
+            customerDTO.setLastName(customer.getLastName());
+            customerDTO.setAge(customer.getAge());
+
+            List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
+
+            List<OrderDTO> orderDTOList = new LinkedList<>();
+            for (Order order : orders) {
+                OrderDTO orderDTO = new OrderDTO();
+
+                orderDTO.setOrderNumber(order.getOrderNumber());
+                orderDTO.setOrderDate(order.getOrderDate());
+                orderDTO.setRequiredDate(order.getRequiredDate());
+                orderDTO.setShippedDate(order.getShippedDate());
+                orderDTO.setStatus(order.getStatus());
+
+                orderDTOList.add(orderDTO);
+
+                List<OrderDetails> orderDetailsList =
+                        orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
+
+                List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+                for (OrderDetails orderDetails : orderDetailsList) {
+                    OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+
+                    orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
+                    orderDetailsDTO.setPrice(orderDetails.getPrice());
+                    orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
+
+                    orderDetailsDTOS.add(orderDetailsDTO);
+                }
+
+                orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
+            }
+
+            customerDTO.setOrders(orderDTOList);
+            response.add(customerDTO);
+        }
+
+        return response;
     }
 
     // Get customer by number
@@ -51,8 +97,7 @@ public class CustomerService {
         response.setLastName(customer.getLastName());
         response.setAge(customer.getAge());
 
-        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No orders for this customer found"));
+        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
 
         List<OrderDTO> orderDTOList = new LinkedList<>();
         for (Order order : orders) {
@@ -67,8 +112,7 @@ public class CustomerService {
             orderDTOList.add(orderDTO);
 
             List<OrderDetails> orderDetailsList =
-                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber())
-                            .orElseThrow(() -> new RecordNotFoundException("No orders with this number found"));
+                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
 
             List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
             for (OrderDetails orderDetails : orderDetailsList) {
@@ -86,8 +130,6 @@ public class CustomerService {
 
         response.setOrders(orderDTOList);
 
-        /*return customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
         return response;
     }
 
