@@ -11,8 +11,20 @@ import java.util.List;
 @Service
 public class CustomerService {
 
+    private final CustomerRepository customerRepository;
+
+    /*private final OrderRepository orderRepository;
+
+    private final OrderDetailsRepository orderDetailsRepository;*/
+
     @Autowired
-    private CustomerRepository customerRepository;
+    public CustomerService(CustomerRepository customerRepository/*,
+                           OrderRepository orderRepository,
+                           OrderDetailsRepository orderDetailsRepository*/) {
+        this.customerRepository = customerRepository;
+        /*this.orderRepository = orderRepository;
+        this.orderDetailsRepository = orderDetailsRepository;*/
+    }
 
     // Get all customers
     public List<Customer> getAllCustomers() {
@@ -22,6 +34,14 @@ public class CustomerService {
     public Customer getCustomerByNumber(Long customerNumber) {
         return customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+        /*List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No orders for this customer found"));
+        Order order = new Order();*/
+//        List<OrderDetails> orderDetails = orderDetailsRepository.findAllByOrderNumber(order.getOrderNumber());
+//        orders.forEach(order1 -> order.setOrderDetails(orderDetailsRepository.findAllByOrderNumber(order.getOrderNumber())));
+//        customer.setOrders(orders);
+
+//        return customer;
     }
 
     // Save customer
