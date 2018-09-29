@@ -1,26 +1,73 @@
 package org.sergei.rest.service;
 
+import org.sergei.rest.dto.CustomerDTO;
+import org.sergei.rest.dto.OrderDTO;
+import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
+import org.sergei.rest.model.OrderDetails;
 import org.sergei.rest.repository.CustomerRepository;
+import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+
+    private final CustomerRepository customerRepository;
+
+    private final OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    public OrderService(OrderRepository orderRepository,
+                        CustomerRepository customerRepository,
+                        OrderDetailsRepository orderDetailsRepository) {
+        this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
+        this.orderDetailsRepository = orderDetailsRepository;
+    }
 
     // Get all orders
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderDTO> getAllOrders() {
+        List<OrderDTO> response = new LinkedList<>();
+        List<Order> orders = orderRepository.findAll();
+
+        for (Order order : orders) {
+            OrderDTO orderDTO = new OrderDTO();
+
+            orderDTO.setOrderNumber(order.getOrderNumber());
+            orderDTO.setOrderDate(order.getOrderDate());
+            orderDTO.setRequiredDate(order.getRequiredDate());
+            orderDTO.setShippedDate(order.getShippedDate());
+            orderDTO.setStatus(order.getStatus());
+
+            List<OrderDetails> orderDetailsList =
+                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
+
+            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+            for (OrderDetails orderDetails : orderDetailsList) {
+                OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+
+                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
+                orderDetailsDTO.setPrice(orderDetails.getPrice());
+                orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
+
+                orderDetailsDTOS.add(orderDetailsDTO);
+            }
+
+            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
+            response.add(orderDTO);
+        }
+
+        return response;
     }
 
     // Get order by number

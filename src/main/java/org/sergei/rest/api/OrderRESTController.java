@@ -1,5 +1,6 @@
 package org.sergei.rest.api;
 
+import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class OrderRESTController {
 
     // Get all orders
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getAllOrders() {
+    public ResponseEntity<List<OrderDTO>> getAllOrders() {
         return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
     }
 
