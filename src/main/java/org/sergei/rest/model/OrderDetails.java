@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @XmlRootElement
 @Entity
 @Table(name = "order_details")
+@IdClass(OrderDetails.class)
 public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;

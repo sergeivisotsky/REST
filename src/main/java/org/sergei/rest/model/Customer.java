@@ -33,6 +33,7 @@ public class Customer implements Serializable {
     @Column(name = "age")
     private Integer age;
 
+    @JsonIgnore
     @OneToMany(
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL,
@@ -41,6 +42,7 @@ public class Customer implements Serializable {
     @JoinColumn(name = "customer_number")
     private List<Order> orders = new LinkedList<>();
 
+    @JsonIgnore
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,

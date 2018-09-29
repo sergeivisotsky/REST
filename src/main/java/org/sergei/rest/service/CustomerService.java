@@ -1,11 +1,20 @@
 package org.sergei.rest.service;
 
+import org.sergei.rest.dto.CustomerDTO;
+import org.sergei.rest.dto.OrderDTO;
+import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
+import org.sergei.rest.model.Order;
+import org.sergei.rest.model.OrderDetails;
 import org.sergei.rest.repository.CustomerRepository;
+import org.sergei.rest.repository.OrderDetailsRepository;
+import org.sergei.rest.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -13,17 +22,17 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    /*private final OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    private final OrderDetailsRepository orderDetailsRepository;*/
+    private final OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository/*,
+    public CustomerService(CustomerRepository customerRepository,
                            OrderRepository orderRepository,
-                           OrderDetailsRepository orderDetailsRepository*/) {
+                           OrderDetailsRepository orderDetailsRepository) {
         this.customerRepository = customerRepository;
-        /*this.orderRepository = orderRepository;
-        this.orderDetailsRepository = orderDetailsRepository;*/
+        this.orderRepository = orderRepository;
+        this.orderDetailsRepository = orderDetailsRepository;
     }
 
     // Get all customers
@@ -31,17 +40,55 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Customer getCustomerByNumber(Long customerNumber) {
-        return customerRepository.findById(customerNumber)
+    // Get customer by number
+    public CustomerDTO getCustomerByNumber(Long customerNumber) {
+        Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
-        /*List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No orders for this customer found"));
-        Order order = new Order();*/
-//        List<OrderDetails> orderDetails = orderDetailsRepository.findAllByOrderNumber(order.getOrderNumber());
-//        orders.forEach(order1 -> order.setOrderDetails(orderDetailsRepository.findAllByOrderNumber(order.getOrderNumber())));
-//        customer.setOrders(orders);
+        CustomerDTO response = new CustomerDTO();
 
-//        return customer;
+        response.setCustomerNumber(customer.getCustomerNumber());
+        response.setFirstName(customer.getFirstName());
+        response.setLastName(customer.getLastName());
+        response.setAge(customer.getAge());
+
+        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No orders for this customer found"));
+
+        List<OrderDTO> orderDTOList = new LinkedList<>();
+        for (Order order : orders) {
+            OrderDTO orderDTO = new OrderDTO();
+
+            orderDTO.setOrderNumber(order.getOrderNumber());
+            orderDTO.setOrderDate(order.getOrderDate());
+            orderDTO.setRequiredDate(order.getRequiredDate());
+            orderDTO.setShippedDate(order.getShippedDate());
+            orderDTO.setStatus(order.getStatus());
+
+            orderDTOList.add(orderDTO);
+
+            List<OrderDetails> orderDetailsList =
+                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber())
+                            .orElseThrow(() -> new RecordNotFoundException("No orders with this number found"));
+
+            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+            for (OrderDetails orderDetails : orderDetailsList) {
+                OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+
+                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
+                orderDetailsDTO.setPrice(orderDetails.getPrice());
+                orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
+
+                orderDetailsDTOS.add(orderDetailsDTO);
+            }
+
+            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
+        }
+
+        response.setOrders(orderDTOList);
+
+        /*return customerRepository.findById(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
+        return response;
     }
 
     // Save customer

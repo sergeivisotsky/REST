@@ -49,8 +49,9 @@ public class Order implements Serializable {
     @Column(name = "status")
     private String status;
 
+    @JsonIgnore
     @OneToMany(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

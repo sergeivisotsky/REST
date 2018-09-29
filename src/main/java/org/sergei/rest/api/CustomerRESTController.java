@@ -1,5 +1,6 @@
 package org.sergei.rest.api;
 
+import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.service.CustomerService;
@@ -27,7 +28,7 @@ public class CustomerRESTController {
 
     // Get customer by specific ID as a parameter
     @GetMapping("/{customerNumber}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable("customerNumber") Long customerNumber) throws RecordNotFoundException {
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("customerNumber") Long customerNumber) throws RecordNotFoundException {
         return new ResponseEntity<>(customerService.getCustomerByNumber(customerNumber), HttpStatus.OK);
     }
 
