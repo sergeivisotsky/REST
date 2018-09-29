@@ -8,7 +8,7 @@ $(document).ready(function () {
         type: 'GET',
         contentType: "application/json",
     }).then(function (data) {
-        $('.customer-id').append(data.customerId);
+        $('.customer-id').append(data.customerNumber);
         $('.first-name').append(data.firstName);
         $('.last-name').append(data.lastName);
         $('.age').append(data.age);

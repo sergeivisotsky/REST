@@ -26,26 +26,26 @@ public class OrderRESTController {
 
     // Get order by specific ID as a parameter
     @GetMapping("/orders/{orderNumber}")
-    public ResponseEntity<Order> getOrderById(@PathVariable("orderNumber") Long orderNumber) {
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.getOrderByNumber(orderNumber), HttpStatus.OK);
     }
 
     // Get all orders by customer orderNumber
     @GetMapping("/customers/{customerNumber}/orders")
-    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customerNumber") Long customerNumber) {
+    public ResponseEntity<List<OrderDTO>> getOrdersByCustomerId(@PathVariable("customerNumber") Long customerNumber) {
         return new ResponseEntity<>(orderService.getAllOrdersByCustomerNumber(customerNumber), HttpStatus.OK);
     }
 
     // Get order by customer orderNumber and order orderNumber
     @GetMapping("/customers/{customerNumber}/orders/{orderNumber}")
-    public ResponseEntity<Order> getOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Long customerNumber,
-                                                                      @PathVariable("orderNumber") Long orderNumber) {
+    public ResponseEntity<OrderDTO> getOrderByCustomerIdAndOrderId(@PathVariable("customerNumber") Long customerNumber,
+                                                                   @PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.getOrderByCustomerAndOrderNumbers(customerNumber, orderNumber), HttpStatus.OK);
     }
 
     // Get all orders by product code
     @GetMapping("/orders/order")
-    public List<Order> getOrdersByProductCode(@RequestParam("prod-code") String productCode) {
+    public List<OrderDTO> getOrdersByProductCode(@RequestParam("prod-code") String productCode) {
         return orderService.getAllByProductCode(productCode);
     }
 

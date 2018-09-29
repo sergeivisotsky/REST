@@ -1,10 +1,8 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
-import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.model.OrderDetails;
 import org.sergei.rest.repository.CustomerRepository;
@@ -37,8 +35,68 @@ public class OrderService {
 
     // Get all orders
     public List<OrderDTO> getAllOrders() {
-        List<OrderDTO> response = new LinkedList<>();
         List<Order> orders = orderRepository.findAll();
+        return getOrdersByistWithParam(orders);
+    }
+
+    // Get order by number
+    public OrderDTO getOrderByNumber(Long orderNumber) {
+        Order order = orderRepository.findById(orderNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
+        OrderDTO response = new OrderDTO();
+
+        response.setOrderNumber(order.getOrderNumber());
+        response.setOrderDate(order.getOrderDate());
+        response.setRequiredDate(order.getRequiredDate());
+        response.setShippedDate(order.getShippedDate());
+        response.setStatus(order.getStatus());
+
+        List<OrderDetails> orderDetailsList =
+                orderDetailsRepository.findAllByOrderNumber(response.getOrderNumber());
+
+        List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+        for (OrderDetails orderDetails : orderDetailsList) {
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+
+            orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
+            orderDetailsDTO.setPrice(orderDetails.getPrice());
+            orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
+
+            orderDetailsDTOS.add(orderDetailsDTO);
+        }
+
+        response.setOrderDetailsDTO(orderDetailsDTOS);
+
+        return response;
+    }
+
+    // Get order by customer and order numbers
+    public OrderDTO getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
+        if (!customerRepository.existsById(customerNumber)) {
+            throw new RecordNotFoundException("No customer with this number found");
+        }
+        return getOrderByNumber(orderNumber);
+    }
+
+    // Get all orders by customer number
+    public List<OrderDTO> getAllOrdersByCustomerNumber(Long customerNumber) {
+        if (!customerRepository.existsById(customerNumber)) {
+            throw new RecordNotFoundException("No customer with this number found");
+        }
+        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
+
+        return getOrdersByistWithParam(orders);
+    }
+
+    // Get all orders by product code
+    public List<OrderDTO> getAllByProductCode(String productCode) {
+        List<Order> orders = orderRepository.findAllByProductCode(productCode);
+        return getOrdersByistWithParam(orders);
+    }
+
+    // Service class to get order by specific parameter
+    private List<OrderDTO> getOrdersByistWithParam(List<Order> orders) {
+        List<OrderDTO> response = new LinkedList<>();
 
         for (Order order : orders) {
             OrderDTO orderDTO = new OrderDTO();
@@ -68,34 +126,6 @@ public class OrderService {
         }
 
         return response;
-    }
-
-    // Get order by number
-    public Order getOrderByNumber(Long orderNumber) {
-        return orderRepository.findById(orderNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
-    }
-
-    // Get order by customer and order numbers
-    public Order getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
-        if (!customerRepository.existsById(customerNumber)) {
-            throw new RecordNotFoundException("No customer with this number found");
-        }
-        return orderRepository.findById(orderNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No record with this parameters found"));
-    }
-
-    // Get all orders by customer number
-    public List<Order> getAllOrdersByCustomerNumber(Long customerNumber) {
-        if (!customerRepository.existsById(customerNumber)) {
-            throw new RecordNotFoundException("No customer with this number found");
-        }
-        return orderRepository.findAllByCustomerNumber(customerNumber);
-    }
-
-    // Get all orders by product code
-    public List<Order> getAllByProductCode(String productCode) {
-        return orderRepository.findAllByProductCode(productCode);
     }
 
     // Save order
