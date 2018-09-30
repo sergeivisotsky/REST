@@ -3,6 +3,7 @@ package org.sergei.rest.service;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.model.OrderDetails;
 import org.sergei.rest.repository.CustomerRepository;
@@ -132,9 +133,57 @@ public class OrderService {
     public Order saveOrder(Long customerNumber, Order order) {
         return customerRepository.findById(customerNumber).map(customer -> {
             order.setCustomer(customer);
+            order.setOrderDetails(order.getOrderDetails());
             return orderRepository.save(order);
         }).orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
     }
+
+    /*public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
+        if (!customerRepository.existsById(customerNumber)) {
+            throw new RecordNotFoundException("No customer with this number found");
+        }
+        OrderDTO orderDTOResponse = new OrderDTO();
+
+        Order order = new Order();
+
+        orderDTOResponse.setOrderNumber(orderDTORequestBody.getOrderNumber());
+        orderDTOResponse.setCustomerNumber(customerNumber);
+        orderDTOResponse.setOrderDate(orderDTORequestBody.getOrderDate());
+        orderDTOResponse.setRequiredDate(orderDTORequestBody.getRequiredDate());
+        orderDTOResponse.setShippedDate(orderDTORequestBody.getShippedDate());
+        orderDTOResponse.setStatus(orderDTORequestBody.getStatus());
+
+        *//*List<OrderDetails> orderDetailsList =
+                orderDetailsRepository.save(orderDTOResponse.getOrderDetailsDTO());*//*
+
+        List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+        for (OrderDetails orderDetails : orderDetailsList) {
+            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+
+            orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
+            orderDetailsDTO.setPrice(orderDetails.getPrice());
+            orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
+
+            orderDetailsDTOS.add(orderDetailsDTO);
+        }
+
+        Customer customer = customerRepository.findById(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
+
+        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);
+
+        order.setOrderNumber(orderDTOResponse.getOrderNumber());
+        order.setCustomer(customer);
+        order.setOrderDate(orderDTOResponse.getOrderDate());
+        order.setRequiredDate(orderDTOResponse.getRequiredDate());
+        order.setShippedDate(orderDTOResponse.getShippedDate());
+        order.setStatus(orderDTOResponse.getStatus());
+        order.setOrderDetails(orderDetailsDTOS);
+
+        orderRepository.save(order);
+
+        return orderDTOResponse;
+    }*/
 
     // Update order by customer and order numbers
     public Order updateOrder(Long customerNumber, Long orderNumber, Order orderRequest) {

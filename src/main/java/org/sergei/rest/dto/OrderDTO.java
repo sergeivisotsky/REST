@@ -14,6 +14,10 @@ public class OrderDTO {
     @XmlElement
     private Long orderNumber;
 
+    private Long customerNumber;
+
+//    private CustomerDTO customerDTO;
+
     @XmlElement
     @XmlSchemaType(name="date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -37,9 +41,11 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(Long orderNumber, Date orderDate, Date requiredDate, Date shippedDate,
+    public OrderDTO(Long orderNumber, Long customerNumber, /*CustomerDTO customerDTO, */Date orderDate, Date requiredDate, Date shippedDate,
                     String status, List<OrderDetailsDTO> orderDetailsDTO) {
         this.orderNumber = orderNumber;
+        this.customerNumber = customerNumber;
+//        this.customerDTO = customerDTO;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;
         this.shippedDate = shippedDate;
@@ -54,6 +60,22 @@ public class OrderDTO {
     public void setOrderNumber(Long orderNumber) {
         this.orderNumber = orderNumber;
     }
+
+    public Long getCustomerNumber() {
+        return customerNumber;
+    }
+
+    public void setCustomerNumber(Long customerNumber) {
+        this.customerNumber = customerNumber;
+    }
+
+   /* public CustomerDTO getCustomerDTO() {
+        return customerDTO;
+    }
+
+    public void setCustomerDTO(CustomerDTO customerDTO) {
+        this.customerDTO = customerDTO;
+    }*/
 
     public Date getOrderDate() {
         return orderDate;
