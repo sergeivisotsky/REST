@@ -43,15 +43,6 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>2.0.5.RELEASE</version>
         </dependency>
-
-        <!--Shoild be removed-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${org.springframework-version}</version>
-        </dependency>
-        <!--END-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
