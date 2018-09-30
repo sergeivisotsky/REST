@@ -4,10 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -30,7 +26,7 @@ public class Product implements Serializable {
     @Column(name = "product_vendor", length = 50)
     private String productVendor;
 
-    @Column(name = "price", precision=10, scale=2)
+    @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
     public Product() {
