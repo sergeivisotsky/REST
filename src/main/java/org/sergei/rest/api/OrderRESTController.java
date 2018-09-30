@@ -52,9 +52,9 @@ public class OrderRESTController {
     // Add a new record
     @PostMapping(value = "/customers/{customerNumber}/orders",
             consumes = {"application/json", "application/xml"})
-    public ResponseEntity<OrderDTO> createOrder(@PathVariable("customerNumber") Long customerNumber,
-                                                @RequestBody OrderDTO orderDTORequestBody) {
-        return new ResponseEntity<>(orderService.saveOrder(customerNumber, orderDTORequestBody), HttpStatus.CREATED);
+    public ResponseEntity<Order> createOrder(@PathVariable("customerNumber") Long customerNumber,
+                                                @RequestBody Order order) {
+        return new ResponseEntity<>(orderService.saveOrder(customerNumber, order), HttpStatus.CREATED);
     }
 
     // Update record
