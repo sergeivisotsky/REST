@@ -143,6 +143,9 @@ public class OrderService {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         }
+
+        List<OrderDetailsDTO> orderDetailsDTOS = new LinkedList<>();
+
         OrderDTO orderDTOResponse = new OrderDTO();
 
         Order order = new Order();
@@ -153,9 +156,10 @@ public class OrderService {
         orderDTOResponse.setRequiredDate(orderDTORequestBody.getRequiredDate());
         orderDTOResponse.setShippedDate(orderDTORequestBody.getShippedDate());
         orderDTOResponse.setStatus(orderDTORequestBody.getStatus());
+        orderDTOResponse.setOrderDetailsDTO(orderDTORequestBody.getOrderDetailsDTO());
 
         *//*List<OrderDetails> orderDetailsList =
-                orderDetailsRepository.save(orderDTOResponse.getOrderDetailsDTO());*//*
+                orderDetailsRepository.save(orderDTOResponse.getOrderDetailsDTO());
 
         List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -166,12 +170,12 @@ public class OrderService {
             orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
 
             orderDetailsDTOS.add(orderDetailsDTO);
-        }
+        }*//*
 
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
 
-        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);
+//        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);/
 
         order.setOrderNumber(orderDTOResponse.getOrderNumber());
         order.setCustomer(customer);
@@ -179,7 +183,7 @@ public class OrderService {
         order.setRequiredDate(orderDTOResponse.getRequiredDate());
         order.setShippedDate(orderDTOResponse.getShippedDate());
         order.setStatus(orderDTOResponse.getStatus());
-        order.setOrderDetails(orderDetailsDTOS);
+        order.setOrderDetails();
 
         orderRepository.save(order);
 
