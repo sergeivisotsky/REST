@@ -138,6 +138,8 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
+    // TODO: Save customer and his orders with details in all request body
+
     // Update customer by customer number
     public Customer updateCustomer(Long customerNumber, Customer customerRequest) {
         return customerRepository.findById(customerNumber)

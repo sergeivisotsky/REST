@@ -130,7 +130,7 @@ public class OrderService {
     }
 
     // Save order
-    // FIXME: SO that order and its details be saved
+    // TODO: So that order and its details be saved
     public Order saveOrder(Long customerNumber, Order order) {
         return customerRepository.findById(customerNumber).map(customer -> {
             order.setCustomer(customer);
@@ -187,7 +187,7 @@ public class OrderService {
     }*/
 
     // Update order by customer and order numbers
-    // FIXME: So that order and its details be updated
+    // TODO: So that order and its details be updated
     public Order updateOrder(Long customerNumber, Long orderNumber, Order orderRequest) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
