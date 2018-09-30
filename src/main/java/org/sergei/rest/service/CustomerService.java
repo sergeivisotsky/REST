@@ -1,5 +1,6 @@
 package org.sergei.rest.service;
 
+import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
@@ -20,6 +21,8 @@ import java.util.List;
 @Service
 public class CustomerService {
 
+    private final ModelMapper modelMapper;
+
     private final CustomerRepository customerRepository;
 
     private final OrderRepository orderRepository;
@@ -27,14 +30,17 @@ public class CustomerService {
     private final OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
-    public CustomerService(CustomerRepository customerRepository,
+    public CustomerService(ModelMapper modelMapper,
+                           CustomerRepository customerRepository,
                            OrderRepository orderRepository,
                            OrderDetailsRepository orderDetailsRepository) {
+        this.modelMapper = modelMapper;
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
         this.orderDetailsRepository = orderDetailsRepository;
     }
 
+    // TODO: Replace with ModelMapper
     // Get all customers
     public List<CustomerDTO> getAllCustomers() {
         List<CustomerDTO> response = new LinkedList<>();
@@ -47,6 +53,7 @@ public class CustomerService {
             customerDTO.setFirstName(customer.getFirstName());
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
+//            CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
 
             List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
 
@@ -60,6 +67,8 @@ public class CustomerService {
                 orderDTO.setShippedDate(order.getShippedDate());
                 orderDTO.setStatus(order.getStatus());
 
+//                OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+
                 orderDTOList.add(orderDTO);
 
                 List<OrderDetails> orderDetailsList =
@@ -72,6 +81,7 @@ public class CustomerService {
                     orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
                     orderDetailsDTO.setPrice(orderDetails.getPrice());
                     orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
+//                    OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
 
                     orderDetailsDTOS.add(orderDetailsDTO);
                 }

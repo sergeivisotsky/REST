@@ -52,6 +52,9 @@
         <property name="maxUploadSize" value="10000000"/>
     </bean>
 
+    <!--ModelMapper bean from DTO and to DTO serialization-->
+    <bean name="ModelMapper" class="org.modelmapper.ModelMapper"/>
+
     <!--Swagger API documentation configuration-->
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>

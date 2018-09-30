@@ -36,6 +36,8 @@ public class OrderDTO {
     @XmlElement
     private String status;
 
+    @XmlElementWrapper(name = "orderDetails")
+    @XmlElement(name = "orderDetailsInfo")
     private List<OrderDetailsDTO> orderDetailsDTO = new LinkedList<>();
 
     public OrderDTO() {

@@ -129,66 +129,38 @@ public class OrderService {
         return response;
     }
 
-    // Save order
-    // TODO: So that order and its details be saved
-    public Order saveOrder(Long customerNumber, Order order) {
+
+    /*public Order saveOrder(Long customerNumber, Order order) {
         return customerRepository.findById(customerNumber).map(customer -> {
             order.setCustomer(customer);
             order.setOrderDetails(order.getOrderDetails());
             return orderRepository.save(order);
         }).orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
-    }
+    }*/
 
-    /*public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
+    // Save order
+    // TODO: So that order and its details be saved
+    public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         }
 
-        List<OrderDetailsDTO> orderDetailsDTOS = new LinkedList<>();
-
-        OrderDTO orderDTOResponse = new OrderDTO();
-
-        Order order = new Order();
-
-        orderDTOResponse.setOrderNumber(orderDTORequestBody.getOrderNumber());
-        orderDTOResponse.setCustomerNumber(customerNumber);
-        orderDTOResponse.setOrderDate(orderDTORequestBody.getOrderDate());
-        orderDTOResponse.setRequiredDate(orderDTORequestBody.getRequiredDate());
-        orderDTOResponse.setShippedDate(orderDTORequestBody.getShippedDate());
-        orderDTOResponse.setStatus(orderDTORequestBody.getStatus());
-        orderDTOResponse.setOrderDetailsDTO(orderDTORequestBody.getOrderDetailsDTO());
-
-        *//*List<OrderDetails> orderDetailsList =
-                orderDetailsRepository.save(orderDTOResponse.getOrderDetailsDTO());
-
-        List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
-        for (OrderDetails orderDetails : orderDetailsList) {
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
-
-            orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-            orderDetailsDTO.setPrice(orderDetails.getPrice());
-            orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
-
-            orderDetailsDTOS.add(orderDetailsDTO);
-        }*//*
-
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
+        Order order = new Order();
 
-//        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);/
-
-        order.setOrderNumber(orderDTOResponse.getOrderNumber());
+        order.setOrderNumber(orderDTORequestBody.getOrderNumber());
         order.setCustomer(customer);
-        order.setOrderDate(orderDTOResponse.getOrderDate());
-        order.setRequiredDate(orderDTOResponse.getRequiredDate());
-        order.setShippedDate(orderDTOResponse.getShippedDate());
-        order.setStatus(orderDTOResponse.getStatus());
-        order.setOrderDetails();
+        order.setOrderDate(orderDTORequestBody.getOrderDate());
+        order.setRequiredDate(orderDTORequestBody.getRequiredDate());
+        order.setShippedDate(orderDTORequestBody.getShippedDate());
+        order.setStatus(orderDTORequestBody.getStatus());
+//        order.setOrderDetails((List<OrderDetails>) orderDTORequestBody.getOrderDetailsDTO());
 
         orderRepository.save(order);
 
-        return orderDTOResponse;
-    }*/
+        return orderDTORequestBody;
+    }
 
     // Update order by customer and order numbers
     // TODO: So that order and its details be updated
