@@ -53,7 +53,7 @@ public class PhotoService {
 
     // Method to find all photos by customer number
     public List<PhotoDTO> findAllUploadedPhotos(Long customerNumber) {
-        List<PhotoDTO> photoDTOListResponse = new LinkedList<>();
+        List<PhotoDTO> photoDTOSResponse = new LinkedList<>();
 
         List<Photo> photos = photoRepository.findAllPhotosByCustomerNumber(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
@@ -61,10 +61,10 @@ public class PhotoService {
         for (Photo photo : photos) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
-            photoDTOListResponse.add(photoDTO);
+            photoDTOSResponse.add(photoDTO);
         }
 
-        return photoDTOListResponse;
+        return photoDTOSResponse;
     }
 
     // Method to upload file on the server
