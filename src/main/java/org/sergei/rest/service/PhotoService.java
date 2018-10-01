@@ -59,6 +59,7 @@ public class PhotoService {
                 .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
 
         for (Photo photo : photos) {
+            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
             photoDTOListResponse.add(photoDTO);
         }
@@ -70,7 +71,7 @@ public class PhotoService {
     public PhotoDTO uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
                                           CommonsMultipartFile commonsMultipartFile) {
 
-        Customer customer = customerRepository.findById(customerNumber)
+        customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
 
         PhotoDTO photoDTOResponse = new PhotoDTO();
@@ -83,6 +84,7 @@ public class PhotoService {
         photoDTOResponse.setFileType(commonsMultipartFile.getContentType());
         photoDTOResponse.setFileSize(commonsMultipartFile.getSize());
 
+        // ModelMapper is used to avoid manual conversion from DTO to entity using setters and getters
         Photo photo = modelMapper.map(photoDTOResponse, Photo.class);
 
         if (fileDownloadUri.length() > 150) {
