@@ -1,5 +1,6 @@
 package org.sergei.rest.service;
 
+import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
@@ -30,6 +31,8 @@ public class PhotoService {
     //    @Value("${file.tmp.path}")
     private static final String TEMP_DIR_PATH = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/tmp";
 
+    private final ModelMapper modelMapper;
+
     private final PhotoRepository photoRepository;
 
     private final CustomerRepository customerRepository;
@@ -39,7 +42,9 @@ public class PhotoService {
     private final FileOperations fileOperations;
 
     @Autowired
-    public PhotoService(PhotoRepository photoRepository, CustomerRepository customerRepository, FileOperations fileOperations) {
+    public PhotoService(ModelMapper modelMapper, PhotoRepository photoRepository,
+                        CustomerRepository customerRepository, FileOperations fileOperations) {
+        this.modelMapper = modelMapper;
         this.fileStorageLocation = Paths.get(TEMP_DIR_PATH).toAbsolutePath().normalize();
         this.photoRepository = photoRepository;
         this.customerRepository = customerRepository;
@@ -54,15 +59,7 @@ public class PhotoService {
                 .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
 
         for (Photo photo : photos) {
-            PhotoDTO photoDTO = new PhotoDTO();
-
-            photoDTO.setPhotoId(photo.getPhotoId());
-            photoDTO.setCustomerNumber(photo.getCustomer().getCustomerNumber());
-            photoDTO.setFileName(photo.getFileName());
-            photoDTO.setFileUrl(photo.getFileUrl());
-            photoDTO.setFileType(photo.getFileType());
-            photoDTO.setFileSize(photo.getFileSize());
-
+            PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
             photoDTOListResponse.add(photoDTO);
         }
 
@@ -71,7 +68,7 @@ public class PhotoService {
 
     // Method to upload file on the server
     public PhotoDTO uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
-                                       CommonsMultipartFile commonsMultipartFile) {
+                                          CommonsMultipartFile commonsMultipartFile) {
 
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
@@ -86,13 +83,7 @@ public class PhotoService {
         photoDTOResponse.setFileType(commonsMultipartFile.getContentType());
         photoDTOResponse.setFileSize(commonsMultipartFile.getSize());
 
-        Photo photo = new Photo();
-
-        photo.setCustomer(customer);
-        photo.setFileName(photoDTOResponse.getFileName());
-        photo.setFileUrl(photoDTOResponse.getFileUrl());
-        photo.setFileType(photoDTOResponse.getFileType());
-        photo.setFileSize(photo.getFileSize());
+        Photo photo = modelMapper.map(photoDTOResponse, Photo.class);
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
