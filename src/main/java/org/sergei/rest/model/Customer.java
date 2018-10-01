@@ -3,7 +3,6 @@ package org.sergei.rest.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,18 +43,18 @@ public class Customer implements Serializable {
             orphanRemoval = true
     )
     @JoinColumn(name = "customer_number")
-    private List<PhotoUploadResponse> photoUploadResponses = new LinkedList<>();
+    private List<Photo> photoUploadRespons = new LinkedList<>();
 
     public Customer() {
     }
 
     public Customer(String firstName, String lastName, Integer age,
-                    List<Order> orders, List<PhotoUploadResponse> photoUploadResponses) {
+                    List<Order> orders, List<Photo> photoUploadRespons) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.orders = orders;
-        this.photoUploadResponses = photoUploadResponses;
+        this.photoUploadRespons = photoUploadRespons;
     }
 
     public Long getCustomerNumber() {
@@ -99,11 +98,11 @@ public class Customer implements Serializable {
     }
 
     @JsonIgnore
-    public List<PhotoUploadResponse> getPhotoUploadResponses() {
-        return photoUploadResponses;
+    public List<Photo> getPhotoUploadRespons() {
+        return photoUploadRespons;
     }
 
-    public void setPhotoUploadResponses(List<PhotoUploadResponse> photoUploadResponses) {
-        this.photoUploadResponses = photoUploadResponses;
+    public void setPhotoUploadRespons(List<Photo> photoUploadRespons) {
+        this.photoUploadRespons = photoUploadRespons;
     }
 }

@@ -43,7 +43,7 @@ public class CustomerService {
     // TODO: Replace with ModelMapper
     // Get all customers
     public List<CustomerDTO> getAllCustomers() {
-        List<CustomerDTO> response = new LinkedList<>();
+        List<CustomerDTO> customerDTOResponse = new LinkedList<>();
 
         List<Customer> customers = customerRepository.findAll();
 
@@ -90,10 +90,10 @@ public class CustomerService {
             }
 
             customerDTO.setOrders(orderDTOList);
-            response.add(customerDTO);
+            customerDTOResponse.add(customerDTO);
         }
 
-        return response;
+        return customerDTOResponse;
     }
 
     // Get customer by number

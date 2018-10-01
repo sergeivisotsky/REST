@@ -1,11 +1,12 @@
 package org.sergei.rest.service;
 
+import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.Customer;
-import org.sergei.rest.model.PhotoUploadResponse;
+import org.sergei.rest.model.Photo;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -45,25 +47,43 @@ public class PhotoService {
     }
 
     // Method to find all photos by customer number
-    public List<PhotoUploadResponse> findAllUploadedPhotos(Long customerNumber) {
-        return photoRepository.findAllPhotosByCustomerNumber(customerNumber)
+    public List<PhotoDTO> findAllUploadedPhotos(Long customerNumber) {
+        List<PhotoDTO> photoDTOListResponse = new LinkedList<>();
+
+        List<Photo> photos = photoRepository.findAllPhotosByCustomerNumber(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
+
+        for (Photo photo : photos) {
+            PhotoDTO photoDTO = new PhotoDTO();
+
+            photoDTO.setPhotoId(photo.getPhotoId());
+            photoDTO.setCustomerNumber(photo.getCustomer().getCustomerNumber());
+            photoDTO.setFileName(photo.getFileName());
+            photoDTO.setFileUrl(photo.getFileUrl());
+            photoDTO.setFileType(photo.getFileType());
+            photoDTO.setFileSize(photo.getFileSize());
+
+            photoDTOListResponse.add(photoDTO);
+        }
+
+        return photoDTOListResponse;
     }
 
     // Method to upload file on the server
-    public PhotoUploadResponse uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
-                                                     CommonsMultipartFile commonsMultipartFile) {
+    // TODO: Migrate to PhotoDTO as a response
+    public Photo uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
+                                       CommonsMultipartFile commonsMultipartFile) {
 
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
 
-        PhotoUploadResponse photoUploadResponse = new PhotoUploadResponse();
+        Photo photo = new Photo();
 
-        photoUploadResponse.setCustomer(customer);
-        photoUploadResponse.setFileName(commonsMultipartFile.getName());
-        photoUploadResponse.setFileUrl(fileDownloadUri);
-        photoUploadResponse.setFileType(commonsMultipartFile.getContentType());
-        photoUploadResponse.setFileSize(commonsMultipartFile.getSize());
+        photo.setCustomer(customer);
+        photo.setFileName(commonsMultipartFile.getName());
+        photo.setFileUrl(fileDownloadUri);
+        photo.setFileType(commonsMultipartFile.getContentType());
+        photo.setFileSize(commonsMultipartFile.getSize());
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -81,18 +101,19 @@ public class PhotoService {
         fileOperations.uploadFile(commonsMultipartFile);
 
         // Save file metadata into a database
-        photoRepository.save(photoUploadResponse);
+        photoRepository.save(photo);
 
-        return photoUploadResponse;
+        return photo;
     }
 
     // Method to download file from the server by file name
+    // TODO: Migrate to PhotoDTO as a response
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
-        PhotoUploadResponse photoUploadResponse = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName)
+        Photo photo = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName)
                 .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
 
-        String responseFileName = photoUploadResponse.getFileName();
+        String responseFileName = photo.getFileName();
 
         fileOperations.downloadFile(responseFileName);
 
@@ -110,10 +131,10 @@ public class PhotoService {
     // Method to download file from the server by file ID
     public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        PhotoUploadResponse photoUploadResponse = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
+        Photo photo = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
                 .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
 
-        String responseFileName = photoUploadResponse.getFileName();
+        String responseFileName = photo.getFileName();
 
         fileOperations.downloadFile(responseFileName);
 
@@ -129,12 +150,12 @@ public class PhotoService {
     }
 
     // Method to perform file deletion by customer number and photo ID
-    public PhotoUploadResponse deletePhoto(Long customerNumber, Long photoId) throws IOException {
-        PhotoUploadResponse photoUploadResponse =
+    public Photo deletePhoto(Long customerNumber, Long photoId) throws IOException {
+        Photo photo =
                 photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
                         .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
 
-        String responseFileName = photoUploadResponse.getFileName();
+        String responseFileName = photo.getFileName();
 
         // Delete photo from temp storage
         Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
@@ -143,6 +164,6 @@ public class PhotoService {
         fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
         photoRepository.deleteFileByCustomerNumberAndFileId(customerNumber, photoId); // Delete file metadata from the database
 
-        return photoUploadResponse;
+        return photo;
     }
 }

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "photos")
-public class PhotoUploadResponse {
+public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photo_id")
@@ -30,11 +30,11 @@ public class PhotoUploadResponse {
     @Column(name = "file_size")
     private Long fileSize;
 
-    public PhotoUploadResponse() {
+    public Photo() {
     }
 
-    public PhotoUploadResponse(Customer customer, String fileName, String fileUrl,
-                               String fileType, Long fileSize) {
+    public Photo(Customer customer, String fileName, String fileUrl,
+                 String fileType, Long fileSize) {
         this.customer = customer;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
