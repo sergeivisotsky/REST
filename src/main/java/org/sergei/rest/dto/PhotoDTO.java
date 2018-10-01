@@ -1,16 +1,29 @@
 package org.sergei.rest.dto;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PhotoDTO {
+    @XmlElement
     private Long photoId;
 
+    @XmlElement
     private Long customerNumber;
 
+    @XmlElement
     private String fileName;
 
+    @XmlElement
     private String fileUrl;
 
+    @XmlElement
     private String fileType;
 
+    @XmlElement
     private Long fileSize;
 
     public PhotoDTO() {

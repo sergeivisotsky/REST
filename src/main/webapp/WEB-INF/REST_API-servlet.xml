@@ -37,7 +37,6 @@
         </property>
     </bean>
 
-
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="EntityManagerFactory" ref="entityManagerFactory"/>
     </bean>
