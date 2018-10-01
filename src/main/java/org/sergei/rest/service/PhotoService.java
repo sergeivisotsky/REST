@@ -70,20 +70,29 @@ public class PhotoService {
     }
 
     // Method to upload file on the server
-    // TODO: Migrate to PhotoDTO as a response
-    public Photo uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
+    public PhotoDTO uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
                                        CommonsMultipartFile commonsMultipartFile) {
 
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
 
+        PhotoDTO photoDTOResponse = new PhotoDTO();
+
+        // FIXME: set photo ID properly due to it is null right now
+//        photoDTOResponse.setPhotoId();
+        photoDTOResponse.setCustomerNumber(customerNumber);
+        photoDTOResponse.setFileName(commonsMultipartFile.getName());
+        photoDTOResponse.setFileUrl(fileDownloadUri);
+        photoDTOResponse.setFileType(commonsMultipartFile.getContentType());
+        photoDTOResponse.setFileSize(commonsMultipartFile.getSize());
+
         Photo photo = new Photo();
 
         photo.setCustomer(customer);
-        photo.setFileName(commonsMultipartFile.getName());
-        photo.setFileUrl(fileDownloadUri);
-        photo.setFileType(commonsMultipartFile.getContentType());
-        photo.setFileSize(commonsMultipartFile.getSize());
+        photo.setFileName(photoDTOResponse.getFileName());
+        photo.setFileUrl(photoDTOResponse.getFileUrl());
+        photo.setFileType(photoDTOResponse.getFileType());
+        photo.setFileSize(photo.getFileSize());
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -103,11 +112,10 @@ public class PhotoService {
         // Save file metadata into a database
         photoRepository.save(photo);
 
-        return photo;
+        return photoDTOResponse;
     }
 
     // Method to download file from the server by file name
-    // TODO: Migrate to PhotoDTO as a response
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
         Photo photo = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName)
