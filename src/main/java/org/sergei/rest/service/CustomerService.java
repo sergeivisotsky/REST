@@ -65,6 +65,7 @@ public class CustomerService {
 
     /**
      * Get customer by number
+     *
      * @param customerNumber get customer number param from REST controller
      * @return Customer DTO response
      */
@@ -87,6 +88,8 @@ public class CustomerService {
 
     /**
      * Save customer
+     *
+     * @param customer get customer from the REST controller as a request body
      */
     public void saveCustomer(Customer customer) {
         customerRepository.save(customer);
@@ -96,6 +99,11 @@ public class CustomerService {
 
     /**
      * Update customer by customer number
+     *
+     * @param customerNumber  get customer number from the REST controller
+     * @param customerRequest get customer as a request body
+     * @return Return updated customer response
+     * TODO: Return customer DTO not customer entity
      */
     public Customer updateCustomer(Long customerNumber, Customer customerRequest) {
         return customerRepository.findById(customerNumber)
@@ -110,6 +118,14 @@ public class CustomerService {
     }
 
     // Delete customer by number
+
+    /**
+     * Delete customer by number
+     *
+     * @param customerNumber get customer number from the REST controller
+     * @return Return updated customer response
+     * TODO: Return deleted customer DTO not customer entity
+     */
     public Customer deleteCustomerByNumber(Long customerNumber) {
         return customerRepository.findById(customerNumber).map(customer -> {
             customerRepository.delete(customer);
@@ -119,7 +135,10 @@ public class CustomerService {
 
     /**
      * Util method to convert from the list of orders to the list order order DTOs
-     * */
+     *
+     * @param orders get orders list to be replaced to OrderDTO response
+     * @return List of order DTOs
+     */
     private List<OrderDTO> setOrderDTOResponseFromEntityList(List<Order> orders) {
         List<OrderDTO> orderDTOList = new LinkedList<>();
         for (Order order : orders) {
