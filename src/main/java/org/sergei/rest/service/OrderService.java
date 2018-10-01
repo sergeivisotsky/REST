@@ -1,5 +1,6 @@
 package org.sergei.rest.service;
 
+import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
@@ -19,6 +20,8 @@ import java.util.List;
 @Service
 public class OrderService {
 
+    private final ModelMapper modelMapper;
+
     private final OrderRepository orderRepository;
 
     private final CustomerRepository customerRepository;
@@ -26,21 +29,30 @@ public class OrderService {
     private final OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository,
-                        CustomerRepository customerRepository,
-                        OrderDetailsRepository orderDetailsRepository) {
+    public OrderService(ModelMapper modelMapper, OrderRepository orderRepository,
+                        CustomerRepository customerRepository, OrderDetailsRepository orderDetailsRepository) {
+        this.modelMapper = modelMapper;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.orderDetailsRepository = orderDetailsRepository;
     }
 
-    // Get all orders
+    /**
+     * Get all orders
+     *
+     * @return List of order DTOs
+     */
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return getOrdersByListWithParam(orders);
     }
 
-    // Get order by number
+    /**
+     * Get order by number
+     *
+     * @param orderNumber get order number as a parameter from REST controller
+     * @return order DTO response
+     */
     public OrderDTO getOrderByNumber(Long orderNumber) {
         Order order = orderRepository.findById(orderNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
@@ -57,12 +69,8 @@ public class OrderService {
 
         List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
-            OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
-
-            orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-            orderDetailsDTO.setPrice(orderDetails.getPrice());
-            orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
-
+            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+            OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
             orderDetailsDTOS.add(orderDetailsDTO);
         }
 
@@ -71,7 +79,13 @@ public class OrderService {
         return response;
     }
 
-    // Get order by customer and order numbers
+    /**
+     * Get order by customer and order numbers
+     *
+     * @param customerNumber Get customer number from the REST controller
+     * @param orderNumber    Get order number from the REST controller
+     * @return Return order DTO reponse
+     */
     public OrderDTO getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
@@ -79,7 +93,12 @@ public class OrderService {
         return getOrderByNumber(orderNumber);
     }
 
-    // Get all orders by customer number
+    /**
+     * Get all orders by customer number
+     *
+     * @param customerNumber customer number form the REST controller
+     * @return List of order DTOs
+     */
     public List<OrderDTO> getAllOrdersByCustomerNumber(Long customerNumber) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
@@ -89,13 +108,23 @@ public class OrderService {
         return getOrdersByListWithParam(orders);
     }
 
-    // Get all orders by product code
+    /**
+     * Get all orders by product code
+     *
+     * @param productCode get product code from the REST controller
+     * @return return list of order DTOs
+     */
     public List<OrderDTO> getAllByProductCode(String productCode) {
         List<Order> orders = orderRepository.findAllByProductCode(productCode);
         return getOrdersByListWithParam(orders);
     }
 
-    // Service class to get order by specific parameter
+    /**
+     * Service class to get order by specific parameter
+     *
+     * @param orders Gets list of the order entities
+     * @return List of the order DTOs
+     */
     private List<OrderDTO> getOrdersByListWithParam(List<Order> orders) {
         List<OrderDTO> response = new LinkedList<>();
 
@@ -113,12 +142,8 @@ public class OrderService {
 
             List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
             for (OrderDetails orderDetails : orderDetailsList) {
-                OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
-
-                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-                orderDetailsDTO.setPrice(orderDetails.getPrice());
-                orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
-
+                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
                 orderDetailsDTOS.add(orderDetailsDTO);
             }
 
@@ -138,7 +163,13 @@ public class OrderService {
         }).orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
     }*/
 
-    // Save order
+    /**
+     * Save order
+     *
+     * @param customerNumber      Get customer number from the REST controller
+     * @param orderDTORequestBody Get order DTO request body
+     * @return return order DTO as a response
+     */
     // TODO: So that order and its details be saved
     public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
         if (!customerRepository.existsById(customerNumber)) {
@@ -162,8 +193,16 @@ public class OrderService {
         return orderDTORequestBody;
     }
 
-    // Update order by customer and order numbers
     // TODO: So that order and its details be updated
+
+    /**
+     * Update order by customer and order numbers
+     *
+     * @param customerNumber get customer number form the REST controller
+     * @param orderNumber    get order number form the REST controller
+     * @param orderRequest   Get order DTO request body
+     * @return return order DTO as a response
+     */
     public Order updateOrder(Long customerNumber, Long orderNumber, Order orderRequest) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
@@ -179,6 +218,13 @@ public class OrderService {
         }).orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
     }
 
+    /**
+     * Metod to delete order by number taken from the REST controller
+     *
+     * @param orderNumber get oder number from th REST controller
+     * @return Order entity as a response
+     */
+    // TODO: Replace of the entity response to the DTO response
     public Order deleteOrderByNumber(Long orderNumber) {
         return orderRepository.findById(orderNumber).map(order -> {
             orderRepository.delete(order);
@@ -186,6 +232,14 @@ public class OrderService {
         }).orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
     }
 
+    /**
+     * Delete order method
+     *
+     * @param customerNumber get customer number form the REST controller
+     * @param orderNumber    get order number form the REST controller
+     * @return Order entity as a response
+     */
+    // TODO: Replace of the entity response to the DTO response
     public Order deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");

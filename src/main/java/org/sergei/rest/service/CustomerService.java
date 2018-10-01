@@ -30,18 +30,18 @@ public class CustomerService {
     private final OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
-    public CustomerService(ModelMapper modelMapper,
-                           CustomerRepository customerRepository,
-                           OrderRepository orderRepository,
-                           OrderDetailsRepository orderDetailsRepository) {
+    public CustomerService(ModelMapper modelMapper, CustomerRepository customerRepository,
+                           OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository) {
         this.modelMapper = modelMapper;
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
         this.orderDetailsRepository = orderDetailsRepository;
     }
 
-    // TODO: Replace with ModelMapper
-    // Get all customers
+    /***
+     * Get all customers
+     * @return List of customer DTOs list
+     */
     public List<CustomerDTO> getAllCustomers() {
         List<CustomerDTO> customerDTOResponse = new LinkedList<>();
 
@@ -53,50 +53,21 @@ public class CustomerService {
             customerDTO.setFirstName(customer.getFirstName());
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
-//            CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
 
             List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
 
-            List<OrderDTO> orderDTOList = new LinkedList<>();
-            for (Order order : orders) {
-                OrderDTO orderDTO = new OrderDTO();
-
-                orderDTO.setOrderNumber(order.getOrderNumber());
-                orderDTO.setOrderDate(order.getOrderDate());
-                orderDTO.setRequiredDate(order.getRequiredDate());
-                orderDTO.setShippedDate(order.getShippedDate());
-                orderDTO.setStatus(order.getStatus());
-
-//                OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
-
-                orderDTOList.add(orderDTO);
-
-                List<OrderDetails> orderDetailsList =
-                        orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
-
-                List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
-                for (OrderDetails orderDetails : orderDetailsList) {
-                    OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
-
-                    orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-                    orderDetailsDTO.setPrice(orderDetails.getPrice());
-                    orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
-//                    OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
-
-                    orderDetailsDTOS.add(orderDetailsDTO);
-                }
-
-                orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
-            }
-
-            customerDTO.setOrders(orderDTOList);
+            customerDTO.setOrders(setOrderDTOResponseFromEntityList(orders));
             customerDTOResponse.add(customerDTO);
         }
 
         return customerDTOResponse;
     }
 
-    // Get customer by number
+    /**
+     * Get customer by number
+     * @param customerNumber get customer number param from REST controller
+     * @return Customer DTO response
+     */
     public CustomerDTO getCustomerByNumber(Long customerNumber) {
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
@@ -109,48 +80,23 @@ public class CustomerService {
 
         List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
 
-        List<OrderDTO> orderDTOList = new LinkedList<>();
-        for (Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO();
-
-            orderDTO.setOrderNumber(order.getOrderNumber());
-            orderDTO.setOrderDate(order.getOrderDate());
-            orderDTO.setRequiredDate(order.getRequiredDate());
-            orderDTO.setShippedDate(order.getShippedDate());
-            orderDTO.setStatus(order.getStatus());
-
-            orderDTOList.add(orderDTO);
-
-            List<OrderDetails> orderDetailsList =
-                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
-
-            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
-            for (OrderDetails orderDetails : orderDetailsList) {
-                OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
-
-                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-                orderDetailsDTO.setPrice(orderDetails.getPrice());
-                orderDetailsDTO.setQuantityOrdered(orderDetails.getQuantityOrdered());
-
-                orderDetailsDTOS.add(orderDetailsDTO);
-            }
-
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
-        }
-
-        response.setOrders(orderDTOList);
+        response.setOrders(setOrderDTOResponseFromEntityList(orders));
 
         return response;
     }
 
-    // Save customer
+    /**
+     * Save customer
+     */
     public void saveCustomer(Customer customer) {
         customerRepository.save(customer);
     }
 
     // TODO: Save customer and his orders with details in all request body
 
-    // Update customer by customer number
+    /**
+     * Update customer by customer number
+     */
     public Customer updateCustomer(Long customerNumber, Customer customerRequest) {
         return customerRepository.findById(customerNumber)
                 .map(customer -> {
@@ -169,5 +115,34 @@ public class CustomerService {
             customerRepository.delete(customer);
             return customer;
         }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+    }
+
+    /**
+     * Util method to convert from the list of orders to the list order order DTOs
+     * */
+    private List<OrderDTO> setOrderDTOResponseFromEntityList(List<Order> orders) {
+        List<OrderDTO> orderDTOList = new LinkedList<>();
+        for (Order order : orders) {
+            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+            OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+            orderDTOList.add(orderDTO);
+
+            // Get all order details list by order number
+            List<OrderDetails> orderDetailsList =
+                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
+
+            // Creating order details DTO and perform convertion from entity to DTO and put into
+            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+            for (OrderDetails orderDetails : orderDetailsList) {
+                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
+                orderDetailsDTOS.add(orderDetailsDTO);
+            }
+
+            // Set order detail DTO to the order DTO so that it was displayed as one response
+            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
+        }
+
+        return orderDTOList;
     }
 }

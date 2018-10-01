@@ -6,7 +6,6 @@ import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
-import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Photo;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
@@ -51,7 +50,12 @@ public class PhotoService {
         this.fileOperations = fileOperations;
     }
 
-    // Method to find all photos by customer number
+    /**
+     * Method to find all photos by customer number
+     *
+     * @param customerNumber get customer number from the REST controller
+     * @return list of the photo DTOs as a response
+     */
     public List<PhotoDTO> findAllUploadedPhotos(Long customerNumber) {
         List<PhotoDTO> photoDTOSResponse = new LinkedList<>();
 
@@ -67,7 +71,14 @@ public class PhotoService {
         return photoDTOSResponse;
     }
 
-    // Method to upload file on the server
+    /**
+     * Method to upload file on the server
+     *
+     * @param customerNumber       get customer number from the REST controller
+     * @param fileDownloadUri      get file download uri created in REST controller
+     * @param commonsMultipartFile get file uploaded from the REST controller
+     * @return photo DTO response
+     */
     public PhotoDTO uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
                                           CommonsMultipartFile commonsMultipartFile) {
 
@@ -108,7 +119,14 @@ public class PhotoService {
         return photoDTOResponse;
     }
 
-    // Method to download file from the server by file name
+    /**
+     * Method to download file from the server by file name
+     *
+     * @param customerNumber get customer number from the REST controller
+     * @param fileName       get file name from the RESt controller
+     * @return Resource
+     * @throws MalformedURLException throws in case of invalid uri
+     */
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
         // Get filename by customer id written in database
         Photo photo = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName)
@@ -129,7 +147,14 @@ public class PhotoService {
         }
     }
 
-    // Method to download file from the server by file ID
+    /**
+     * Method to download file from the server by file ID
+     *
+     * @param customerNumber get customer number from the REST controller
+     * @param photoId        get photo IR from the REST controller
+     * @return Returns resource
+     * @throws MalformedURLException throws in case of invalid uri
+     */
     public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
         Photo photo = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
@@ -150,11 +175,20 @@ public class PhotoService {
         }
     }
 
-    // Method to perform file deletion by customer number and photo ID
-    public Photo deletePhoto(Long customerNumber, Long photoId) throws IOException {
+    /**
+     * Method to perform file deletion by customer number and photo ID
+     *
+     * @param customerNumber get customer number from the REST controller
+     * @param photoId        get photo IR from the REST controller
+     * @return photo DTO as a response
+     * @throws IOException
+     */
+    public PhotoDTO deletePhoto(Long customerNumber, Long photoId) throws IOException {
         Photo photo =
                 photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
                         .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
+
+        PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
 
         String responseFileName = photo.getFileName();
 
@@ -165,6 +199,6 @@ public class PhotoService {
         fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
         photoRepository.deleteFileByCustomerNumberAndFileId(customerNumber, photoId); // Delete file metadata from the database
 
-        return photo;
+        return photoDTO;
     }
 }
