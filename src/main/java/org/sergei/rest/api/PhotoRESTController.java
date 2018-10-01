@@ -1,7 +1,6 @@
 package org.sergei.rest.api;
 
 import org.sergei.rest.dto.PhotoDTO;
-import org.sergei.rest.model.Photo;
 import org.sergei.rest.service.PhotoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,7 +112,7 @@ public class PhotoRESTController {
     // File deletion by name
     @DeleteMapping(value = "/customers/{customerNumber}/photos/{photoId}")
     public ResponseEntity<PhotoDTO> deletePhoto(@PathVariable("customerNumber") Long customerNumber,
-                                             @PathVariable("photoId") Long photoId) throws IOException {
+                                                @PathVariable("photoId") Long photoId) throws IOException {
 
         return new ResponseEntity<>(photoService.deletePhoto(customerNumber, photoId), HttpStatus.OK);
     }
