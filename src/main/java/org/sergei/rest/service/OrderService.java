@@ -1,5 +1,8 @@
 package org.sergei.rest.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
@@ -7,12 +10,15 @@ import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.model.OrderDetails;
+import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
+import org.sergei.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,20 +27,22 @@ import java.util.List;
 public class OrderService {
 
     private final ModelMapper modelMapper;
-
+    private final ObjectMapper objectMapper;
     private final OrderRepository orderRepository;
-
     private final CustomerRepository customerRepository;
-
     private final OrderDetailsRepository orderDetailsRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public OrderService(ModelMapper modelMapper, OrderRepository orderRepository,
-                        CustomerRepository customerRepository, OrderDetailsRepository orderDetailsRepository) {
+    public OrderService(ModelMapper modelMapper, ObjectMapper objectMapper, OrderRepository orderRepository,
+                        CustomerRepository customerRepository, OrderDetailsRepository orderDetailsRepository,
+                        ProductRepository productRepository) {
         this.modelMapper = modelMapper;
+        this.objectMapper = objectMapper;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.orderDetailsRepository = orderDetailsRepository;
+        this.productRepository = productRepository;
     }
 
     /**
@@ -171,7 +179,7 @@ public class OrderService {
      * @return return order DTO as a response
      */
     // TODO: So that order and its details be saved
-    public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
+    public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) throws IOException {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         }
@@ -186,12 +194,64 @@ public class OrderService {
         order.setRequiredDate(orderDTORequestBody.getRequiredDate());
         order.setShippedDate(orderDTORequestBody.getShippedDate());
         order.setStatus(orderDTORequestBody.getStatus());
-//        order.setOrderDetails((List<OrderDetails>) orderDTORequestBody.getOrderDetailsDTO());
+
+        // Parse value of orderDetailsDTO list
+//        JsonNode jsonNode = objectMapper.readTree(String.valueOf(orderDTORequestBody));
+//        JsonNode orderDetailsNode = jsonNode.path("orderDetailsDTO");
+
+//        JsonParser jsonParser = new JsonFactory().createParser(String.valueOf(orderDTORequestBody));
+
+
+        Product product = productRepository.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(1).getProductCode())
+                .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
+
+        List<OrderDetails> orderDetailsList = ObjectMapperUtils
+                .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
+        OrderDetails orderDetails = new OrderDetails();
+
+        String request = orderDTORequestBody.toString();
+
+        JSONObject jsonObject = new JSONObject(request.substring(request.indexOf("[")).trim());
+//        JSONObject jsonObject = new JSONObject(orderDTORequestBody.toString().replace("[", "{").replace("]", "}"));
+//        JSONObject jsonObject = new JSONObject(orderDTORequestBody.toString());
+        JSONArray orderDetailsFromJSON = jsonObject.getJSONArray("orderDetailsDTO");
+
+        product.setProductCode(orderDetailsFromJSON.getJSONObject(0).getString("productCode"));
+        orderDetails.setProduct(product);
+        orderDetails.setQuantityOrdered(orderDetailsFromJSON.getJSONObject(0).getInt("quantityOrdered"));
+        orderDetails.setPrice(orderDetailsFromJSON.getJSONObject(0).getBigDecimal("price"));
+
+        orderDetailsList.add(orderDetails);
+
+        /*while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = jsonParser.getCurrentName();
+
+            switch (fieldName) {
+                case "productCode":
+                    jsonParser.nextToken();
+                    product.setProductCode(jsonParser.getText());
+                    orderDetails.setProduct(product);
+                    break;
+                case "quantityOrdered":
+                    jsonParser.nextToken();
+                    orderDetails.setQuantityOrdered(jsonParser.getIntValue());
+                    break;
+                case "price":
+                    jsonParser.nextToken();
+                    orderDetails.setPrice(jsonParser.getDecimalValue());
+                    break;
+            }
+            orderDetailsList.add(orderDetails);
+        }*/
+
+
+        order.setOrderDetails(orderDetailsList);
 
         orderRepository.save(order);
 
         return orderDTORequestBody;
     }
+
 
     // TODO: So that order and its details be updated
 

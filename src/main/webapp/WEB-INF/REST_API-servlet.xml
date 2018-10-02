@@ -65,6 +65,7 @@
 
     <!--ModelMapper bean from DTO and to DTO serialization-->
     <bean name="ModelMapper" class="org.modelmapper.ModelMapper"/>
+    <bean name="ObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
     <!--Swagger API documentation configuration-->
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
