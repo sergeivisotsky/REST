@@ -1,8 +1,10 @@
 package org.sergei.rest.service;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
@@ -18,6 +20,7 @@ import org.sergei.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.DataInput;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -196,11 +199,10 @@ public class OrderService {
         order.setStatus(orderDTORequestBody.getStatus());
 
         // Parse value of orderDetailsDTO list
-//        JsonNode jsonNode = objectMapper.readTree(String.valueOf(orderDTORequestBody));
-//        JsonNode orderDetailsNode = jsonNode.path("orderDetailsDTO");
+        JsonNode jsonNode = objectMapper.readTree(String.valueOf(orderDTORequestBody));
+        JsonNode orderDetailsNode = jsonNode.path("orderDetailsDTO");
 
-//        JsonParser jsonParser = new JsonFactory().createParser(String.valueOf(orderDTORequestBody));
-
+        JsonParser jsonParser = new JsonFactory().createParser((DataInput) orderDetailsNode);
 
         Product product = productRepository.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(1).getProductCode())
                 .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
@@ -209,11 +211,11 @@ public class OrderService {
                 .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
         OrderDetails orderDetails = new OrderDetails();
 
-        String request = orderDTORequestBody.toString();
+//        String request = orderDTORequestBody.toString();
 
-        JSONObject jsonObject = new JSONObject(request.substring(request.indexOf("[")).trim());
+//        JSONObject jsonObject = new JSONObject(request.substring(request.indexOf("[")).trim());
 //        JSONObject jsonObject = new JSONObject(orderDTORequestBody.toString().replace("[", "{").replace("]", "}"));
-//        JSONObject jsonObject = new JSONObject(orderDTORequestBody.toString());
+        /*JSONObject jsonObject = new JSONObject(orderDTORequestBody.toString());
         JSONArray orderDetailsFromJSON = jsonObject.getJSONArray("orderDetailsDTO");
 
         product.setProductCode(orderDetailsFromJSON.getJSONObject(0).getString("productCode"));
@@ -221,9 +223,9 @@ public class OrderService {
         orderDetails.setQuantityOrdered(orderDetailsFromJSON.getJSONObject(0).getInt("quantityOrdered"));
         orderDetails.setPrice(orderDetailsFromJSON.getJSONObject(0).getBigDecimal("price"));
 
-        orderDetailsList.add(orderDetails);
+        orderDetailsList.add(orderDetails);*/
 
-        /*while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+        while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
             String fieldName = jsonParser.getCurrentName();
 
             switch (fieldName) {
@@ -242,7 +244,7 @@ public class OrderService {
                     break;
             }
             orderDetailsList.add(orderDetails);
-        }*/
+        }
 
 
         order.setOrderDetails(orderDetailsList);

@@ -95,7 +95,7 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    // TODO: Save customer and his orders with details in all request body
+    //  TODO: Save customer and his orders with details in all request body
 
     /**
      * Update customer by customer number
