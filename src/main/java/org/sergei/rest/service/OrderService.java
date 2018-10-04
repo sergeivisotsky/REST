@@ -159,15 +159,6 @@ public class OrderService {
         return response;
     }
 
-
-    /*public Order saveOrder(Long customerNumber, Order order) {
-        return customerRepository.findById(customerNumber).map(customer -> {
-            order.setCustomer(customer);
-            order.setOrderDetails(order.getOrderDetails());
-            return orderRepository.save(order);
-        }).orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
-    }*/
-
     /**
      * Save order
      *
@@ -175,7 +166,6 @@ public class OrderService {
      * @param orderDTORequestBody Get order DTO request body
      * @return return order DTO as a response
      */
-    // TODO: So that order and its details be saved
     public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
