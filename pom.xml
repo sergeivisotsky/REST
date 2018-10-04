@@ -132,11 +132,6 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>${com.fasterxml.jackson-version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20180130</version>
-        </dependency>
 
         <!-- AspectJ -->
         <dependency>
