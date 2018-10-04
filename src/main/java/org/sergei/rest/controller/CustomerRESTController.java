@@ -1,4 +1,4 @@
-package org.sergei.rest.api;
+package org.sergei.rest.controller;
 
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/customers",

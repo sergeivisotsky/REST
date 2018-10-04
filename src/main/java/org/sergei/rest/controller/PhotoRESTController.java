@@ -1,4 +1,4 @@
-package org.sergei.rest.api;
+package org.sergei.rest.controller;
 
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.service.PhotoService;
@@ -43,7 +43,7 @@ public class PhotoRESTController {
                                 @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerNumber.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
+                .path("/controller/v1/customers/" + customerNumber.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoService.uploadFileOnTheServer(customerNumber, fileDownloadUri, commonsMultipartFile);

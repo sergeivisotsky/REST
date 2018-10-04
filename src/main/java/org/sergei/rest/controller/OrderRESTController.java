@@ -1,4 +1,4 @@
-package org.sergei.rest.api;
+package org.sergei.rest.controller;
 
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.model.Order;

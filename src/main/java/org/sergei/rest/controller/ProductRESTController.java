@@ -1,4 +1,4 @@
-package org.sergei.rest.api;
+package org.sergei.rest.controller;
 
 import org.sergei.rest.model.Product;
 import org.sergei.rest.service.ProductService;
