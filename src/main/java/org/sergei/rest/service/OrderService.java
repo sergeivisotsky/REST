@@ -1,9 +1,5 @@
 package org.sergei.rest.service;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.OrderDTO;
@@ -20,8 +16,6 @@ import org.sergei.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -182,7 +176,7 @@ public class OrderService {
      * @return return order DTO as a response
      */
     // TODO: So that order and its details be saved
-    public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) throws IOException {
+    public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         }
@@ -199,51 +193,18 @@ public class OrderService {
         order.setStatus(orderDTORequestBody.getStatus());
 
         // FIXME: Parses value of orderDetailsDTO list
-        JsonNode jsonNode = objectMapper.readTree(String.valueOf(orderDTORequestBody));
-        JsonNode orderDetailsNode = jsonNode.path("orderDetailsDTO");
-
-        JsonParser jsonParser = new JsonFactory().createParser((DataInput) orderDetailsNode);
-
-        Product product = productRepository.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(1).getProductCode())
-                .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
-
         List<OrderDetails> orderDetailsList = ObjectMapperUtils
                 .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
-        OrderDetails orderDetails = new OrderDetails();
 
-//        String request = orderDTORequestBody.toString();
-
-//        JSONObject jsonObject = new JSONObject(request.substring(request.indexOf("[")).trim());
-//        JSONObject jsonObject = new JSONObject(orderDTORequestBody.toString().replace("[", "{").replace("]", "}"));
-        /*JSONObject jsonObject = new JSONObject(orderDTORequestBody.toString());
-        JSONArray orderDetailsFromJSON = jsonObject.getJSONArray("orderDetailsDTO");
-
-        product.setProductCode(orderDetailsFromJSON.getJSONObject(0).getString("productCode"));
-        orderDetails.setProduct(product);
-        orderDetails.setQuantityOrdered(orderDetailsFromJSON.getJSONObject(0).getInt("quantityOrdered"));
-        orderDetails.setPrice(orderDetailsFromJSON.getJSONObject(0).getBigDecimal("price"));
-
-        orderDetailsList.add(orderDetails);*/
-
-        while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
-            String fieldName = jsonParser.getCurrentName();
-
-            switch (fieldName) {
-                case "productCode":
-                    jsonParser.nextToken();
-                    product.setProductCode(jsonParser.getText());
-                    orderDetails.setProduct(product);
-                    break;
-                case "quantityOrdered":
-                    jsonParser.nextToken();
-                    orderDetails.setQuantityOrdered(jsonParser.getIntValue());
-                    break;
-                case "price":
-                    jsonParser.nextToken();
-                    orderDetails.setPrice(jsonParser.getDecimalValue());
-                    break;
-            }
-            orderDetailsList.add(orderDetails);
+        int counter = 0;
+        for (OrderDetails orderDetails : orderDetailsList) {
+            Product product = productRepository.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(counter).getProductCode())
+                    .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
+            orderDetails.setOrder(order);
+            orderDetails.setProduct(product);
+            orderDetails.setQuantityOrdered(orderDTORequestBody.getOrderDetailsDTO().get(counter).getQuantityOrdered());
+            orderDetails.setPrice(orderDTORequestBody.getOrderDetailsDTO().get(counter).getPrice());
+            counter++;
         }
 
         order.setOrderDetails(orderDetailsList);
