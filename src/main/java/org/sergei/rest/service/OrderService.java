@@ -192,7 +192,6 @@ public class OrderService {
         order.setShippedDate(orderDTORequestBody.getShippedDate());
         order.setStatus(orderDTORequestBody.getStatus());
 
-        // FIXME: Parses value of orderDetailsDTO list
         List<OrderDetails> orderDetailsList = ObjectMapperUtils
                 .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
 
@@ -216,7 +215,6 @@ public class OrderService {
 
 
     // TODO: So that order and its details be updated
-
     /**
      * Update order by customer and order numbers
      *
