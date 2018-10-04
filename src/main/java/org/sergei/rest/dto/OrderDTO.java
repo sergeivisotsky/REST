@@ -1,6 +1,7 @@
 package org.sergei.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.xml.bind.annotation.*;
 import java.util.Date;
@@ -17,18 +18,21 @@ public class OrderDTO {
     private Long customerNumber;
 
     @XmlElement
-    @XmlSchemaType(name="date")
+    @XmlSchemaType(name = "date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
     @XmlElement
-    @XmlSchemaType(name="date")
+    @XmlSchemaType(name = "date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date requiredDate;
 
     @XmlElement
-    @XmlSchemaType(name="date")
+    @XmlSchemaType(name = "date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date shippedDate;
 
     @XmlElement

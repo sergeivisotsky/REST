@@ -198,7 +198,7 @@ public class OrderService {
         order.setShippedDate(orderDTORequestBody.getShippedDate());
         order.setStatus(orderDTORequestBody.getStatus());
 
-        // Parse value of orderDetailsDTO list
+        // FIXME: Parses value of orderDetailsDTO list
         JsonNode jsonNode = objectMapper.readTree(String.valueOf(orderDTORequestBody));
         JsonNode orderDetailsNode = jsonNode.path("orderDetailsDTO");
 
@@ -245,7 +245,6 @@ public class OrderService {
             }
             orderDetailsList.add(orderDetails);
         }
-
 
         order.setOrderDetails(orderDetailsList);
 
