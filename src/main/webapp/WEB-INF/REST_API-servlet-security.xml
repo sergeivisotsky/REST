@@ -160,12 +160,4 @@
 
     <oauth:expression-handler id="oauthExpressionHandler"/>
     <oauth:web-expression-handler id="oauthWebExpressionHandler"/>
-
-    <!--TODO: Permits for the swagger-->
-    <http auto-config="true" use-expressions="true" xmlns="http://www.springframework.org/schema/security">
-        <intercept-url pattern="/v2/api-docs" access="permitAll()"/>
-        <intercept-url pattern="/swagger-resources/**" access="permitAll()"/>
-        <intercept-url pattern="/swagger-ui.html" access="permitAll()"/>
-        <intercept-url pattern="/webjars/**" access="permitAll()"/>
-    </http>
 </beans>
