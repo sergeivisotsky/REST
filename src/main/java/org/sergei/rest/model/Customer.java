@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
@@ -43,18 +44,18 @@ public class Customer implements Serializable {
             orphanRemoval = true
     )
     @JoinColumn(name = "customer_number")
-    private List<Photo> photoUploadRespons = new LinkedList<>();
+    private List<Photo> photoUploadResponse = new LinkedList<>();
 
     public Customer() {
     }
 
     public Customer(String firstName, String lastName, Integer age,
-                    List<Order> orders, List<Photo> photoUploadRespons) {
+                    List<Order> orders, List<Photo> photoUploadResponse) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.orders = orders;
-        this.photoUploadRespons = photoUploadRespons;
+        this.photoUploadResponse = photoUploadResponse;
     }
 
     public Long getCustomerNumber() {
@@ -97,12 +98,30 @@ public class Customer implements Serializable {
         this.orders = orders;
     }
 
-    @JsonIgnore
-    public List<Photo> getPhotoUploadRespons() {
-        return photoUploadRespons;
+    public List<Photo> getPhotoUploadResponse() {
+        return photoUploadResponse;
     }
 
-    public void setPhotoUploadRespons(List<Photo> photoUploadRespons) {
-        this.photoUploadRespons = photoUploadRespons;
+    public void setPhotoUploadResponse(List<Photo> photoUploadResponse) {
+        this.photoUploadResponse = photoUploadResponse;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(getCustomerNumber(), customer.getCustomerNumber()) &&
+                Objects.equals(getFirstName(), customer.getFirstName()) &&
+                Objects.equals(getLastName(), customer.getLastName()) &&
+                Objects.equals(getAge(), customer.getAge()) &&
+                Objects.equals(getOrders(), customer.getOrders()) &&
+                Objects.equals(getPhotoUploadResponse(), customer.getPhotoUploadResponse());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomerNumber(), getFirstName(),
+                getLastName(),/* getAge(),*/ getOrders(), getPhotoUploadResponse());
     }
 }

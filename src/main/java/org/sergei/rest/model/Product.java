@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "products")
@@ -77,5 +78,23 @@ public class Product implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return Objects.equals(getProductCode(), product.getProductCode()) &&
+                Objects.equals(getProductName(), product.getProductName()) &&
+                Objects.equals(getProductLine(), product.getProductLine()) &&
+                Objects.equals(getProductVendor(), product.getProductVendor()) &&
+                Objects.equals(getPrice(), product.getPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getProductCode(), getProductName(),
+                getProductLine(), getProductVendor(), getPrice());
     }
 }

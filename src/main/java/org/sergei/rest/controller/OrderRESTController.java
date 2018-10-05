@@ -61,10 +61,10 @@ public class OrderRESTController {
     // Update record
     @PutMapping(value = "/customers/{customerNumber}/orders/{orderNumber}",
             consumes = {"application/json", "application/xml"})
-    public ResponseEntity<Order> updateRecord(@PathVariable("customerNumber") Long customerNumber,
-                                              @PathVariable("orderNumber") Long orderNumber,
-                                              @RequestBody Order order) {
-        return new ResponseEntity<>(orderService.updateOrder(customerNumber, orderNumber, order), HttpStatus.ACCEPTED);
+    public ResponseEntity<OrderDTO> updateRecord(@PathVariable("customerNumber") Long customerNumber,
+                                                 @PathVariable("orderNumber") Long orderNumber,
+                                                 @RequestBody OrderDTO orderDTO) {
+        return new ResponseEntity<>(orderService.updateOrder(customerNumber, orderNumber, orderDTO), HttpStatus.ACCEPTED);
     }
 
     // Delete order by number

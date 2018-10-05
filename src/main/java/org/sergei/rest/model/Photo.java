@@ -1,10 +1,7 @@
 package org.sergei.rest.model;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 @Entity
 @Table(name = "photos")
@@ -88,5 +85,24 @@ public class Photo {
 
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Photo)) return false;
+        Photo photo = (Photo) o;
+        return Objects.equals(getPhotoId(), photo.getPhotoId()) &&
+                Objects.equals(getCustomer(), photo.getCustomer()) &&
+                Objects.equals(getFileName(), photo.getFileName()) &&
+                Objects.equals(getFileUrl(), photo.getFileUrl()) &&
+                Objects.equals(getFileType(), photo.getFileType()) &&
+                Objects.equals(getFileSize(), photo.getFileSize());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPhotoId(), getCustomer(), getFileName(),
+                getFileUrl(), getFileType(), getFileSize());
     }
 }

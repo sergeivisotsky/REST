@@ -6,12 +6,11 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
@@ -38,7 +37,6 @@ public class Order implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @JsonIgnore
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -114,13 +112,31 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    @XmlElementWrapper(name = "orderDetails")
-    @XmlElement(name = "info")
     public List<OrderDetails> getOrderDetails() {
         return orderDetails;
     }
 
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return Objects.equals(getOrderNumber(), order.getOrderNumber()) &&
+                Objects.equals(getOrderDate(), order.getOrderDate()) &&
+                Objects.equals(getRequiredDate(), order.getRequiredDate()) &&
+                Objects.equals(getShippedDate(), order.getShippedDate()) &&
+                Objects.equals(getStatus(), order.getStatus()) &&
+                Objects.equals(getOrderDetails(), order.getOrderDetails()) &&
+                Objects.equals(getCustomer(), order.getCustomer());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOrderNumber(), getOrderDate(), getRequiredDate(),
+                getShippedDate(), getStatus(), getOrderDetails(), getCustomer());
     }
 }

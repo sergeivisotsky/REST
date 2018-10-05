@@ -3,6 +3,7 @@ package org.sergei.rest.swagger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -19,6 +20,10 @@ import java.util.List;
 
 import static org.springframework.security.oauth2.provider.token.AccessTokenConverter.CLIENT_ID;
 
+/**
+ * FIXME: Swagger stopped working
+ * FIXME: Message - Unable to infer base url.
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -31,11 +36,23 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("org.sergei.rest.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .securitySchemes(Collections.singletonList(securitySchema()))
-                .securityContexts(Collections.singletonList(securityContext()));
+                .securityContexts(Collections.singletonList(securityContext()))
+                .apiInfo(apiInfo());
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Sergei REST API documentation")
+                .description("Methods offered by this REST API")
+                .version("1.0.0")
+                .license("Apache 2.0")
+                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+                .contact(new Contact("", "", "sergei.visotsky@gmail.com"))
+                .build();
     }
 
     @Bean
