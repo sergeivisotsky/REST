@@ -1,7 +1,5 @@
 package org.sergei.rest.model;
 
-import io.swagger.annotations.Api;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;

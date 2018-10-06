@@ -44,7 +44,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Sergei REST API documentation")
                 .description("Methods offered by this REST API")
-                .version("1.0.0")
+                .version("1.0")
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .contact(new Contact("", "", "sergei.visotsky@gmail.com"))
