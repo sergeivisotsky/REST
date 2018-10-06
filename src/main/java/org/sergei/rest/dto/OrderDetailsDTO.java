@@ -2,6 +2,7 @@ package org.sergei.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 @JsonRootName("orderDetails")
 @XmlRootElement(name = "orderDetails")
 @XmlAccessorType(XmlAccessType.FIELD)
+@ApiModel(value = "Order details", description = "All oder details data")
 public class OrderDetailsDTO {
 
     @XmlElement

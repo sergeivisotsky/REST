@@ -1,5 +1,7 @@
 package org.sergei.rest.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
@@ -21,24 +23,28 @@ public class CustomerRESTController {
 
     // Get all customers
     @GetMapping
+    @ApiOperation(value = "Gel all customers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
         return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
     // Get customer by specific ID as a parameter
     @GetMapping("/{customerNumber}")
+    @ApiOperation(value = "Get customer by ID")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("customerNumber") Long customerNumber) throws RecordNotFoundException {
         return new ResponseEntity<>(customerService.getCustomerByNumber(customerNumber), HttpStatus.OK);
     }
 
     // Add a new record
     @PostMapping(consumes = {"application/json", "application/xml"})
+    @ApiOperation(value = "Add a new customer")
     public ResponseEntity<CustomerDTO> addCustomer(@RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.saveCustomer(customerDTO), HttpStatus.CREATED);
     }
 
     // Update record
     @PutMapping(value = "/{customerNumber}", consumes = {"application/json", "application/xml"})
+    @ApiOperation(value = "Update customer data")
     public ResponseEntity<Customer> updateRecord(@PathVariable("customerNumber") Long customerNumber,
                                                  @RequestBody Customer customer) {
         return new ResponseEntity<>(customerService.updateCustomer(customerNumber, customer), HttpStatus.ACCEPTED);
@@ -46,6 +52,7 @@ public class CustomerRESTController {
 
     // Delete customer by specific number
     @DeleteMapping("/{customerNumber}")
+    @ApiOperation(value = "Delete customer data by ID")
     public ResponseEntity<CustomerDTO> deleteCustomerByNumber(@PathVariable("customerNumber") Long customerNumber) {
         return new ResponseEntity<>(customerService.deleteCustomerByNumber(customerNumber), HttpStatus.OK);
     }

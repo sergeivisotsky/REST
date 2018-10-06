@@ -1,9 +1,10 @@
 package org.sergei.rest.model;
 
+import io.swagger.annotations.Api;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
 @Table(name = "order_details")
@@ -68,21 +69,5 @@ public class OrderDetails implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OrderDetails)) return false;
-        OrderDetails that = (OrderDetails) o;
-        return Objects.equals(getOrder(), that.getOrder()) &&
-                Objects.equals(getProduct(), that.getProduct()) &&
-                Objects.equals(getQuantityOrdered(), that.getQuantityOrdered()) &&
-                Objects.equals(getPrice(), that.getPrice());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getOrder(), getProduct(), getQuantityOrdered(), getPrice());
     }
 }

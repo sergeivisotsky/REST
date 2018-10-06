@@ -133,7 +133,7 @@ public class CustomerService {
      *
      * @param customerNumber get customer number from the REST controller
      * @return Return updated customer response
-     * TODO: Return deleted customer DTO not customer entity
+     * FIXME: Doesn't work
      */
     public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
         Customer customer = customerRepository.findById(customerNumber)

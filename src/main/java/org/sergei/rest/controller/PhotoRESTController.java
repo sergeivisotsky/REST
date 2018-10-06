@@ -1,5 +1,6 @@
 package org.sergei.rest.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.service.PhotoService;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ public class PhotoRESTController {
 
     // The response with all user photos
     @GetMapping("/customers/{customerNumber}/photo")
+    @ApiOperation(value = "Get all photos fot the customer")
     public ResponseEntity<List<PhotoDTO>> findAllCustomerPhotos(@PathVariable("customerNumber") Long customerNumber) {
         return new ResponseEntity<>(photoService.findAllUploadedPhotos(customerNumber), HttpStatus.OK);
     }
@@ -39,6 +41,7 @@ public class PhotoRESTController {
     // Upload one photo
     @PostMapping("/customers/{customerNumber}/photo")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Upload photo for the customer")
     public PhotoDTO uploadPhoto(@PathVariable("customerNumber") Long customerNumber,
                                 @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
@@ -52,6 +55,7 @@ public class PhotoRESTController {
     // Upload multiple photos
     @PostMapping("/customers/{customerNumber}/photos")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Upload multiple photo for the customer")
     public List<PhotoDTO> uploadMultiplePhotos(@PathVariable("customerNumber") Long customerNumber,
                                                @RequestParam("files") CommonsMultipartFile[] files) {
         return Arrays.stream(files)
@@ -61,6 +65,7 @@ public class PhotoRESTController {
 
     // download photo method by file name
     @GetMapping(value = "/{customerNumber}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
+    @ApiOperation(value = "Download photo for the customer by photo name")
     public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerNumber") Long customerNumber,
                                                         @PathVariable("fileName") String fileName,
                                                         HttpServletRequest request) throws IOException {
@@ -86,6 +91,7 @@ public class PhotoRESTController {
 
     // download photo method by file name
     @GetMapping(value = "/customers/{customerNumber}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
+    @ApiOperation(value = "Download photo by customer number and photo ID")
     public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerNumber") Long customerNumber,
                                                       @PathVariable("photoId") Long photoId,
                                                       HttpServletRequest request) throws IOException {
@@ -111,6 +117,7 @@ public class PhotoRESTController {
 
     // File deletion by name
     @DeleteMapping(value = "/customers/{customerNumber}/photos/{photoId}")
+    @ApiOperation(value = "Delete photo by customer number and photo ID")
     public ResponseEntity<PhotoDTO> deletePhoto(@PathVariable("customerNumber") Long customerNumber,
                                                 @PathVariable("photoId") Long photoId) throws IOException {
 

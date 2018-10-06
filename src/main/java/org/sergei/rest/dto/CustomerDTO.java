@@ -1,11 +1,14 @@
 package org.sergei.rest.dto;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.xml.bind.annotation.*;
 import java.util.LinkedList;
 import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@ApiModel(value = "Customer", description = "Customer data")
 public class CustomerDTO {
 
     @XmlElement

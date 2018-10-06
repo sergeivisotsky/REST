@@ -99,23 +99,4 @@ public class Customer implements Serializable {
     public void setPhotoUploadResponse(List<Photo> photoUploadResponse) {
         this.photoUploadResponse = photoUploadResponse;
     }
-
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Customer)) return false;
-        Customer customer = (Customer) o;
-        return Objects.equals(getCustomerNumber(), customer.getCustomerNumber()) &&
-                Objects.equals(getFirstName(), customer.getFirstName()) &&
-                Objects.equals(getLastName(), customer.getLastName()) &&
-                Objects.equals(getAge(), customer.getAge()) &&
-                Objects.equals(getOrders(), customer.getOrders()) &&
-                Objects.equals(getPhotoUploadResponse(), customer.getPhotoUploadResponse());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getCustomerNumber(), getFirstName(),
-                getLastName(),*//* getAge(),*//* getOrders(), getPhotoUploadResponse());
-    }*/
 }
