@@ -12,8 +12,9 @@ public class OrderDetails implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "order_number")
+    // TODO: ON DELETE CASCADE programmatically
     private Order order;
 
     @Id

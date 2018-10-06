@@ -12,6 +12,7 @@ public class Photo {
 
     @ManyToOne
     @JoinColumn(name = "customer_number")
+    // TODO: ON DELETE CASCADE programmatically
     private Customer customer;
 
     @Column(name = "file_name")
