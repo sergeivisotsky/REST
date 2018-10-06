@@ -33,10 +33,8 @@ public class CustomerRESTController {
 
     // Add a new record
     @PostMapping(consumes = {"application/json", "application/xml"})
-    public ResponseEntity addCustomer(@RequestBody Customer customer) {
-        customerService.saveCustomer(customer);
-
-        return new ResponseEntity<>(customer, HttpStatus.CREATED);
+    public ResponseEntity<CustomerDTO> addCustomer(@RequestBody CustomerDTO customerDTO) {
+        return new ResponseEntity<>(customerService.saveCustomer(customerDTO), HttpStatus.CREATED);
     }
 
     // Update record
@@ -46,11 +44,9 @@ public class CustomerRESTController {
         return new ResponseEntity<>(customerService.updateCustomer(customerNumber, customer), HttpStatus.ACCEPTED);
     }
 
-    // Delete order by specific ID
+    // Delete customer by specific number
     @DeleteMapping("/{customerNumber}")
-    public ResponseEntity<Customer> deleteCustomerById(@PathVariable("customerNumber") Long customerNumber) {
-        Customer customer = customerService.deleteCustomerByNumber(customerNumber);
-
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> deleteCustomerByNumber(@PathVariable("customerNumber") Long customerNumber) {
+        return new ResponseEntity<>(customerService.deleteCustomerByNumber(customerNumber), HttpStatus.OK);
     }
 }

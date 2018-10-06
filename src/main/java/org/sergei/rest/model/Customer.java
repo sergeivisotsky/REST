@@ -1,12 +1,9 @@
 package org.sergei.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
@@ -15,7 +12,6 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_number")
     private Long customerNumber;
 
@@ -28,7 +24,6 @@ public class Customer implements Serializable {
     @Column(name = "age")
     private Integer age;
 
-    @JsonIgnore
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -37,7 +32,6 @@ public class Customer implements Serializable {
     @JoinColumn(name = "customer_number")
     private List<Order> orders = new LinkedList<>();
 
-    @JsonIgnore
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -106,7 +100,7 @@ public class Customer implements Serializable {
         this.photoUploadResponse = photoUploadResponse;
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Customer)) return false;
@@ -122,6 +116,6 @@ public class Customer implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(getCustomerNumber(), getFirstName(),
-                getLastName(),/* getAge(),*/ getOrders(), getPhotoUploadResponse());
-    }
+                getLastName(),*//* getAge(),*//* getOrders(), getPhotoUploadResponse());
+    }*/
 }

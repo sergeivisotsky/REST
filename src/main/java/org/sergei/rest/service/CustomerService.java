@@ -89,10 +89,19 @@ public class CustomerService {
     /**
      * Save customer
      *
-     * @param customer get customer from the REST controller as a request body
+     * @param customerDTO get customer from the REST controller as a request body
      */
-    public void saveCustomer(Customer customer) {
+    public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer();
+
+        customer.setCustomerNumber(customerDTO.getCustomerNumber());
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setAge(customerDTO.getAge());
+
         customerRepository.save(customer);
+
+        return customerDTO;
     }
 
     //  TODO: Save customer and his orders with details in all request body
@@ -126,11 +135,12 @@ public class CustomerService {
      * @return Return updated customer response
      * TODO: Return deleted customer DTO not customer entity
      */
-    public Customer deleteCustomerByNumber(Long customerNumber) {
-        return customerRepository.findById(customerNumber).map(customer -> {
-            customerRepository.delete(customer);
-            return customer;
-        }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+    public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
+        Customer customer = customerRepository.findById(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+        CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
+        customerRepository.delete(customer);
+        return customerDTO;
     }
 
     /**

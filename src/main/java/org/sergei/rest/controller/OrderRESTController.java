@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -54,7 +53,7 @@ public class OrderRESTController {
     @PostMapping(value = "/customers/{customerNumber}/orders",
             consumes = {"application/json", "application/xml"})
     public ResponseEntity<OrderDTO> createOrder(@PathVariable("customerNumber") Long customerNumber,
-                                                @RequestBody OrderDTO orderDTO) throws IOException {
+                                                @RequestBody OrderDTO orderDTO) {
         return new ResponseEntity<>(orderService.saveOrder(customerNumber, orderDTO), HttpStatus.CREATED);
     }
 
@@ -75,9 +74,8 @@ public class OrderRESTController {
 
     // Delete order by customer number and order number
     @DeleteMapping("/customers/{customerNumber}/orders/{orderNumber}")
-    public ResponseEntity<Order> deleteOrderByCustomerNumberAndOrderNumber(@PathVariable("customerNumber") Long customerNumber,
-                                                                           @PathVariable("orderNumber") Long orderNumber) {
-
+    public ResponseEntity<OrderDTO> deleteOrderByCustomerNumberAndOrderNumber(@PathVariable("customerNumber") Long customerNumber,
+                                                                              @PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.deleteOrderByCustomerIdAndOrderId(customerNumber, orderNumber), HttpStatus.OK);
     }
 }

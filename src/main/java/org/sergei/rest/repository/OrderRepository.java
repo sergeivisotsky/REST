@@ -17,4 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "SELECT * FROM orders INNER JOIN order_details o on orders.order_number = o.order_number WHERE product_code = :productCode", nativeQuery = true)
     List<Order> findAllByProductCode(@Param("productCode") String productCode);
+
+//    @Query(value = "UPDATE rest_services.orders SET ", nativeQuery = true)
+//    void update(Order order);
 }

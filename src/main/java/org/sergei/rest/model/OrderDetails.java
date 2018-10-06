@@ -1,31 +1,26 @@
 package org.sergei.rest.model;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "order_details")
-@IdClass(OrderDetails.class)
+@IdClass(OrderDetailsId.class)
 public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "order_number")
     private Order order;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "product_code")
     private Product product;
-
-    /*@ManyToOne
-    @JoinColumn(name = "customer_number")
-    private Customer customer;*/
 
     @Column(name = "quantity_ordered")
     private Integer quantityOrdered;
@@ -36,12 +31,11 @@ public class OrderDetails implements Serializable {
     public OrderDetails() {
     }
 
-    public OrderDetails(Product product, Integer quantityOrdered, BigDecimal price, Order order, Customer customer) {
+    public OrderDetails(Product product, Integer quantityOrdered, BigDecimal price, Order order) {
         this.product = product;
         this.quantityOrdered = quantityOrdered;
         this.price = price;
         this.order = order;
-//        this.customer = customer;
     }
 
     public Product getProduct() {
@@ -60,14 +54,6 @@ public class OrderDetails implements Serializable {
         this.quantityOrdered = quantityOrdered;
     }
 
-    /*public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }*/
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -82,5 +68,21 @@ public class OrderDetails implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrderDetails)) return false;
+        OrderDetails that = (OrderDetails) o;
+        return Objects.equals(getOrder(), that.getOrder()) &&
+                Objects.equals(getProduct(), that.getProduct()) &&
+                Objects.equals(getQuantityOrdered(), that.getQuantityOrdered()) &&
+                Objects.equals(getPrice(), that.getPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOrder(), getProduct(), getQuantityOrdered(), getPrice());
     }
 }

@@ -1,9 +1,6 @@
 package org.sergei.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,15 +20,12 @@ public class Order implements Serializable {
     private Long orderNumber;
 
     @Column(name = "order_date")
-    @CreationTimestamp
     private Date orderDate;
 
     @Column(name = "required_date")
-    @CreationTimestamp
     private Date requiredDate;
 
     @Column(name = "shipped_date")
-    @CreationTimestamp
     private Date shippedDate;
 
     @Column(name = "status")
@@ -47,7 +41,6 @@ public class Order implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "customer_number")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
 
     public Order() {

@@ -59,16 +59,11 @@ public class OrderService {
     public OrderDTO getOrderByNumber(Long orderNumber) {
         Order order = orderRepository.findById(orderNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
-        OrderDTO response = new OrderDTO();
-
-        response.setOrderNumber(order.getOrderNumber());
-        response.setOrderDate(order.getOrderDate());
-        response.setRequiredDate(order.getRequiredDate());
-        response.setShippedDate(order.getShippedDate());
-        response.setStatus(order.getStatus());
+        // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+        OrderDTO orderDTOResponse = modelMapper.map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
-                orderDetailsRepository.findAllByOrderNumber(response.getOrderNumber());
+                orderDetailsRepository.findAllByOrderNumber(orderDTOResponse.getOrderNumber());
 
         List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -77,9 +72,9 @@ public class OrderService {
             orderDetailsDTOS.add(orderDetailsDTO);
         }
 
-        response.setOrderDetailsDTO(orderDetailsDTOS);
+        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);
 
-        return response;
+        return orderDTOResponse;
     }
 
     /**
@@ -132,13 +127,8 @@ public class OrderService {
         List<OrderDTO> response = new LinkedList<>();
 
         for (Order order : orders) {
-            OrderDTO orderDTO = new OrderDTO();
-
-            orderDTO.setOrderNumber(order.getOrderNumber());
-            orderDTO.setOrderDate(order.getOrderDate());
-            orderDTO.setRequiredDate(order.getRequiredDate());
-            orderDTO.setShippedDate(order.getShippedDate());
-            orderDTO.setStatus(order.getStatus());
+            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+            OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
             List<OrderDetails> orderDetailsList =
                     orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
@@ -167,14 +157,9 @@ public class OrderService {
     public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
-        Order order = new Order();
 
-        order.setOrderNumber(orderDTORequestBody.getOrderNumber());
+        Order order = modelMapper.map(orderDTORequestBody, Order.class);
         order.setCustomer(customer);
-        order.setOrderDate(orderDTORequestBody.getOrderDate());
-        order.setRequiredDate(orderDTORequestBody.getRequiredDate());
-        order.setShippedDate(orderDTORequestBody.getShippedDate());
-        order.setStatus(orderDTORequestBody.getStatus());
 
         // Maps each member of collection containing requests to the class
         List<OrderDetails> orderDetailsList = ObjectMapperUtils
@@ -278,14 +263,16 @@ public class OrderService {
      * @return Order entity as a response
      */
     // TODO: Replace of the entity response to the DTO response
-    public Order deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
+    public OrderDTO deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
         if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         }
 
-        return orderRepository.findById(orderNumber).map(order -> {
-            orderRepository.delete(order);
-            return order;
-        }).orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
+        Order order = orderRepository.findById(orderNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
+
+        orderRepository.delete(order);
+
+        return modelMapper.map(order, OrderDTO.class);
     }
 }

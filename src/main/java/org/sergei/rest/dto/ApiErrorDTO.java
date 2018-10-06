@@ -1,16 +1,16 @@
-package org.sergei.rest.model;
+package org.sergei.rest.dto;
 
 import org.springframework.http.HttpStatus;
 
-public class ApiError {
+public class ApiErrorDTO {
     private HttpStatus status;
     private String message;
     private String error;
 
-    public ApiError() {
+    public ApiErrorDTO() {
     }
 
-    public ApiError(HttpStatus status, String message, String error) {
+    public ApiErrorDTO(HttpStatus status, String message, String error) {
         this.status = status;
         this.message = message;
         this.error = error;
