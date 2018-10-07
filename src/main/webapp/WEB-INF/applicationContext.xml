@@ -29,7 +29,6 @@
     <!--Swagger API documentation configuration-->
     <bean id="swagger2Config"
           class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration"/>
-    <!--<bean id="sessionFactory" class="org.hibernate.SessionFactory" abstract="true"/>-->
 
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
@@ -48,4 +47,5 @@
 
     <!--Spring Security oAuth2 authentication configuration import-->
     <import resource="security-context.xml"/>
+
 </beans>
