@@ -2,23 +2,17 @@ package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.PhotoDTO;
-import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
-import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.Photo;
-import org.sergei.rest.repository.CustomerRepository;
-import org.sergei.rest.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -32,21 +26,14 @@ public class PhotoService {
 
     private final ModelMapper modelMapper;
 
-    private final PhotoRepository photoRepository;
-
-    private final CustomerRepository customerRepository;
-
     private final Path fileStorageLocation;
 
     private final FileOperations fileOperations;
 
     @Autowired
-    public PhotoService(ModelMapper modelMapper, PhotoRepository photoRepository,
-                        CustomerRepository customerRepository, FileOperations fileOperations) {
+    public PhotoService(ModelMapper modelMapper, FileOperations fileOperations) {
         this.modelMapper = modelMapper;
         this.fileStorageLocation = Paths.get(TEMP_DIR_PATH).toAbsolutePath().normalize();
-        this.photoRepository = photoRepository;
-        this.customerRepository = customerRepository;
         this.fileOperations = fileOperations;
     }
 
@@ -59,14 +46,14 @@ public class PhotoService {
     public List<PhotoDTO> findAllUploadedPhotos(Long customerNumber) {
         List<PhotoDTO> photoDTOSResponse = new LinkedList<>();
 
-        List<Photo> photos = photoRepository.findAllPhotosByCustomerNumber(customerNumber)
+        /*List<Photo> photos = photoRepository.findAllPhotosByCustomerNumber(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
 
         for (Photo photo : photos) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
             photoDTOSResponse.add(photoDTO);
-        }
+        }*/
 
         return photoDTOSResponse;
     }
@@ -82,8 +69,8 @@ public class PhotoService {
     public PhotoDTO uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
                                           CommonsMultipartFile commonsMultipartFile) {
 
-        customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+        /*customerRepository.findById(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
 
         PhotoDTO photoDTOResponse = new PhotoDTO();
 
@@ -114,7 +101,7 @@ public class PhotoService {
         fileOperations.uploadFile(commonsMultipartFile);
 
         // Save file metadata into a database
-        photoRepository.save(photo);
+//        photoRepository.save(photo);
 
         return photoDTOResponse;
     }
@@ -128,7 +115,7 @@ public class PhotoService {
      * @throws MalformedURLException throws in case of invalid uri
      */
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
-        // Get filename by customer id written in database
+        /*// Get filename by customer id written in database
         Photo photo = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName)
                 .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
 
@@ -144,7 +131,9 @@ public class PhotoService {
             return resource;
         } else {
             throw new FileNotFoundException("File not found");
-        }
+        }*/
+
+        return null;
     }
 
     /**
@@ -157,7 +146,7 @@ public class PhotoService {
      */
     public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        Photo photo = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
+        /*Photo photo = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
                 .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
 
         String responseFileName = photo.getFileName();
@@ -165,14 +154,15 @@ public class PhotoService {
         fileOperations.downloadFile(responseFileName);
 
         Path filePath = this.fileStorageLocation.resolve(responseFileName).normalize();
-        Resource resource = new UrlResource(filePath.toUri());
+        Resource resource = new UrlResource(filePath.toUri());*/
 
         // Check if file exists
-        if (resource.exists()) {
+        /*if (resource.exists()) {
             return resource;
         } else {
             throw new FileNotFoundException("File not found");
-        }
+        }*/
+        return null;
     }
 
     /**
@@ -184,21 +174,22 @@ public class PhotoService {
      * @throws IOException
      */
     public PhotoDTO deletePhoto(Long customerNumber, Long photoId) throws IOException {
-        Photo photo =
+        /*Photo photo =
                 photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
-                        .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
+                        .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));*/
 
-        PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
+//        PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
 
-        String responseFileName = photo.getFileName();
+//        String responseFileName = photo.getFileName();
 
         // Delete photo from temp storage
-        Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
-        Files.deleteIfExists(targetLocation);
+//        Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
+//        Files.deleteIfExists(targetLocation);
 
-        fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
-        photoRepository.deleteFileByCustomerNumberAndFileId(customerNumber, photoId); // Delete file metadata from the database
+//        fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
+//        photoRepository.deleteFileByCustomerNumberAndFileId(customerNumber, photoId); // Delete file metadata from the database
 
-        return photoDTO;
+//        return photoDTO;
+        return null;
     }
 }

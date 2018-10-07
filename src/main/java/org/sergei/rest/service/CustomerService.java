@@ -1,20 +1,14 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
+import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.dto.OrderDTO;
-import org.sergei.rest.dto.OrderDetailsDTO;
-import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
-import org.sergei.rest.model.OrderDetails;
-import org.sergei.rest.repository.CustomerRepository;
-import org.sergei.rest.repository.OrderDetailsRepository;
-import org.sergei.rest.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,20 +16,12 @@ import java.util.List;
 public class CustomerService {
 
     private final ModelMapper modelMapper;
-
-    private final CustomerRepository customerRepository;
-
-    private final OrderRepository orderRepository;
-
-    private final OrderDetailsRepository orderDetailsRepository;
+    private final CustomerDAO customerDAO;
 
     @Autowired
-    public CustomerService(ModelMapper modelMapper, CustomerRepository customerRepository,
-                           OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository) {
+    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO) {
         this.modelMapper = modelMapper;
-        this.customerRepository = customerRepository;
-        this.orderRepository = orderRepository;
-        this.orderDetailsRepository = orderDetailsRepository;
+        this.customerDAO = customerDAO;
     }
 
     /***
@@ -45,7 +31,7 @@ public class CustomerService {
     public List<CustomerDTO> getAllCustomers() {
         List<CustomerDTO> customerDTOResponse = new LinkedList<>();
 
-        List<Customer> customers = customerRepository.findAll();
+        List<Customer> customers = customerDAO.findAll();
 
         for (Customer customer : customers) {
             CustomerDTO customerDTO = new CustomerDTO();
@@ -54,10 +40,10 @@ public class CustomerService {
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
 
-            List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
+            /*List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
 
             customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
-            customerDTOResponse.add(customerDTO);
+            customerDTOResponse.add(customerDTO);*/
         }
 
         return customerDTOResponse;
@@ -70,20 +56,21 @@ public class CustomerService {
      * @return Customer DTO response
      */
     public CustomerDTO getCustomerByNumber(Long customerNumber) {
-        Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+        /*Customer customer = customerRepository.findById(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
         CustomerDTO customerDTO = new CustomerDTO();
 
-        customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        /*customerDTO.setCustomerNumber(customer.getCustomerNumber());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
+*/
+//        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
 
-        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
+//        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
-        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
-
-        return customerDTO;
+//        return customerDTO;
+        return null;
     }
 
     /**
@@ -99,7 +86,7 @@ public class CustomerService {
         customer.setLastName(customerDTO.getLastName());
         customer.setAge(customerDTO.getAge());
 
-        customerRepository.save(customer);
+//        customerRepository.save(customer);
 
         return customerDTO;
     }
@@ -115,7 +102,7 @@ public class CustomerService {
      * TODO: Return customer DTO not customer entity
      */
     public Customer updateCustomer(Long customerNumber, Customer customerRequest) {
-        return customerRepository.findById(customerNumber)
+        /*return customerRepository.findById(customerNumber)
                 .map(customer -> {
                     customer.setCustomerNumber(customerRequest.getCustomerNumber());
                     customer.setFirstName(customerRequest.getFirstName());
@@ -123,7 +110,8 @@ public class CustomerService {
                     customer.setAge(customerRequest.getAge());
                     customer.setOrders(customerRequest.getOrders());
                     return customerRepository.save(customer);
-                }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+                }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
+        return customerRequest;
     }
 
     /**
@@ -134,12 +122,12 @@ public class CustomerService {
      * FIXME: Doesn't work
      */
     public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
-        Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
+        /*Customer customer = customerRepository.findById(customerNumber)
+                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
 //        CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
         CustomerDTO customerDTO = new CustomerDTO();
 
-        customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        /*customerDTO.setCustomerNumber(customer.getCustomerNumber());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
@@ -148,9 +136,9 @@ public class CustomerService {
 
 //        customer.setOrderDTOList(orders);
 
-        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
+        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));*/
 
-        customerRepository.delete(customer);
+//        customerRepository.delete(customer);
         return customerDTO;
     }
 
@@ -162,7 +150,7 @@ public class CustomerService {
      */
     private List<OrderDTO> setOrderDTOResponseFromEntityList(List<Order> orders) {
         List<OrderDTO> orderDTOList = new LinkedList<>();
-        for (Order order : orders) {
+        /*for (Order order : orders) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
             orderDTOList.add(orderDTO);
@@ -181,7 +169,7 @@ public class CustomerService {
 
             // Set order detail DTO to the order DTO so that it was displayed as one response
             orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
-        }
+        }*/
 
         return orderDTOList;
     }
