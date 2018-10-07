@@ -54,7 +54,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>3.2.3.RELEASE</version>
+            <version>${org.springframework-version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -109,11 +109,11 @@
             <version>1.2.3</version>
         </dependency>
 
-        <!-- Test -->
+        <!-- JUnit 4 test engine dependency -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.2.0</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
 

@@ -185,7 +185,7 @@ public class OrderService {
 
 
     // TODO: So that order and its details be updated
-    // FIXME: StackOverflowException
+    // FIXME: StackOverflowError
 
     /**
      * Update order by customer and order numbers
@@ -226,7 +226,7 @@ public class OrderService {
 
         order.setOrderDetails(orderDetailsList);
 
-        // FIXME: StackOverflowException
+        // FIXME: StackOverflowError
         orderRepository.save(order);
 
 /*        return orderRepository.findById(orderNumber).map(order -> {

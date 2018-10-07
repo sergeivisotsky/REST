@@ -23,19 +23,19 @@ public class CustomerDTO {
     @XmlElement
     private Integer age;
 
-    @XmlElementWrapper(name = "orders")
+    @XmlElementWrapper(name = "orderDTO")
     @XmlElement(name = "order")
-    private List<OrderDTO> orders = new LinkedList<>();
+    private List<OrderDTO> orderDTOList = new LinkedList<>();
 
     public CustomerDTO() {
     }
 
-    public CustomerDTO(Long customerNumber, String firstName, String lastName, Integer age, List<OrderDTO> orders) {
+    public CustomerDTO(Long customerNumber, String firstName, String lastName, Integer age, List<OrderDTO> orderDTOList) {
         this.customerNumber = customerNumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.orders = orders;
+        this.orderDTOList = orderDTOList;
     }
 
     public Long getCustomerNumber() {
@@ -70,11 +70,11 @@ public class CustomerDTO {
         this.age = age;
     }
 
-    public List<OrderDTO> getOrders() {
-        return orders;
+    public List<OrderDTO> getOrderDTOList() {
+        return orderDTOList;
     }
 
-    public void setOrders(List<OrderDTO> orders) {
-        this.orders = orders;
+    public void setOrderDTOList(List<OrderDTO> orderDTOList) {
+        this.orderDTOList = orderDTOList;
     }
 }

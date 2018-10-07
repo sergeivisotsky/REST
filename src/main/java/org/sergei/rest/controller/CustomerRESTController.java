@@ -1,6 +1,5 @@
 package org.sergei.rest.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
@@ -52,7 +51,7 @@ public class CustomerRESTController {
 
     // Delete customer by specific number
     @DeleteMapping("/{customerNumber}")
-    @ApiOperation(value = "Delete customer data by ID")
+    @ApiOperation(value = "Delete customer by number")
     public ResponseEntity<CustomerDTO> deleteCustomerByNumber(@PathVariable("customerNumber") Long customerNumber) {
         return new ResponseEntity<>(customerService.deleteCustomerByNumber(customerNumber), HttpStatus.OK);
     }

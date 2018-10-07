@@ -56,7 +56,7 @@ public class CustomerService {
 
             List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
 
-            customerDTO.setOrders(setOrderDTOResponseFromEntityList(orders));
+            customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
             customerDTOResponse.add(customerDTO);
         }
 
@@ -72,18 +72,18 @@ public class CustomerService {
     public CustomerDTO getCustomerByNumber(Long customerNumber) {
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
-        CustomerDTO response = new CustomerDTO();
+        CustomerDTO customerDTO = new CustomerDTO();
 
-        response.setCustomerNumber(customer.getCustomerNumber());
-        response.setFirstName(customer.getFirstName());
-        response.setLastName(customer.getLastName());
-        response.setAge(customer.getAge());
+        customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        customerDTO.setFirstName(customer.getFirstName());
+        customerDTO.setLastName(customer.getLastName());
+        customerDTO.setAge(customer.getAge());
 
         List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
 
-        response.setOrders(setOrderDTOResponseFromEntityList(orders));
+        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
-        return response;
+        return customerDTO;
     }
 
     /**
@@ -126,8 +126,6 @@ public class CustomerService {
                 }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
     }
 
-    // Delete customer by number
-
     /**
      * Delete customer by number
      *
@@ -138,7 +136,20 @@ public class CustomerService {
     public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
         Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));
-        CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
+//        CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
+        CustomerDTO customerDTO = new CustomerDTO();
+
+        customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        customerDTO.setFirstName(customer.getFirstName());
+        customerDTO.setLastName(customer.getLastName());
+        customerDTO.setAge(customer.getAge());
+
+        List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
+
+//        customer.setOrderDTOList(orders);
+
+        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
+
         customerRepository.delete(customer);
         return customerDTO;
     }
