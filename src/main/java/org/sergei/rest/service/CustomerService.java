@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.dto.OrderDTO;
+import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,10 @@ public class CustomerService {
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
 
-            /*List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
+//            List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
 
-            customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
-            customerDTOResponse.add(customerDTO);*/
+//            customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
+            customerDTOResponse.add(customerDTO);
         }
 
         return customerDTOResponse;
@@ -58,19 +59,20 @@ public class CustomerService {
     public CustomerDTO getCustomerByNumber(Long customerNumber) {
         /*Customer customer = customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
+
+        Customer customer = customerDAO.findOne(customerNumber);
         CustomerDTO customerDTO = new CustomerDTO();
 
-        /*customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        customerDTO.setCustomerNumber(customer.getCustomerNumber());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
-*/
 //        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
 
 //        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
-//        return customerDTO;
-        return null;
+        return customerDTO;
+//        return null;
     }
 
     /**
@@ -86,7 +88,7 @@ public class CustomerService {
         customer.setLastName(customerDTO.getLastName());
         customer.setAge(customerDTO.getAge());
 
-//        customerRepository.save(customer);
+        customerDAO.save(customer);
 
         return customerDTO;
     }
@@ -122,23 +124,22 @@ public class CustomerService {
      * FIXME: Doesn't work
      */
     public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
-        /*Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
+        Customer customer = customerDAO.findOne(customerNumber);
 //        CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
         CustomerDTO customerDTO = new CustomerDTO();
 
-        /*customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        customerDTO.setCustomerNumber(customer.getCustomerNumber());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
 
-        List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
+//        List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
 
 //        customer.setOrderDTOList(orders);
 
-        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));*/
+//        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
-//        customerRepository.delete(customer);
+        customerDAO.delete(customer);
         return customerDTO;
     }
 
