@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/REST_API-servlet.xml")
+@ContextConfiguration("file:../../../../../../main/webapp/WEB-INF/applicationContext.xml")
 public class CustomerServiceTest {
 
     @Autowired
