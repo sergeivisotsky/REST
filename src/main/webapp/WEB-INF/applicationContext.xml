@@ -42,10 +42,7 @@
                      max-age="3600"/>
     </mvc:cors>
 
-    <!--Persistence context import-->
-    <import resource="persistence-context.xml"/>
-
-    <!--Spring Security oAuth2 authentication configuration import-->
-    <import resource="security-context.xml"/>
+    <import resource="persistenceContext.xml"/>
+    <import resource="securityContext.xml"/>
 
 </beans>
