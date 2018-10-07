@@ -1,6 +1,7 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
+import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileStorageException;
 import org.sergei.rest.ftp.FileOperations;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -30,9 +32,12 @@ public class PhotoService {
 
     private final FileOperations fileOperations;
 
+    private final PhotoDAO photoDAO;
+
     @Autowired
-    public PhotoService(ModelMapper modelMapper, FileOperations fileOperations) {
+    public PhotoService(ModelMapper modelMapper, FileOperations fileOperations, PhotoDAO photoDAO) {
         this.modelMapper = modelMapper;
+        this.photoDAO = photoDAO;
         this.fileStorageLocation = Paths.get(TEMP_DIR_PATH).toAbsolutePath().normalize();
         this.fileOperations = fileOperations;
     }
@@ -174,22 +179,20 @@ public class PhotoService {
      * @throws IOException
      */
     public PhotoDTO deletePhoto(Long customerNumber, Long photoId) throws IOException {
-        /*Photo photo =
-                photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
-                        .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));*/
+        Photo photo = photoDAO.findByCustomerNumberAndPhotoId(customerNumber, photoId);
 
-//        PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
+        PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
 
-//        String responseFileName = photo.getFileName();
+        String responseFileName = photo.getFileName();
 
         // Delete photo from temp storage
-//        Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
-//        Files.deleteIfExists(targetLocation);
+        Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
+        Files.deleteIfExists(targetLocation);
 
-//        fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
-//        photoRepository.deleteFileByCustomerNumberAndFileId(customerNumber, photoId); // Delete file metadata from the database
+        fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
+        photoDAO.deleteFileByCustomerNumberAndFileId(photo); // Delete file metadata from the database
 
-//        return photoDTO;
-        return null;
+        return photoDTO;
+//        return null;
     }
 }

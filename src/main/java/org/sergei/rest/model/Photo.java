@@ -1,10 +1,11 @@
 package org.sergei.rest.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "photos")
-public class Photo {
+public class Photo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photo_id")
