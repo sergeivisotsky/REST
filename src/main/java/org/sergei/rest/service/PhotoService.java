@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileStorageException;
+import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.Photo;
 import org.springframework.beans.factory.annotation.Autowired;
