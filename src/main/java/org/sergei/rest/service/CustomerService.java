@@ -2,9 +2,9 @@ package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dao.CustomerDAO;
+import org.sergei.rest.dao.OrderDAO;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.dto.OrderDTO;
-import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,13 @@ public class CustomerService {
 
     private final ModelMapper modelMapper;
     private final CustomerDAO customerDAO;
+    private final OrderDAO orderDAO;
 
     @Autowired
-    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO) {
+    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO, OrderDAO orderDAO) {
         this.modelMapper = modelMapper;
         this.customerDAO = customerDAO;
+        this.orderDAO = orderDAO;
     }
 
     /***
@@ -41,9 +43,9 @@ public class CustomerService {
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
 
-//            List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
+            List<Order> orders = orderDAO.findAllByCustomerNumber(customer.getCustomerNumber());
 
-//            customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
+            customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
             customerDTOResponse.add(customerDTO);
         }
 

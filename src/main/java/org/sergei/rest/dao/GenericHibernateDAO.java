@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 @Transactional
+@SuppressWarnings("unchecked")
 public abstract class GenericHibernateDAO<T extends Serializable> {
 
     private Class<T> persistentClass;
@@ -20,7 +21,7 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
     }
 
     @Autowired
-    SessionFactory sessionFactory;
+    public SessionFactory sessionFactory;
 
     public T findOne(Long customerNumber) {
         return getCurrentSession().get(persistentClass, customerNumber);

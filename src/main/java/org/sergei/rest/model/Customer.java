@@ -1,5 +1,8 @@
 package org.sergei.rest.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -29,6 +32,7 @@ public class Customer implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @Fetch(FetchMode.SELECT)
     @JoinColumn(name = "customer_number")
     private List<Order> orders = new LinkedList<>();
 

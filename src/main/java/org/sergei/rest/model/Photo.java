@@ -6,6 +6,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "photos")
 public class Photo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "photo_id")
