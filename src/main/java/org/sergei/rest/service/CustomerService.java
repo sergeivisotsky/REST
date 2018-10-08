@@ -3,13 +3,17 @@ package org.sergei.rest.service;
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.dao.OrderDAO;
+import org.sergei.rest.dao.OrderDetailsDAO;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.dto.OrderDTO;
+import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
+import org.sergei.rest.model.OrderDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,12 +23,15 @@ public class CustomerService {
     private final ModelMapper modelMapper;
     private final CustomerDAO customerDAO;
     private final OrderDAO orderDAO;
+    private final OrderDetailsDAO orderDetailsDAO;
 
     @Autowired
-    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO, OrderDAO orderDAO) {
+    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO,
+                           OrderDAO orderDAO, OrderDetailsDAO orderDetailsDAO) {
         this.modelMapper = modelMapper;
         this.customerDAO = customerDAO;
         this.orderDAO = orderDAO;
+        this.orderDetailsDAO = orderDetailsDAO;
     }
 
     /***
@@ -153,14 +160,14 @@ public class CustomerService {
      */
     private List<OrderDTO> setOrderDTOResponseFromEntityList(List<Order> orders) {
         List<OrderDTO> orderDTOList = new LinkedList<>();
-        /*for (Order order : orders) {
+        for (Order order : orders) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
             orderDTOList.add(orderDTO);
 
             // Get all order details list by order number
             List<OrderDetails> orderDetailsList =
-                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
+                    orderDetailsDAO.findAllByOrderNumber(orderDTO.getOrderNumber());
 
             // Creating order details DTO and perform convertion from entity to DTO and put into
             List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
@@ -172,7 +179,7 @@ public class CustomerService {
 
             // Set order detail DTO to the order DTO so that it was displayed as one response
             orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
-        }*/
+        }
 
         return orderDTOList;
     }

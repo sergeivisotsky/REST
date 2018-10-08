@@ -1,6 +1,5 @@
 package org.sergei.rest.dao;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.sergei.rest.model.Order;
@@ -17,10 +16,9 @@ public class OrderDAO extends GenericHibernateDAO<Order> {
 
     public List<Order> findAllByCustomerNumber(Long customerNumber) {
         Session session = sessionFactory.openSession();
-        /*Query query = session.createQuery("select o from Order o where o.customer.customerNumber = :customerNumber");
-        query.setParameter("customerNumber", customerNumber);*/
-        Criteria criteria = (Criteria) session.createQuery("select o from Order o where o.customer.customerNumber = :customerNumber");
-        List<Order> orders = criteria.list();
+        Query query = session.createQuery("SELECT o FROM Order o WHERE o.customer.customerNumber = :customerNumber");
+        query.setParameter("customerNumber", customerNumber);
+        List<Order> orders = query.list();
         session.close();
         return orders;
     }
