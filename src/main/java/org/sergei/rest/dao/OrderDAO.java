@@ -32,4 +32,14 @@ public class OrderDAO extends GenericHibernateDAO<Order> {
         session.close();
         return orders;
     }
+
+    /*public Order findByCustomerNumberAndOrderNumber(Long customerNumber, Long orderNumber) {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("SELECT o FROM Order o WHERE o.customer.customerNumber = :customerNumber AND o.orderNumber = :orderNumber");
+        query.setParameter("customerNumber", customerNumber);
+        query.setParameter("orderNumber", orderNumber);
+        Order order = query.getResultList();
+        session.close();
+        return order;
+    }*/
 }

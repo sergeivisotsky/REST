@@ -190,7 +190,6 @@ public class OrderService {
      * @param orderDTORequestBody Get order DTO request body
      * @return return order DTO as a response
      */
-
     public OrderDTO updateOrder(Long customerNumber, Long orderNumber, OrderDTO orderDTORequestBody) {
         Customer customer = customerDAO.findOne(customerNumber);
 
@@ -230,7 +229,7 @@ public class OrderService {
      * @param orderNumber get oder number from th REST controller
      * @return Order entity as a response
      */
-    // TODO: Replace of the entity response to the DTO response
+    // TODO: Replace an entity response to the DTO response
     public Order deleteOrderByNumber(Long orderNumber) {
         /*return orderRepository.findById(orderNumber).map(order -> {
             orderRepository.delete(order);
@@ -246,18 +245,12 @@ public class OrderService {
      * @param orderNumber    get order number form the REST controller
      * @return Order entity as a response
      */
-    // TODO: Replace of the entity response to the DTO response
+    // FIXME: So that it was able to delete entity by customer and order numbers
     public OrderDTO deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
-        /*if (!customerRepository.existsById(customerNumber)) {
-            throw new RecordNotFoundException("No customer with this number found");
-        }
 
-        Order order = orderRepository.findById(orderNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
+        Order order = orderDAO.findOne(orderNumber);
+        orderDAO.delete(order);
 
-        orderRepository.delete(order);
-
-        return modelMapper.map(order, OrderDTO.class);*/
-        return null;
+        return modelMapper.map(order, OrderDTO.class);
     }
 }

@@ -42,16 +42,17 @@ public class ProductService {
 
     // Update product by code
     public ProductDTO updateProduct(String productCode, ProductDTO productDTORequest) {
-        /*return productRepository.findByCode(productCode)
-                .map(product -> {
-                    product.setProductCode(productRequest.getProductCode());
-                    product.setProductName(productRequest.getProductName());
-                    product.setProductLine(productRequest.getProductLine());
-                    product.setProductVendor(productRequest.getProductVendor());
-                    product.setPrice(productRequest.getPrice());
-                    return productRepository.save(product);
-                }).orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));*/
-        return null;
+        Product product = productDAO.findByCode(productCode);
+
+        product.setProductCode(productCode);
+        product.setProductName(productDTORequest.getProductName());
+        product.setProductLine(productDTORequest.getProductLine());
+        product.setProductVendor(productDTORequest.getProductVendor());
+        product.setPrice(productDTORequest.getPrice());
+
+        productDAO.update(product);
+
+        return productDTORequest;
     }
 
     // Delete product by code

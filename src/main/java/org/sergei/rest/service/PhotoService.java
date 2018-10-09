@@ -103,7 +103,7 @@ public class PhotoService {
         fileOperations.uploadFile(commonsMultipartFile);
 
         // Save file metadata into a database
-//        photoRepository.save(photo);
+        photoDAO.save(photo);
 
         return photoDTOResponse;
     }
