@@ -1,6 +1,11 @@
 package org.sergei.rest.service;
 
+import org.modelmapper.ModelMapper;
+import org.sergei.rest.dao.ProductDAO;
+import org.sergei.rest.dto.ProductDTO;
 import org.sergei.rest.model.Product;
+import org.sergei.rest.utils.ObjectMapperUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,26 +13,35 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private final ModelMapper modelMapper;
+    private final ProductDAO productDAO;
+
+    @Autowired
+    public ProductService(ModelMapper modelMapper, ProductDAO productDAO) {
+        this.modelMapper = modelMapper;
+        this.productDAO = productDAO;
+    }
+
     // Find all products
-    public List<Product> findAll() {
-        /*return productRepository.findAll();*/
-        return null;
+    public List<ProductDTO> findAll() {
+        List<Product> products = productDAO.findAll();
+        return ObjectMapperUtils.mapAll(products, ProductDTO.class);
     }
 
     // Find product by product code
-    public Product findByCode(String productCode) {
-        /*return productRepository.findByCode(productCode)
-                .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));*/
-        return null;
+    public ProductDTO findByCode(String productCode) {
+        Product product = productDAO.findByCode(productCode);
+        return modelMapper.map(product, ProductDTO.class);
     }
 
     // Save new product
-    public void saveProduct(Product product) {
-//        productRepository.save(product);
+    public void saveProduct(ProductDTO productDTORequest) {
+        Product product = modelMapper.map(productDTORequest, Product.class);
+        productDAO.save(product);
     }
 
     // Update product by code
-    public Product updateProduct(String productCode, Product productRequest) {
+    public ProductDTO updateProduct(String productCode, ProductDTO productDTORequest) {
         /*return productRepository.findByCode(productCode)
                 .map(product -> {
                     product.setProductCode(productRequest.getProductCode());
@@ -41,11 +55,10 @@ public class ProductService {
     }
 
     // Delete product by code
-    public Product deleteProduct(String productCode) {
-        /*return productRepository.findByCode(productCode).map(product -> {
-            productRepository.delete(product);
-            return product;
-        }).orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));*/
-        return null;
+    public ProductDTO deleteProduct(String productCode) {
+        Product product = productDAO.findByCode(productCode);
+        ProductDTO productDTOResponse = modelMapper.map(product, ProductDTO.class);
+        productDAO.delete(product);
+        return productDTOResponse;
     }
 }

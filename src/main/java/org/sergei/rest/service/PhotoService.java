@@ -3,12 +3,13 @@ package org.sergei.rest.service;
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.dto.PhotoDTO;
+import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
-import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.Photo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -26,13 +27,9 @@ public class PhotoService {
 
     //    @Value("${file.tmp.path}")
     private static final String TEMP_DIR_PATH = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/tmp";
-
     private final ModelMapper modelMapper;
-
     private final Path fileStorageLocation;
-
     private final FileOperations fileOperations;
-
     private final PhotoDAO photoDAO;
 
     @Autowired
@@ -52,14 +49,13 @@ public class PhotoService {
     public List<PhotoDTO> findAllUploadedPhotos(Long customerNumber) {
         List<PhotoDTO> photoDTOSResponse = new LinkedList<>();
 
-        /*List<Photo> photos = photoRepository.findAllPhotosByCustomerNumber(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No photos for this customer found"));
+        List<Photo> photos = photoDAO.findAllPhotosByCustomerNumber(customerNumber);
 
         for (Photo photo : photos) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
             photoDTOSResponse.add(photoDTO);
-        }*/
+        }
 
         return photoDTOSResponse;
     }
@@ -121,9 +117,8 @@ public class PhotoService {
      * @throws MalformedURLException throws in case of invalid uri
      */
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
-        /*// Get filename by customer id written in database
-        Photo photo = photoRepository.findPhotoByCustomerNumberAndFileName(customerNumber, fileName)
-                .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
+        // Get filename by customer id written in database
+        Photo photo = photoDAO.findPhotoByCustomerNumberAndFileName(customerNumber, fileName);
 
         String responseFileName = photo.getFileName();
 
@@ -137,9 +132,7 @@ public class PhotoService {
             return resource;
         } else {
             throw new FileNotFoundException("File not found");
-        }*/
-
-        return null;
+        }
     }
 
     /**
@@ -152,23 +145,21 @@ public class PhotoService {
      */
     public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        /*Photo photo = photoRepository.findPhotoMetaByCustomerNumberAndFileId(customerNumber, photoId)
-                .orElseThrow(() -> new RecordNotFoundException("No photo with this parameters found"));
+        Photo photo = photoDAO.findByCustomerNumberAndPhotoId(customerNumber, photoId);
 
         String responseFileName = photo.getFileName();
 
         fileOperations.downloadFile(responseFileName);
 
         Path filePath = this.fileStorageLocation.resolve(responseFileName).normalize();
-        Resource resource = new UrlResource(filePath.toUri());*/
+        Resource resource = new UrlResource(filePath.toUri());
 
         // Check if file exists
-        /*if (resource.exists()) {
+        if (resource.exists()) {
             return resource;
         } else {
             throw new FileNotFoundException("File not found");
-        }*/
-        return null;
+        }
     }
 
     /**
@@ -191,9 +182,8 @@ public class PhotoService {
         Files.deleteIfExists(targetLocation);
 
         fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
-        photoDAO.deleteFileByCustomerNumberAndFileId(photo); // Delete file metadata from the database
+        photoDAO.delete(photo); // Delete file metadata from the database
 
         return photoDTO;
-//        return null;
     }
 }

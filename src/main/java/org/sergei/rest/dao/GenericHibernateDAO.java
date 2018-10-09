@@ -21,7 +21,7 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
     }
 
     @Autowired
-    public SessionFactory sessionFactory;
+    SessionFactory sessionFactory;
 
     public T findOne(Long customerNumber) {
         return getCurrentSession().get(persistentClass, customerNumber);
@@ -32,7 +32,11 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
     }
 
     public void save(T entity) {
-        getCurrentSession().persist(entity);
+        getCurrentSession().save(entity);
+    }
+
+    public void update(T entity) {
+        getCurrentSession().update(entity);
     }
 
     public void delete(T entity) {

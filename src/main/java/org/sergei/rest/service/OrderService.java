@@ -56,13 +56,12 @@ public class OrderService {
      * @return order DTO response
      */
     public OrderDTO getOrderByNumber(Long orderNumber) {
-        /*Order order = orderRepository.findById(orderNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));*/
+        Order order = orderDAO.findOne(orderNumber);
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-//        OrderDTO orderDTOResponse = modelMapper.map(order, OrderDTO.class);
+        OrderDTO orderDTOResponse = modelMapper.map(order, OrderDTO.class);
 
-        /*List<OrderDetails> orderDetailsList =
-                orderDetailsRepository.findAllByOrderNumber(orderDTOResponse.getOrderNumber());
+        List<OrderDetails> orderDetailsList =
+                orderDetailsDAO.findAllByOrderNumber(orderDTOResponse.getOrderNumber());
 
         List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -71,9 +70,9 @@ public class OrderService {
             orderDetailsDTOS.add(orderDetailsDTO);
         }
 
-        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);*/
+        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);
 
-        return null;
+        return orderDTOResponse;
     }
 
     /**
@@ -86,9 +85,8 @@ public class OrderService {
     public OrderDTO getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
         /*if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
-        }
-        return getOrderByNumber(orderNumber);*/
-        return null;
+        }*/
+        return getOrderByNumber(orderNumber);
     }
 
     /**
@@ -101,10 +99,9 @@ public class OrderService {
         /*if (!customerRepository.existsById(customerNumber)) {
             throw new RecordNotFoundException("No customer with this number found");
         }*/
-        /*List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
+        List<Order> orders = orderDAO.findAllByCustomerNumber(customerNumber);
 
-        return getOrdersByListWithParam(orders);*/
-        return null;
+        return getOrdersByListWithParam(orders);
     }
 
     /**
@@ -114,9 +111,8 @@ public class OrderService {
      * @return return list of order DTOs
      */
     public List<OrderDTO> getAllByProductCode(String productCode) {
-        /*List<Order> orders = orderRepository.findAllByProductCode(productCode);
-        return getOrdersByListWithParam(orders);*/
-        return null;
+        List<Order> orders = orderDAO.findAllByProductCode(productCode);
+        return getOrdersByListWithParam(orders);
     }
 
     /**
@@ -185,7 +181,6 @@ public class OrderService {
 
 
     // TODO: So that order and its details be updated
-    // FIXME: StackOverflowError
 
     /**
      * Update order by customer and order numbers
@@ -197,11 +192,9 @@ public class OrderService {
      */
 
     public OrderDTO updateOrder(Long customerNumber, Long orderNumber, OrderDTO orderDTORequestBody) {
-        /*Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
+        Customer customer = customerDAO.findOne(customerNumber);
 
-        Order order = orderRepository.findById(orderNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));
+        Order order = orderDAO.findOne(orderNumber);
         order.setOrderNumber(orderDTORequestBody.getOrderNumber());
         order.setCustomer(customer);
         order.setOrderDate(orderDTORequestBody.getOrderDate());
@@ -215,8 +208,7 @@ public class OrderService {
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productRepository.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(counter).getProductCode())
-                    .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
+            Product product = productDAO.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(counter).getProductCode());
             orderDetails.setOrder(order);
             orderDetails.setProduct(product);
             orderDetails.setQuantityOrdered(orderDTORequestBody.getOrderDetailsDTO().get(counter).getQuantityOrdered());
@@ -227,16 +219,7 @@ public class OrderService {
         order.setOrderDetails(orderDetailsList);
 
         // FIXME: StackOverflowError
-        orderRepository.save(order);*/
-
-/*        return orderRepository.findById(orderNumber).map(order -> {
-            order.setOrderNumber(orderDTORequestBody.getOrderNumber());
-            order.setOrderDate(orderDTORequestBody.getOrderDate());
-            order.setRequiredDate(orderDTORequestBody.getRequiredDate());
-            order.setShippedDate(orderDTORequestBody.getShippedDate());
-            order.setStatus(orderDTORequestBody.getStatus());
-            return orderRepository.save(order);
-        }).orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));*/
+        orderDAO.update(order);
 
         return orderDTORequestBody;
     }

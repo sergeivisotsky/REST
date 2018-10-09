@@ -22,4 +22,14 @@ public class OrderDAO extends GenericHibernateDAO<Order> {
         session.close();
         return orders;
     }
+
+    public List<Order> findAllByProductCode(String productCode) {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("SELECT o FROM Order o INNER JOIN OrderDetails od ON " +
+                "o.orderNumber = od.order.orderNumber WHERE od.product.productCode = :productCode");
+        query.setParameter("productCode", productCode);
+        List<Order> orders = query.list();
+        session.close();
+        return orders;
+    }
 }

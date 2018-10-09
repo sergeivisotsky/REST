@@ -105,11 +105,12 @@ public class CustomerService {
      * Update customer by customer number
      *
      * @param customerNumber  get customer number from the REST controller
-     * @param customerRequest get customer as a request body
+     * @param customerDTORequest get customer as a request body
      * @return Return updated customer response
      * TODO: Return customer DTO not customer entity
      */
-    public Customer updateCustomer(Long customerNumber, Customer customerRequest) {
+    public CustomerDTO updateCustomer(Long customerNumber, CustomerDTO customerDTORequest) {
+        Customer customer = modelMapper.map(customerDTORequest, Customer.class);
         /*return customerRepository.findById(customerNumber)
                 .map(customer -> {
                     customer.setCustomerNumber(customerRequest.getCustomerNumber());
@@ -119,7 +120,9 @@ public class CustomerService {
                     customer.setOrders(customerRequest.getOrders());
                     return customerRepository.save(customer);
                 }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
-        return customerRequest;
+        customerDAO.update(customer);
+
+        return customerDTORequest;
     }
 
     /**

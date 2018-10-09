@@ -3,7 +3,6 @@ package org.sergei.rest.controller;
 import io.swagger.annotations.ApiOperation;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
-import org.sergei.rest.model.Customer;
 import org.sergei.rest.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,9 +43,9 @@ public class CustomerRESTController {
     // Update record
     @PutMapping(value = "/{customerNumber}", consumes = {"application/json", "application/xml"})
     @ApiOperation(value = "Update customer data")
-    public ResponseEntity<Customer> updateRecord(@PathVariable("customerNumber") Long customerNumber,
-                                                 @RequestBody Customer customer) {
-        return new ResponseEntity<>(customerService.updateCustomer(customerNumber, customer), HttpStatus.ACCEPTED);
+    public ResponseEntity<CustomerDTO> updateRecord(@PathVariable("customerNumber") Long customerNumber,
+                                                    @RequestBody CustomerDTO customerDTO) {
+        return new ResponseEntity<>(customerService.updateCustomer(customerNumber, customerDTO), HttpStatus.ACCEPTED);
     }
 
     // Delete customer by specific number
