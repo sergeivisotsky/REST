@@ -1,11 +1,21 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
+import org.sergei.rest.dao.CustomerDAO;
+import org.sergei.rest.dao.OrderDAO;
+import org.sergei.rest.dao.OrderDetailsDAO;
+import org.sergei.rest.dao.ProductDAO;
 import org.sergei.rest.dto.OrderDTO;
+import org.sergei.rest.dto.OrderDetailsDTO;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
+import org.sergei.rest.model.OrderDetails;
+import org.sergei.rest.model.Product;
+import org.sergei.rest.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,12 +23,20 @@ import java.util.List;
 public class OrderService {
 
     private final ModelMapper modelMapper;
+    private final OrderDAO orderDAO;
+    private final OrderDetailsDAO orderDetailsDAO;
+    private final CustomerDAO customerDAO;
+    private final ProductDAO productDAO;
 
 
     @Autowired
-    public OrderService(ModelMapper modelMapper) {
+    public OrderService(ModelMapper modelMapper, OrderDAO orderDAO, OrderDetailsDAO orderDetailsDAO,
+                        CustomerDAO customerDAO, ProductDAO productDAO) {
         this.modelMapper = modelMapper;
-
+        this.orderDAO = orderDAO;
+        this.orderDetailsDAO = orderDetailsDAO;
+        this.customerDAO = customerDAO;
+        this.productDAO = productDAO;
     }
 
     /**
@@ -27,9 +45,8 @@ public class OrderService {
      * @return List of order DTOs
      */
     public List<OrderDTO> getAllOrders() {
-//        List<Order> orders = orderRepository.findAll();
-//        return getOrdersByListWithParam(orders);
-        return null;
+        List<Order> orders = orderDAO.findAll();
+        return getOrdersByListWithParam(orders);
     }
 
     /**
@@ -111,12 +128,12 @@ public class OrderService {
     private List<OrderDTO> getOrdersByListWithParam(List<Order> orders) {
         List<OrderDTO> response = new LinkedList<>();
 
-        /*for (Order order : orders) {
+        for (Order order : orders) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
             List<OrderDetails> orderDetailsList =
-                    orderDetailsRepository.findAllByOrderNumber(orderDTO.getOrderNumber());
+                    orderDetailsDAO.findAllByOrderNumber(orderDTO.getOrderNumber());
 
             List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
             for (OrderDetails orderDetails : orderDetailsList) {
@@ -127,7 +144,7 @@ public class OrderService {
 
             orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
             response.add(orderDTO);
-        }*/
+        }
 
         return response;
     }
@@ -140,8 +157,7 @@ public class OrderService {
      * @return return order DTO as a response
      */
     public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
-        /*Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("No customer with this number found"));
+        Customer customer = customerDAO.findOne(customerNumber);
 
         Order order = modelMapper.map(orderDTORequestBody, Order.class);
         order.setCustomer(customer);
@@ -152,8 +168,7 @@ public class OrderService {
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productRepository.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(counter).getProductCode())
-                    .orElseThrow(() -> new RecordNotFoundException("Product with this code not found"));
+            Product product = productDAO.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(counter).getProductCode());
             orderDetails.setOrder(order);
             orderDetails.setProduct(product);
             orderDetails.setQuantityOrdered(orderDTORequestBody.getOrderDetailsDTO().get(counter).getQuantityOrdered());
@@ -163,11 +178,9 @@ public class OrderService {
 
         order.setOrderDetails(orderDetailsList);
 
-        orderRepository.save(order);
+        orderDAO.save(order);
 
-        return orderDTORequestBody;*/
-
-        return null;
+        return orderDTORequestBody;
     }
 
 

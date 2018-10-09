@@ -14,7 +14,7 @@ public class Photo implements Serializable {
     @Column(name = "photo_id")
     private Long photoId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "customer_number")
     // TODO: ON DELETE CASCADE programmatically
     private Customer customer;

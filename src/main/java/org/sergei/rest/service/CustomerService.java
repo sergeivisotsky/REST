@@ -66,22 +66,19 @@ public class CustomerService {
      * @return Customer DTO response
      */
     public CustomerDTO getCustomerByNumber(Long customerNumber) {
-        /*Customer customer = customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
-
         Customer customer = customerDAO.findOne(customerNumber);
+
         CustomerDTO customerDTO = new CustomerDTO();
 
         customerDTO.setCustomerNumber(customer.getCustomerNumber());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
-//        List<Order> orders = orderRepository.findAllByCustomerNumber(customerNumber);
+        List<Order> orders = orderDAO.findAllByCustomerNumber(customerNumber);
 
-//        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
+        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
         return customerDTO;
-//        return null;
     }
 
     /**

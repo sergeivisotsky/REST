@@ -6,19 +6,21 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_details")
-@IdClass(OrderDetailsId.class)
 public class OrderDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @ManyToOne
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "details_id")
+    private Long details_id;
+
+    @ManyToOne(optional = false)
     @JoinColumn(name = "order_number")
     // TODO: ON DELETE CASCADE programmatically
     private Order order;
 
-    @Id
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "product_code")
     private Product product;
 
