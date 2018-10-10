@@ -217,7 +217,7 @@ public class OrderService {
 
         order.setOrderDetails(orderDetailsList);
 
-        // FIXME: StackOverflowError
+        // FIXME: order_number in order_details is null while updating
         orderDAO.update(order);
 
         return orderDTORequestBody;
