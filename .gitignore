@@ -31,7 +31,7 @@ hs_err_pid*
 *.project
 .settings/*
 
-# idea project file
+# Intellij IDEA project file
 .idea/*
 
 # Compilation binary file
