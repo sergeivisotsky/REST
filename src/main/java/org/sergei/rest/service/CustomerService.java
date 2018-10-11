@@ -130,7 +130,7 @@ public class CustomerService {
      *
      * @param customerNumber get customer number from the REST controller
      * @return Return updated customer response
-     * FIXME: Doesn't work
+     * FIXME: Customer deletion doesn't work
      */
     public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
         Customer customer = customerDAO.findOne(customerNumber);

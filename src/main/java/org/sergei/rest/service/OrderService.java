@@ -201,6 +201,8 @@ public class OrderService {
         order.setShippedDate(orderDTORequestBody.getShippedDate());
         order.setStatus(orderDTORequestBody.getStatus());
 
+//        List<OrderDetails> orderDetailsListFirst = orderDetailsDAO.findAllByOrderNumber(orderNumber);
+
         // Maps each member of collection containing requests to the class
         List<OrderDetails> orderDetailsList = ObjectMapperUtils
                 .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
