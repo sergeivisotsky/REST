@@ -149,9 +149,6 @@ public class OrderService {
         return orderDTORequestBody;
     }
 
-
-    // TODO: So that order and its details be updated
-
     /**
      * Update order by customer and order numbers
      *
