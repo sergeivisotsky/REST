@@ -121,11 +121,9 @@ public class CustomerService {
      *
      * @param customerNumber get customer number from the REST controller
      * @return Return updated customer response
-     * FIXME: Customer deletion doesn't work
      */
     public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
         Customer customer = customerDAO.findOne(customerNumber);
-//        CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
         CustomerDTO customerDTO = new CustomerDTO();
 
         customerDTO.setCustomerNumber(customer.getCustomerNumber());
@@ -133,11 +131,9 @@ public class CustomerService {
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
 
-//        List<Order> orders = orderRepository.findAllByCustomerNumber(customer.getCustomerNumber());
+        List<Order> orders = orderDAO.findAllByCustomerNumber(customer.getCustomerNumber());
 
-//        customer.setOrderDTOList(orders);
-
-//        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
+        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
         customerDAO.delete(customer);
         return customerDTO;
