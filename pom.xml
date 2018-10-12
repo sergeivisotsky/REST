@@ -13,7 +13,7 @@
 
     <modules>
         <module>REST-server</module>
-        <!--<module>REST-client</module>-->
+        <module>REST-client</module>
     </modules>
     <build>
         <plugins>
