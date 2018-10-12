@@ -104,25 +104,16 @@ public class CustomerService {
     /**
      * Update customer by customer number
      *
-     * @param customerNumber  get customer number from the REST controller
-     * @param customerDTORequest get customer as a request body
+     * @param customerNumber         get customer number from the REST controller
+     * @param customerDTORequestBody get customer as a request body
      * @return Return updated customer response
-     * TODO: Return customer DTO not customer entity
      */
-    public CustomerDTO updateCustomer(Long customerNumber, CustomerDTO customerDTORequest) {
-        Customer customer = modelMapper.map(customerDTORequest, Customer.class);
-        /*return customerRepository.findById(customerNumber)
-                .map(customer -> {
-                    customer.setCustomerNumber(customerRequest.getCustomerNumber());
-                    customer.setFirstName(customerRequest.getFirstName());
-                    customer.setLastName(customerRequest.getLastName());
-                    customer.setAge(customerRequest.getAge());
-                    customer.setOrders(customerRequest.getOrders());
-                    return customerRepository.save(customer);
-                }).orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
+    public CustomerDTO updateCustomer(Long customerNumber, CustomerDTO customerDTORequestBody) {
+        Customer customer = modelMapper.map(customerDTORequestBody, Customer.class);
+
         customerDAO.update(customer);
 
-        return customerDTORequest;
+        return customerDTORequestBody;
     }
 
     /**

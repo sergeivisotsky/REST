@@ -116,36 +116,6 @@ public class OrderService {
     }
 
     /**
-     * Service class to get order by specific parameter
-     *
-     * @param orders Gets list of the order entities
-     * @return List of the order DTOs
-     */
-    private List<OrderDTO> getOrdersByListWithParam(List<Order> orders) {
-        List<OrderDTO> response = new LinkedList<>();
-
-        for (Order order : orders) {
-            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
-
-            List<OrderDetails> orderDetailsList =
-                    orderDetailsDAO.findAllByOrderNumber(orderDTO.getOrderNumber());
-
-            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
-            for (OrderDetails orderDetails : orderDetailsList) {
-                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
-                orderDetailsDTOS.add(orderDetailsDTO);
-            }
-
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
-            response.add(orderDTO);
-        }
-
-        return response;
-    }
-
-    /**
      * Save order
      *
      * @param customerNumber      Get customer number from the REST controller
@@ -201,8 +171,6 @@ public class OrderService {
         order.setShippedDate(orderDTORequestBody.getShippedDate());
         order.setStatus(orderDTORequestBody.getStatus());
 
-//        List<OrderDetails> orderDetailsListFirst = orderDetailsDAO.findAllByOrderNumber(orderNumber);
-
         // Maps each member of collection containing requests to the class
         List<OrderDetails> orderDetailsList = ObjectMapperUtils
                 .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
@@ -219,7 +187,7 @@ public class OrderService {
 
         order.setOrderDetails(orderDetailsList);
 
-        // FIXME: order_number in order_details is null while updating
+        // FIXME: order_number in order_details is null while update is performed
         orderDAO.update(order);
 
         return orderDTORequestBody;
@@ -231,13 +199,11 @@ public class OrderService {
      * @param orderNumber get oder number from th REST controller
      * @return Order entity as a response
      */
-    // TODO: Replace an entity response to the DTO response
-    public Order deleteOrderByNumber(Long orderNumber) {
-        /*return orderRepository.findById(orderNumber).map(order -> {
-            orderRepository.delete(order);
-            return order;
-        }).orElseThrow(() -> new RecordNotFoundException("Order with this number not found"));*/
-        return null;
+    // FIXME: order_number in order_details is null while delete is performed
+    public OrderDTO deleteOrderByNumber(Long orderNumber) {
+        Order order = orderDAO.findOne(orderNumber);
+        orderDAO.delete(order);
+        return modelMapper.map(order, OrderDTO.class);
     }
 
     /**
@@ -254,5 +220,35 @@ public class OrderService {
         orderDAO.delete(order);
 
         return modelMapper.map(order, OrderDTO.class);
+    }
+
+    /**
+     * Util method to get order by specific parameter
+     *
+     * @param orders Gets list of the order entities
+     * @return List of the order DTOs
+     */
+    private List<OrderDTO> getOrdersByListWithParam(List<Order> orders) {
+        List<OrderDTO> response = new LinkedList<>();
+
+        for (Order order : orders) {
+            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+            OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+
+            List<OrderDetails> orderDetailsList =
+                    orderDetailsDAO.findAllByOrderNumber(orderDTO.getOrderNumber());
+
+            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+            for (OrderDetails orderDetails : orderDetailsList) {
+                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
+                orderDetailsDTOS.add(orderDetailsDTO);
+            }
+
+            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
+            response.add(orderDTO);
+        }
+
+        return response;
     }
 }

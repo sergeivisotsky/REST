@@ -77,7 +77,7 @@ public class OrderRESTController {
     // Delete order by number
     @DeleteMapping("/orders/{orderNumber}")
     @ApiOperation(value = "Delete order from all by number")
-    public ResponseEntity<Order> deleteOrderByNumber(@PathVariable("orderNumber") Long orderNumber) {
+    public ResponseEntity<OrderDTO> deleteOrderByNumber(@PathVariable("orderNumber") Long orderNumber) {
         return new ResponseEntity<>(orderService.deleteOrderByNumber(orderNumber), HttpStatus.OK);
     }
 
