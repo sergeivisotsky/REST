@@ -159,8 +159,8 @@ public class OrderService {
      */
     public OrderDTO updateOrder(Long customerNumber, Long orderNumber, OrderDTO orderDTORequestBody) {
         Customer customer = customerDAO.findOne(customerNumber);
-
         Order order = orderDAO.findOne(orderNumber);
+
         order.setOrderNumber(orderDTORequestBody.getOrderNumber());
         order.setCustomer(customer);
         order.setOrderDate(orderDTORequestBody.getOrderDate());

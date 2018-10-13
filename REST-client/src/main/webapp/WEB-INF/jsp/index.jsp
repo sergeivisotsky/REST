@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Welcome Servlet</title>
+    <title>REST Java client</title>
 </head>
 <body>
 

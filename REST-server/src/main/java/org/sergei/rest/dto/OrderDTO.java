@@ -17,6 +17,7 @@ public class OrderDTO {
     @XmlElement
     private Long orderNumber;
 
+    @XmlElement
     private Long customerNumber;
 
     @XmlElement
