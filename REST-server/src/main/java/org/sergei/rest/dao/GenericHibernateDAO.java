@@ -23,8 +23,8 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
     @Autowired
     SessionFactory sessionFactory;
 
-    public T findOne(Long customerNumber) {
-        return getCurrentSession().get(persistentClass, customerNumber);
+    public T findOne(Long aLong) {
+        return getCurrentSession().get(persistentClass, aLong);
     }
 
     public List<T> findAll() {
