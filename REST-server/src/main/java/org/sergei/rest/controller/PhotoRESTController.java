@@ -46,7 +46,7 @@ public class PhotoRESTController {
                                 @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/controller/v1/customers/" + customerNumber.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
+                .path("/api/v1/customers/" + customerNumber.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
         return photoService.uploadFileOnTheServer(customerNumber, fileDownloadUri, commonsMultipartFile);
@@ -64,7 +64,7 @@ public class PhotoRESTController {
     }
 
     // download photo method by file name
-    @GetMapping(value = "/{customerNumber}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
+    @GetMapping(value = "/customers/{customerNumber}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
     @ApiOperation(value = "Download photo for the customer by photo name")
     public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerNumber") Long customerNumber,
                                                         @PathVariable("fileName") String fileName,

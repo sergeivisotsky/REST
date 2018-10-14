@@ -5,7 +5,6 @@ import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
-import org.sergei.rest.ftp.FileOperations;
 import org.sergei.rest.model.Photo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,6 +18,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,18 +26,16 @@ import java.util.List;
 public class PhotoService {
 
     //    @Value("${file.tmp.path}")
-    private static final String TEMP_DIR_PATH = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/static/tmp";
+    private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
     private final ModelMapper modelMapper;
     private final Path fileStorageLocation;
-    private final FileOperations fileOperations;
     private final PhotoDAO photoDAO;
 
     @Autowired
-    public PhotoService(ModelMapper modelMapper, FileOperations fileOperations, PhotoDAO photoDAO) {
+    public PhotoService(ModelMapper modelMapper, PhotoDAO photoDAO) {
         this.modelMapper = modelMapper;
         this.photoDAO = photoDAO;
-        this.fileStorageLocation = Paths.get(TEMP_DIR_PATH).toAbsolutePath().normalize();
-        this.fileOperations = fileOperations;
+        this.fileStorageLocation = Paths.get(UPL_DIR).toAbsolutePath().normalize();
     }
 
     /**
@@ -73,13 +71,14 @@ public class PhotoService {
 
         /*customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
+        String fileName = StringUtils.cleanPath(commonsMultipartFile.getOriginalFilename());
 
         PhotoDTO photoDTOResponse = new PhotoDTO();
 
         // FIXME: set photo ID properly due to it is null right now
 //        photoDTOResponse.setPhotoId();
         photoDTOResponse.setCustomerNumber(customerNumber);
-        photoDTOResponse.setFileName(commonsMultipartFile.getName());
+        photoDTOResponse.setFileName(commonsMultipartFile.getOriginalFilename());
         photoDTOResponse.setFileUrl(fileDownloadUri);
         photoDTOResponse.setFileType(commonsMultipartFile.getContentType());
         photoDTOResponse.setFileSize(commonsMultipartFile.getSize());
@@ -92,20 +91,23 @@ public class PhotoService {
         }
 
         // Filename recreation
-        String fileName = StringUtils.cleanPath(commonsMultipartFile.getOriginalFilename());
+        try {
+            // Check if file contains inappropriate symbols
+            if (fileName.contains("..")) {
+                throw new FileStorageException("Invalid path sequence");
+            }
 
-        // Check if file contains inappropriate symbols
-        if (fileName.contains("..")) {
-            throw new FileStorageException("Invalid path sequence");
+            // Store files on the server directory replacing existing if it exists
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(commonsMultipartFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            // Save file metadata into a database
+            photoDAO.save(photo);
+
+            return photoDTOResponse;
+        } catch (IOException e) {
+            throw new FileStorageException("Cannot store file");
         }
-
-        // Store files on the server directory
-        fileOperations.uploadFile(commonsMultipartFile);
-
-        // Save file metadata into a database
-        photoDAO.save(photo);
-
-        return photoDTOResponse;
     }
 
     /**
@@ -117,14 +119,12 @@ public class PhotoService {
      * @throws MalformedURLException throws in case of invalid uri
      */
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
-        // Get filename by customer id written in database
+        // Get filename by customer number written in database
         Photo photo = photoDAO.findPhotoByCustomerNumberAndFileName(customerNumber, fileName);
 
-        String responseFileName = photo.getFileName();
+//        fileOperations.downloadFile(responseFileName);
 
-        fileOperations.downloadFile(responseFileName);
-
-        Path filePath = this.fileStorageLocation.resolve(responseFileName).normalize();
+        Path filePath = this.fileStorageLocation.resolve(photo.getFileName()).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 
         // Check if file exists
@@ -148,8 +148,6 @@ public class PhotoService {
         Photo photo = photoDAO.findByCustomerNumberAndPhotoId(customerNumber, photoId);
 
         String responseFileName = photo.getFileName();
-
-        fileOperations.downloadFile(responseFileName);
 
         Path filePath = this.fileStorageLocation.resolve(responseFileName).normalize();
         Resource resource = new UrlResource(filePath.toUri());
@@ -181,7 +179,6 @@ public class PhotoService {
         Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
         Files.deleteIfExists(targetLocation);
 
-        fileOperations.deleteFile(responseFileName); // Delete file from the FTP server
         photoDAO.delete(photo); // Delete file metadata from the database
 
         return photoDTO;

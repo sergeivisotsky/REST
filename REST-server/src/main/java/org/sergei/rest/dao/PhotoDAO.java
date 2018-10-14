@@ -21,16 +21,6 @@ public class PhotoDAO extends GenericHibernateDAO<Photo> {
         setPersistentClass(Photo.class);
     }
 
-    public Photo findByCustomerNumberAndPhotoId(Long customerNumber, Long photoId) {
-        Session session = sessionFactory.openSession();
-        TypedQuery<Photo> query = session.createQuery(SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID);
-        query.setParameter("customerNumber", customerNumber);
-        query.setParameter("photoId", photoId);
-        Photo photo = query.getSingleResult();
-        session.close();
-        return photo;
-    }
-
     public List<Photo> findAllPhotosByCustomerNumber(Long customerNumber) {
         Session session = sessionFactory.openSession();
         TypedQuery<Photo> query = session.createQuery(SQL_FIND_ALL_BY_PHOTO_AND_CUSTOMER_NUMBER);
@@ -45,6 +35,16 @@ public class PhotoDAO extends GenericHibernateDAO<Photo> {
         TypedQuery<Photo> query = session.createQuery(SQL_FIND_ALL_BY_CUSTOMER_NUMBER_AND_FILE_NAME);
         query.setParameter("customerNumber", customerNumber);
         query.setParameter("fileName", fileName);
+        Photo photo = query.getSingleResult();
+        session.close();
+        return photo;
+    }
+
+    public Photo findByCustomerNumberAndPhotoId(Long customerNumber, Long photoId) {
+        Session session = sessionFactory.openSession();
+        TypedQuery<Photo> query = session.createQuery(SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID);
+        query.setParameter("customerNumber", customerNumber);
+        query.setParameter("photoId", photoId);
         Photo photo = query.getSingleResult();
         session.close();
         return photo;
