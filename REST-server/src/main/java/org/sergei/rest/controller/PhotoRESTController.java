@@ -118,9 +118,9 @@ public class PhotoRESTController {
     // File deletion by name
     @DeleteMapping(value = "/customers/{customerNumber}/photos/{photoId}")
     @ApiOperation(value = "Delete photo by customer number and photo ID")
-    public ResponseEntity<PhotoDTO> deletePhoto(@PathVariable("customerNumber") Long customerNumber,
-                                                @PathVariable("photoId") Long photoId) throws IOException {
+    public ResponseEntity<PhotoDTO> deletePhotoById(@PathVariable("customerNumber") Long customerNumber,
+                                                    @PathVariable("photoId") Long photoId) throws IOException {
 
-        return new ResponseEntity<>(photoService.deletePhoto(customerNumber, photoId), HttpStatus.OK);
+        return new ResponseEntity<>(photoService.deletePhotoById(customerNumber, photoId), HttpStatus.OK);
     }
 }

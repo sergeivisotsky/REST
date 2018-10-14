@@ -32,6 +32,7 @@ public class PhotoDTO {
     public PhotoDTO() {
     }
 
+    // TODO: Convertion from model to DTO and vise versa in constructor
     public PhotoDTO(Long photoId, Long customerNumber, String fileName,
                     String fileUrl, String fileType, Long fileSize) {
         this.photoId = photoId;
