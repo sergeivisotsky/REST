@@ -7,6 +7,7 @@ import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
 import org.sergei.rest.model.Photo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import java.util.List;
 @Service
 public class PhotoService {
 
-    //    @Value("${file.tmp.path}")
+//    @Value("${file.tmp.path}")
     private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
     private final ModelMapper modelMapper;
     private final Path fileStorageLocation;
