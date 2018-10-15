@@ -1,2 +1,2 @@
-# jersey-rest
+# REST-server-jersey
 Jersey REST implementation
