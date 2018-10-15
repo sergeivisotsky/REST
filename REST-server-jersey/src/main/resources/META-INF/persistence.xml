@@ -10,9 +10,9 @@
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57InnoDBDialect"/>
             <property name="hibernate.connection.url"
-                      value="jdbc:mysql://localhost:3306/sandbox?allowPublicKeyRetrieval=true&amp;useSSL=false"/>
-            <property name="hibernate.connection.user" value="sandbox"/>
-            <property name="hibernate.connection.password" value="sandbox"/>
+                      value="jdbc:mysql://localhost:3306/rest_services_jersey?allowPublicKeyRetrieval=true&amp;useSSL=false"/>
+            <property name="hibernate.connection.user" value="service"/>
+            <property name="hibernate.connection.password" value="service"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>

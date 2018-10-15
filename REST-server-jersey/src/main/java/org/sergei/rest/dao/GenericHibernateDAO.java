@@ -55,13 +55,6 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
         entityManager.close();
     }
 
-    @Override
-    protected void finalize() {
-        if (factory != null) {
-            factory.close();
-        }
-    }
-
     public void update(T entity) {
         EntityManager entityManager = factory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -69,5 +62,12 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
         entityManager.merge(entity);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    @Override
+    protected void finalize() {
+        if (factory != null) {
+            factory.close();
+        }
     }
 }

@@ -10,9 +10,9 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>debug</level>
         </filter>
-        <file>${catalina.home}/logs/jersey-rest.log</file>
+        <file>${catalina.home}/logs/rest-jersey.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>jersey-rest.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>rest-jersey.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
