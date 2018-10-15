@@ -8,6 +8,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/customers")
@@ -18,8 +20,10 @@ public class CustomerRESTController {
 
     @GET
     @Produces({"application/json", "application/xml"})
-    public List<CustomerDTO> getAllCustomers() {
-        return customerService.findAll();
+    public Response getAllCustomers() {
+        List<CustomerDTO> customerDTOList = customerService.findAll();
+        GenericEntity genericEntity = new GenericEntity<List<CustomerDTO>>(customerDTOList){};
+        return Response.ok(genericEntity).build();
     }
 
     // TODO: Find customer by ID
