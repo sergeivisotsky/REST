@@ -1,0 +1,37 @@
+package org.sergei.rest.controller;
+
+import org.sergei.rest.model.Customer;
+import org.sergei.rest.service.CustomerService;
+
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import java.util.List;
+
+@Path("/customers")
+public class CustomerRESTController {
+
+    @Inject
+    private CustomerService customerService;
+
+    @GET
+    @Produces({"application/json", "application/xml"})
+    public List<Customer> getAllCustomers() {
+        return customerService.findAll();
+    }
+
+    // TODO: Find customer by ID
+
+    @POST
+    public void saveCustomer() {
+        // TODO
+    }
+
+    // TODO: Update customer
+
+    // TODO: Delete customer
+
+    // TODO:
+}
