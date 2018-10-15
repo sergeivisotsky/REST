@@ -1,6 +1,4 @@
-# REST
-[![Build Status](https://travis-ci.com/sergeivisotsky/REST.svg?branch=master)](https://travis-ci.com/sergeivisotsky/REST)
-
+# REST-server
 REST API implementation using Spring MVC
 
 ### Spring annotation depending on version
