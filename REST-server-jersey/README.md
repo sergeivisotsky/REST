@@ -1,2 +1,2 @@
 # REST-server-jersey
-Jersey REST implementation
+REST API implementation using Jersey
