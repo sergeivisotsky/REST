@@ -1,18 +1,22 @@
 package org.sergei.rest.service;
 
 import org.sergei.rest.dao.CustomerDAO;
+import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.model.Customer;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomerService {
 
     @Inject
     private CustomerDAO customerDAO;
 
-    public List<Customer> findAll() {
-        return customerDAO.findAll();
+    public List<CustomerDTO> findAll() {
+        return customerDAO.findAll().stream()
+                .map(CustomerDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Customer findById(Long customerNumber) {
