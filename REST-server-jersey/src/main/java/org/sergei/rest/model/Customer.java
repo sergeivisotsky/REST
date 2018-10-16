@@ -10,9 +10,8 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id")
-    private Long customerId;
+    @Column(name = "customer_number")
+    private Long customerNumber;
 
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -32,12 +31,12 @@ public class Customer implements Serializable {
         this.age = age;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getCustomerNumber() {
+        return customerNumber;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerNumber(Long customerId) {
+        this.customerNumber = customerId;
     }
 
     public String getFirstName() {
