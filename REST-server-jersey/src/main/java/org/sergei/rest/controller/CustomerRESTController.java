@@ -5,8 +5,8 @@ import org.sergei.rest.service.CustomerService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -22,13 +22,20 @@ public class CustomerRESTController {
     @Produces({"application/json", "application/xml"})
     public Response getAllCustomers() {
         List<CustomerDTO> customerDTOList = customerService.findAll();
-        GenericEntity genericEntity = new GenericEntity<List<CustomerDTO>>(customerDTOList){};
+        GenericEntity genericEntity = new GenericEntity<List<CustomerDTO>>(customerDTOList) {
+        };
         return Response.ok(genericEntity).build();
     }
 
-    // TODO: Find customer by ID
+    @GET
+    @Produces({"application/json", "application/xml"})
+    @Path("/{customerNumber}")
+    public Response getCustomerByNumber(@PathParam("customerNumber") Long customerNumber) {
+        CustomerDTO customerDTO = customerService.findByCustomerNumber(customerNumber);
+        return Response.ok(customerDTO).build();
+    }
 
-    @POST
+    //    @POST
     public void saveCustomer() {
         // TODO
     }

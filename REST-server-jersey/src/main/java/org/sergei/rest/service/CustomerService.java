@@ -19,8 +19,9 @@ public class CustomerService {
                 .collect(Collectors.toList());
     }
 
-    public Customer findById(Long customerNumber) {
-        return customerDAO.findOne(customerNumber);
+    public CustomerDTO findByCustomerNumber(Long customerNumber) {
+        Customer customer = customerDAO.findOne(customerNumber);
+        return new CustomerDTO(customer);
     }
 
     public void save(Customer entity) {
