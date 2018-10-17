@@ -4,10 +4,7 @@ import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.service.CustomerService;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -35,12 +32,23 @@ public class CustomerRESTController {
         return Response.ok(customerDTO).build();
     }
 
-    //    @POST
-    public void saveCustomer() {
-        // TODO
+    @POST
+    @Produces({"application/json", "application/xml"})
+    @Consumes({"application/json", "application/xml"})
+    public Response saveCustomer(CustomerDTO customerDTO) {
+        return Response.status(Response.Status.CREATED)
+                .entity(customerService.save(customerDTO))
+                .build();
     }
 
-    // TODO: Update customer
+    @PUT
+    @Produces({"application/json", "application/xml"})
+    @Consumes({"application/json", "application/xml"})
+    public Response updateCustomer(CustomerDTO customerDTO) {
+        return Response.status(Response.Status.ACCEPTED)
+                .entity(customerService.update(customerDTO))
+                .build();
+    }
 
     // TODO: Delete customer
 

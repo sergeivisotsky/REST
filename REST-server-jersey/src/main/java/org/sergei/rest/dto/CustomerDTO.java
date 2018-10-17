@@ -2,10 +2,25 @@ package org.sergei.rest.dto;
 
 import org.sergei.rest.model.Customer;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CustomerDTO {
+
+    @XmlElement
     private Long customerId;
+
+    @XmlElement
     private String firstName;
+
+    @XmlElement
     private String lastName;
+
+    @XmlElement
     private int age;
 
     public CustomerDTO() {

@@ -24,16 +24,20 @@ public class CustomerService {
         return new CustomerDTO(customer);
     }
 
-    public void save(Customer entity) {
-        customerDAO.save(entity);
+    public CustomerDTO save(CustomerDTO customerDTO) {
+        Customer customer = customerDTO.toModelObject();
+        customerDAO.save(customer);
+        return customerDTO;
     }
 
-    public void update(Customer entity) {
-        customerDAO.update(entity);
+    public CustomerDTO update(CustomerDTO customerDTO) {
+        Customer customer = customerDTO.toModelObject();
+        customerDAO.update(customer);
+        return customerDTO;
     }
 
-    public void delete(Long customerNumber) {
-        Customer customer = customerDAO.findOne(customerNumber);
+    public void delete(Long customerId) {
+        Customer customer = customerDAO.findOne(customerId);
 
         customerDAO.delete(customer);
     }
