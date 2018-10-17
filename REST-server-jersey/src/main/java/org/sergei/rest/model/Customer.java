@@ -12,8 +12,8 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "gen", sequenceName = "customer_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
+    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", allocationSize = 1)
     @Column(name = "customer_id")
     private Long customerId;
 
@@ -26,7 +26,8 @@ public class Customer implements Serializable {
     @Column(name = "age")
     private Integer age;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private List<RouteReservation> routeReservations;
 
     public Customer() {

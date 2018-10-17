@@ -13,8 +13,8 @@ public class Route implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "gen", sequenceName = "route_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "route_seq")
+    @SequenceGenerator(name = "route_seq", sequenceName = "route_seq", allocationSize = 1)
     @Column(name = "route_id")
     private Long routeId;
 
@@ -30,14 +30,14 @@ public class Route implements Serializable {
     @Column(name = "price")
     private Float price;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "route")
-    private List<Aircraft> aircrafts;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aircraft_id")
+    private Aircraft aircrafts;
 
     public Route() {
     }
 
-    public Route(Long routeId, Float distance, Time departureTime, Time arrivalTime, Float price, List<Aircraft> aircrafts) {
-        this.routeId = routeId;
+    public Route(Float distance, Time departureTime, Time arrivalTime, Float price, Aircraft aircrafts) {
         this.distance = distance;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
@@ -49,8 +49,8 @@ public class Route implements Serializable {
         return routeId;
     }
 
-    public void setRouteId(Long routeNumber) {
-        this.routeId = routeNumber;
+    public void setRouteId(Long routeId) {
+        this.routeId = routeId;
     }
 
     public Float getDistance() {
@@ -85,29 +85,11 @@ public class Route implements Serializable {
         this.price = price;
     }
 
-    public List<Aircraft> getAircrafts() {
+    public Aircraft getAircrafts() {
         return aircrafts;
     }
 
-    public void setAircrafts(List<Aircraft> aircraft) {
-        this.aircrafts = aircraft;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Route)) return false;
-        Route route = (Route) o;
-        return Objects.equals(getRouteId(), route.getRouteId()) &&
-                Objects.equals(getDistance(), route.getDistance()) &&
-                Objects.equals(getDepartureTime(), route.getDepartureTime()) &&
-                Objects.equals(getArrivalTime(), route.getArrivalTime()) &&
-                Objects.equals(getPrice(), route.getPrice()) &&
-                Objects.equals(getAircrafts(), route.getAircrafts());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getRouteId(), getDistance(), getDepartureTime(), getArrivalTime(), getPrice(), getAircrafts());
+    public void setAircrafts(Aircraft aircrafts) {
+        this.aircrafts = aircrafts;
     }
 }

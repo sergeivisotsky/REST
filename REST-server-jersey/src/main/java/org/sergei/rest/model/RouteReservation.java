@@ -12,8 +12,8 @@ public class RouteReservation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "gen", sequenceName = "reservation_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_seq")
+    @SequenceGenerator(name = "reservation_seq", sequenceName = "reservation_seq", allocationSize = 1)
     @Column(name = "aircraft_id")
     private Long aircraftId;
 
@@ -21,7 +21,7 @@ public class RouteReservation implements Serializable {
     private LocalDateTime reservationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "route_reservation_fk"))
+    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "customer_fk"))
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)

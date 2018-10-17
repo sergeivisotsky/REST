@@ -11,8 +11,8 @@ public class Aircraft implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "gen", sequenceName = "aircraft_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aircraft_seq")
+    @SequenceGenerator(name = "aircraft_seq", sequenceName = "aircraft_seq", allocationSize = 1)
     @Column(name = "aircraft_id")
     private Long aircraftId;
 
@@ -22,7 +22,7 @@ public class Aircraft implements Serializable {
     @Column(name = "aircraft_name")
     private String aircraftName;
 
-    @Column(name = "aircraftWeight")
+    @Column(name = "aircraft_weight")
     private Double aircraftWeight;
 
     @Column(name = "max_passengers")
