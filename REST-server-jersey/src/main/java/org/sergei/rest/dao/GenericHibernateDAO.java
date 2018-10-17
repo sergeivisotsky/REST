@@ -58,8 +58,10 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
     public void update(T entity) {
         EntityManager entityManager = factory.createEntityManager();
         entityManager.getTransaction().begin();
+
         entity = entityManager.find(persistentClass, entity);
         entityManager.merge(entity);
+
         entityManager.getTransaction().commit();
         entityManager.close();
     }
