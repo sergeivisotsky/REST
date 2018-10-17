@@ -12,7 +12,7 @@ public class CustomerDTO {
     }
 
     public CustomerDTO(Customer customer) {
-        this.customerId = customer.getCustomerNumber();
+        this.customerId = customer.getCustomerId();
         this.firstName = customer.getFirstName();
         this.lastName = customer.getLastName();
         this.age = customer.getAge();
@@ -53,7 +53,7 @@ public class CustomerDTO {
     public Customer toModelObject() {
         Customer customer = new Customer();
 
-        customer.setCustomerNumber(customerId);
+        customer.setCustomerId(customerId);
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
         customer.setAge(age);
