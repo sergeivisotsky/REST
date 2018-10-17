@@ -50,7 +50,13 @@ public class CustomerRESTController {
                 .build();
     }
 
-    // TODO: Delete customer
+    @DELETE
+    @Path("/{customerId}")
+    @Produces({"application/json", "application/xml"})
+    public Response deleteCustomerById(@PathParam("customerId") Long customerId) {
+        return Response.status(Response.Status.ACCEPTED)
+                .entity(customerService.delete(customerId))
+                .build();
+    }
 
-    // TODO:
 }

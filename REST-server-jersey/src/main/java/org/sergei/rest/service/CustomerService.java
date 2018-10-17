@@ -36,9 +36,9 @@ public class CustomerService {
         return customerDTO;
     }
 
-    public void delete(Long customerId) {
+    public CustomerDTO delete(Long customerId) {
         Customer customer = customerDAO.findOne(customerId);
-
         customerDAO.delete(customer);
+        return new CustomerDTO(customer);
     }
 }
