@@ -1,1 +1,0 @@
-INSERT INTO customers(customer_number, first_name, last_name, age) VALUE (1, 'John', 'Smith', 20);
