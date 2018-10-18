@@ -42,11 +42,12 @@ public class CustomerRESTController {
     }
 
     @PUT
+    @Path("/{customerId}")
     @Produces({"application/json", "application/xml"})
     @Consumes({"application/json", "application/xml"})
-    public Response updateCustomer(CustomerDTO customerDTO) {
+    public Response updateCustomer(@PathParam("customerId") Long customerId, CustomerDTO customerDTO) {
         return Response.status(Response.Status.ACCEPTED)
-                .entity(customerService.update(customerDTO))
+                .entity(customerService.update(customerId, customerDTO))
                 .build();
     }
 
@@ -58,5 +59,4 @@ public class CustomerRESTController {
                 .entity(customerService.delete(customerId))
                 .build();
     }
-
 }

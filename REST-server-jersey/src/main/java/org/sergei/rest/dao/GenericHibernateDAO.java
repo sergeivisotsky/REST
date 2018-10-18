@@ -50,7 +50,7 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
     public void delete(T entity) {
         EntityManager entityManager = factory.createEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.remove(entity);
+        entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
         entityManager.getTransaction().commit();
         entityManager.close();
     }
@@ -59,7 +59,6 @@ public abstract class GenericHibernateDAO<T extends Serializable> {
         EntityManager entityManager = factory.createEntityManager();
         entityManager.getTransaction().begin();
 
-        entity = entityManager.find(persistentClass, entity);
         entityManager.merge(entity);
 
         entityManager.getTransaction().commit();

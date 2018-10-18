@@ -30,8 +30,9 @@ public class CustomerService {
         return customerDTO;
     }
 
-    public CustomerDTO update(CustomerDTO customerDTO) {
+    public CustomerDTO update(Long customerId, CustomerDTO customerDTO) {
         Customer customer = customerDTO.toModelObject();
+        customer.setCustomerId(customerId);
         customerDAO.update(customer);
         return customerDTO;
     }
