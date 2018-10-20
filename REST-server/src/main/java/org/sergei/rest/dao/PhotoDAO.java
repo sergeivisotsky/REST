@@ -11,39 +11,39 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class PhotoDAO extends GenericHibernateDAO<Photo> {
 
-    private static final String SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID = "SELECT p FROM Photo p WHERE p.customer.customerNumber = :customerNumber AND p.photoId = :photoId";
+    private static final String SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID = "SELECT p FROM Photo p WHERE p.customer.customerId = :customerId AND p.photoId = :photoId";
 
-    private static final String SQL_FIND_ALL_BY_PHOTO_AND_CUSTOMER_NUMBER = "SELECT p FROM Photo p WHERE p.customer.customerNumber = :customerNumber";
+    private static final String SQL_FIND_ALL_BY_PHOTO_AND_CUSTOMER_NUMBER = "SELECT p FROM Photo p WHERE p.customer.customerId = :customerId";
 
-    private static final String SQL_FIND_ALL_BY_CUSTOMER_NUMBER_AND_FILE_NAME = "SELECT p FROM Photo p WHERE p.customer.customerNumber = :customerNumber and p.fileName = :fileName";
+    private static final String SQL_FIND_ALL_BY_CUSTOMER_NUMBER_AND_FILE_NAME = "SELECT p FROM Photo p WHERE p.customer.customerId = :customerId and p.fileName = :fileName";
 
     public PhotoDAO() {
         setPersistentClass(Photo.class);
     }
 
-    public List<Photo> findAllPhotosByCustomerNumber(Long customerNumber) {
+    public List<Photo> findAllPhotosByCustomerId(Long customerId) {
         Session session = sessionFactory.openSession();
         TypedQuery<Photo> query = session.createQuery(SQL_FIND_ALL_BY_PHOTO_AND_CUSTOMER_NUMBER);
-        query.setParameter("customerNumber", customerNumber);
+        query.setParameter("customerId", customerId);
         List<Photo> photos = query.getResultList();
         session.close();
         return photos;
     }
 
-    public Photo findPhotoByCustomerNumberAndFileName(Long customerNumber, String fileName) {
+    public Photo findPhotoByCustomerIdAndFileName(Long customerId, String fileName) {
         Session session = sessionFactory.openSession();
         TypedQuery<Photo> query = session.createQuery(SQL_FIND_ALL_BY_CUSTOMER_NUMBER_AND_FILE_NAME);
-        query.setParameter("customerNumber", customerNumber);
+        query.setParameter("customerId", customerId);
         query.setParameter("fileName", fileName);
         Photo photo = query.getSingleResult();
         session.close();
         return photo;
     }
 
-    public Photo findByCustomerNumberAndPhotoId(Long customerNumber, Long photoId) {
+    public Photo findByCustomerIdAndPhotoId(Long customerId, Long photoId) {
         Session session = sessionFactory.openSession();
         TypedQuery<Photo> query = session.createQuery(SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID);
-        query.setParameter("customerNumber", customerNumber);
+        query.setParameter("customerId", customerId);
         query.setParameter("photoId", photoId);
         Photo photo = query.getSingleResult();
         session.close();

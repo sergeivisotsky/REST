@@ -26,9 +26,9 @@ public class CustomerRESTController {
 
     @GET
     @Produces({"application/json", "application/xml"})
-    @Path("/{customerNumber}")
-    public Response getCustomerByNumber(@PathParam("customerNumber") Long customerNumber) {
-        CustomerDTO customerDTO = customerService.findByCustomerNumber(customerNumber);
+    @Path("/{customerId}")
+    public Response getCustomerById(@PathParam("customerId") Long customerNumber) {
+        CustomerDTO customerDTO = customerService.findById(customerNumber);
         return Response.ok(customerDTO).build();
     }
 

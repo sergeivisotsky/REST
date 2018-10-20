@@ -45,12 +45,12 @@ public class CustomerService {
 
         for (Customer customer : customers) {
             CustomerDTO customerDTO = new CustomerDTO();
-            customerDTO.setCustomerNumber(customer.getCustomerNumber());
+            customerDTO.setCustomerNumber(customer.getCustomerId());
             customerDTO.setFirstName(customer.getFirstName());
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
 
-            List<Order> orders = orderDAO.findAllByCustomerNumber(customer.getCustomerNumber());
+            List<Order> orders = orderDAO.findAllByCustomerId(customer.getCustomerId());
 
             customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
             customerDTOResponse.add(customerDTO);
@@ -62,19 +62,19 @@ public class CustomerService {
     /**
      * Get customer by number
      *
-     * @param customerNumber get customer number param from REST controller
+     * @param customerId get customer number param from REST controller
      * @return Customer DTO response
      */
-    public CustomerDTO getCustomerByNumber(Long customerNumber) {
-        Customer customer = customerDAO.findOne(customerNumber);
+    public CustomerDTO getCustomerById(Long customerId) {
+        Customer customer = customerDAO.findOne(customerId);
 
         CustomerDTO customerDTO = new CustomerDTO();
 
-        customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        customerDTO.setCustomerNumber(customer.getCustomerId());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
-        List<Order> orders = orderDAO.findAllByCustomerNumber(customerNumber);
+        List<Order> orders = orderDAO.findAllByCustomerId(customerId);
 
         customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
@@ -89,7 +89,7 @@ public class CustomerService {
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
         Customer customer = new Customer();
 
-        customer.setCustomerNumber(customerDTO.getCustomerNumber());
+        customer.setCustomerId(customerDTO.getCustomerNumber());
         customer.setFirstName(customerDTO.getFirstName());
         customer.setLastName(customerDTO.getLastName());
         customer.setAge(customerDTO.getAge());
@@ -104,34 +104,34 @@ public class CustomerService {
     /**
      * Update customer by customer number
      *
-     * @param customerNumber         get customer number from the REST controller
-     * @param customerDTORequestBody get customer as a request body
+     * @param customerId  get customer number from the REST controller
+     * @param customerDTO get customer as a request body
      * @return Return updated customer response
      */
-    public CustomerDTO updateCustomer(Long customerNumber, CustomerDTO customerDTORequestBody) {
-        Customer customer = modelMapper.map(customerDTORequestBody, Customer.class);
+    public CustomerDTO updateCustomer(Long customerId, CustomerDTO customerDTO) {
+        Customer customer = modelMapper.map(customerDTO, Customer.class);
 
         customerDAO.update(customer);
 
-        return customerDTORequestBody;
+        return customerDTO;
     }
 
     /**
      * Delete customer by number
      *
-     * @param customerNumber get customer number from the REST controller
+     * @param customerId get customer number from the REST controller
      * @return Return updated customer response
      */
-    public CustomerDTO deleteCustomerByNumber(Long customerNumber) {
-        Customer customer = customerDAO.findOne(customerNumber);
+    public CustomerDTO deleteCustomerById(Long customerId) {
+        Customer customer = customerDAO.findOne(customerId);
         CustomerDTO customerDTO = new CustomerDTO();
 
-        customerDTO.setCustomerNumber(customer.getCustomerNumber());
+        customerDTO.setCustomerNumber(customer.getCustomerId());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
 
-        List<Order> orders = orderDAO.findAllByCustomerNumber(customer.getCustomerNumber());
+        List<Order> orders = orderDAO.findAllByCustomerId(customer.getCustomerId());
 
         customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
 
@@ -154,7 +154,7 @@ public class CustomerService {
 
             // Get all order details list by order number
             List<OrderDetails> orderDetailsList =
-                    orderDetailsDAO.findAllByOrderNumber(orderDTO.getOrderNumber());
+                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderNumber());
 
             // Creating order details DTO and perform convertion from entity to DTO and put into
             List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();

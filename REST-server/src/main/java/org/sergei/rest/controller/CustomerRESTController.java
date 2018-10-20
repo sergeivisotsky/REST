@@ -27,10 +27,10 @@ public class CustomerRESTController {
     }
 
     // Get customer by specific ID as a parameter
-    @GetMapping("/{customerNumber}")
+    @GetMapping("/{customerId}")
     @ApiOperation(value = "Get customer by ID")
-    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("customerNumber") Long customerNumber) throws RecordNotFoundException {
-        return new ResponseEntity<>(customerService.getCustomerByNumber(customerNumber), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("customerId") Long customerId) throws RecordNotFoundException {
+        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
     // Add a new record
@@ -41,17 +41,17 @@ public class CustomerRESTController {
     }
 
     // Update record
-    @PutMapping(value = "/{customerNumber}", consumes = {"application/json", "application/xml"})
+    @PutMapping(value = "/{customerId}", consumes = {"application/json", "application/xml"})
     @ApiOperation(value = "Update customer data")
-    public ResponseEntity<CustomerDTO> updateRecord(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<CustomerDTO> updateRecord(@PathVariable("customerId") Long customerId,
                                                     @RequestBody CustomerDTO customerDTO) {
-        return new ResponseEntity<>(customerService.updateCustomer(customerNumber, customerDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(customerService.updateCustomer(customerId, customerDTO), HttpStatus.ACCEPTED);
     }
 
     // Delete customer by specific number
-    @DeleteMapping("/{customerNumber}")
+    @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Delete customer by number")
-    public ResponseEntity<CustomerDTO> deleteCustomerByNumber(@PathVariable("customerNumber") Long customerNumber) {
-        return new ResponseEntity<>(customerService.deleteCustomerByNumber(customerNumber), HttpStatus.OK);
+    public ResponseEntity<CustomerDTO> deleteCustomerById(@PathVariable("customerId") Long customerId) {
+        return new ResponseEntity<>(customerService.deleteCustomerById(customerId), HttpStatus.OK);
     }
 }

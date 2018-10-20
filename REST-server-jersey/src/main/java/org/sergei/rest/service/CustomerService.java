@@ -14,12 +14,13 @@ public class CustomerService {
     private CustomerDAO customerDAO;
 
     public List<CustomerDTO> findAll() {
-        return customerDAO.findAll().stream()
+        return customerDAO.findAll()
+                .stream()
                 .map(CustomerDTO::new)
                 .collect(Collectors.toList());
     }
 
-    public CustomerDTO findByCustomerNumber(Long customerNumber) {
+    public CustomerDTO findById(Long customerNumber) {
         Customer customer = customerDAO.findOne(customerNumber);
         return new CustomerDTO(customer);
     }

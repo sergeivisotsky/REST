@@ -52,16 +52,16 @@ public class OrderService {
     /**
      * Get order by number
      *
-     * @param orderNumber get order number as a parameter from REST controller
+     * @param orderId get order number as a parameter from REST controller
      * @return order DTO response
      */
-    public OrderDTO getOrderByNumber(Long orderNumber) {
-        Order order = orderDAO.findOne(orderNumber);
+    public OrderDTO getOrderById(Long orderId) {
+        Order order = orderDAO.findOne(orderId);
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTO orderDTOResponse = modelMapper.map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
-                orderDetailsDAO.findAllByOrderNumber(orderDTOResponse.getOrderNumber());
+                orderDetailsDAO.findAllByOrderId(orderDTOResponse.getOrderNumber());
 
         List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -78,28 +78,28 @@ public class OrderService {
     /**
      * Get order by customer and order numbers
      *
-     * @param customerNumber Get customer number from the REST controller
-     * @param orderNumber    Get order number from the REST controller
+     * @param customerId Get customer number from the REST controller
+     * @param orderId    Get order number from the REST controller
      * @return Return order DTO reponse
      */
-    public OrderDTO getOrderByCustomerAndOrderNumbers(Long customerNumber, Long orderNumber) {
-        /*if (!customerRepository.existsById(customerNumber)) {
+    public OrderDTO getOrderByIdAndOrderId(Long customerId, Long orderId) {
+        /*if (!customerRepository.existsById(customerId)) {
             throw new RecordNotFoundException("No customer with this number found");
         }*/
-        return getOrderByNumber(orderNumber);
+        return getOrderById(orderId);
     }
 
     /**
      * Get all orders by customer number
      *
-     * @param customerNumber customer number form the REST controller
+     * @param customerId customer number form the REST controller
      * @return List of order DTOs
      */
-    public List<OrderDTO> getAllOrdersByCustomerNumber(Long customerNumber) {
-        /*if (!customerRepository.existsById(customerNumber)) {
+    public List<OrderDTO> getAllOrdersByCustomerId(Long customerId) {
+        /*if (!customerRepository.existsById(customerId)) {
             throw new RecordNotFoundException("No customer with this number found");
         }*/
-        List<Order> orders = orderDAO.findAllByCustomerNumber(customerNumber);
+        List<Order> orders = orderDAO.findAllByCustomerId(customerId);
 
         return getOrdersByListWithParam(orders);
     }
@@ -118,27 +118,27 @@ public class OrderService {
     /**
      * Save order
      *
-     * @param customerNumber      Get customer number from the REST controller
-     * @param orderDTORequestBody Get order DTO request body
+     * @param customerId      Get customer number from the REST controller
+     * @param orderDTO Get order DTO request body
      * @return return order DTO as a response
      */
-    public OrderDTO saveOrder(Long customerNumber, OrderDTO orderDTORequestBody) {
-        Customer customer = customerDAO.findOne(customerNumber);
+    public OrderDTO saveOrder(Long customerId, OrderDTO orderDTO) {
+        Customer customer = customerDAO.findOne(customerId);
 
-        Order order = modelMapper.map(orderDTORequestBody, Order.class);
+        Order order = modelMapper.map(orderDTO, Order.class);
         order.setCustomer(customer);
 
         // Maps each member of collection containing requests to the class
         List<OrderDetails> orderDetailsList = ObjectMapperUtils
-                .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
+                .mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productDAO.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(counter).getProductCode());
+            Product product = productDAO.findByCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode());
             orderDetails.setOrder(order);
             orderDetails.setProduct(product);
-            orderDetails.setQuantityOrdered(orderDTORequestBody.getOrderDetailsDTO().get(counter).getQuantityOrdered());
-            orderDetails.setPrice(orderDTORequestBody.getOrderDetailsDTO().get(counter).getPrice());
+            orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
+            orderDetails.setPrice(orderDTO.getOrderDetailsDTO().get(counter).getPrice());
             counter++;
         }
 
@@ -146,39 +146,39 @@ public class OrderService {
 
         orderDAO.save(order);
 
-        return orderDTORequestBody;
+        return orderDTO;
     }
 
     /**
      * Update order by customer and order numbers
      *
-     * @param customerNumber      get customer number form the REST controller
-     * @param orderNumber         get order number form the REST controller
-     * @param orderDTORequestBody Get order DTO request body
+     * @param customerId      get customer number form the REST controller
+     * @param orderId         get order number form the REST controller
+     * @param orderDTO Get order DTO request body
      * @return return order DTO as a response
      */
-    public OrderDTO updateOrder(Long customerNumber, Long orderNumber, OrderDTO orderDTORequestBody) {
-        Customer customer = customerDAO.findOne(customerNumber);
-        Order order = orderDAO.findOne(orderNumber);
+    public OrderDTO updateOrder(Long customerId, Long orderId, OrderDTO orderDTO) {
+        Customer customer = customerDAO.findOne(customerId);
+        Order order = orderDAO.findOne(orderId);
 
-        order.setOrderNumber(orderDTORequestBody.getOrderNumber());
+        order.setOrderId(orderDTO.getOrderNumber());
         order.setCustomer(customer);
-        order.setOrderDate(orderDTORequestBody.getOrderDate());
-        order.setRequiredDate(orderDTORequestBody.getRequiredDate());
-        order.setShippedDate(orderDTORequestBody.getShippedDate());
-        order.setStatus(orderDTORequestBody.getStatus());
+        order.setOrderDate(orderDTO.getOrderDate());
+        order.setRequiredDate(orderDTO.getRequiredDate());
+        order.setShippedDate(orderDTO.getShippedDate());
+        order.setStatus(orderDTO.getStatus());
 
         // Maps each member of collection containing requests to the class
         List<OrderDetails> orderDetailsList = ObjectMapperUtils
-                .mapAll(orderDTORequestBody.getOrderDetailsDTO(), OrderDetails.class);
+                .mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productDAO.findByCode(orderDTORequestBody.getOrderDetailsDTO().get(counter).getProductCode());
+            Product product = productDAO.findByCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode());
             orderDetails.setOrder(order);
             orderDetails.setProduct(product);
-            orderDetails.setQuantityOrdered(orderDTORequestBody.getOrderDetailsDTO().get(counter).getQuantityOrdered());
-            orderDetails.setPrice(orderDTORequestBody.getOrderDetailsDTO().get(counter).getPrice());
+            orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
+            orderDetails.setPrice(orderDTO.getOrderDetailsDTO().get(counter).getPrice());
             counter++;
         }
 
@@ -187,18 +187,18 @@ public class OrderService {
         // FIXME: order_number in order_details is null while update is performed
         orderDAO.update(order);
 
-        return orderDTORequestBody;
+        return orderDTO;
     }
 
     /**
      * Method to delete order by number taken from the REST controller
      *
-     * @param orderNumber get oder number from th REST controller
+     * @param orderId get oder number from th REST controller
      * @return Order entity as a response
      */
     // FIXME: order_number in order_details is null while delete is performed
-    public OrderDTO deleteOrderByNumber(Long orderNumber) {
-        Order order = orderDAO.findOne(orderNumber);
+    public OrderDTO deleteOrderById(Long orderId) {
+        Order order = orderDAO.findOne(orderId);
         orderDAO.delete(order);
         return modelMapper.map(order, OrderDTO.class);
     }
@@ -206,14 +206,14 @@ public class OrderService {
     /**
      * Delete order method
      *
-     * @param customerNumber get customer number form the REST controller
-     * @param orderNumber    get order number form the REST controller
+     * @param customerId get customer number form the REST controller
+     * @param orderId    get order number form the REST controller
      * @return Order entity as a response
      */
     // FIXME: So that it was able to delete entity by customer and order numbers
-    public OrderDTO deleteOrderByCustomerIdAndOrderId(Long customerNumber, Long orderNumber) {
+    public OrderDTO deleteOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
 
-        Order order = orderDAO.findOne(orderNumber);
+        Order order = orderDAO.findOne(orderId);
         orderDAO.delete(order);
 
         return modelMapper.map(order, OrderDTO.class);
@@ -233,7 +233,7 @@ public class OrderService {
             OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
             List<OrderDetails> orderDetailsList =
-                    orderDetailsDAO.findAllByOrderNumber(orderDTO.getOrderNumber());
+                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderNumber());
 
             List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
             for (OrderDetails orderDetails : orderDetailsList) {

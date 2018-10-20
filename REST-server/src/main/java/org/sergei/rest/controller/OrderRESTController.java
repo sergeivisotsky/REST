@@ -2,7 +2,6 @@ package org.sergei.rest.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.sergei.rest.dto.OrderDTO;
-import org.sergei.rest.model.Order;
 import org.sergei.rest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,25 +26,25 @@ public class OrderRESTController {
     }
 
     // Get order by specific ID as a parameter
-    @GetMapping("/orders/{orderNumber}")
+    @GetMapping("/orders/{orderId}")
     @ApiOperation(value = "Get order by ID")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderNumber") Long orderNumber) {
-        return new ResponseEntity<>(orderService.getOrderByNumber(orderNumber), HttpStatus.OK);
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(orderService.getOrderById(orderId), HttpStatus.OK);
     }
 
-    // Get all orders by customer orderNumber
-    @GetMapping("/customers/{customerNumber}/orders")
+    // Get all orders by customer orderId
+    @GetMapping("/customers/{customerId}/orders")
     @ApiOperation(value = "Get all order by customer number")
-    public ResponseEntity<List<OrderDTO>> getOrdersByCustomerNumber(@PathVariable("customerNumber") Long customerNumber) {
-        return new ResponseEntity<>(orderService.getAllOrdersByCustomerNumber(customerNumber), HttpStatus.OK);
+    public ResponseEntity<List<OrderDTO>> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
+        return new ResponseEntity<>(orderService.getAllOrdersByCustomerId(customerId), HttpStatus.OK);
     }
 
-    // Get order by customer orderNumber and order orderNumber
-    @GetMapping("/customers/{customerNumber}/orders/{orderNumber}")
+    // Get order by customer orderId and order orderId
+    @GetMapping("/customers/{customerId}/orders/{orderId}")
     @ApiOperation(value = "Get order by customer and order numbers")
-    public ResponseEntity<OrderDTO> getOrderByCustomerAndOrderNumbers(@PathVariable("customerNumber") Long customerNumber,
-                                                                      @PathVariable("orderNumber") Long orderNumber) {
-        return new ResponseEntity<>(orderService.getOrderByCustomerAndOrderNumbers(customerNumber, orderNumber), HttpStatus.OK);
+    public ResponseEntity<OrderDTO> getOrderByCustomerAndOrderId(@PathVariable("customerId") Long customerId,
+                                                                 @PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(orderService.getOrderByIdAndOrderId(customerId, orderId), HttpStatus.OK);
     }
 
     // Get all orders by product code
@@ -56,36 +55,36 @@ public class OrderRESTController {
     }
 
     // Add a new record
-    @PostMapping(value = "/customers/{customerNumber}/orders",
+    @PostMapping(value = "/customers/{customerId}/orders",
             consumes = {"application/json", "application/xml"})
     @ApiOperation(value = "Add a new order for the customer")
-    public ResponseEntity<OrderDTO> createOrder(@PathVariable("customerNumber") Long customerNumber,
+    public ResponseEntity<OrderDTO> createOrder(@PathVariable("customerId") Long customerId,
                                                 @RequestBody OrderDTO orderDTO) {
-        return new ResponseEntity<>(orderService.saveOrder(customerNumber, orderDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(orderService.saveOrder(customerId, orderDTO), HttpStatus.CREATED);
     }
 
     // Update record
-    @PutMapping(value = "/customers/{customerNumber}/orders/{orderNumber}",
+    @PutMapping(value = "/customers/{customerId}/orders/{orderId}",
             consumes = {"application/json", "application/xml"})
     @ApiOperation(value = "Update order by customer and order numbers")
-    public ResponseEntity<OrderDTO> updateRecord(@PathVariable("customerNumber") Long customerNumber,
-                                                 @PathVariable("orderNumber") Long orderNumber,
+    public ResponseEntity<OrderDTO> updateRecord(@PathVariable("customerId") Long customerId,
+                                                 @PathVariable("orderId") Long orderId,
                                                  @RequestBody OrderDTO orderDTO) {
-        return new ResponseEntity<>(orderService.updateOrder(customerNumber, orderNumber, orderDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(orderService.updateOrder(customerId, orderId, orderDTO), HttpStatus.ACCEPTED);
     }
 
     // Delete order by number
-    @DeleteMapping("/orders/{orderNumber}")
+    @DeleteMapping("/orders/{orderId}")
     @ApiOperation(value = "Delete order from all by number")
-    public ResponseEntity<OrderDTO> deleteOrderByNumber(@PathVariable("orderNumber") Long orderNumber) {
-        return new ResponseEntity<>(orderService.deleteOrderByNumber(orderNumber), HttpStatus.OK);
+    public ResponseEntity<OrderDTO> deleteOrderById(@PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(orderService.deleteOrderById(orderId), HttpStatus.OK);
     }
 
     // Delete order by customer number and order number
-    @DeleteMapping("/customers/{customerNumber}/orders/{orderNumber}")
+    @DeleteMapping("/customers/{customerId}/orders/{orderId}")
     @ApiOperation(value = "Delete order by customer and order numbers")
-    public ResponseEntity<OrderDTO> deleteOrderByCustomerNumberAndOrderNumber(@PathVariable("customerNumber") Long customerNumber,
-                                                                              @PathVariable("orderNumber") Long orderNumber) {
-        return new ResponseEntity<>(orderService.deleteOrderByCustomerIdAndOrderId(customerNumber, orderNumber), HttpStatus.OK);
+    public ResponseEntity<OrderDTO> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
+                                                                      @PathVariable("orderId") Long orderId) {
+        return new ResponseEntity<>(orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
     }
 }
