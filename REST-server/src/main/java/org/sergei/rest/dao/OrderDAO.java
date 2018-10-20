@@ -11,19 +11,19 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class OrderDAO extends GenericHibernateDAO<Order> {
 
-    private static final String SQL_FIND_ALL_BY_CUSTOMER_NUMBER = "SELECT o FROM Order o WHERE o.customer.customerNumber = :customerNumber";
+    private static final String SQL_FIND_ALL_BY_CUSTOMER_NUMBER = "SELECT o FROM Order o WHERE o.customer.customerId = :customerId";
 
     private static final String SQL_FIND_ALL_BY_PRODUCT_CODE = "SELECT o FROM Order o INNER JOIN OrderDetails od ON " +
-            "o.orderNumber = od.order.orderNumber WHERE od.product.productCode = :productCode";
+            "o.orderId = od.order.orderId WHERE od.product.productCode = :productCode";
 
     public OrderDAO() {
         setPersistentClass(Order.class);
     }
 
-    public List<Order> findAllByCustomerNumber(Long customerNumber) {
+    public List<Order> findAllByCustomerId(Long customerId) {
         Session session = sessionFactory.openSession();
         TypedQuery<Order> query = session.createQuery(SQL_FIND_ALL_BY_CUSTOMER_NUMBER);
-        query.setParameter("customerNumber", customerNumber);
+        query.setParameter("customerId", customerId);
         List<Order> orders = query.getResultList();
         session.close();
         return orders;
@@ -37,14 +37,4 @@ public class OrderDAO extends GenericHibernateDAO<Order> {
         session.close();
         return orders;
     }
-
-    /*public Order findByCustomerNumberAndOrderNumber(Long customerNumber, Long orderNumber) {
-        Session session = sessionFactory.openSession();
-        TypedQuery<Order> query = session.createQuery("SELECT o FROM Order o WHERE o.customer.customerNumber = :customerNumber AND o.orderNumber = :orderNumber");
-        query.setParameter("customerNumber", customerNumber);
-        query.setParameter("orderNumber", orderNumber);
-        Order order = query.getSingleResult();
-        session.close();
-        return order;
-    }*/
 }

@@ -47,7 +47,7 @@ public class PhotoService {
     public List<PhotoDTO> findAllUploadedPhotos(Long customerNumber) {
         List<PhotoDTO> photoDTOSResponse = new LinkedList<>();
 
-        List<Photo> photos = photoDAO.findAllPhotosByCustomerNumber(customerNumber);
+        List<Photo> photos = photoDAO.findAllPhotosByCustomerId(customerNumber);
 
         for (Photo photo : photos) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
@@ -120,7 +120,7 @@ public class PhotoService {
      */
     public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
         // Get filename by customer number written in database
-        Photo photo = photoDAO.findPhotoByCustomerNumberAndFileName(customerNumber, fileName);
+        Photo photo = photoDAO.findPhotoByCustomerIdAndFileName(customerNumber, fileName);
 
 //        fileOperations.downloadFile(responseFileName);
 
@@ -145,7 +145,7 @@ public class PhotoService {
      */
     public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        Photo photo = photoDAO.findByCustomerNumberAndPhotoId(customerNumber, photoId);
+        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerNumber, photoId);
 
         String responseFileName = photo.getFileName();
 
@@ -169,7 +169,7 @@ public class PhotoService {
      * @throws IOException
      */
     public PhotoDTO deletePhotoById(Long customerNumber, Long photoId) throws IOException {
-        Photo photo = photoDAO.findByCustomerNumberAndPhotoId(customerNumber, photoId);
+        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerNumber, photoId);
 
         PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
 

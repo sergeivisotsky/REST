@@ -1,8 +1,5 @@
 package org.sergei.rest.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -15,8 +12,10 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "customer_number")
-    private Long customerNumber;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
+    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", allocationSize = 1)
+    @Column(name = "customer_id")
+    private Long customerId;
 
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -55,12 +54,12 @@ public class Customer implements Serializable {
         this.photoUploadResponse = photoUploadResponse;
     }
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getFirstName() {

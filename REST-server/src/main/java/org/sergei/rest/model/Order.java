@@ -13,8 +13,10 @@ public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "order_number")
-    private Long orderNumber;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
+    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
+    @Column(name = "order_id")
+    private Long orderId;
 
     @Column(name = "order_date")
     private Date orderDate;
@@ -44,9 +46,9 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long orderNumber, Customer customer, Date orderDate,
+    public Order(Long orderId, Customer customer, Date orderDate,
                  Date requiredDate, Date shippedDate, String status) {
-        this.orderNumber = orderNumber;
+        this.orderId = orderId;
         this.customer = customer;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;
@@ -54,12 +56,12 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public Long getOrderNumber() {
-        return orderNumber;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setOrderNumber(Long orderNumber) {
-        this.orderNumber = orderNumber;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public Customer getCustomer() {

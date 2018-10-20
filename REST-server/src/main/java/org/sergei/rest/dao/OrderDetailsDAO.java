@@ -11,16 +11,16 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class OrderDetailsDAO extends GenericHibernateDAO<OrderDetails> {
 
-    private static final String SQL_FIND_ALL_BY_ORDER_NUMBER = "SELECT o FROM OrderDetails o WHERE o.order.orderNumber = :orderNumber";
+    private static final String SQL_FIND_ALL_BY_ORDER_NUMBER = "SELECT o FROM OrderDetails o WHERE o.order.orderId = :orderId";
 
     public OrderDetailsDAO() {
         setPersistentClass(OrderDetails.class);
     }
 
-    public List<OrderDetails> findAllByOrderNumber(Long orderNumber) {
+    public List<OrderDetails> findAllByOrderId(Long orderId) {
         Session session = sessionFactory.openSession();
         TypedQuery<OrderDetails> query = session.createQuery(SQL_FIND_ALL_BY_ORDER_NUMBER);
-        query.setParameter("orderNumber", orderNumber);
+        query.setParameter("orderId", orderId);
         List<OrderDetails> orderDetails = query.getResultList();
         session.close();
         return orderDetails;

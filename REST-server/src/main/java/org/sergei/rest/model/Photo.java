@@ -10,7 +10,8 @@ public class Photo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "photo_id")
+    @SequenceGenerator(name = "photo_id", sequenceName = "photo_id", allocationSize = 1)
     @Column(name = "photo_id")
     private Long photoId;
 
