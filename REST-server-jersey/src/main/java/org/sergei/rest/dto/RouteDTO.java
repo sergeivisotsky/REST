@@ -33,13 +33,14 @@ public class RouteDTO {
     public RouteDTO() {
     }
 
-    public RouteDTO(Route route) {
+    /*public RouteDTO(Route route) {
         this.routeId = route.getRouteId();
         this.distance = route.getDistance();
         this.departureTime = route.getDepartureTime();
         this.arrivalTime = route.getArrivalTime();
         this.price = route.getPrice();
-    }
+        this.aircraftDTO = route.getAircraft();
+    }*/
 
     public Long getRouteId() {
         return routeId;

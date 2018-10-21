@@ -3,8 +3,6 @@ package org.sergei.rest.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "route")
@@ -32,17 +30,17 @@ public class Route implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aircraft_id")
-    private Aircraft aircrafts;
+    private Aircraft aircraft;
 
     public Route() {
     }
 
-    public Route(Float distance, Time departureTime, Time arrivalTime, Float price, Aircraft aircrafts) {
+    public Route(Float distance, Time departureTime, Time arrivalTime, Float price, Aircraft aircraft) {
         this.distance = distance;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.price = price;
-        this.aircrafts = aircrafts;
+        this.aircraft = aircraft;
     }
 
     public Long getRouteId() {
@@ -85,11 +83,11 @@ public class Route implements Serializable {
         this.price = price;
     }
 
-    public Aircraft getAircrafts() {
-        return aircrafts;
+    public Aircraft getAircraft() {
+        return aircraft;
     }
 
-    public void setAircrafts(Aircraft aircrafts) {
-        this.aircrafts = aircrafts;
+    public void setAircraft(Aircraft aircrafts) {
+        this.aircraft = aircrafts;
     }
 }
