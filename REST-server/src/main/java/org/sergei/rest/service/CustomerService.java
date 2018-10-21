@@ -111,6 +111,7 @@ public class CustomerService {
     public CustomerDTO updateCustomer(Long customerId, CustomerDTO customerDTO) {
         Customer customer = modelMapper.map(customerDTO, Customer.class);
 
+        customer.setCustomerId(customerId);
         customerDAO.update(customer);
 
         return customerDTO;

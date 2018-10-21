@@ -58,21 +58,21 @@ public class OrderService {
     public OrderDTO getOrderById(Long orderId) {
         Order order = orderDAO.findOne(orderId);
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-        OrderDTO orderDTOResponse = modelMapper.map(order, OrderDTO.class);
+        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
-                orderDetailsDAO.findAllByOrderId(orderDTOResponse.getOrderNumber());
+                orderDetailsDAO.findAllByOrderId(orderDTO.getOrderNumber());
 
-        List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+        List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
-            orderDetailsDTOS.add(orderDetailsDTO);
+            orderDetailsDTOList.add(orderDetailsDTO);
         }
 
-        orderDTOResponse.setOrderDetailsDTO(orderDetailsDTOS);
+        orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
 
-        return orderDTOResponse;
+        return orderDTO;
     }
 
     /**
@@ -226,7 +226,7 @@ public class OrderService {
      * @return List of the order DTOs
      */
     private List<OrderDTO> getOrdersByListWithParam(List<Order> orders) {
-        List<OrderDTO> response = new LinkedList<>();
+        List<OrderDTO> orderDTOList = new LinkedList<>();
 
         for (Order order : orders) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
@@ -235,17 +235,17 @@ public class OrderService {
             List<OrderDetails> orderDetailsList =
                     orderDetailsDAO.findAllByOrderId(orderDTO.getOrderNumber());
 
-            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+            List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
             for (OrderDetails orderDetails : orderDetailsList) {
                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                 OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
-                orderDetailsDTOS.add(orderDetailsDTO);
+                orderDetailsDTOList.add(orderDetailsDTO);
             }
 
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
-            response.add(orderDTO);
+            orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
+            orderDTOList.add(orderDTO);
         }
 
-        return response;
+        return orderDTOList;
     }
 }
