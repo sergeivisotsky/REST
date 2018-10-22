@@ -1,6 +1,16 @@
 # REST-server
 REST API implementation using Spring MVC
 
+### Technologies
+ * Java 8
+ * Apache Maven
+ * Apache Tomcat 9+
+ * MySQL
+ * Spring MVC
+ * Jackson
+ * modelmapper
+ * Swagger
+
 ### Spring annotation depending on version
 | Http method | Spring 4.xx | Spring 5.xx |
 | ----------- | ----------- | ------------|
