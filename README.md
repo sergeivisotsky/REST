@@ -4,4 +4,4 @@
 REST API implementations
  * REST-server - REST API implementation using Spring MVC
  * REST-server-jersey - REST API implementation using Jersey
- * REST-client - REST API client using Spring and 2 clients using JavaScript
+ * REST-client-spring - REST API client using Spring and 2 clients using JavaScript
