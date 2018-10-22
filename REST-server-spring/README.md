@@ -30,7 +30,7 @@ One more thing to memorize is if that it is required to produce media type it sh
 
 NOTE: `@RequestMapping` annotation by default is GET method by itself so that it may be written in this way `@RequestMapping("/url")`.
 
-### Controller and @RestController annotation
+## Controller and @RestController annotation
 Before Spring 5.xx the way web declare controller to be restful was annotating it li regular controller `@Controller` and in each method was required to write `@ResponseBody`
 
 #### Spring 4.xx 
