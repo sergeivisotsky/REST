@@ -140,11 +140,11 @@
             <version>1.2.0.Final</version>
             <scope>provided</scope>
         </dependency>
+        <!--To DTO and from DTO serialization-->
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.3.0.Beta1</version>
-            <scope>compile</scope>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.1.1</version>
         </dependency>
 
         <!--Swagger-->
