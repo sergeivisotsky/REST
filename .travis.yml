@@ -12,7 +12,7 @@ jdk:
 services:
 - mysql
 
-branches:
-  only:
-  - master
-  - develop
+#branches:
+#  only:
+#  - master
+#  - develop
