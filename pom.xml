@@ -12,8 +12,8 @@
     <name>REST API Service</name>
 
     <modules>
-        <module>REST-server</module>
         <module>REST-client</module>
+        <module>REST-server-spring</module>
         <module>REST-server-jersey</module>
     </modules>
     <build>
