@@ -12,8 +12,7 @@ Technologies
  * modelmapper
  * Swagger
 
-Spring annotation depending on version
------
+## Spring annotation depending on version
 | Http method | Spring 4.xx | Spring 5.xx |
 | ----------- | ----------- | ------------|
 | GET | @RequestMapping(value = "/url",  method = RequestMethod.GET) | @GetMapping("/url") |
@@ -62,8 +61,7 @@ public class CustomerRESTController {
 
 To document this API Swagger documentation auto-generation was used which is available by this url: [http://localhost:8080/rest/swagger-ui.html](http://localhost:8080/rest/swagger-ui.html)
 
-This REST API uses oAuth2 to access all the endpoints
------
+## This REST API uses oAuth2 to access all the endpoints
 In this case all access token are stored into the database. To perform authorization client with secret and username with password are used.
 But it is also able to do everything in-memory.
 
