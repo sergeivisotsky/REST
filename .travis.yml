@@ -11,8 +11,3 @@ jdk:
 
 services:
 - mysql
-
-#branches:
-#  only:
-#  - master
-#  - develop
