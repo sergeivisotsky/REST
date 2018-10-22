@@ -1,8 +1,7 @@
 # REST-server
 REST API implementation using Spring MVC
 
-Technologies
------
+## Technologies
  * Java 8
  * Apache Maven
  * Apache Tomcat 9+
