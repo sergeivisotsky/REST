@@ -1,7 +1,8 @@
 # REST-server
 REST API implementation using Spring MVC
 
-### Technologies
+Technologies
+-----
  * Java 8
  * Apache Maven
  * Apache Tomcat 9+
@@ -11,7 +12,8 @@ REST API implementation using Spring MVC
  * modelmapper
  * Swagger
 
-### Spring annotation depending on version
+Spring annotation depending on version
+-----
 | Http method | Spring 4.xx | Spring 5.xx |
 | ----------- | ----------- | ------------|
 | GET | @RequestMapping(value = "/url",  method = RequestMethod.GET) | @GetMapping("/url") |
@@ -28,7 +30,8 @@ One more thing to memorize is if that it is required to produce media type it sh
 
 NOTE: `@RequestMapping` annotation by default is GET method by itself so that it may be written in this way `@RequestMapping("/url")`.
 
-### @Controller and @RestController annotation
+@Controller and @RestController annotation
+-----
 Before Spring 5.xx the way web declare controller to be restful was annotating it li regular controller `@Controller` and in each method was required to write `@ResponseBody`
 
 #### Spring 4.xx 
@@ -60,7 +63,8 @@ public class CustomerRESTController {
 
 To document this API Swagger documentation auto-generation was used which is available by this url: [http://localhost:8080/rest/swagger-ui.html](http://localhost:8080/rest/swagger-ui.html)
 
-#### This REST API uses oAuth2 to access all the endpoints
+This REST API uses oAuth2 to access all the endpoints
+-----
 In this case all access token are stored into the database. To perform authorization client with secret and username with password are used.
 But it is also able to do everything in-memory.
 

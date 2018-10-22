@@ -1,7 +1,8 @@
 # REST-server-jersey
 REST API implementation using Jersey
 
-### Technologies
+Technologies
+-----
 * Java 8
 * Apache Maven
 * Apache Tomcat 9+
