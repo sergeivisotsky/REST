@@ -5,9 +5,6 @@ import io.swagger.jaxrs.config.BeanConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class SwaggerConfig extends HttpServlet {
     @Override
@@ -20,10 +17,5 @@ public class SwaggerConfig extends HttpServlet {
         beanConfig.setBasePath("/api/v1");
         beanConfig.setResourcePackage("org.sergei.rest.controller");
         beanConfig.setScan(true);
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
     }
 }

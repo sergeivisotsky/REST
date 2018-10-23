@@ -134,13 +134,6 @@
             <version>3.0.1-b09</version>
         </dependency>
 
-        <!--Dependency to map model into the DTO and vice versa-->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>1.2.0.Final</version>
-            <scope>provided</scope>
-        </dependency>
         <!--To DTO and from DTO serialization-->
         <dependency>
             <groupId>org.modelmapper</groupId>
