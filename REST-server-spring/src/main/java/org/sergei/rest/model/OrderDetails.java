@@ -25,20 +25,29 @@ public class OrderDetails implements Serializable {
     @JoinColumn(name = "product_code")
     private Product product;
 
-    @Column(name = "quantity_ordered")
+    @Column(name = "quantity_ordered", nullable = false)
     private Integer quantityOrdered;
 
-    @Column(name = "price", precision = 10, scale = 2)
+    @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
 
     public OrderDetails() {
     }
 
-    public OrderDetails(Product product, Integer quantityOrdered, BigDecimal price, Order order) {
+    public OrderDetails(Long details_id, Product product, Integer quantityOrdered, BigDecimal price, Order order) {
+        this.details_id = details_id;
         this.product = product;
         this.quantityOrdered = quantityOrdered;
         this.price = price;
         this.order = order;
+    }
+
+    public Long getDetails_id() {
+        return details_id;
+    }
+
+    public void setDetails_id(Long details_id) {
+        this.details_id = details_id;
     }
 
     public Product getProduct() {

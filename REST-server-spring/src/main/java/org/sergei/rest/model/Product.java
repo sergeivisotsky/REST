@@ -17,16 +17,16 @@ public class Product implements Serializable {
     @Column(name = "product_code", length = 15)
     private String productCode;
 
-    @Column(name = "product_name", length = 70)
+    @Column(name = "product_name", length = 70, nullable = false)
     private String productName;
 
-    @Column(name = "product_line", length = 50)
+    @Column(name = "product_line", length = 50, nullable = false)
     private String productLine;
 
-    @Column(name = "product_vendor", length = 50)
+    @Column(name = "product_vendor", length = 50, nullable = false)
     private String productVendor;
 
-    @Column(name = "price", precision = 10, scale = 2)
+    @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
 
     public Product() {

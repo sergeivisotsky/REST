@@ -20,16 +20,16 @@ public class Photo implements Serializable {
     // TODO: ON DELETE CASCADE programmatically
     private Customer customer;
 
-    @Column(name = "file_name")
+    @Column(name = "file_name", nullable = false)
     private String fileName;
 
-    @Column(name = "file_url")
+    @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
-    @Column(name = "file_type")
+    @Column(name = "file_type", nullable = false)
     private String fileType;
 
-    @Column(name = "file_size")
+    @Column(name = "file_size", nullable = false)
     private Long fileSize;
 
     public Photo() {

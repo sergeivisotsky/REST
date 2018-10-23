@@ -15,19 +15,19 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
-    @Column(name = "order_id")
+    @Column(name = "order_id", nullable = false)
     private Long orderId;
 
-    @Column(name = "order_date")
+    @Column(name = "order_date", nullable = false)
     private Date orderDate;
 
-    @Column(name = "required_date")
+    @Column(name = "required_date", nullable = false)
     private Date requiredDate;
 
-    @Column(name = "shipped_date")
+    @Column(name = "shipped_date", nullable = false)
     private Date shippedDate;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private String status;
 
     @OneToMany(
