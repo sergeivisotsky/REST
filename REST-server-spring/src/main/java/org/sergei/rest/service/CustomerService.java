@@ -45,7 +45,7 @@ public class CustomerService {
 
         for (Customer customer : customers) {
             CustomerDTO customerDTO = new CustomerDTO();
-            customerDTO.setCustomerNumber(customer.getCustomerId());
+            customerDTO.setCustomerId(customer.getCustomerId());
             customerDTO.setFirstName(customer.getFirstName());
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
@@ -70,7 +70,7 @@ public class CustomerService {
 
         CustomerDTO customerDTO = new CustomerDTO();
 
-        customerDTO.setCustomerNumber(customer.getCustomerId());
+        customerDTO.setCustomerId(customer.getCustomerId());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());
@@ -89,7 +89,7 @@ public class CustomerService {
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
         Customer customer = new Customer();
 
-        customer.setCustomerId(customerDTO.getCustomerNumber());
+        customer.setCustomerId(customerDTO.getCustomerId());
         customer.setFirstName(customerDTO.getFirstName());
         customer.setLastName(customerDTO.getLastName());
         customer.setAge(customerDTO.getAge());
@@ -109,9 +109,9 @@ public class CustomerService {
      * @return Return updated customer response
      */
     public CustomerDTO updateCustomer(Long customerId, CustomerDTO customerDTO) {
-        Customer customer = modelMapper.map(customerDTO, Customer.class);
+        customerDTO.setCustomerId(customerId);
 
-        customer.setCustomerId(customerId);
+        Customer customer = modelMapper.map(customerDTO, Customer.class);
         customerDAO.update(customer);
 
         return customerDTO;
@@ -127,7 +127,7 @@ public class CustomerService {
         Customer customer = customerDAO.findOne(customerId);
         CustomerDTO customerDTO = new CustomerDTO();
 
-        customerDTO.setCustomerNumber(customer.getCustomerId());
+        customerDTO.setCustomerId(customer.getCustomerId());
         customerDTO.setFirstName(customer.getFirstName());
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setAge(customer.getAge());

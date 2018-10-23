@@ -12,7 +12,7 @@ import java.util.List;
 public class CustomerDTO {
 
     @XmlElement
-    private Long customerNumber;
+    private Long customerId;
 
     @XmlElement
     private String firstName;
@@ -31,20 +31,20 @@ public class CustomerDTO {
     }
 
     // TODO: Convertion from model to DTO and vise versa in constructor
-    public CustomerDTO(Long customerNumber, String firstName, String lastName, Integer age, List<OrderDTO> orderDTOList) {
-        this.customerNumber = customerNumber;
+    public CustomerDTO(Long customerId, String firstName, String lastName, Integer age, List<OrderDTO> orderDTOList) {
+        this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.orderDTOList = orderDTOList;
     }
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getFirstName() {
