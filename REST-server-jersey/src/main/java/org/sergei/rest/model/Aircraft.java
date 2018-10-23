@@ -16,16 +16,16 @@ public class Aircraft implements Serializable {
     @Column(name = "aircraft_id")
     private Long aircraftId;
 
-    @Column(name = "aircraft_model")
+    @Column(name = "aircraft_model", nullable = false)
     private String aircraftModel;
 
-    @Column(name = "aircraft_name")
+    @Column(name = "aircraft_name", nullable = false)
     private String aircraftName;
 
-    @Column(name = "aircraft_weight")
+    @Column(name = "aircraft_weight", nullable = false)
     private Double aircraftWeight;
 
-    @Column(name = "max_passengers")
+    @Column(name = "max_passengers", nullable = false)
     private Integer maxPassengers;
 
     public Aircraft() {

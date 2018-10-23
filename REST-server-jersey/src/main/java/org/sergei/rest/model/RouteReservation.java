@@ -17,7 +17,7 @@ public class RouteReservation implements Serializable {
     @Column(name = "aircraft_id")
     private Long aircraftId;
 
-    @Column(name = "reservation_date")
+    @Column(name = "reservation_date", nullable = false)
     private LocalDateTime reservationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -16,16 +16,16 @@ public class Route implements Serializable {
     @Column(name = "route_id")
     private Long routeId;
 
-    @Column(name = "route_distance")
+    @Column(name = "route_distance", nullable = false)
     private Float distance;
 
-    @Column(name = "departure_time")
+    @Column(name = "departure_time", nullable = false)
     private Time departureTime;
 
-    @Column(name = "arrival_time")
+    @Column(name = "arrival_time", nullable = false)
     private Time arrivalTime;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Float price;
 
     @OneToOne(fetch = FetchType.LAZY)
