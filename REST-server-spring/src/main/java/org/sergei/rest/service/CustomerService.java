@@ -155,7 +155,7 @@ public class CustomerService {
 
             // Get all order details list by order number
             List<OrderDetails> orderDetailsList =
-                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderNumber());
+                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
 
             // Creating order details DTO and perform convertion from entity to DTO and put into
             List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();

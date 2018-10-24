@@ -77,7 +77,7 @@ public class PhotoService {
 
         // FIXME: set photo ID properly due to it is null right now
 //        photoDTOResponse.setPhotoId();
-        photoDTOResponse.setCustomerNumber(customerNumber);
+        photoDTOResponse.setCustomerId(customerNumber);
         photoDTOResponse.setFileName(commonsMultipartFile.getOriginalFilename());
         photoDTOResponse.setFileUrl(fileDownloadUri);
         photoDTOResponse.setFileType(commonsMultipartFile.getContentType());

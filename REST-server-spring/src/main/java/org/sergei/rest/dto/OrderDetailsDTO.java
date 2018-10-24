@@ -16,7 +16,7 @@ public class OrderDetailsDTO {
     @XmlElement
     @XmlTransient
     @JsonIgnore
-    private Long orderNumber;
+    private Long orderId;
 
     @XmlElement
     private String productCode;
@@ -30,20 +30,20 @@ public class OrderDetailsDTO {
     public OrderDetailsDTO() {
     }
 
-    public OrderDetailsDTO(Long orderNumber, String productCode,
+    public OrderDetailsDTO(Long orderId, String productCode,
                            Integer quantityOrdered, BigDecimal price) {
-        this.orderNumber = orderNumber;
+        this.orderId = orderId;
         this.productCode = productCode;
         this.quantityOrdered = quantityOrdered;
         this.price = price;
     }
 
-    public Long getOrderNumber() {
-        return orderNumber;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setOrderNumber(Long orderNumber) {
-        this.orderNumber = orderNumber;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public String getProductCode() {

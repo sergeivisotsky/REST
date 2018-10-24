@@ -61,7 +61,7 @@ public class OrderService {
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
-                orderDetailsDAO.findAllByOrderId(orderDTO.getOrderNumber());
+                orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
 
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -161,7 +161,7 @@ public class OrderService {
         Customer customer = customerDAO.findOne(customerId);
         Order order = orderDAO.findOne(orderId);
 
-        order.setOrderId(orderDTO.getOrderNumber());
+        order.setOrderId(orderDTO.getOrderId());
         order.setCustomer(customer);
         order.setOrderDate(orderDTO.getOrderDate());
         order.setRequiredDate(orderDTO.getRequiredDate());
@@ -233,7 +233,7 @@ public class OrderService {
             OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
             List<OrderDetails> orderDetailsList =
-                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderNumber());
+                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
 
             List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
             for (OrderDetails orderDetails : orderDetailsList) {

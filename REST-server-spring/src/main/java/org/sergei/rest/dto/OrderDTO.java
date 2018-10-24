@@ -15,10 +15,10 @@ import java.util.List;
 public class OrderDTO {
 
     @XmlElement
-    private Long orderNumber;
+    private Long orderId;
 
     @XmlElement
-    private Long customerNumber;
+    private Long customerId;
 
     @XmlElement
     @XmlSchemaType(name = "date")
@@ -49,11 +49,11 @@ public class OrderDTO {
     }
 
     // TODO: Convertion from model to DTO and vise versa in constructor
-    public OrderDTO(Long orderNumber, Long customerNumber,
+    public OrderDTO(Long orderId, Long customerId,
                     Date orderDate, Date requiredDate, Date shippedDate,
                     String status, List<OrderDetailsDTO> orderDetailsDTO) {
-        this.orderNumber = orderNumber;
-        this.customerNumber = customerNumber;
+        this.orderId = orderId;
+        this.customerId = customerId;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;
         this.shippedDate = shippedDate;
@@ -61,20 +61,20 @@ public class OrderDTO {
         this.orderDetailsDTO = orderDetailsDTO;
     }
 
-    public Long getOrderNumber() {
-        return orderNumber;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setOrderNumber(Long orderNumber) {
-        this.orderNumber = orderNumber;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public Date getOrderDate() {

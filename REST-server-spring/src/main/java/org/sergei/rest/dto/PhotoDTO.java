@@ -15,7 +15,7 @@ public class PhotoDTO {
     private Long photoId;
 
     @XmlElement
-    private Long customerNumber;
+    private Long customerId;
 
     @XmlElement
     private String fileName;
@@ -33,10 +33,10 @@ public class PhotoDTO {
     }
 
     // TODO: Convertion from model to DTO and vise versa in constructor
-    public PhotoDTO(Long photoId, Long customerNumber, String fileName,
+    public PhotoDTO(Long photoId, Long customerId, String fileName,
                     String fileUrl, String fileType, Long fileSize) {
         this.photoId = photoId;
-        this.customerNumber = customerNumber;
+        this.customerId = customerId;
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.fileType = fileType;
@@ -51,12 +51,12 @@ public class PhotoDTO {
         this.photoId = photoId;
     }
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getFileName() {
