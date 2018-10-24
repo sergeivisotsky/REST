@@ -30,7 +30,6 @@ public class CustomerDTO {
     public CustomerDTO() {
     }
 
-    // TODO: Convertion from model to DTO and vise versa in constructor
     public CustomerDTO(Long customerId, String firstName, String lastName, Integer age, List<OrderDTO> orderDTOList) {
         this.customerId = customerId;
         this.firstName = firstName;

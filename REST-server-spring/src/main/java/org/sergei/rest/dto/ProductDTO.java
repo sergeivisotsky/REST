@@ -13,7 +13,6 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    // TODO: Convertion from model to DTO and vise versa in constructor
     public ProductDTO(String productCode, String productName,
                       String productLine, String productVendor, BigDecimal price) {
         this.productCode = productCode;

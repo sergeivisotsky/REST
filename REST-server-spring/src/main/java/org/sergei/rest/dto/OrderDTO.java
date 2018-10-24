@@ -48,7 +48,6 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    // TODO: Convertion from model to DTO and vise versa in constructor
     public OrderDTO(Long orderId, Long customerId,
                     Date orderDate, Date requiredDate, Date shippedDate,
                     String status, List<OrderDetailsDTO> orderDetailsDTO) {
