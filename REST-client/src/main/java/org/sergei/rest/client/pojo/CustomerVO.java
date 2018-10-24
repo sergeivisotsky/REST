@@ -1,7 +1,7 @@
 package org.sergei.rest.client.pojo;
 
 public class CustomerVO {
-    private Long customerNumber;
+    private Long customerId;
     private String firstName;
     private String LastName;
     private Integer age;
@@ -9,19 +9,19 @@ public class CustomerVO {
     public CustomerVO() {
     }
 
-    public CustomerVO(Long customerNumber, String firstName, String lastName, Integer age) {
-        this.customerNumber = customerNumber;
+    public CustomerVO(Long customerId, String firstName, String lastName, Integer age) {
+        this.customerId = customerId;
         this.firstName = firstName;
         LastName = lastName;
         this.age = age;
     }
 
-    public Long getCustomerNumber() {
-        return customerNumber;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerNumber(Long customerNumber) {
-        this.customerNumber = customerNumber;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getFirstName() {
@@ -51,7 +51,7 @@ public class CustomerVO {
     @Override
     public String toString() {
         return "CustomerVO{" +
-                "customerNumber=" + customerNumber +
+                "customerId=" + customerId +
                 ", firstName='" + firstName + '\'' +
                 ", LastName='" + LastName + '\'' +
                 ", age=" + age +

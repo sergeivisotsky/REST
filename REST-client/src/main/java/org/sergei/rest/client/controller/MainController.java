@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/")
@@ -17,14 +18,19 @@ public class MainController {
 
     @GetMapping
     public String welcome(Model model) {
-        final Long customerNumber = 1L;
+        final Long customerId = 1L;
 
-        CustomerVO customerVO = customerService.getCustomerByNumber(customerNumber);
-        model.addAttribute("customerNumber", customerVO.getCustomerNumber());
+        CustomerVO customerVO = customerService.getCustomerByNumber(customerId);
+        model.addAttribute("customerId", customerVO.getCustomerId());
         model.addAttribute("firstName", customerVO.getFirstName());
         model.addAttribute("lastName", customerVO.getLastName());
         model.addAttribute("age", customerVO.getAge());
 
         return "index";
+    }
+
+    @GetMapping("/angular")
+    public String angularClient() {
+        return "redirect:html/angular-client.html";
     }
 }

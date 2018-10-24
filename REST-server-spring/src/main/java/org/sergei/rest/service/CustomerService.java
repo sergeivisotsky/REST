@@ -99,8 +99,7 @@ public class CustomerService {
         return customerDTO;
     }
 
-    //  TODO: Save customer and his orders with details in all request body
-
+    //  TODO: Save customer and his orders with details in a single request body
     /**
      * Update customer by customer number
      *

@@ -19,6 +19,9 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <mvc:resources mapping="/html/**" location="/WEB-INF/html/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
+
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
     <bean id="httpHeaders" class="org.springframework.http.HttpHeaders"/>
 </beans>

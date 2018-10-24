@@ -161,7 +161,7 @@ public class OrderService {
         Customer customer = customerDAO.findOne(customerId);
         Order order = orderDAO.findOne(orderId);
 
-        order.setOrderId(orderDTO.getOrderId());
+//        order.setOrderId(orderId);
         order.setCustomer(customer);
         order.setOrderDate(orderDTO.getOrderDate());
         order.setRequiredDate(orderDTO.getRequiredDate());

@@ -12,7 +12,7 @@ import java.util.Collections;
 @Service
 public class CustomerService {
 
-    private static final String REQUEST_URI_GET_BY_CUSTOMER_NUMBER = "http://localhost:8080/rest/api/v1/customers/{customerNumber}";
+    private static final String REQUEST_URI_GET_BY_CUSTOMER_NUMBER = "http://localhost:8080/rest/api/v1/customers/{customerId}";
 
     private final RestTemplate restTemplate;
     private final HttpHeaders httpHeaders;
