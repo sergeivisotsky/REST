@@ -31,7 +31,7 @@ public class Customer implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "customer_number")
+    @JoinColumn(name = "customer_id")
     private List<Order> orders = new LinkedList<>();
 
     @OneToMany(
@@ -39,7 +39,7 @@ public class Customer implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "customer_number")
+    @JoinColumn(name = "customer_id")
     private List<Photo> photoUploadResponse = new LinkedList<>();
 
     public Customer() {

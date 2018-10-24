@@ -118,8 +118,8 @@ public class OrderService {
     /**
      * Save order
      *
-     * @param customerId      Get customer number from the REST controller
-     * @param orderDTO Get order DTO request body
+     * @param customerId Get customer number from the REST controller
+     * @param orderDTO   Get order DTO request body
      * @return return order DTO as a response
      */
     public OrderDTO saveOrder(Long customerId, OrderDTO orderDTO) {
@@ -152,9 +152,9 @@ public class OrderService {
     /**
      * Update order by customer and order numbers
      *
-     * @param customerId      get customer number form the REST controller
-     * @param orderId         get order number form the REST controller
-     * @param orderDTO Get order DTO request body
+     * @param customerId get customer number form the REST controller
+     * @param orderId    get order number form the REST controller
+     * @param orderDTO   Get order DTO request body
      * @return return order DTO as a response
      */
     public OrderDTO updateOrder(Long customerId, Long orderId, OrderDTO orderDTO) {
@@ -195,11 +195,15 @@ public class OrderService {
      * @param orderId get oder number from th REST controller
      * @return Order entity as a response
      */
-    // FIXME: order_number in order_details is null while delete is performed
+    // FIXME: Set OrderDetailsDTO to the OrderDTO as a response
     public OrderDTO deleteOrderById(Long orderId) {
         Order order = orderDAO.findOne(orderId);
+        List<OrderDetails> orderDetails = orderDetailsDAO.findAllByOrderId(orderId);
+        List<OrderDetailsDTO> orderDetailsDTOList = ObjectMapperUtils.mapAll(orderDetails, OrderDetailsDTO.class);
+        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+        orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
         orderDAO.delete(order);
-        return modelMapper.map(order, OrderDTO.class);
+        return orderDTO;
     }
 
     /**

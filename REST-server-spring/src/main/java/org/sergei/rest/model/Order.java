@@ -35,11 +35,11 @@ public class Order implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "order_number")
+    @JoinColumn(name = "order_id")
     private List<OrderDetails> orderDetails = new LinkedList<>();
 
     @ManyToOne
-    @JoinColumn(name = "customer_number")
+    @JoinColumn(name = "customer_id")
     // TODO: ON DELETE CASCADE programmatically
     private Customer customer;
 
