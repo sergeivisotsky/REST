@@ -184,7 +184,6 @@ public class OrderService {
 
         order.setOrderDetails(orderDetailsList);
 
-        // FIXME: order_number in order_details is null while update is performed
         orderDAO.update(order);
 
         return orderDTO;
