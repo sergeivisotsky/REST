@@ -6,7 +6,7 @@ $(document).ready(function () {
             "Accept": "application/json"
         },
         type: 'GET',
-        contentType: "application/json",
+        contentType: "application/json"
     }).then(function (data) {
         $('.customer-id').append(data.customerId);
         $('.first-name').append(data.firstName);

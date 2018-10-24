@@ -33,4 +33,9 @@ public class MainController {
     public String angularClient() {
         return "redirect:html/angular-client.html";
     }
+
+    @GetMapping("/jquery")
+    public String jqueryClient() {
+        return "redirect:html/jquery-client.html";
+    }
 }
