@@ -18,7 +18,7 @@ public class MainController {
 
     @GetMapping
     public String welcome(Model model) {
-        final Long customerId = 1L;
+        final Long customerId = 2L;
 
         CustomerVO customerVO = customerService.getCustomerByNumber(customerId);
         model.addAttribute("customerId", customerVO.getCustomerId());
