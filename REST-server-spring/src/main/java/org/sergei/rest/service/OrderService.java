@@ -44,9 +44,9 @@ public class OrderService {
      *
      * @return List of order DTOs
      */
-    public List<OrderDTO> getAllOrders() {
+    public List<OrderDTO> findAll() {
         List<Order> orders = orderDAO.findAll();
-        return getOrdersByListWithParam(orders);
+        return findOrdersByListWithParam(orders);
     }
 
     /**
@@ -55,7 +55,7 @@ public class OrderService {
      * @param orderId get order number as a parameter from REST controller
      * @return order DTO response
      */
-    public OrderDTO getOrderById(Long orderId) {
+    public OrderDTO findOne(Long orderId) {
         Order order = orderDAO.findOne(orderId);
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
@@ -82,11 +82,11 @@ public class OrderService {
      * @param orderId    Get order number from the REST controller
      * @return Return order DTO reponse
      */
-    public OrderDTO getOrderByIdAndOrderId(Long customerId, Long orderId) {
+    public OrderDTO findOneByCustomerIdAndOrderId(Long customerId, Long orderId) {
         /*if (!customerRepository.existsById(customerId)) {
             throw new RecordNotFoundException("No customer with this number found");
         }*/
-        return getOrderById(orderId);
+        return findOne(orderId);
     }
 
     /**
@@ -95,13 +95,13 @@ public class OrderService {
      * @param customerId customer number form the REST controller
      * @return List of order DTOs
      */
-    public List<OrderDTO> getAllOrdersByCustomerId(Long customerId) {
+    public List<OrderDTO> findAllByCustomerId(Long customerId) {
         /*if (!customerRepository.existsById(customerId)) {
             throw new RecordNotFoundException("No customer with this number found");
         }*/
         List<Order> orders = orderDAO.findAllByCustomerId(customerId);
 
-        return getOrdersByListWithParam(orders);
+        return findOrdersByListWithParam(orders);
     }
 
     /**
@@ -110,9 +110,9 @@ public class OrderService {
      * @param productCode get product code from the REST controller
      * @return return list of order DTOs
      */
-    public List<OrderDTO> getAllByProductCode(String productCode) {
+    public List<OrderDTO> findAllByProductCode(String productCode) {
         List<Order> orders = orderDAO.findAllByProductCode(productCode);
-        return getOrdersByListWithParam(orders);
+        return findOrdersByListWithParam(orders);
     }
 
     /**
@@ -122,7 +122,7 @@ public class OrderService {
      * @param orderDTO   Get order DTO request body
      * @return return order DTO as a response
      */
-    public OrderDTO saveOrder(Long customerId, OrderDTO orderDTO) {
+    public OrderDTO saveByCustomerId(Long customerId, OrderDTO orderDTO) {
         Customer customer = customerDAO.findOne(customerId);
 
         Order order = modelMapper.map(orderDTO, Order.class);
@@ -157,7 +157,7 @@ public class OrderService {
      * @param orderDTO   Get order DTO request body
      * @return return order DTO as a response
      */
-    public OrderDTO updateOrder(Long customerId, Long orderId, OrderDTO orderDTO) {
+    public OrderDTO updateByCustomerId(Long customerId, Long orderId, OrderDTO orderDTO) {
         Customer customer = customerDAO.findOne(customerId);
         Order order = orderDAO.findOne(orderId);
 
@@ -196,7 +196,7 @@ public class OrderService {
      * @return Order entity as a response
      */
     // FIXME: Set OrderDetailsDTO to the OrderDTO as a response
-    public OrderDTO deleteOrderById(Long orderId) {
+    public OrderDTO deleteById(Long orderId) {
         Order order = orderDAO.findOne(orderId);
         List<OrderDetails> orderDetails = orderDetailsDAO.findAllByOrderId(orderId);
         List<OrderDetailsDTO> orderDetailsDTOList = ObjectMapperUtils.mapAll(orderDetails, OrderDetailsDTO.class);
@@ -214,7 +214,7 @@ public class OrderService {
      * @return Order entity as a response
      */
     // FIXME: So that it was able to delete entity by customer and order numbers
-    public OrderDTO deleteOrderByCustomerIdAndOrderId(Long customerId, Long orderId) {
+    public OrderDTO deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
 
         Order order = orderDAO.findOne(orderId);
         orderDAO.delete(order);
@@ -228,7 +228,7 @@ public class OrderService {
      * @param orders Gets list of the order entities
      * @return List of the order DTOs
      */
-    private List<OrderDTO> getOrdersByListWithParam(List<Order> orders) {
+    private List<OrderDTO> findOrdersByListWithParam(List<Order> orders) {
         List<OrderDTO> orderDTOList = new LinkedList<>();
 
         for (Order order : orders) {

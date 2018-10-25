@@ -22,21 +22,21 @@ public class OrderRESTController {
     @GetMapping("/orders")
     @ApiOperation(value = "Get all existing orders")
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
-        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findAll(), HttpStatus.OK);
     }
 
     // Get order by specific ID as a parameter
     @GetMapping("/orders/{orderId}")
     @ApiOperation(value = "Get order by ID")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.getOrderById(orderId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findOne(orderId), HttpStatus.OK);
     }
 
     // Get all orders by customer orderId
     @GetMapping("/customers/{customerId}/orders")
     @ApiOperation(value = "Get all order by customer number")
     public ResponseEntity<List<OrderDTO>> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(orderService.getAllOrdersByCustomerId(customerId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findAllByCustomerId(customerId), HttpStatus.OK);
     }
 
     // Get order by customer orderId and order orderId
@@ -44,14 +44,14 @@ public class OrderRESTController {
     @ApiOperation(value = "Get order by customer and order numbers")
     public ResponseEntity<OrderDTO> getOrderByCustomerAndOrderId(@PathVariable("customerId") Long customerId,
                                                                  @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.getOrderByIdAndOrderId(customerId, orderId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findOneByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
     }
 
     // Get all orders by product code
     @GetMapping("/orders/order")
     @ApiOperation(value = "Get order by product code")
     public List<OrderDTO> getOrdersByProductCode(@RequestParam("prod-code") String productCode) {
-        return orderService.getAllByProductCode(productCode);
+        return orderService.findAllByProductCode(productCode);
     }
 
     // Add a new record
@@ -60,7 +60,7 @@ public class OrderRESTController {
     @ApiOperation(value = "Add a new order for the customer")
     public ResponseEntity<OrderDTO> createOrder(@PathVariable("customerId") Long customerId,
                                                 @RequestBody OrderDTO orderDTO) {
-        return new ResponseEntity<>(orderService.saveOrder(customerId, orderDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(orderService.saveByCustomerId(customerId, orderDTO), HttpStatus.CREATED);
     }
 
     // Update record
@@ -70,14 +70,14 @@ public class OrderRESTController {
     public ResponseEntity<OrderDTO> updateRecord(@PathVariable("customerId") Long customerId,
                                                  @PathVariable("orderId") Long orderId,
                                                  @RequestBody OrderDTO orderDTO) {
-        return new ResponseEntity<>(orderService.updateOrder(customerId, orderId, orderDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(orderService.updateByCustomerId(customerId, orderId, orderDTO), HttpStatus.ACCEPTED);
     }
 
     // Delete order by number
     @DeleteMapping("/orders/{orderId}")
     @ApiOperation(value = "Delete order from all by number")
     public ResponseEntity<OrderDTO> deleteOrderById(@PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.deleteOrderById(orderId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.deleteById(orderId), HttpStatus.OK);
     }
 
     // Delete order by customer number and order number
@@ -85,6 +85,6 @@ public class OrderRESTController {
     @ApiOperation(value = "Delete order by customer and order numbers")
     public ResponseEntity<OrderDTO> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
                                                                       @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.deleteOrderByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.deleteByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
     }
 }

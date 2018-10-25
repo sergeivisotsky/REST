@@ -37,7 +37,7 @@ public class ProductRESTController {
             consumes = {"application/json", "application/xml"})
     @ApiOperation(value = "Add a new product")
     public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO productDTO) {
-        productService.saveProduct(productDTO);
+        productService.save(productDTO);
 
         return new ResponseEntity<>(productDTO, HttpStatus.CREATED);
     }
@@ -48,13 +48,13 @@ public class ProductRESTController {
     @ApiOperation(value = "Update product by code")
     public ResponseEntity<ProductDTO> updateProductByCode(@PathVariable("productCode") String productCode,
                                                           @RequestBody ProductDTO productDTO) {
-        return new ResponseEntity<>(productService.updateProduct(productCode, productDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(productService.update(productCode, productDTO), HttpStatus.ACCEPTED);
     }
 
     // Delete product by code
     @DeleteMapping("/products/{productCode}")
     @ApiOperation(value = "Delete product by code")
     public ResponseEntity<ProductDTO> deleteProductByCode(@PathVariable("productCode") String productCode) {
-        return new ResponseEntity<>(productService.deleteProduct(productCode), HttpStatus.OK);
+        return new ResponseEntity<>(productService.delete(productCode), HttpStatus.OK);
     }
 }

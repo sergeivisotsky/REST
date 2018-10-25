@@ -35,13 +35,13 @@ public class ProductService {
     }
 
     // Save new product
-    public void saveProduct(ProductDTO productDTORequestBody) {
+    public void save(ProductDTO productDTORequestBody) {
         Product product = modelMapper.map(productDTORequestBody, Product.class);
         productDAO.save(product);
     }
 
     // Update product by code
-    public ProductDTO updateProduct(String productCode, ProductDTO productDTORequestBody) {
+    public ProductDTO update(String productCode, ProductDTO productDTORequestBody) {
         Product product = productDAO.findByCode(productCode);
 
         product.setProductCode(productCode);
@@ -56,7 +56,7 @@ public class ProductService {
     }
 
     // Delete product by code
-    public ProductDTO deleteProduct(String productCode) {
+    public ProductDTO delete(String productCode) {
         Product product = productDAO.findByCode(productCode);
         productDAO.delete(product);
         return modelMapper.map(product, ProductDTO.class);

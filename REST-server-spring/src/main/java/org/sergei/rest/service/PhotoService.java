@@ -44,7 +44,7 @@ public class PhotoService {
      * @param customerNumber get customer number from the REST controller
      * @return list of the photo DTOs as a response
      */
-    public List<PhotoDTO> findAllUploadedPhotos(Long customerNumber) {
+    public List<PhotoDTO> findAll(Long customerNumber) {
         List<PhotoDTO> photoDTOSResponse = new LinkedList<>();
 
         List<Photo> photos = photoDAO.findAllPhotosByCustomerId(customerNumber);
@@ -66,8 +66,8 @@ public class PhotoService {
      * @param commonsMultipartFile get file uploaded from the REST controller
      * @return photo DTO response
      */
-    public PhotoDTO uploadFileOnTheServer(Long customerNumber, String fileDownloadUri,
-                                          CommonsMultipartFile commonsMultipartFile) {
+    public PhotoDTO uploadFileByCustomerId(Long customerNumber, String fileDownloadUri,
+                                           CommonsMultipartFile commonsMultipartFile) {
 
         /*customerRepository.findById(customerNumber)
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
@@ -168,7 +168,7 @@ public class PhotoService {
      * @return photo DTO as a response
      * @throws IOException
      */
-    public PhotoDTO deletePhotoById(Long customerNumber, Long photoId) throws IOException {
+    public PhotoDTO deleteById(Long customerNumber, Long photoId) throws IOException {
         Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerNumber, photoId);
 
         PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);

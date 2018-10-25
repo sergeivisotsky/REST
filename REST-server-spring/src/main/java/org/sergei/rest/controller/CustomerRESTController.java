@@ -23,21 +23,21 @@ public class CustomerRESTController {
     @GetMapping
     @ApiOperation(value = "Gel all customers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
-        return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
+        return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
     }
 
     // Get customer by specific ID as a parameter
     @GetMapping("/{customerId}")
     @ApiOperation(value = "Get customer by ID")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("customerId") Long customerId) throws RecordNotFoundException {
-        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
+        return new ResponseEntity<>(customerService.findOne(customerId), HttpStatus.OK);
     }
 
     // Add a new record
     @PostMapping(consumes = {"application/json", "application/xml"})
     @ApiOperation(value = "Add a new customer")
     public ResponseEntity<CustomerDTO> addCustomer(@RequestBody CustomerDTO customerDTO) {
-        return new ResponseEntity<>(customerService.saveCustomer(customerDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(customerService.save(customerDTO), HttpStatus.CREATED);
     }
 
     // Update record
@@ -45,13 +45,13 @@ public class CustomerRESTController {
     @ApiOperation(value = "Update customer data")
     public ResponseEntity<CustomerDTO> updateRecord(@PathVariable("customerId") Long customerId,
                                                     @RequestBody CustomerDTO customerDTO) {
-        return new ResponseEntity<>(customerService.updateCustomer(customerId, customerDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(customerService.update(customerId, customerDTO), HttpStatus.ACCEPTED);
     }
 
     // Delete customer by specific number
     @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Delete customer by number")
     public ResponseEntity<CustomerDTO> deleteCustomerById(@PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(customerService.deleteCustomerById(customerId), HttpStatus.OK);
+        return new ResponseEntity<>(customerService.deleteById(customerId), HttpStatus.OK);
     }
 }

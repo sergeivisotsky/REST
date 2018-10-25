@@ -38,7 +38,7 @@ public class CustomerService {
      * Get all customers
      * @return List of customer DTOs list
      */
-    public List<CustomerDTO> getAllCustomers() {
+    public List<CustomerDTO> findAll() {
         List<CustomerDTO> customerDTOResponse = new LinkedList<>();
 
         List<Customer> customers = customerDAO.findAll();
@@ -65,7 +65,7 @@ public class CustomerService {
      * @param customerId get customer number param from REST controller
      * @return Customer DTO response
      */
-    public CustomerDTO getCustomerById(Long customerId) {
+    public CustomerDTO findOne(Long customerId) {
         Customer customer = customerDAO.findOne(customerId);
 
         CustomerDTO customerDTO = new CustomerDTO();
@@ -86,7 +86,7 @@ public class CustomerService {
      *
      * @param customerDTO get customer from the REST controller as a request body
      */
-    public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
+    public CustomerDTO save(CustomerDTO customerDTO) {
         Customer customer = new Customer();
 
         customer.setCustomerId(customerDTO.getCustomerId());
@@ -107,7 +107,7 @@ public class CustomerService {
      * @param customerDTO get customer as a request body
      * @return Return updated customer response
      */
-    public CustomerDTO updateCustomer(Long customerId, CustomerDTO customerDTO) {
+    public CustomerDTO update(Long customerId, CustomerDTO customerDTO) {
         customerDTO.setCustomerId(customerId);
 
         Customer customer = modelMapper.map(customerDTO, Customer.class);
@@ -119,11 +119,11 @@ public class CustomerService {
     /**
      * Delete customer by number
      *
-     * @param customerId get customer number from the REST controller
+     * @param aLong get customer number from the REST controller
      * @return Return updated customer response
      */
-    public CustomerDTO deleteCustomerById(Long customerId) {
-        Customer customer = customerDAO.findOne(customerId);
+    public CustomerDTO deleteById(Long aLong) {
+        Customer customer = customerDAO.findOne(aLong);
         CustomerDTO customerDTO = new CustomerDTO();
 
         customerDTO.setCustomerId(customer.getCustomerId());

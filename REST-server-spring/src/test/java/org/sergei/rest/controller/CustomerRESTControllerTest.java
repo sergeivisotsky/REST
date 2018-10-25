@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sergei.rest.dto.CustomerDTO;
-import org.sergei.rest.service.CustomerService;
 
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -14,7 +13,7 @@ import static org.mockito.Mockito.when;
 public class CustomerRESTControllerTest {
 
     @Mock
-    private CustomerService customerService;
+    private IService iService;
 
     private CustomerDTO customerDTO;
 
@@ -31,7 +30,7 @@ public class CustomerRESTControllerTest {
 
     @Test
     public void getAllCustomers() {
-        when(customerService.getCustomerById(anyLong())).thenReturn(customerDTO);
+        when(iService.findOne(anyLong())).thenReturn(customerDTO);
     }
 
     @Test

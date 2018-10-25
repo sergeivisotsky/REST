@@ -35,7 +35,7 @@ public class PhotoRESTController {
     @GetMapping("/customers/{customerNumber}/photo")
     @ApiOperation(value = "Get all photos fot the customer")
     public ResponseEntity<List<PhotoDTO>> findAllCustomerPhotos(@PathVariable("customerNumber") Long customerNumber) {
-        return new ResponseEntity<>(photoService.findAllUploadedPhotos(customerNumber), HttpStatus.OK);
+        return new ResponseEntity<>(photoService.findAll(customerNumber), HttpStatus.OK);
     }
 
     // Upload one photo
@@ -49,7 +49,7 @@ public class PhotoRESTController {
                 .path("/api/v1/customers/" + customerNumber.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
-        return photoService.uploadFileOnTheServer(customerNumber, fileDownloadUri, commonsMultipartFile);
+        return photoService.uploadFileByCustomerId(customerNumber, fileDownloadUri, commonsMultipartFile);
     }
 
     // Upload multiple photos
@@ -121,6 +121,6 @@ public class PhotoRESTController {
     public ResponseEntity<PhotoDTO> deletePhotoById(@PathVariable("customerNumber") Long customerNumber,
                                                     @PathVariable("photoId") Long photoId) throws IOException {
 
-        return new ResponseEntity<>(photoService.deletePhotoById(customerNumber, photoId), HttpStatus.OK);
+        return new ResponseEntity<>(photoService.deleteById(customerNumber, photoId), HttpStatus.OK);
     }
 }
