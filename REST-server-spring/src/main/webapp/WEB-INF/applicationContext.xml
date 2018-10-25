@@ -19,8 +19,8 @@
     </bean>
 
     <!--ModelMapper bean from DTO and to DTO serialization-->
-    <bean name="ModelMapper" class="org.modelmapper.ModelMapper"/>
-    <bean name="ObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
     <!--Swagger API documentation configuration-->
     <bean id="swagger2Config"
