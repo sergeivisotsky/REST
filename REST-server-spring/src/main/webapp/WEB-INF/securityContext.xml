@@ -144,8 +144,8 @@
                       authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT, ROLE_OAUTH_CLIENT"
                       scope="read,write,trust"
                       secret="trusted-client-secret"
-                      access-token-validity="86000000"
-                      refresh-token-validity="172000000"/>
+                      access-token-validity="259200"
+                      refresh-token-validity="2500000"/>
     </oauth:client-details-service>
 
     <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
