@@ -1,4 +1,4 @@
-package org.sergei.rest.dao;
+package org.sergei.rest.dao.generic;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 @Transactional
 @SuppressWarnings("unchecked")
-public abstract class GenericHibernateDAO<T extends Serializable> implements IDAO<T> {
+public abstract class GenericHibernateDAO<T extends Serializable> implements IGenericDAO<T> {
 
     private Class<T> persistentClass;
 
@@ -21,7 +21,7 @@ public abstract class GenericHibernateDAO<T extends Serializable> implements IDA
     }
 
     @Autowired
-    SessionFactory sessionFactory;
+    protected SessionFactory sessionFactory;
 
     @Override
     public T findOne(Long aLong) {

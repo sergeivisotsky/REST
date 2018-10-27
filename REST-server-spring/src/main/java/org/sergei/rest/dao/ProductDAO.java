@@ -1,6 +1,7 @@
 package org.sergei.rest.dao;
 
 import org.hibernate.Session;
+import org.sergei.rest.dao.generic.GenericHibernateDAO;
 import org.sergei.rest.model.Product;
 import org.springframework.stereotype.Repository;
 
