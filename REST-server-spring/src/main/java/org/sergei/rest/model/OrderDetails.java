@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Sergei Visotsky, 2018
+ * Copyright (c) 2018 Sergei Visotsky
  */
 
 package org.sergei.rest.model;
