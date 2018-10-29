@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Sergei Visotsky, 2018
+ */
+
 package org.sergei.rest.dto;
 
 import org.sergei.rest.model.Aircraft;

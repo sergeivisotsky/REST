@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Sergei Visotsky, 2018
+ */
+
 package org.sergei.rest.swagger;
 
 import org.springframework.beans.factory.annotation.Value;

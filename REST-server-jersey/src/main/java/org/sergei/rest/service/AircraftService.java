@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Sergei Visotsky, 2018
+ */
+
 package org.sergei.rest.service;
 
 import org.sergei.rest.dao.AircraftDAO;

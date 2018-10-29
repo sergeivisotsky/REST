@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Sergei Visotsky, 2018
+ */
+
 package org.sergei.rest;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;

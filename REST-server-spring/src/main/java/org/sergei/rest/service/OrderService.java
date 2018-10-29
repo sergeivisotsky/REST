@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Sergei Visotsky, 2018
+ */
+
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
@@ -199,10 +203,11 @@ public class OrderService {
     public OrderDTO deleteById(Long orderId) {
         Order order = orderDAO.findOne(orderId);
 
+        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+
         List<OrderDetails> orderDetails = orderDetailsDAO.findAllByOrderId(orderId);
         List<OrderDetailsDTO> orderDetailsDTOList = ObjectMapperUtils.mapAll(orderDetails, OrderDetailsDTO.class);
 
-        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
         orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
 
         orderDAO.delete(order);
