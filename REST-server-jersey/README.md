@@ -10,3 +10,7 @@ REST API implementation using Jersey
 * Jackson
 * modelmapper
 * Swagger
+
+## TODO
+* Implement oAuth 2
+* Implement Swagger UI
