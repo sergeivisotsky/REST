@@ -12,12 +12,16 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @ApiIgnore
 @Controller
-@RequestMapping("/")
 public class Welcome {
 
     @GetMapping
     @ResponseBody
     public String welcome() {
         return "REST";
+    }
+
+    @GetMapping("/docs")
+    public String angularClient() {
+        return "redirect:swagger-ui.html";
     }
 }
