@@ -161,15 +161,15 @@ public class CustomerService {
                     orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
 
             // Creating order details DTO and perform convertion from entity to DTO and put into
-            List<OrderDetailsDTO> orderDetailsDTOS = new ArrayList<>();
+            List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
             for (OrderDetails orderDetails : orderDetailsList) {
                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                 OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
-                orderDetailsDTOS.add(orderDetailsDTO);
+                orderDetailsDTOList.add(orderDetailsDTO);
             }
 
             // Set order detail DTO to the order DTO so that it was displayed as one response
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOS);
+            orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
         }
 
         return orderDTOList;
