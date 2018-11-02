@@ -49,17 +49,17 @@ public class PhotoService {
      * @return list of the photo DTOs as a response
      */
     public List<PhotoDTO> findAll(Long customerNumber) {
-        List<PhotoDTO> photoDTOSResponse = new LinkedList<>();
+        List<PhotoDTO> photoDTOList = new LinkedList<>();
 
         List<Photo> photos = photoDAO.findAllPhotosByCustomerId(customerNumber);
 
         for (Photo photo : photos) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
-            photoDTOSResponse.add(photoDTO);
+            photoDTOList.add(photoDTO);
         }
 
-        return photoDTOSResponse;
+        return photoDTOList;
     }
 
     /**
@@ -77,18 +77,18 @@ public class PhotoService {
                 .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
         String fileName = StringUtils.cleanPath(commonsMultipartFile.getOriginalFilename());
 
-        PhotoDTO photoDTOResponse = new PhotoDTO();
+        PhotoDTO photoDTO = new PhotoDTO();
 
         // FIXME: set photo ID properly due to it is null right now
-//        photoDTOResponse.setPhotoId();
-        photoDTOResponse.setCustomerId(customerNumber);
-        photoDTOResponse.setFileName(commonsMultipartFile.getOriginalFilename());
-        photoDTOResponse.setFileUrl(fileDownloadUri);
-        photoDTOResponse.setFileType(commonsMultipartFile.getContentType());
-        photoDTOResponse.setFileSize(commonsMultipartFile.getSize());
+//        photoDTO.setPhotoId();
+        photoDTO.setCustomerId(customerNumber);
+        photoDTO.setFileName(commonsMultipartFile.getOriginalFilename());
+        photoDTO.setFileUrl(fileDownloadUri);
+        photoDTO.setFileType(commonsMultipartFile.getContentType());
+        photoDTO.setFileSize(commonsMultipartFile.getSize());
 
         // ModelMapper is used to avoid manual conversion from DTO to entity using setters and getters
-        Photo photo = modelMapper.map(photoDTOResponse, Photo.class);
+        Photo photo = modelMapper.map(photoDTO, Photo.class);
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -108,7 +108,7 @@ public class PhotoService {
             // Save file metadata into a database
             photoDAO.save(photo);
 
-            return photoDTOResponse;
+            return photoDTO;
         } catch (IOException e) {
             throw new FileStorageException("Cannot store file");
         }
