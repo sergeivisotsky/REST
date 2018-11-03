@@ -13,7 +13,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Controller
 public class Welcome {
 
-    @GetMapping
+    @GetMapping("/")
     @ResponseBody
     public String welcome() {
         return "REST";
