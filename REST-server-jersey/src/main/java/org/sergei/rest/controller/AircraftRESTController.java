@@ -59,7 +59,7 @@ public class AircraftRESTController {
     @Path("/{aircraftId}")
     @Produces({"application/json", "application/xml"})
     public Response deleteCustomerById(@PathParam("aircraftId") Long aircraftId) {
-        return Response.status(Response.Status.ACCEPTED)
+        return Response.status(Response.Status.NO_CONTENT)
                 .entity(aircraftService.delete(aircraftId))
                 .build();
     }

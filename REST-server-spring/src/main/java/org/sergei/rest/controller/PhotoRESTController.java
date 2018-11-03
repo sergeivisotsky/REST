@@ -125,6 +125,6 @@ public class PhotoRESTController {
     public ResponseEntity<PhotoDTO> deletePhotoById(@PathVariable("customerNumber") Long customerNumber,
                                                     @PathVariable("photoId") Long photoId) throws IOException {
 
-        return new ResponseEntity<>(photoService.deleteById(customerNumber, photoId), HttpStatus.OK);
+        return new ResponseEntity<>(photoService.deleteById(customerNumber, photoId), HttpStatus.NO_CONTENT);
     }
 }

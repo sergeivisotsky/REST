@@ -59,7 +59,7 @@ public class RouteRESTController {
     @Path("/{routeId}")
     @Produces({"application/json", "application/xml"})
     public Response deleteRouteById(@PathParam("routeId") Long routeId) {
-        return Response.status(Response.Status.ACCEPTED)
+        return Response.status(Response.Status.NO_CONTENT)
                 .entity(routeService.delete(routeId))
                 .build();
     }

@@ -59,6 +59,6 @@ public class ProductRESTController {
     @DeleteMapping("/products/{productCode}")
     @ApiOperation(value = "Delete product by code")
     public ResponseEntity<ProductDTO> deleteProductByCode(@PathVariable("productCode") String productCode) {
-        return new ResponseEntity<>(productService.delete(productCode), HttpStatus.OK);
+        return new ResponseEntity<>(productService.delete(productCode), HttpStatus.NO_CONTENT);
     }
 }

@@ -56,6 +56,6 @@ public class CustomerRESTController {
     @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Delete customer by number")
     public ResponseEntity<CustomerDTO> deleteCustomerById(@PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(customerService.deleteById(customerId), HttpStatus.OK);
+        return new ResponseEntity<>(customerService.deleteById(customerId), HttpStatus.NO_CONTENT);
     }
 }

@@ -81,7 +81,7 @@ public class OrderRESTController {
     @DeleteMapping("/orders/{orderId}")
     @ApiOperation(value = "Delete order from all by number")
     public ResponseEntity<OrderDTO> deleteOrderById(@PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.deleteById(orderId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.deleteById(orderId), HttpStatus.NO_CONTENT);
     }
 
     // Delete order by customer number and order number
@@ -89,6 +89,6 @@ public class OrderRESTController {
     @ApiOperation(value = "Delete order by customer and order numbers")
     public ResponseEntity<OrderDTO> deleteOrderByCustomerIdAndOrderId(@PathVariable("customerId") Long customerId,
                                                                       @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.deleteByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.deleteByCustomerIdAndOrderId(customerId, orderId), HttpStatus.NO_CONTENT);
     }
 }
