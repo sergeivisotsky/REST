@@ -20,7 +20,7 @@ public class Welcome {
     }
 
     @GetMapping("/docs")
-    public String angularClient() {
+    public String docsRedirect() {
         return "redirect:swagger-ui.html";
     }
 }
