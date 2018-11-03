@@ -44,18 +44,18 @@ public class Customer implements Serializable {
             orphanRemoval = true
     )
     @JoinColumn(name = "customer_id")
-    private List<Photo> photoUploadResponse = new LinkedList<>();
+    private List<Photo> photoList = new LinkedList<>();
 
     public Customer() {
     }
 
     public Customer(String firstName, String lastName, Integer age,
-                    List<Order> orders, List<Photo> photoUploadResponse) {
+                    List<Order> orders, List<Photo> photoList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.orders = orders;
-        this.photoUploadResponse = photoUploadResponse;
+        this.photoList = photoList;
     }
 
     public Long getCustomerId() {
@@ -98,11 +98,11 @@ public class Customer implements Serializable {
         this.orders = orders;
     }
 
-    public List<Photo> getPhotoUploadResponse() {
-        return photoUploadResponse;
+    public List<Photo> getPhotoList() {
+        return photoList;
     }
 
-    public void setPhotoUploadResponse(List<Photo> photoUploadResponse) {
-        this.photoUploadResponse = photoUploadResponse;
+    public void setPhotoList(List<Photo> photoList) {
+        this.photoList = photoList;
     }
 }
