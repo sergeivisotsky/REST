@@ -11,6 +11,7 @@ import org.sergei.rest.dao.OrderDetailsDAO;
 import org.sergei.rest.dao.ProductDAO;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
+import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.model.OrderDetails;
@@ -100,10 +101,10 @@ public class OrderService {
      * @return List of order DTOs
      */
     public List<OrderDTO> findAllByCustomerId(Long customerId) {
-        /*if (!customerRepository.existsById(customerId)) {
-            throw new RecordNotFoundException("No customer with this number found");
-        }*/
         List<Order> orders = orderDAO.findAllByCustomerId(customerId);
+        if (orders == null) {
+            throw new ResourceNotFoundException("No orders with this customer ID found");
+        }
 
         return findOrdersByListWithParam(orders);
     }
@@ -163,8 +164,13 @@ public class OrderService {
      */
     public OrderDTO updateByCustomerId(Long customerId, Long orderId, OrderDTO orderDTO) {
         Customer customer = customerDAO.findOne(customerId);
+        if (customer == null) {
+            throw new ResourceNotFoundException("Customer with this ID not found");
+        }
         Order order = orderDAO.findOne(orderId);
-
+        if (order == null) {
+            throw new ResourceNotFoundException("Order with this ID not found");
+        }
 //        order.setOrderId(orderId);
         order.setCustomer(customer);
         order.setOrderDate(orderDTO.getOrderDate());
@@ -202,6 +208,9 @@ public class OrderService {
     // FIXME: Set OrderDetailsDTO to the OrderDTO as a response
     public OrderDTO deleteById(Long orderId) {
         Order order = orderDAO.findOne(orderId);
+        if (order == null) {
+            throw new ResourceNotFoundException("Order with this ID not found");
+        }
 
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
@@ -225,6 +234,9 @@ public class OrderService {
     public OrderDTO deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
 
         Order order = orderDAO.findOne(orderId);
+        if (order == null) {
+            throw new ResourceNotFoundException("Order with this ID not found");
+        }
         orderDAO.delete(order);
 
         return modelMapper.map(order, OrderDTO.class);

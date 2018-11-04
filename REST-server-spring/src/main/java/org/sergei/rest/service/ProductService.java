@@ -7,6 +7,7 @@ package org.sergei.rest.service;
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dao.ProductDAO;
 import org.sergei.rest.dto.ProductDTO;
+import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Product;
 import org.sergei.rest.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class ProductService {
     // Find product by product code
     public ProductDTO findByCode(String productCode) {
         Product product = productDAO.findByCode(productCode);
+        if (product == null) {
+            throw new ResourceNotFoundException("Product with code not found");
+        }
         return modelMapper.map(product, ProductDTO.class);
     }
 
@@ -62,6 +66,9 @@ public class ProductService {
     // Delete product by code
     public ProductDTO delete(String productCode) {
         Product product = productDAO.findByCode(productCode);
+        if (product == null) {
+            throw new ResourceNotFoundException("Product with code not found");
+        }
         productDAO.delete(product);
         return modelMapper.map(product, ProductDTO.class);
     }
