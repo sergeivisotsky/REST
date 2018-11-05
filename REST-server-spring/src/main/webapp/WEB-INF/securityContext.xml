@@ -25,9 +25,6 @@
         <access-denied-handler ref="oauthAccessDeniedHandler"/>
     </http>
 
-    <!--Unsecured endpoint-->
-    <sec:http pattern="/api/v1/customers/2" security="none"/>
-
     <!-- This is where we tells spring security what URL should be protected
     and what roles have access to them -->
     <http pattern="/api/**" create-session="never"
@@ -166,5 +163,6 @@
         <intercept-url pattern="/swagger-resources/**" access="permitAll()"/>
         <intercept-url pattern="/swagger-ui.html" access="permitAll()"/>
         <intercept-url pattern="/webjars/**" access="permitAll()"/>
+        <intercept-url pattern="/api/v1/customers/2" access="permitAll()"/>
     </http>
 </beans>
