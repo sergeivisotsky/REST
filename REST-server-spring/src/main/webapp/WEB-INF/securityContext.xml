@@ -7,9 +7,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-	    http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/security
+                           http://www.springframework.org/schema/security/spring-security.xsd
+                           http://www.springframework.org/schema/security/oauth2
+                           http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
 
     <!-- This is default url provided by spring to get the tokens(access and refresh) from OAuth -->
     <http pattern="/oauth/token" create-session="stateless"
@@ -76,11 +79,14 @@
     <authentication-manager alias="authenticationManager"
                             xmlns="http://www.springframework.org/schema/security">
         <authentication-provider>
-            <user-service id="userDetailsService">
-                <user name="admin" password="123456" authorities="ROLE_OAUTH_CLIENT"/>
-            </user-service>
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT user_id, username, password FROM user WHERE username = ?"
+                               authorities-by-username-query="SELECT role_id, role_name FROM user_roles WHERE role_name = ?"/>
+            <password-encoder ref="passwordEncoder"/>
         </authentication-provider>
     </authentication-manager>
+
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
     <bean id="clientDetailsUserService"
           class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
@@ -126,6 +132,7 @@
         <property name="requestFactory" ref="requestFactory"/>
     </bean>
 
+
     <oauth:authorization-server
             client-details-service-ref="clientDetails" token-services-ref="tokenServices"
             user-approval-handler-ref="userApprovalHandler">
@@ -157,12 +164,13 @@
     <oauth:expression-handler id="oauthExpressionHandler"/>
     <oauth:web-expression-handler id="oauthWebExpressionHandler"/>
 
-    <!--Permits for the swagger-->
+    <!--URL access permissions-->
     <http auto-config="true" use-expressions="true" xmlns="http://www.springframework.org/schema/security">
+        <intercept-url pattern="/signup/**" access="permitAll()"/>
+        <intercept-url pattern="/api/v1/customers/2" access="permitAll()"/>
         <intercept-url pattern="/v2/api-docs" access="permitAll()"/>
         <intercept-url pattern="/swagger-resources/**" access="permitAll()"/>
         <intercept-url pattern="/swagger-ui.html" access="permitAll()"/>
         <intercept-url pattern="/webjars/**" access="permitAll()"/>
-        <intercept-url pattern="/api/v1/customers/2" access="permitAll()"/>
     </http>
 </beans>

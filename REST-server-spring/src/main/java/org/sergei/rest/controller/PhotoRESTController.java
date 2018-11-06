@@ -25,6 +25,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @RestController
 @RequestMapping(value = "/api/v1",
         produces = {"application/json", "application/xml"})

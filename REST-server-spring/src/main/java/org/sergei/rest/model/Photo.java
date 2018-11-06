@@ -7,6 +7,9 @@ package org.sergei.rest.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Entity
 @Table(name = "photos")
 public class Photo implements Serializable {

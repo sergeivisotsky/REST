@@ -11,10 +11,14 @@ import org.sergei.rest.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @RestController
 @RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
@@ -55,6 +59,7 @@ public class CustomerRESTController {
     // Delete customer by specific number
     @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Delete customer by number")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CustomerDTO> deleteCustomerById(@PathVariable("customerId") Long customerId) {
         return new ResponseEntity<>(customerService.deleteById(customerId), HttpStatus.NO_CONTENT);
     }
