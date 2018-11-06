@@ -1,6 +1,4 @@
-create database if not exists rest_services_oauth;
-
-create table if not exists rest_services_oauth.oauth_client_details (
+create table if not exists rest_services.oauth_client_details (
   client_id               VARCHAR(256) PRIMARY KEY,
   resource_ids            VARCHAR(256),
   client_secret           VARCHAR(256),
@@ -14,7 +12,7 @@ create table if not exists rest_services_oauth.oauth_client_details (
   autoapprove             VARCHAR(256)
 );
 
-create table if not exists rest_services_oauth.oauth_client_token (
+create table if not exists rest_services.oauth_client_token (
   token_id          VARCHAR(256),
   token             BLOB,
   authentication_id VARCHAR(256) PRIMARY KEY,
@@ -22,7 +20,7 @@ create table if not exists rest_services_oauth.oauth_client_token (
   client_id         VARCHAR(256)
 );
 
-create table if not exists rest_services_oauth.oauth_access_token (
+create table if not exists rest_services.oauth_access_token (
   token_id          VARCHAR(256),
   token             BLOB,
   authentication_id VARCHAR(256) PRIMARY KEY,
@@ -32,18 +30,18 @@ create table if not exists rest_services_oauth.oauth_access_token (
   refresh_token     VARCHAR(256)
 );
 
-create table if not exists rest_services_oauth.oauth_refresh_token (
+create table if not exists rest_services.oauth_refresh_token (
   token_id       VARCHAR(256),
   token          BLOB,
   authentication BLOB
 );
 
-create table if not exists rest_services_oauth.oauth_code (
+create table if not exists rest_services.oauth_code (
   code           VARCHAR(256),
   authentication BLOB
 );
 
-create table if not exists rest_services_oauth.oauth_approvals (
+create table if not exists rest_services.oauth_approvals (
   userId         VARCHAR(256),
   clientId       VARCHAR(256),
   scope          VARCHAR(256),
