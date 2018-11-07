@@ -140,20 +140,10 @@
                            resource-id="resourceId" token-services-ref="tokenServices"/>
 
     <!-- Client definition -->
-    <!--<bean id="clientDetails"
+    <bean id="clientDetails"
           class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
         <constructor-arg index="0" ref="dataSource"/>
-    </bean>-->
-    <oauth:client-details-service id="clientDetails">
-
-        <oauth:client client-id="trusted-client"
-                      authorized-grant-types="password,refresh_token,client_credentials"
-                      authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT, ROLE_OAUTH_CLIENT"
-                      scope="read,write,trust"
-                      secret="trusted-client-secret"
-                      access-token-validity="259200"
-                      refresh-token-validity="2500000"/>
-    </oauth:client-details-service>
+    </bean>
 
     <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
         <sec:expression-handler ref="oauthExpressionHandler"/>
