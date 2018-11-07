@@ -78,10 +78,10 @@
     credentials from DB -->
     <authentication-manager alias="authenticationManager"
                             xmlns="http://www.springframework.org/schema/security">
-        <authentication-provider>
-            <jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="SELECT user_id, username, password FROM user WHERE username = ?"
-                               authorities-by-username-query="SELECT role_id, role_name FROM user_roles WHERE role_name = ?"/>
+        <authentication-provider user-service-ref="apiUserDetailsService">
+            <!--<jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT user_id, username FROM user WHERE username = ?"
+                               authorities-by-username-query="SELECT role_id, role_name FROM user_roles WHERE role_name = ?"/>-->
             <password-encoder ref="passwordEncoder"/>
         </authentication-provider>
     </authentication-manager>
@@ -140,6 +140,7 @@
 
     <!-- Client definition -->
     <oauth:client-details-service id="clientDetails">
+
         <oauth:client client-id="trusted-client"
                       authorized-grant-types="password,refresh_token,client_credentials"
                       authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT, ROLE_OAUTH_CLIENT"

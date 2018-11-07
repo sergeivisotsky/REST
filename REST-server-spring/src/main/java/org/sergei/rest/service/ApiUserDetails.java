@@ -23,10 +23,12 @@ public class ApiUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     private Collection<? extends GrantedAuthority> authorities;
-    private String password;
+    private Long userId;
     private String username;
+    private String password;
 
-    public ApiUserDetails(User user) {
+    ApiUserDetails(User user) {
+        this.userId = user.getUserId();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.authorities = translateRoles(user.getUserRoles());
@@ -53,6 +55,10 @@ public class ApiUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     @Override
