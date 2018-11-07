@@ -35,7 +35,7 @@
           access-decision-manager-ref="accessDecisionManager"
           xmlns="http://www.springframework.org/schema/security">
         <anonymous enabled="false"/>
-        <intercept-url pattern="/api/**" access="ROLE_OAUTH_CLIENT"/>
+        <intercept-url pattern="/api/**" access="ROLE_CLIENT, ROLE_ADMIN"/>
         <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER"/>
         <access-denied-handler ref="oauthAccessDeniedHandler"/>
     </http>
@@ -78,10 +78,10 @@
     credentials from DB -->
     <authentication-manager alias="authenticationManager"
                             xmlns="http://www.springframework.org/schema/security">
-        <authentication-provider user-service-ref="apiUserDetailsService">
-            <!--<jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="SELECT user_id, username FROM user WHERE username = ?"
-                               authorities-by-username-query="SELECT role_id, role_name FROM user_roles WHERE role_name = ?"/>-->
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT username, password enabled FROM user WHERE username = ?"
+                               authorities-by-username-query="SELECT role_id, role_name FROM user_roles WHERE role_name = ?"/>
             <password-encoder ref="passwordEncoder"/>
         </authentication-provider>
     </authentication-manager>
