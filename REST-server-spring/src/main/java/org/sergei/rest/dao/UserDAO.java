@@ -21,16 +21,16 @@ public class UserDAO extends GenericHibernateDAO<User> {
         setPersistentClass(User.class);
     }
 
-    /*public User findByUserName(String username) {
+    public User findByUserName(String username) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
         criteria.add(Restrictions.like("username", username));
         return (User) criteria.uniqueResult();
-    }*/
+    }
 
-    public User findByUserName(String username) {
+    /*public User findByUserName(String username) {
         Session session = sessionFactory.openSession();
         User user = session.get(User.class, username);
         session.close();
         return user;
-    }
+    }*/
 }

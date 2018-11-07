@@ -35,7 +35,7 @@ public class SignUpService {
         return user;
     }
 
-    /*@PostConstruct
+   /*@PostConstruct
     private void saveDefaultUser() {
         userDAO.save(
                 new User("admin",

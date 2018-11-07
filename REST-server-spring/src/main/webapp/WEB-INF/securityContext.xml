@@ -35,19 +35,19 @@
           access-decision-manager-ref="accessDecisionManager"
           xmlns="http://www.springframework.org/schema/security">
         <anonymous enabled="false"/>
-        <intercept-url pattern="/api/**" access="ROLE_CLIENT, ROLE_ADMIN"/>
+        <intercept-url pattern="/api/**" access="ROLE_USER, ROLE_ADMIN"/>
         <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER"/>
         <access-denied-handler ref="oauthAccessDeniedHandler"/>
     </http>
 
     <bean id="oauthAuthenticationEntryPoint"
           class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
-        <property name="realmName" value="sample"/>
+        <property name="realmName" value="Authorization"/>
     </bean>
 
     <bean id="clientAuthenticationEntryPoint"
           class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
-        <property name="realmName" value="sample/oauthClient"/>
+        <property name="realmName" value="Authorization/client"/>
         <property name="typeName" value="Basic"/>
     </bean>
 
@@ -65,6 +65,7 @@
                 <bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter"/>
                 <bean class="org.springframework.security.access.vote.RoleVoter"/>
                 <bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+                <!--<bean class="org.springframework.security.access.annotation.Jsr250Voter" />-->
             </list>
         </constructor-arg>
     </bean>
@@ -78,10 +79,10 @@
     credentials from DB -->
     <authentication-manager alias="authenticationManager"
                             xmlns="http://www.springframework.org/schema/security">
-        <authentication-provider>
-            <jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="SELECT username, password enabled FROM user WHERE username = ?"
-                               authorities-by-username-query="SELECT role_id, role_name FROM user_roles WHERE role_name = ?"/>
+        <authentication-provider user-service-ref="apiUserDetailsService">
+            <!--<jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT username, password, enabled FROM user WHERE username = ?"
+                               authorities-by-username-query="SELECT username, role_name FROM user_roles WHERE username = ?"/>-->
             <password-encoder ref="passwordEncoder"/>
         </authentication-provider>
     </authentication-manager>
@@ -113,15 +114,15 @@
         <property name="clientDetailsService" ref="clientDetails"/>
     </bean>
 
-    <bean id="requestFactory"
+    <bean id="oAuth2RequestFactory"
           class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
-        <constructor-arg name="clientDetailsService" ref="clientDetails"/>
+        <constructor-arg ref="clientDetails" />
     </bean>
 
     <bean id="userApprovalHandler"
           class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler">
-        <property name="tokenStore" ref="tokenStore"/>
-        <property name="requestFactory" ref="requestFactory"/>
+        <property name="requestFactory" ref="oAuth2RequestFactory" />
+        <property name="tokenStore" ref="tokenStore" />
     </bean>
 
 
@@ -132,13 +133,17 @@
         <oauth:implicit/>
         <oauth:refresh-token/>
         <oauth:client-credentials/>
-        <oauth:password/>
+        <oauth:password authentication-manager-ref="authenticationManager"/>
     </oauth:authorization-server>
 
     <oauth:resource-server id="resourceServerFilter"
-                           resource-id="sample" token-services-ref="tokenServices"/>
+                           resource-id="resourceId" token-services-ref="tokenServices"/>
 
     <!-- Client definition -->
+    <!--<bean id="clientDetails"
+          class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
+        <constructor-arg index="0" ref="dataSource"/>
+    </bean>-->
     <oauth:client-details-service id="clientDetails">
 
         <oauth:client client-id="trusted-client"
