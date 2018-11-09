@@ -7,6 +7,9 @@ package org.sergei.rest.dao.generic;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 public interface IGenericDAO<T extends Serializable> {
     /**
      * Find one entity

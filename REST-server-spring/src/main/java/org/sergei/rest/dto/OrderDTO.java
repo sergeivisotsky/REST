@@ -5,6 +5,7 @@
 package org.sergei.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +14,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @ApiModel(value = "Order", description = "All order data")
@@ -47,6 +51,7 @@ public class OrderDTO {
 
     @XmlElementWrapper(name = "orderDetails")
     @XmlElement(name = "orderDetailsInfo")
+    @JsonProperty("orderDetails")
     private List<OrderDetailsDTO> orderDetailsDTO = new LinkedList<>();
 
     public OrderDTO() {

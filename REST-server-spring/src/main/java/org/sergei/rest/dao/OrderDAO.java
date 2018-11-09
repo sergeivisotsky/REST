@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Repository
 @SuppressWarnings("unchecked")
 public class OrderDAO extends GenericHibernateDAO<Order> {

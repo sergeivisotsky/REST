@@ -26,6 +26,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Service
 public class PhotoService {
 

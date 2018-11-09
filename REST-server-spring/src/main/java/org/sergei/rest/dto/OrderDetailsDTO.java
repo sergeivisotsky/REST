@@ -11,6 +11,9 @@ import io.swagger.annotations.ApiModel;
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @JsonRootName("orderDetails")
 @XmlRootElement(name = "orderDetails")
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -6,6 +6,9 @@ package org.sergei.rest.dto;
 
 import java.math.BigDecimal;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 public class ProductDTO {
 
     private String productCode;

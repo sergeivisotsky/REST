@@ -9,6 +9,9 @@ import org.sergei.rest.dao.generic.GenericHibernateDAO;
 import org.sergei.rest.model.Product;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Repository
 @SuppressWarnings("unchecked")
 public class ProductDAO extends GenericHibernateDAO<Product> {

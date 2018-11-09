@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Service
 public class OrderService {
 
@@ -32,7 +35,6 @@ public class OrderService {
     private final OrderDetailsDAO orderDetailsDAO;
     private final CustomerDAO customerDAO;
     private final ProductDAO productDAO;
-
 
     @Autowired
     public OrderService(ModelMapper modelMapper, OrderDAO orderDAO, OrderDetailsDAO orderDetailsDAO,

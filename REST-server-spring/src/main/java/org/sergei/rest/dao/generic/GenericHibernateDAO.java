@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Repository
 @Transactional
 @SuppressWarnings("unchecked")

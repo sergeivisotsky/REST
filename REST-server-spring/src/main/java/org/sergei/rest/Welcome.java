@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @ApiIgnore
 @Controller
 public class Welcome {
