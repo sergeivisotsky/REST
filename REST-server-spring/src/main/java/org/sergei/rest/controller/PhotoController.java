@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/v1",
         produces = {"application/json", "application/xml"})
-public class PhotoRESTController {
+public class PhotoController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 

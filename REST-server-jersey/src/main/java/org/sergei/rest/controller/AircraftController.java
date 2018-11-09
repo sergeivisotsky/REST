@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/aircraft")
-public class AircraftRESTController {
+public class AircraftController {
 
     @Inject
     private AircraftService aircraftService;

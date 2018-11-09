@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1",
         produces = {"application/json", "application/xml"})
-public class OrderRESTController {
+public class OrderController {
 
     @Autowired
     private OrderService orderService;

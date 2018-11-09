@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
-public class CustomerRESTController {
+public class CustomerController {
 
     @Autowired
     private CustomerService customerService;

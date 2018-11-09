@@ -24,7 +24,7 @@ import java.util.Collections;
 @ApiIgnore
 @RestController
 @RequestMapping("/signup")
-public class SignUpRESTController {
+public class SignUpController {
 
     @Autowired
     private SignUpService signUpService;

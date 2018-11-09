@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/customers")
-public class CustomerRESTController {
+public class CustomerController {
 
     @Inject
     private CustomerService customerService;

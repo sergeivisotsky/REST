@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/routes")
-public class RouteRESTController {
+public class RouteController {
 
     @Inject
     private RouteService routeService;

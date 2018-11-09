@@ -15,7 +15,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
-public class CustomerRESTControllerTest {
+public class CustomerControllerTest {
 
     @Mock
     private CustomerService customerService;
