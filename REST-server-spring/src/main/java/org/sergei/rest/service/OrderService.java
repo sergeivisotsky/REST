@@ -69,11 +69,11 @@ public class OrderService {
                 orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
 
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-        for (OrderDetails orderDetails : orderDetailsList) {
-            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
-            orderDetailsDTOList.add(orderDetailsDTO);
-        }
+        orderDetailsList.forEach(orderDetails ->
+                orderDetailsDTOList.add(
+                        modelMapper.map(orderDetails, OrderDetailsDTO.class)
+                )
+        );
 
         orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
 
@@ -259,6 +259,11 @@ public class OrderService {
                     orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
 
             List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
+            orderDetailsList.forEach(orderDetails ->
+                    orderDetailsDTOList.add(
+                            modelMapper.map(orderDetails, OrderDetailsDTO.class)
+                    )
+            );
             for (OrderDetails orderDetails : orderDetailsList) {
                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                 OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);

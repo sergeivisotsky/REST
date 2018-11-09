@@ -53,11 +53,11 @@ public class PhotoService {
 
         List<Photo> photos = photoDAO.findAllPhotosByCustomerId(customerNumber);
 
-        for (Photo photo : photos) {
-            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
-            photoDTOList.add(photoDTO);
-        }
+        photos.forEach(photo ->
+                photoDTOList.add(
+                        modelMapper.map(photo, PhotoDTO.class)
+                )
+        );
 
         return photoDTOList;
     }

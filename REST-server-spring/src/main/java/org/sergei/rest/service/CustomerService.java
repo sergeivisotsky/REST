@@ -9,15 +9,10 @@ import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.dao.OrderDAO;
 import org.sergei.rest.dao.OrderDetailsDAO;
 import org.sergei.rest.dto.CustomerDTO;
-import org.sergei.rest.dto.OrderDTO;
-import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.model.Customer;
-import org.sergei.rest.model.Order;
-import org.sergei.rest.model.OrderDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,9 +49,6 @@ public class CustomerService {
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
 
-            List<Order> orders = orderDAO.findAllByCustomerId(customer.getCustomerId());
-
-            customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
             customerDTOResponse.add(customerDTO);
         }
 
@@ -71,18 +63,7 @@ public class CustomerService {
      */
     public CustomerDTO findOne(Long customerId) {
         Customer customer = customerDAO.findOne(customerId);
-
-        CustomerDTO customerDTO = new CustomerDTO();
-
-        customerDTO.setCustomerId(customer.getCustomerId());
-        customerDTO.setFirstName(customer.getFirstName());
-        customerDTO.setLastName(customer.getLastName());
-        customerDTO.setAge(customer.getAge());
-        List<Order> orders = orderDAO.findAllByCustomerId(customerId);
-
-        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
-
-        return customerDTO;
+        return modelMapper.map(customer, CustomerDTO.class);
     }
 
     /**
@@ -91,19 +72,14 @@ public class CustomerService {
      * @param customerDTO get customer from the REST controller as a request body
      */
     public CustomerDTO save(CustomerDTO customerDTO) {
-        Customer customer = new Customer();
-
-        customer.setCustomerId(customerDTO.getCustomerId());
-        customer.setFirstName(customerDTO.getFirstName());
-        customer.setLastName(customerDTO.getLastName());
-        customer.setAge(customerDTO.getAge());
-
+        Customer customer = modelMapper.map(customerDTO, Customer.class);
         customerDAO.save(customer);
 
         return customerDTO;
     }
 
     //  TODO: Save customer and his orders with details in a single request body
+
     /**
      * Update customer by customer number
      *
@@ -128,50 +104,7 @@ public class CustomerService {
      */
     public CustomerDTO deleteById(Long aLong) {
         Customer customer = customerDAO.findOne(aLong);
-        CustomerDTO customerDTO = new CustomerDTO();
-
-        customerDTO.setCustomerId(customer.getCustomerId());
-        customerDTO.setFirstName(customer.getFirstName());
-        customerDTO.setLastName(customer.getLastName());
-        customerDTO.setAge(customer.getAge());
-
-        List<Order> orders = orderDAO.findAllByCustomerId(customer.getCustomerId());
-
-        customerDTO.setOrderDTOList(setOrderDTOResponseFromEntityList(orders));
-
         customerDAO.delete(customer);
-        return customerDTO;
-    }
-
-    /**
-     * Util method to convert from the list of orders to the list order order DTOs
-     *
-     * @param orders get orders list to be replaced to OrderDTO response
-     * @return List of order DTOs
-     */
-    private List<OrderDTO> setOrderDTOResponseFromEntityList(List<Order> orders) {
-        List<OrderDTO> orderDTOList = new LinkedList<>();
-        for (Order order : orders) {
-            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
-            orderDTOList.add(orderDTO);
-
-            // Get all order details list by order number
-            List<OrderDetails> orderDetailsList =
-                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
-
-            // Creating order details DTO and perform convertion from entity to DTO and put into
-            List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-            for (OrderDetails orderDetails : orderDetailsList) {
-                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
-                orderDetailsDTOList.add(orderDetailsDTO);
-            }
-
-            // Set order detail DTO to the order DTO so that it was displayed as one response
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-        }
-
-        return orderDTOList;
+        return modelMapper.map(customer, CustomerDTO.class);
     }
 }

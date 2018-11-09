@@ -59,7 +59,7 @@ public class CustomerRESTController {
     // Delete customer by specific number
     @DeleteMapping("/{customerId}")
     @ApiOperation(value = "Delete customer by number")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CustomerDTO> deleteCustomerById(@PathVariable("customerId") Long customerId) {
         return new ResponseEntity<>(customerService.deleteById(customerId), HttpStatus.NO_CONTENT);
     }

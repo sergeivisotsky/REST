@@ -28,6 +28,8 @@
         <access-denied-handler ref="oauthAccessDeniedHandler"/>
     </http>
 
+    <sec:http pattern="/api/v1/customers/2" security="none"/>
+
     <!-- This is where we tells spring security what URL should be protected
     and what roles have access to them -->
     <http pattern="/api/**" create-session="never"
@@ -65,7 +67,6 @@
                 <bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter"/>
                 <bean class="org.springframework.security.access.vote.RoleVoter"/>
                 <bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
-                <!--<bean class="org.springframework.security.access.annotation.Jsr250Voter" />-->
             </list>
         </constructor-arg>
     </bean>
@@ -75,14 +76,10 @@
         <authentication-provider user-service-ref="clientDetailsUserService"/>
     </authentication-manager>
 
-    <!-- Here we have hard-coded user name and password details. We can replace this with a user defined service to get users
-    credentials from DB -->
+    <!-- Username and password taken from DB -->
     <authentication-manager alias="authenticationManager"
                             xmlns="http://www.springframework.org/schema/security">
         <authentication-provider user-service-ref="apiUserDetailsService">
-            <!--<jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="SELECT username, password, enabled FROM user WHERE username = ?"
-                               authorities-by-username-query="SELECT username, role_name FROM user_roles WHERE username = ?"/>-->
             <password-encoder ref="passwordEncoder"/>
         </authentication-provider>
     </authentication-manager>
@@ -94,7 +91,7 @@
         <constructor-arg ref="clientDetails"/>
     </bean>
 
-    <!--We have used JDBC tokenStore to store the tokens, we can use In Memory token store for development purpose -->
+    <!--We have used JDBC tokenStore to store tokens -->
     <bean id="tokenStore"
           class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
         <constructor-arg ref="dataSource"/>
@@ -116,15 +113,14 @@
 
     <bean id="oAuth2RequestFactory"
           class="org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory">
-        <constructor-arg ref="clientDetails" />
+        <constructor-arg ref="clientDetails"/>
     </bean>
 
     <bean id="userApprovalHandler"
           class="org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler">
-        <property name="requestFactory" ref="oAuth2RequestFactory" />
-        <property name="tokenStore" ref="tokenStore" />
+        <property name="requestFactory" ref="oAuth2RequestFactory"/>
+        <property name="tokenStore" ref="tokenStore"/>
     </bean>
-
 
     <oauth:authorization-server
             client-details-service-ref="clientDetails" token-services-ref="tokenServices"
@@ -155,7 +151,6 @@
     <!--URL access permissions-->
     <http auto-config="true" use-expressions="true" xmlns="http://www.springframework.org/schema/security">
         <intercept-url pattern="/signup/**" access="permitAll()"/>
-        <intercept-url pattern="/api/v1/customers/2" access="permitAll()"/>
         <intercept-url pattern="/v2/api-docs" access="permitAll()"/>
         <intercept-url pattern="/swagger-resources/**" access="permitAll()"/>
         <intercept-url pattern="/swagger-ui.html" access="permitAll()"/>
