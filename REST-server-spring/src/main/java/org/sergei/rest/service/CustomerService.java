@@ -9,6 +9,7 @@ import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.dao.OrderDAO;
 import org.sergei.rest.dao.OrderDetailsDAO;
 import org.sergei.rest.dto.CustomerDTO;
+import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,9 @@ public class CustomerService {
      */
     public CustomerDTO findOne(Long customerId) {
         Customer customer = customerDAO.findOne(customerId);
+        if (customer == null) {
+            throw new ResourceNotFoundException("Customer with this ID not found");
+        }
         return modelMapper.map(customer, CustomerDTO.class);
     }
 
@@ -102,11 +106,14 @@ public class CustomerService {
     /**
      * Delete customer by number
      *
-     * @param aLong get customer number from the REST controller
-     * @return Return updated customer response
+     * @param customerId get customer number from the REST controller
+     * @return Updated customer response
      */
-    public CustomerDTO deleteById(Long aLong) {
-        Customer customer = customerDAO.findOne(aLong);
+    public CustomerDTO deleteById(Long customerId) {
+        Customer customer = customerDAO.findOne(customerId);
+        if (customer == null) {
+            throw new ResourceNotFoundException("Customer with this ID not found");
+        }
         customerDAO.delete(customer);
         return modelMapper.map(customer, CustomerDTO.class);
     }

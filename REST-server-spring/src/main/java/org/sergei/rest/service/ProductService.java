@@ -54,6 +54,9 @@ public class ProductService {
     // Update product by code
     public ProductDTO update(String productCode, ProductDTO productDTO) {
         Product product = productDAO.findByCode(productCode);
+        if (product == null) {
+            throw new ResourceNotFoundException("Product with this code not found");
+        }
 
         product.setProductCode(productCode);
         product.setProductName(productDTO.getProductName());

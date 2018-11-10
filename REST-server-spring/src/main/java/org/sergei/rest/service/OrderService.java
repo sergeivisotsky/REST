@@ -11,6 +11,7 @@ import org.sergei.rest.dao.OrderDetailsDAO;
 import org.sergei.rest.dao.ProductDAO;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
+import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
@@ -64,6 +65,9 @@ public class OrderService {
      */
     public OrderDTO findOne(Long orderId) {
         Order order = orderDAO.findOne(orderId);
+        if (order == null) {
+            throw new ResourceNotFoundException("Order with this ID not found");
+        }
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
@@ -90,9 +94,9 @@ public class OrderService {
      * @return Return order DTO reponse
      */
     public OrderDTO findOneByCustomerIdAndOrderId(Long customerId, Long orderId) {
-        /*if (!customerRepository.existsById(customerId)) {
+        if (customerDAO.findOne(customerId) == null) {
             throw new RecordNotFoundException("No customer with this number found");
-        }*/
+        }
         return findOne(orderId);
     }
 
@@ -119,6 +123,9 @@ public class OrderService {
      */
     public List<OrderDTO> findAllByProductCode(String productCode) {
         List<Order> orders = orderDAO.findAllByProductCode(productCode);
+        if (orders == null) {
+            throw new ResourceNotFoundException("Orders with this product code not found");
+        }
         return findOrdersByListWithParam(orders);
     }
 
@@ -131,6 +138,9 @@ public class OrderService {
      */
     public OrderDTO saveByCustomerId(Long customerId, OrderDTO orderDTO) {
         Customer customer = customerDAO.findOne(customerId);
+        if (customer == null) {
+            throw new ResourceNotFoundException("Customer with this ID not found");
+        }
 
         Order order = modelMapper.map(orderDTO, Order.class);
         order.setCustomer(customer);

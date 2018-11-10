@@ -4,7 +4,7 @@
 
 package org.sergei.rest.controller;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.service.CustomerService;
@@ -19,6 +19,12 @@ import java.util.List;
 /**
  * @author Sergei Visotsky, 2018
  */
+@Api(
+        value = "/api/v1/customers",
+        description = "Customer API methods",
+        produces = "application/json, application/xml",
+        consumes = "application/json, application/xml"
+)
 @RestController
 @RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
@@ -27,40 +33,55 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    // Get all customers
+    @ApiOperation("Gel all customers")
     @GetMapping
-    @ApiOperation(value = "Gel all customers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
         return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
     }
 
-    // Get customer by specific ID as a parameter
+    @ApiOperation("Get customer by ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
     @GetMapping("/{customerId}")
-    @ApiOperation(value = "Get customer by ID")
-    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("customerId") Long customerId) throws RecordNotFoundException {
+    public ResponseEntity<CustomerDTO> getCustomerById(@ApiParam(value = "Customer ID which should be found", required = true)
+                                                       @PathVariable("customerId") Long customerId) throws RecordNotFoundException {
         return new ResponseEntity<>(customerService.findOne(customerId), HttpStatus.OK);
     }
 
-    // Add a new record
+    @ApiOperation("Add a new customer")
     @PostMapping(consumes = {"application/json", "application/xml"})
-    @ApiOperation(value = "Add a new customer")
-    public ResponseEntity<CustomerDTO> addCustomer(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> saveCustomer(@ApiParam(value = "Saved customer", required = true)
+                                                    @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.save(customerDTO), HttpStatus.CREATED);
     }
 
-    // Update record
+    @ApiOperation("Update customer data")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
     @PutMapping(value = "/{customerId}", consumes = {"application/json", "application/xml"})
-    @ApiOperation(value = "Update customer data")
-    public ResponseEntity<CustomerDTO> updateRecord(@PathVariable("customerId") Long customerId,
+    public ResponseEntity<CustomerDTO> updateRecord(@ApiParam(value = "Customer ID which should be updated", required = true)
+                                                    @PathVariable("customerId") Long customerId,
+                                                    @ApiParam(value = "Updated customer", required = true)
                                                     @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.update(customerId, customerDTO), HttpStatus.ACCEPTED);
     }
 
-    // Delete customer by specific number
+    @ApiOperation(value = "Delete customer by number", notes = "Operation allowed for ADMIN only")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
     @DeleteMapping("/{customerId}")
-    @ApiOperation(value = "Delete customer by number")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<CustomerDTO> deleteCustomerById(@PathVariable("customerId") Long customerId) {
+    public ResponseEntity<CustomerDTO> deleteCustomerById(@ApiParam(value = "Customer ID which should be deleted", required = true)
+                                                          @PathVariable("customerId") Long customerId) {
         return new ResponseEntity<>(customerService.deleteById(customerId), HttpStatus.NO_CONTENT);
     }
 }

@@ -4,7 +4,7 @@
 
 package org.sergei.rest.controller;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.service.PhotoService;
 import org.slf4j.Logger;
@@ -28,8 +28,14 @@ import java.util.stream.Collectors;
 /**
  * @author Sergei Visotsky, 2018
  */
+@Api(
+        value = "/api/v1/customers/{customerId}/photos",
+        description = "Customer photo API methods",
+        produces = "application/json, application/xml",
+        consumes = "application/json, application/xml"
+)
 @RestController
-@RequestMapping(value = "/api/v1",
+@RequestMapping(value = "/api/v1/customers",
         produces = {"application/json", "application/xml"})
 public class PhotoController {
 
@@ -38,45 +44,68 @@ public class PhotoController {
     @Autowired
     private PhotoService photoService;
 
-    // The response with all user photos
-    @GetMapping("/customers/{customerNumber}/photo")
-    @ApiOperation(value = "Get all photos fot the customer")
-    public ResponseEntity<List<PhotoDTO>> findAllCustomerPhotos(@PathVariable("customerNumber") Long customerNumber) {
-        return new ResponseEntity<>(photoService.findAll(customerNumber), HttpStatus.OK);
+    @ApiOperation("Get all photos fot the customer")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
+    @GetMapping("/{customerId}/photo")
+    public ResponseEntity<List<PhotoDTO>> findAllCustomerPhotos(@ApiParam(value = "Customer ID whose photos should be deleted", required = true)
+                                                                @PathVariable("customerId") Long customerId) {
+        return new ResponseEntity<>(photoService.findAll(customerId), HttpStatus.OK);
     }
 
-    // Upload one photo
-    @PostMapping("/customers/{customerNumber}/photo")
+    @ApiOperation("Upload photo for the customer")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
+    @PostMapping("/{customerId}/photo")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Upload photo for the customer")
-    public PhotoDTO uploadPhoto(@PathVariable("customerNumber") Long customerNumber,
+    public PhotoDTO uploadPhoto(@ApiParam(value = "Customer ID who uploads photo", required = true)
+                                @PathVariable("customerId") Long customerId,
+                                @ApiParam(value = "Uploaded file", required = true)
                                 @RequestParam("file") CommonsMultipartFile commonsMultipartFile) {
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/api/v1/customers/" + customerNumber.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
+                .path("/api/v1/customers/" + customerId.toString() + "/photo/" + commonsMultipartFile.getOriginalFilename())
                 .toUriString();
 
-        return photoService.uploadFileByCustomerId(customerNumber, fileDownloadUri, commonsMultipartFile);
+        return photoService.uploadFileByCustomerId(customerId, fileDownloadUri, commonsMultipartFile);
     }
 
-    // Upload multiple photos
-    @PostMapping("/customers/{customerNumber}/photos")
+    @ApiOperation("Upload multiple photo for the customer")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
+    @PostMapping("/{customerId}/photos")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Upload multiple photo for the customer")
-    public List<PhotoDTO> uploadMultiplePhotos(@PathVariable("customerNumber") Long customerNumber,
+    public List<PhotoDTO> uploadMultiplePhotos(@ApiParam(value = "Customer ID who uploads photos", required = true)
+                                               @PathVariable("customerId") Long customerId,
+                                               @ApiParam(value = "Uploaded files", required = true)
                                                @RequestParam("files") CommonsMultipartFile[] files) {
         return Arrays.stream(files)
-                .map(file -> uploadPhoto(customerNumber, file))
+                .map(file -> uploadPhoto(customerId, file))
                 .collect(Collectors.toList());
     }
 
-    // download photo method by file name
-    @GetMapping(value = "/customers/{customerNumber}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
-    @ApiOperation(value = "Download photo for the customer by photo name")
-    public ResponseEntity<Resource> downloadPhotoByName(@PathVariable("customerNumber") Long customerNumber,
+    @ApiOperation("Download photo for the customer by photo name")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID or file name")
+            }
+    )
+    @GetMapping(value = "/{customerId}/photo/{fileName:.+}", produces = {"image/jpeg", "image/png"})
+    public ResponseEntity<Resource> downloadPhotoByName(@ApiParam(value = "Customer ID whose photos should be downloaded", required = true)
+                                                        @PathVariable("customerId") Long customerId,
+                                                        @ApiParam(value = "File name which should be downloaded", required = true)
                                                         @PathVariable("fileName") String fileName,
                                                         HttpServletRequest request) throws IOException {
-        Resource resource = photoService.downloadFileAsResourceByName(customerNumber, fileName);
+        Resource resource = photoService.downloadFileAsResourceByName(customerId, fileName);
 
         String contentType = null;
         try {
@@ -96,13 +125,19 @@ public class PhotoController {
                 .body(resource);
     }
 
-    // download photo method by file name
-    @GetMapping(value = "/customers/{customerNumber}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
-    @ApiOperation(value = "Download photo by customer number and photo ID")
-    public ResponseEntity<Resource> downloadPhotoById(@PathVariable("customerNumber") Long customerNumber,
+    @ApiOperation("Download photo by customer number and photo ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer or photo ID")
+            }
+    )
+    @GetMapping(value = "/{customerId}/photos/{photoId}", produces = {"image/jpeg", "image/png"})
+    public ResponseEntity<Resource> downloadPhotoById(@ApiParam(value = "Customer ID whose photos should be downloaded", required = true)
+                                                      @PathVariable("customerId") Long customerId,
+                                                      @ApiParam(value = "Photo ID which should be downloaded", required = true)
                                                       @PathVariable("photoId") Long photoId,
                                                       HttpServletRequest request) throws IOException {
-        Resource resource = photoService.downloadFileAsResourceByFileId(customerNumber, photoId);
+        Resource resource = photoService.downloadFileAsResourceByFileId(customerId, photoId);
 
         String contentType = null;
         try {
@@ -122,12 +157,18 @@ public class PhotoController {
                 .body(resource);
     }
 
-    // File deletion by name
-    @DeleteMapping(value = "/customers/{customerNumber}/photos/{photoId}")
-    @ApiOperation(value = "Delete photo by customer number and photo ID")
-    public ResponseEntity<PhotoDTO> deletePhotoById(@PathVariable("customerNumber") Long customerNumber,
+    @ApiOperation("Delete photo by customer number and photo ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer or photo ID")
+            }
+    )
+    @DeleteMapping(value = "/{customerId}/photos/{photoId}")
+    public ResponseEntity<PhotoDTO> deletePhotoById(@ApiParam(value = "Customer ID whose photos should be deleted", required = true)
+                                                    @PathVariable("customerId") Long customerId,
+                                                    @ApiParam(value = "Photo ID which should be deleted", required = true)
                                                     @PathVariable("photoId") Long photoId) throws IOException {
 
-        return new ResponseEntity<>(photoService.deleteById(customerNumber, photoId), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(photoService.deleteById(customerId, photoId), HttpStatus.NO_CONTENT);
     }
 }

@@ -5,10 +5,12 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
+import org.sergei.rest.dao.CustomerDAO;
 import org.sergei.rest.dao.PhotoDAO;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
+import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Photo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -37,25 +39,29 @@ public class PhotoService {
     private final ModelMapper modelMapper;
     private final Path fileStorageLocation;
     private final PhotoDAO photoDAO;
+    private final CustomerDAO customerDAO;
 
     @Autowired
-    public PhotoService(ModelMapper modelMapper, PhotoDAO photoDAO) {
+    public PhotoService(ModelMapper modelMapper, PhotoDAO photoDAO, CustomerDAO customerDAO) {
         this.modelMapper = modelMapper;
         this.photoDAO = photoDAO;
+        this.customerDAO = customerDAO;
         this.fileStorageLocation = Paths.get(UPL_DIR).toAbsolutePath().normalize();
     }
 
     /**
      * Method to find all photos by customer number
      *
-     * @param customerNumber get customer number from the REST controller
+     * @param customerId get customer number from the REST controller
      * @return list of the photo DTOs as a response
      */
-    public List<PhotoDTO> findAll(Long customerNumber) {
+    public List<PhotoDTO> findAll(Long customerId) {
         List<PhotoDTO> photoDTOList = new LinkedList<>();
 
-        List<Photo> photos = photoDAO.findAllPhotosByCustomerId(customerNumber);
-
+        List<Photo> photos = photoDAO.findAllPhotosByCustomerId(customerId);
+        if (photos == null) {
+            throw new ResourceNotFoundException("Invalid customer ID or photos not found");
+        }
         photos.forEach(photo ->
                 photoDTOList.add(
                         modelMapper.map(photo, PhotoDTO.class)
@@ -68,23 +74,24 @@ public class PhotoService {
     /**
      * Method to upload file on the server
      *
-     * @param customerNumber       get customer number from the REST controller
+     * @param customerId           get customer number from the REST controller
      * @param fileDownloadUri      get file download uri created in REST controller
      * @param commonsMultipartFile get file uploaded from the REST controller
      * @return photo DTO response
      */
-    public PhotoDTO uploadFileByCustomerId(Long customerNumber, String fileDownloadUri,
+    public PhotoDTO uploadFileByCustomerId(Long customerId, String fileDownloadUri,
                                            CommonsMultipartFile commonsMultipartFile) {
 
-        /*customerRepository.findById(customerNumber)
-                .orElseThrow(() -> new RecordNotFoundException("Customer with this number not found"));*/
+        if (customerDAO.findOne(customerId) == null) {
+            throw new ResourceNotFoundException("Customer with this ID not found");
+        }
         String fileName = StringUtils.cleanPath(commonsMultipartFile.getOriginalFilename());
 
         PhotoDTO photoDTO = new PhotoDTO();
 
         // FIXME: set photo ID properly due to it is null right now
 //        photoDTO.setPhotoId();
-        photoDTO.setCustomerId(customerNumber);
+        photoDTO.setCustomerId(customerId);
         photoDTO.setFileName(commonsMultipartFile.getOriginalFilename());
         photoDTO.setFileUrl(fileDownloadUri);
         photoDTO.setFileType(commonsMultipartFile.getContentType());
@@ -120,14 +127,17 @@ public class PhotoService {
     /**
      * Method to download file from the server by file name
      *
-     * @param customerNumber get customer number from the REST controller
-     * @param fileName       get file name from the RESt controller
+     * @param customerId get customer number from the REST controller
+     * @param fileName   get file name from the RESt controller
      * @return Resource
      * @throws MalformedURLException throws in case of invalid uri
      */
-    public Resource downloadFileAsResourceByName(Long customerNumber, String fileName) throws MalformedURLException {
+    public Resource downloadFileAsResourceByName(Long customerId, String fileName) throws MalformedURLException {
         // Get filename by customer number written in database
-        Photo photo = photoDAO.findPhotoByCustomerIdAndFileName(customerNumber, fileName);
+        Photo photo = photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
+        if (photo == null) {
+            throw new ResourceNotFoundException("Invalid customer ID");
+        }
 
 //        fileOperations.downloadFile(responseFileName);
 
@@ -145,14 +155,17 @@ public class PhotoService {
     /**
      * Method to download file from the server by file ID
      *
-     * @param customerNumber get customer number from the REST controller
-     * @param photoId        get photo IR from the REST controller
+     * @param customerId get customer number from the REST controller
+     * @param photoId    get photo IR from the REST controller
      * @return Returns resource
      * @throws MalformedURLException throws in case of invalid uri
      */
-    public Resource downloadFileAsResourceByFileId(Long customerNumber, Long photoId) throws MalformedURLException {
+    public Resource downloadFileAsResourceByFileId(Long customerId, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerNumber, photoId);
+        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerId, photoId);
+        if (photo == null) {
+            throw new ResourceNotFoundException("Invalid customer ID");
+        }
 
         String responseFileName = photo.getFileName();
 
@@ -170,13 +183,16 @@ public class PhotoService {
     /**
      * Method to perform file deletion by customer number and photo ID
      *
-     * @param customerNumber get customer number from the REST controller
-     * @param photoId        get photo IR from the REST controller
+     * @param customerId get customer number from the REST controller
+     * @param photoId    get photo IR from the REST controller
      * @return photo DTO as a response
      * @throws IOException
      */
-    public PhotoDTO deleteById(Long customerNumber, Long photoId) throws IOException {
-        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerNumber, photoId);
+    public PhotoDTO deleteById(Long customerId, Long photoId) throws IOException {
+        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerId, photoId);
+        if (photo == null) {
+            throw new ResourceNotFoundException("Invalid customer or photo ID");
+        }
 
         PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Sergei Visotsky, 2018
@@ -33,6 +34,10 @@ public class SignUpService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.save(user);
         return user;
+    }
+
+    public List<User> getAllUsers() {
+        return userDAO.findAll();
     }
 
    /*@PostConstruct
