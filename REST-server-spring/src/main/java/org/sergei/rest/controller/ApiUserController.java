@@ -6,7 +6,7 @@ package org.sergei.rest.controller;
 
 import org.sergei.rest.model.User;
 import org.sergei.rest.model.UserRoles;
-import org.sergei.rest.service.SignUpService;
+import org.sergei.rest.service.ApiUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +23,22 @@ import java.util.List;
 @ApiIgnore
 @RestController
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-@RequestMapping(value = "/signup",
+@RequestMapping(value = "/users",
         produces = {"application/json", "application/xml"})
-public class SignUpController {
+public class ApiUserController {
 
     @Autowired
-    private SignUpService signUpService;
+    private ApiUserService apiUSerService;
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<>(signUpService.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(apiUSerService.getAllUsers(), HttpStatus.OK);
     }
 
     @PostMapping(consumes = {"application/json", "application/xml"})
     public ResponseEntity<User> createUser(@RequestBody User user) {
         user.setUserRoles(Collections.singletonList(new UserRoles("USER")));
-        User newUser = signUpService.saveUser(user);
+        User newUser = apiUSerService.saveUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 }

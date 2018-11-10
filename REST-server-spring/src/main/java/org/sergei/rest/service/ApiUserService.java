@@ -19,13 +19,13 @@ import java.util.List;
  * @author Sergei Visotsky, 2018
  */
 @Service
-public class SignUpService {
+public class ApiUserService {
 
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SignUpService(UserDAO userDAO, PasswordEncoder passwordEncoder) {
+    public ApiUserService(UserDAO userDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
     }
