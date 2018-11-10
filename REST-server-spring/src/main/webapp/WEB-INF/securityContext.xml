@@ -150,7 +150,7 @@
 
     <!--URL access permissions-->
     <http auto-config="true" use-expressions="true" xmlns="http://www.springframework.org/schema/security">
-        <intercept-url pattern="/signup/**" access="permitAll()"/>
+        <intercept-url pattern="/users/**" access="permitAll()"/>
         <intercept-url pattern="/v2/api-docs" access="permitAll()"/>
         <intercept-url pattern="/swagger-resources/**" access="permitAll()"/>
         <intercept-url pattern="/swagger-ui.html" access="permitAll()"/>
