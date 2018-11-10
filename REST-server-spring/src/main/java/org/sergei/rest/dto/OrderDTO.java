@@ -18,9 +18,9 @@ import java.util.List;
 /**
  * @author Sergei Visotsky, 2018
  */
+@ApiModel(value = "Order", description = "All order data")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@ApiModel(value = "Order", description = "All order data")
 public class OrderDTO {
 
     @XmlElement

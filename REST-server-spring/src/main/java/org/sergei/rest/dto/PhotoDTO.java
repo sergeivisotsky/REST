@@ -15,9 +15,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * @author Sergei Visotsky, 2018
  */
+@ApiModel(value = "Photo", description = "All photo meta data")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@ApiModel(value = "Photo", description = "All photo meta")
 public class PhotoDTO {
     @XmlElement
     private Long photoId;

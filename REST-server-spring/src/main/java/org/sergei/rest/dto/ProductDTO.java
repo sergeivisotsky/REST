@@ -4,19 +4,36 @@
 
 package org.sergei.rest.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 
 /**
  * @author Sergei Visotsky, 2018
  */
+@ApiModel(value = "Product", description = "All product meta data")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ProductDTO {
 
+    @XmlElement
     private String productCode;
+
+    @XmlElement
     private String productName;
+
+    @XmlElement
     private String productLine;
+
+    @XmlElement
     private String productVendor;
+
+    @XmlElement
     private BigDecimal price;
 
     public ProductDTO() {

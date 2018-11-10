@@ -15,10 +15,11 @@ import java.math.BigDecimal;
 /**
  * @author Sergei Visotsky, 2018
  */
+@ApiModel(value = "OrderDetails", description = "All oder details data")
 @JsonRootName("orderDetails")
 @XmlRootElement(name = "orderDetails")
 @XmlAccessorType(XmlAccessType.FIELD)
-@ApiModel(value = "Order details", description = "All oder details data")
+
 public class OrderDetailsDTO {
 
     @XmlElement
