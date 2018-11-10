@@ -7,6 +7,7 @@ package org.sergei.rest.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.xml.bind.annotation.*;
@@ -73,6 +74,7 @@ public class OrderDTO {
         return orderId;
     }
 
+    @ApiModelProperty(hidden = true, readOnly = true)
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }

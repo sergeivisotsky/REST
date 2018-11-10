@@ -5,6 +5,7 @@
 package org.sergei.rest.dto;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -53,6 +54,7 @@ public class PhotoDTO {
         return photoId;
     }
 
+    @ApiModelProperty(hidden = true, readOnly = true)
     public void setPhotoId(Long photoId) {
         this.photoId = photoId;
     }

@@ -4,6 +4,8 @@
 
 package org.sergei.rest.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 
 /**
@@ -33,6 +35,7 @@ public class ProductDTO {
         return productCode;
     }
 
+    @ApiModelProperty(hidden = true, readOnly = true)
     public void setProductCode(String productCode) {
         this.productCode = productCode;
     }
