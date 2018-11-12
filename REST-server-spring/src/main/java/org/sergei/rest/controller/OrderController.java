@@ -31,26 +31,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @Deprecated
-    @ApiOperation("Get all existing orders")
-    @GetMapping("/orders")
-    public ResponseEntity<List<OrderDTO>> getAllOrders() {
-        return new ResponseEntity<>(orderService.findAll(), HttpStatus.OK);
-    }
-
-    @Deprecated
-    @ApiOperation("Get order by ID")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 404, message = "Invalid order ID")
-            }
-    )
-    @GetMapping("/orders/{orderId}")
-    public ResponseEntity<OrderDTO> getOrderById(@ApiParam(value = "Order ID which should be found", required = true)
-                                                 @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.findOne(orderId), HttpStatus.OK);
-    }
-
     @ApiOperation("Get all order by customer number")
     @ApiResponses(
             value = {
@@ -77,13 +57,13 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findOneByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
     }
 
-    @ApiOperation("Get order by product code")
+    @ApiOperation("Get all orders with specific product code")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 404, message = "Invalid product code")
             }
     )
-    @GetMapping("/orders/order")
+    @GetMapping("/orders")
     public List<OrderDTO> getOrdersByProductCode(@ApiParam(value = "Code of the product which should be found", required = true)
                                                  @RequestParam("prod-code") String productCode) {
         return orderService.findAllByProductCode(productCode);
@@ -119,18 +99,6 @@ public class OrderController {
                                                  @ApiParam(value = "Updated order", required = true)
                                                  @RequestBody OrderDTO orderDTO) {
         return new ResponseEntity<>(orderService.updateByCustomerId(customerId, orderId, orderDTO), HttpStatus.ACCEPTED);
-    }
-
-    @ApiOperation("Delete order from all by number")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 404, message = "Invalid order ID")
-            }
-    )
-    @DeleteMapping("/orders/{orderId}")
-    public ResponseEntity<OrderDTO> deleteOrderById(@ApiParam(value = "Order ID which should be deleted", required = true)
-                                                    @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.deleteById(orderId), HttpStatus.NO_CONTENT);
     }
 
     @ApiOperation("Delete order by customer and order numbers")
