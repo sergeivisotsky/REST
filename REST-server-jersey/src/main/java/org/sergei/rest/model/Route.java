@@ -1,13 +1,12 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Entity
 @Table(name = "route")
 public class Route implements Serializable {

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.dto;
 
 import org.sergei.rest.model.Aircraft;
@@ -11,6 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AircraftDTO {

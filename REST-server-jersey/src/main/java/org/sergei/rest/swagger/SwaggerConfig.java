@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.swagger;
 
 import io.swagger.jaxrs.config.BeanConfig;
@@ -10,6 +6,9 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 public class SwaggerConfig extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {

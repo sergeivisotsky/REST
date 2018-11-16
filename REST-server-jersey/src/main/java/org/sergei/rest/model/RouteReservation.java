@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.model;
 
 import javax.persistence.*;
@@ -9,6 +5,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Entity
 @Table(name = "route_reservation")
 public class RouteReservation implements Serializable {

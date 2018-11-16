@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.dto;
 
 import org.sergei.rest.model.Route;
@@ -12,6 +8,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Time;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RouteDTO {

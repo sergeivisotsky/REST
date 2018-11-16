@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.controller;
 
 import org.sergei.rest.dto.CustomerDTO;
@@ -13,6 +9,9 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Path("/customers")
 public class CustomerController {
 

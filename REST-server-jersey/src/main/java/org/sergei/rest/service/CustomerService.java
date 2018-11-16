@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.service;
 
 import org.sergei.rest.dao.CustomerDAO;
@@ -12,6 +8,9 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 public class CustomerService {
 
     @Inject

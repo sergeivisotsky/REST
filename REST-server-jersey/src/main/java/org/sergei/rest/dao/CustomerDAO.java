@@ -1,11 +1,10 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.dao;
 
 import org.sergei.rest.model.Customer;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @SuppressWarnings("unchecked")
 public class CustomerDAO extends GenericHibernateDAO<Customer> {
     public CustomerDAO() {

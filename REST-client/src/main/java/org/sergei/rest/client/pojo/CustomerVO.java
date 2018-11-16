@@ -1,9 +1,8 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.client.pojo;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 public class CustomerVO {
     private Long customerId;
     private String firstName;

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.client.service;
 
 import org.sergei.rest.client.pojo.CustomerVO;
@@ -13,6 +9,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Service
 public class CustomerService {
 

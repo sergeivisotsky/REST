@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.dao;
 
 import javax.persistence.EntityManager;
@@ -11,6 +7,9 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Transactional
 @SuppressWarnings("unchecked")
 public abstract class GenericHibernateDAO<T extends Serializable> {

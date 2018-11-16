@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.client.controller;
 
 import org.sergei.rest.client.pojo.CustomerVO;
@@ -13,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 @Controller
 @RequestMapping("/")
 public class MainController {

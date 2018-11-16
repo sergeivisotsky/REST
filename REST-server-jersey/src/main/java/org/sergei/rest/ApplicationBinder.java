@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -12,6 +8,9 @@ import org.sergei.rest.service.AircraftService;
 import org.sergei.rest.service.CustomerService;
 import org.sergei.rest.service.RouteService;
 
+/**
+ * @author Sergei Visotsky, 2018
+ */
 public class ApplicationBinder extends AbstractBinder {
     @Override
     protected void configure() {
