@@ -1,7 +1,3 @@
-<%--
-  ~ Copyright (c) 2018 Sergei Visotsky
-  --%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
