@@ -30,7 +30,6 @@ import java.util.List;
 @Service
 public class PhotoService {
 
-    //    @Value("${file.tmp.path}")
     private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
     private final ModelMapper modelMapper;
     private final Path fileStorageLocation;

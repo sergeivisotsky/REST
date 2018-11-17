@@ -2,8 +2,6 @@ package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.dao.CustomerDAO;
-import org.sergei.rest.dao.OrderDAO;
-import org.sergei.rest.dao.OrderDetailsDAO;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
@@ -21,16 +19,11 @@ public class CustomerService {
 
     private final ModelMapper modelMapper;
     private final CustomerDAO customerDAO;
-    private final OrderDAO orderDAO;
-    private final OrderDetailsDAO orderDetailsDAO;
 
     @Autowired
-    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO,
-                           OrderDAO orderDAO, OrderDetailsDAO orderDetailsDAO) {
+    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO) {
         this.modelMapper = modelMapper;
         this.customerDAO = customerDAO;
-        this.orderDAO = orderDAO;
-        this.orderDetailsDAO = orderDetailsDAO;
     }
 
     /***
