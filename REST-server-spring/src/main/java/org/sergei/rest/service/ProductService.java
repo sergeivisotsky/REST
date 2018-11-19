@@ -17,6 +17,8 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private static final String PRODUCT_NOT_FOUND = "Product with code not found";
+
     private final ModelMapper modelMapper;
     private final ProductDAO productDAO;
 
@@ -36,7 +38,7 @@ public class ProductService {
     public ProductDTO findByCode(String productCode) {
         Product product = productDAO.findByCode(productCode);
         if (product == null) {
-            throw new ResourceNotFoundException("Product with code not found");
+            throw new ResourceNotFoundException(PRODUCT_NOT_FOUND);
         }
         return modelMapper.map(product, ProductDTO.class);
     }
@@ -51,7 +53,7 @@ public class ProductService {
     public ProductDTO update(String productCode, ProductDTO productDTO) {
         Product product = productDAO.findByCode(productCode);
         if (product == null) {
-            throw new ResourceNotFoundException("Product with this code not found");
+            throw new ResourceNotFoundException(PRODUCT_NOT_FOUND);
         }
 
         product.setProductCode(productCode);
@@ -69,7 +71,7 @@ public class ProductService {
     public ProductDTO delete(String productCode) {
         Product product = productDAO.findByCode(productCode);
         if (product == null) {
-            throw new ResourceNotFoundException("Product with code not found");
+            throw new ResourceNotFoundException(PRODUCT_NOT_FOUND);
         }
         productDAO.delete(product);
         return modelMapper.map(product, ProductDTO.class);

@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  */
 @Api(
         value = "/api/v1/customers/{customerId}/photos",
-        description = "Customer photo API methods",
         produces = "application/json, application/xml",
         consumes = "application/json, application/xml"
 )
@@ -35,7 +34,7 @@ import java.util.stream.Collectors;
         produces = {"application/json", "application/xml"})
 public class PhotoController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
 
     @Autowired
     private PhotoService photoService;

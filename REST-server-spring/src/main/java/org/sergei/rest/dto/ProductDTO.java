@@ -48,7 +48,7 @@ public class ProductDTO {
         return productCode;
     }
 
-    @ApiModelProperty(hidden = true, readOnly = true)
+    @ApiModelProperty(hidden = true)
     public void setProductCode(String productCode) {
         this.productCode = productCode;
     }

@@ -42,7 +42,7 @@ public class CustomerDTO {
         return customerId;
     }
 
-    @ApiModelProperty(hidden = true, readOnly = true)
+    @ApiModelProperty(hidden = true)
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }

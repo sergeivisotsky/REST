@@ -15,7 +15,6 @@ import java.util.List;
  */
 @Api(
         value = "/api/v1/products",
-        description = "Products API methods",
         produces = "application/json, application/xml",
         consumes = "application/json, application/xml"
 )

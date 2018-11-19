@@ -17,7 +17,6 @@ import java.util.List;
  */
 @Api(
         value = "/api/v1/customers",
-        description = "Customer API methods",
         produces = "application/json, application/xml",
         consumes = "application/json, application/xml"
 )
@@ -43,7 +42,7 @@ public class CustomerController {
     )
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerDTO> getCustomerById(@ApiParam(value = "Customer ID which should be found", required = true)
-                                                       @PathVariable("customerId") Long customerId) throws RecordNotFoundException {
+                                                       @PathVariable("customerId") Long customerId) {
         return new ResponseEntity<>(customerService.findOne(customerId), HttpStatus.OK);
     }
 

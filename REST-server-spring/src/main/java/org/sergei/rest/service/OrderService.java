@@ -27,6 +27,9 @@ import java.util.List;
 @Service
 public class OrderService {
 
+    private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
+    private static final String ORDER_NOT_FOUND = "Order with this ID not found";
+
     private final ModelMapper modelMapper;
     private final OrderDAO orderDAO;
     private final OrderDetailsDAO orderDetailsDAO;
@@ -62,7 +65,7 @@ public class OrderService {
     public OrderDTO findOne(Long orderId) {
         Order order = orderDAO.findOne(orderId);
         if (order == null) {
-            throw new ResourceNotFoundException("Order with this ID not found");
+            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
@@ -91,7 +94,7 @@ public class OrderService {
      */
     public OrderDTO findOneByCustomerIdAndOrderId(Long customerId, Long orderId) {
         if (customerDAO.findOne(customerId) == null) {
-            throw new RecordNotFoundException("No customer with this number found");
+            throw new RecordNotFoundException(CUSTOMER_NOT_FOUND);
         }
         return findOne(orderId);
     }
@@ -105,7 +108,7 @@ public class OrderService {
     public List<OrderDTO> findAllByCustomerId(Long customerId) {
         List<Order> orders = orderDAO.findAllByCustomerId(customerId);
         if (orders == null) {
-            throw new ResourceNotFoundException("No orders with this customer ID found");
+            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
 
         return findOrdersByListWithParam(orders);
@@ -120,7 +123,7 @@ public class OrderService {
     public List<OrderDTO> findAllByProductCode(String productCode) {
         List<Order> orders = orderDAO.findAllByProductCode(productCode);
         if (orders == null) {
-            throw new ResourceNotFoundException("Orders with this product code not found");
+            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
         return findOrdersByListWithParam(orders);
     }
@@ -135,7 +138,7 @@ public class OrderService {
     public OrderDTO saveByCustomerId(Long customerId, OrderDTO orderDTO) {
         Customer customer = customerDAO.findOne(customerId);
         if (customer == null) {
-            throw new ResourceNotFoundException("Customer with this ID not found");
+            throw new ResourceNotFoundException(CUSTOMER_NOT_FOUND);
         }
 
         Order order = modelMapper.map(orderDTO, Order.class);
@@ -173,13 +176,12 @@ public class OrderService {
     public OrderDTO updateByCustomerId(Long customerId, Long orderId, OrderDTO orderDTO) {
         Customer customer = customerDAO.findOne(customerId);
         if (customer == null) {
-            throw new ResourceNotFoundException("Customer with this ID not found");
+            throw new ResourceNotFoundException(CUSTOMER_NOT_FOUND);
         }
         Order order = orderDAO.findOne(orderId);
         if (order == null) {
-            throw new ResourceNotFoundException("Order with this ID not found");
+            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
-//        order.setOrderId(orderId);
         order.setCustomer(customer);
         order.setOrderDate(orderDTO.getOrderDate());
         order.setRequiredDate(orderDTO.getRequiredDate());
@@ -217,7 +219,7 @@ public class OrderService {
     public OrderDTO deleteById(Long orderId) {
         Order order = orderDAO.findOne(orderId);
         if (order == null) {
-            throw new ResourceNotFoundException("Order with this ID not found");
+            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
 
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
@@ -243,7 +245,7 @@ public class OrderService {
 
         Order order = orderDAO.findOne(orderId);
         if (order == null) {
-            throw new ResourceNotFoundException("Order with this ID not found");
+            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
         orderDAO.delete(order);
 

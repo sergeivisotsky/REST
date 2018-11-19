@@ -50,7 +50,7 @@ public class PhotoDTO {
         return photoId;
     }
 
-    @ApiModelProperty(hidden = true, readOnly = true)
+    @ApiModelProperty(hidden = true)
     public void setPhotoId(Long photoId) {
         this.photoId = photoId;
     }

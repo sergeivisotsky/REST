@@ -15,7 +15,6 @@ import java.util.List;
  */
 @Api(
         value = "/api/v1/customers/{customerId}/orders",
-        description = "Order API methods",
         produces = "application/json, application/xml",
         consumes = "application/json, application/xml"
 )

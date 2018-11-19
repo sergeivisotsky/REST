@@ -134,8 +134,6 @@ public class PhotoService {
             throw new ResourceNotFoundException("Invalid customer ID");
         }
 
-//        fileOperations.downloadFile(responseFileName);
-
         Path filePath = this.fileStorageLocation.resolve(photo.getFileName()).normalize();
         Resource resource = new UrlResource(filePath.toUri());
 

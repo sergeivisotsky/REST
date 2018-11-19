@@ -14,10 +14,10 @@ public class OrderDetails implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "details_id")
-    @SequenceGenerator(name = "details_id", sequenceName = "details_id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "detailsId")
+    @SequenceGenerator(name = "detailsId", sequenceName = "detailsId", allocationSize = 1)
     @Column(name = "details_id")
-    private Long details_id;
+    private Long detailsId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id")
@@ -37,20 +37,20 @@ public class OrderDetails implements Serializable {
     public OrderDetails() {
     }
 
-    public OrderDetails(Long details_id, Product product, Integer quantityOrdered, BigDecimal price, Order order) {
-        this.details_id = details_id;
+    public OrderDetails(Long detailsId, Product product, Integer quantityOrdered, BigDecimal price, Order order) {
+        this.detailsId = detailsId;
         this.product = product;
         this.quantityOrdered = quantityOrdered;
         this.price = price;
         this.order = order;
     }
 
-    public Long getDetails_id() {
-        return details_id;
+    public Long getDetailsId() {
+        return detailsId;
     }
 
-    public void setDetails_id(Long details_id) {
-        this.details_id = details_id;
+    public void setDetailsId(Long detailsId) {
+        this.detailsId = detailsId;
     }
 
     public Product getProduct() {

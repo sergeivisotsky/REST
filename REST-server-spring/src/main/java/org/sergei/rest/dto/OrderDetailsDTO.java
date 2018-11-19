@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 @JsonRootName("orderDetails")
 @XmlRootElement(name = "orderDetails")
 @XmlAccessorType(XmlAccessType.FIELD)
-
 public class OrderDetailsDTO {
 
     @XmlElement
@@ -47,7 +46,7 @@ public class OrderDetailsDTO {
         return orderId;
     }
 
-    @ApiModelProperty(hidden = true, readOnly = true)
+    @ApiModelProperty(hidden = true)
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }

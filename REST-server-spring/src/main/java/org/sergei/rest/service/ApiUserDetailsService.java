@@ -19,7 +19,7 @@ public class ApiUserDetailsService implements UserDetailsService {
     private UserDAO userDAO;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = userDAO.findByUserName(username);
         if (user == null) {
             throw new ResourceNotFoundException("User with this username not found");

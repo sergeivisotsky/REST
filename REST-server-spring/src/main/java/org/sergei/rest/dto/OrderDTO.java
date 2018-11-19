@@ -70,7 +70,7 @@ public class OrderDTO {
         return orderId;
     }
 
-    @ApiModelProperty(hidden = true, readOnly = true)
+    @ApiModelProperty(hidden = true)
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
