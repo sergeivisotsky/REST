@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2018 Sergei Visotsky
+ */
+
 pipeline {
 
     agent any
