@@ -1,5 +1,5 @@
 # REST-server
-REST API implementation using Spring MVC
+REST API implementation using Spring Boot
 
 ## Technologies
  * Java 8
