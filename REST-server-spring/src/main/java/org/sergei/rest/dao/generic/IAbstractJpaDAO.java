@@ -6,9 +6,12 @@ import java.util.List;
 /**
  * @author Sergei Visotsky, 2018
  */
-public interface IGenericDAO<T extends Serializable> {
+public interface IAbstractJpaDAO<T extends Serializable> {
+    void setPersistentClass(Class<T> persistentClass);
+
     /**
      * Find one entity
+     *
      * @param aLong takes ID
      * @return returns entity
      */
@@ -16,24 +19,28 @@ public interface IGenericDAO<T extends Serializable> {
 
     /**
      * Find all entities
+     *
      * @return all entities found
      */
     List<T> findAll();
 
     /**
      * Save one entity
+     *
      * @param entity takes entity from the RequestBody
      */
     void save(final T entity);
 
     /**
      * Updates entity taken from request body
+     *
      * @param entity entity taken from request body
      */
     void update(final T entity);
 
     /**
      * Deletes entity found in service layer
+     *
      * @param entity takes entity found
      */
     void delete(final T entity);

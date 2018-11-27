@@ -14,8 +14,8 @@ public class OrderDetails implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "detailsId")
-    @SequenceGenerator(name = "detailsId", sequenceName = "detailsId", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "details_id")
+    @SequenceGenerator(name = "details_id", sequenceName = "details_id", allocationSize = 1)
     @Column(name = "details_id")
     private Long detailsId;
 
