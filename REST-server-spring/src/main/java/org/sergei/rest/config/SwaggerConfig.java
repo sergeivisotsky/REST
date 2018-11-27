@@ -1,4 +1,8 @@
-package org.sergei.rest.swagger;
+/*
+ * Copyright (c) 2018 Sergei Visotsky
+ */
+
+package org.sergei.rest.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +31,7 @@ import static org.springframework.security.oauth2.provider.token.AccessTokenConv
 @EnableSwagger2
 public class SwaggerConfig {
 
-    @Value("${config.oauth2.accessTokenUri}")
+    @Value("${security.oauth2.resource.accessTokenUri}")
     private String authServer;
     private static final String CLIENT_SECRET = "client_secret";
 

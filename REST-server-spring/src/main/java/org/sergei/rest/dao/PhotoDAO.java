@@ -1,11 +1,10 @@
 package org.sergei.rest.dao;
 
-import org.hibernate.Session;
-import org.sergei.rest.dao.generic.GenericHibernateDAO;
+import org.sergei.rest.dao.generic.AbstractJpaHibernateDAO;
 import org.sergei.rest.model.Photo;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ import java.util.List;
  */
 @Repository
 @SuppressWarnings("unchecked")
-public class PhotoDAO extends GenericHibernateDAO<Photo> {
+public class PhotoDAO extends AbstractJpaHibernateDAO<Photo> {
 
     private static final String SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID = "SELECT p FROM Photo p WHERE p.customer.customerId = :customerId AND p.photoId = :photoId";
 
@@ -26,31 +25,22 @@ public class PhotoDAO extends GenericHibernateDAO<Photo> {
     }
 
     public List<Photo> findAllPhotosByCustomerId(Long customerId) {
-        Session session = sessionFactory.openSession();
-        TypedQuery<Photo> query = session.createQuery(SQL_FIND_ALL_BY_PHOTO_AND_CUSTOMER_NUMBER);
+        Query query = entityManager.createQuery(SQL_FIND_ALL_BY_PHOTO_AND_CUSTOMER_NUMBER);
         query.setParameter("customerId", customerId);
-        List<Photo> photos = query.getResultList();
-        session.close();
-        return photos;
+        return query.getResultList();
     }
 
     public Photo findPhotoByCustomerIdAndFileName(Long customerId, String fileName) {
-        Session session = sessionFactory.openSession();
-        TypedQuery<Photo> query = session.createQuery(SQL_FIND_ALL_BY_CUSTOMER_NUMBER_AND_FILE_NAME);
+        Query query = entityManager.createQuery(SQL_FIND_ALL_BY_CUSTOMER_NUMBER_AND_FILE_NAME);
         query.setParameter("customerId", customerId);
         query.setParameter("fileName", fileName);
-        Photo photo = query.getSingleResult();
-        session.close();
-        return photo;
+        return (Photo) query.getSingleResult();
     }
 
     public Photo findByCustomerIdAndPhotoId(Long customerId, Long photoId) {
-        Session session = sessionFactory.openSession();
-        TypedQuery<Photo> query = session.createQuery(SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID);
+        Query query = entityManager.createQuery(SQL_FIND_BY_CUSTOMER_NUMBER_AND_PHOTO_ID);
         query.setParameter("customerId", customerId);
         query.setParameter("photoId", photoId);
-        Photo photo = query.getSingleResult();
-        session.close();
-        return photo;
+        return (Photo) query.getSingleResult();
     }
 }
