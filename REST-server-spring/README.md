@@ -4,9 +4,8 @@ REST API implementation using Spring MVC
 ## Technologies
  * Java 8
  * Apache Maven
- * Apache Tomcat 9+
  * MySQL
- * Spring MVC
+ * Spring Boot
  * Jackson
  * modelmapper
  * Swagger
