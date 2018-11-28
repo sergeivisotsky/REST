@@ -1,14 +1,11 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.dao.UserDAO;
+import org.sergei.rest.dao.UserRepository;
 import org.sergei.rest.model.User;
-import org.sergei.rest.model.UserRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,28 +14,28 @@ import java.util.List;
 @Service
 public class ApiUserService {
 
-    private final UserDAO userDAO;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ApiUserService(UserDAO userDAO, PasswordEncoder passwordEncoder) {
-        this.userDAO = userDAO;
+    public ApiUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDAO.save(user);
+        userRepository.save(user);
         return user;
     }
 
     public List<User> getAllUsers() {
-        return userDAO.findAll();
+        return userRepository.findAll();
     }
 
    /*@PostConstruct
     private void saveDefaultUser() {
-        userDAO.save(
+        userRepository.save(
                 new User("admin",
                         passwordEncoder.encode("123456"),
                         Arrays.asList(

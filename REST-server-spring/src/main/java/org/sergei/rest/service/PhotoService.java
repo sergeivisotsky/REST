@@ -1,8 +1,8 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.dao.CustomerDAO;
-import org.sergei.rest.dao.PhotoDAO;
+import org.sergei.rest.dao.CustomerRepository;
+import org.sergei.rest.dao.PhotoRepository;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
@@ -31,16 +31,17 @@ import java.util.List;
 public class PhotoService {
 
     private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
+    private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
     private final ModelMapper modelMapper;
     private final Path fileStorageLocation;
-    private final PhotoDAO photoDAO;
-    private final CustomerDAO customerDAO;
+    private final PhotoRepository photoRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public PhotoService(ModelMapper modelMapper, PhotoDAO photoDAO, CustomerDAO customerDAO) {
+    public PhotoService(ModelMapper modelMapper, PhotoRepository photoRepository, CustomerRepository customerRepository) {
         this.modelMapper = modelMapper;
-        this.photoDAO = photoDAO;
-        this.customerDAO = customerDAO;
+        this.photoRepository = photoRepository;
+        this.customerRepository = customerRepository;
         this.fileStorageLocation = Paths.get(UPL_DIR).toAbsolutePath().normalize();
     }
 
@@ -53,7 +54,7 @@ public class PhotoService {
     public List<PhotoDTO> findAll(Long customerId) {
         List<PhotoDTO> photoDTOList = new LinkedList<>();
 
-        List<Photo> photos = photoDAO.findAllPhotosByCustomerId(customerId);
+        List<Photo> photos = photoRepository.findAllPhotosByCustomerId(customerId);
         if (photos == null) {
             throw new ResourceNotFoundException("Invalid customer ID or photos not found");
         }
@@ -77,9 +78,10 @@ public class PhotoService {
     public PhotoDTO uploadFileByCustomerId(Long customerId, String fileDownloadUri,
                                            CommonsMultipartFile commonsMultipartFile) {
 
-        if (customerDAO.findOne(customerId) == null) {
-            throw new ResourceNotFoundException("Customer with this ID not found");
-        }
+        customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
         String fileName = StringUtils.cleanPath(commonsMultipartFile.getOriginalFilename());
 
         PhotoDTO photoDTO = new PhotoDTO();
@@ -111,7 +113,7 @@ public class PhotoService {
             Files.copy(commonsMultipartFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             // Save file metadata into a database
-            photoDAO.save(photo);
+            photoRepository.save(photo);
 
             return photoDTO;
         } catch (IOException e) {
@@ -129,10 +131,10 @@ public class PhotoService {
      */
     public Resource downloadFileAsResourceByName(Long customerId, String fileName) throws MalformedURLException {
         // Get filename by customer number written in database
-        Photo photo = photoDAO.findPhotoByCustomerIdAndFileName(customerId, fileName);
-        if (photo == null) {
-            throw new ResourceNotFoundException("Invalid customer ID");
-        }
+        Photo photo = photoRepository.findPhotoByCustomerIdAndFileName(customerId, fileName)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
 
         Path filePath = this.fileStorageLocation.resolve(photo.getFileName()).normalize();
         Resource resource = new UrlResource(filePath.toUri());
@@ -155,10 +157,10 @@ public class PhotoService {
      */
     public Resource downloadFileAsResourceByFileId(Long customerId, Long photoId) throws MalformedURLException {
         // Get filename by customer id written in database
-        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerId, photoId);
-        if (photo == null) {
-            throw new ResourceNotFoundException("Invalid customer ID");
-        }
+        Photo photo = photoRepository.findByCustomerIdAndPhotoId(customerId, photoId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
 
         String responseFileName = photo.getFileName();
 
@@ -182,10 +184,11 @@ public class PhotoService {
      * @throws IOException
      */
     public PhotoDTO deleteById(Long customerId, Long photoId) throws IOException {
-        Photo photo = photoDAO.findByCustomerIdAndPhotoId(customerId, photoId);
-        if (photo == null) {
-            throw new ResourceNotFoundException("Invalid customer or photo ID");
-        }
+        Photo photo = photoRepository.findByCustomerIdAndPhotoId(customerId, photoId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
+        ;
 
         PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
 
@@ -195,7 +198,7 @@ public class PhotoService {
         Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
         Files.deleteIfExists(targetLocation);
 
-        photoDAO.delete(photo); // Delete file metadata from the database
+        photoRepository.delete(photo); // Delete file metadata from the database
 
         return photoDTO;
     }

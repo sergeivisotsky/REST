@@ -1,7 +1,7 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.dao.CustomerDAO;
+import org.sergei.rest.dao.CustomerRepository;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
@@ -20,12 +20,12 @@ public class CustomerService {
     private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
 
     private final ModelMapper modelMapper;
-    private final CustomerDAO customerDAO;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public CustomerService(ModelMapper modelMapper, CustomerDAO customerDAO) {
+    public CustomerService(ModelMapper modelMapper, CustomerRepository customerRepository) {
         this.modelMapper = modelMapper;
-        this.customerDAO = customerDAO;
+        this.customerRepository = customerRepository;
     }
 
     /***
@@ -35,7 +35,7 @@ public class CustomerService {
     public List<CustomerDTO> findAll() {
         List<CustomerDTO> customerDTOResponse = new LinkedList<>();
 
-        List<Customer> customers = customerDAO.findAll();
+        List<Customer> customers = customerRepository.findAll();
 
         for (Customer customer : customers) {
             CustomerDTO customerDTO = new CustomerDTO();
@@ -57,10 +57,10 @@ public class CustomerService {
      * @return Customer DTO response
      */
     public CustomerDTO findOne(Long customerId) {
-        Customer customer = customerDAO.findOne(customerId);
-        if (customer == null) {
-            throw new ResourceNotFoundException(CUSTOMER_NOT_FOUND);
-        }
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
         return modelMapper.map(customer, CustomerDTO.class);
     }
 
@@ -71,7 +71,7 @@ public class CustomerService {
      */
     public CustomerDTO save(CustomerDTO customerDTO) {
         Customer customer = modelMapper.map(customerDTO, Customer.class);
-        customerDAO.save(customer);
+        customerRepository.save(customer);
 
         return customerDTO;
     }
@@ -88,8 +88,15 @@ public class CustomerService {
     public CustomerDTO update(Long customerId, CustomerDTO customerDTO) {
         customerDTO.setCustomerId(customerId);
 
-        Customer customer = modelMapper.map(customerDTO, Customer.class);
-        customerDAO.update(customer);
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setAge(customerDTO.getAge());
+
+        customerRepository.save(customer);
 
         return customerDTO;
     }
@@ -101,11 +108,11 @@ public class CustomerService {
      * @return Updated customer response
      */
     public CustomerDTO deleteById(Long customerId) {
-        Customer customer = customerDAO.findOne(customerId);
-        if (customer == null) {
-            throw new ResourceNotFoundException(CUSTOMER_NOT_FOUND);
-        }
-        customerDAO.delete(customer);
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
+        customerRepository.delete(customer);
         return modelMapper.map(customer, CustomerDTO.class);
     }
 }

@@ -1,10 +1,7 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.dao.CustomerDAO;
-import org.sergei.rest.dao.OrderDAO;
-import org.sergei.rest.dao.OrderDetailsDAO;
-import org.sergei.rest.dao.ProductDAO;
+import org.sergei.rest.dao.*;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;
@@ -29,31 +26,22 @@ public class OrderService {
 
     private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
     private static final String ORDER_NOT_FOUND = "Order with this ID not found";
+    private static final String PRODUCT_NOT_FOUND = "Product with this ID not found";
 
     private final ModelMapper modelMapper;
-    private final OrderDAO orderDAO;
-    private final OrderDetailsDAO orderDetailsDAO;
-    private final CustomerDAO customerDAO;
-    private final ProductDAO productDAO;
+    private final OrderRepository orderRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
+    private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public OrderService(ModelMapper modelMapper, OrderDAO orderDAO, OrderDetailsDAO orderDetailsDAO,
-                        CustomerDAO customerDAO, ProductDAO productDAO) {
+    public OrderService(ModelMapper modelMapper, OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository,
+                        CustomerRepository customerRepository, ProductRepository productRepository) {
         this.modelMapper = modelMapper;
-        this.orderDAO = orderDAO;
-        this.orderDetailsDAO = orderDetailsDAO;
-        this.customerDAO = customerDAO;
-        this.productDAO = productDAO;
-    }
-
-    /**
-     * Get all orders
-     *
-     * @return List of order DTOs
-     */
-    public List<OrderDTO> findAll() {
-        List<Order> orders = orderDAO.findAll();
-        return findOrdersByListWithParam(orders);
+        this.orderRepository = orderRepository;
+        this.orderDetailsRepository = orderDetailsRepository;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
     }
 
     /**
@@ -62,16 +50,16 @@ public class OrderService {
      * @param orderId get order number as a parameter from REST controller
      * @return order DTO response
      */
-    public OrderDTO findOne(Long orderId) {
-        Order order = orderDAO.findOne(orderId);
-        if (order == null) {
-            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
-        }
+    private OrderDTO findOne(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
+                );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
-                orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
+                orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         orderDetailsList.forEach(orderDetails ->
@@ -93,9 +81,10 @@ public class OrderService {
      * @return Return order DTO reponse
      */
     public OrderDTO findOneByCustomerIdAndOrderId(Long customerId, Long orderId) {
-        if (customerDAO.findOne(customerId) == null) {
-            throw new RecordNotFoundException(CUSTOMER_NOT_FOUND);
-        }
+        customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new RecordNotFoundException(CUSTOMER_NOT_FOUND)
+                );
         return findOne(orderId);
     }
 
@@ -106,7 +95,7 @@ public class OrderService {
      * @return List of order DTOs
      */
     public List<OrderDTO> findAllByCustomerId(Long customerId) {
-        List<Order> orders = orderDAO.findAllByCustomerId(customerId);
+        List<Order> orders = orderRepository.findAllByCustomerId(customerId);
         if (orders == null) {
             throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
@@ -121,7 +110,7 @@ public class OrderService {
      * @return return list of order DTOs
      */
     public List<OrderDTO> findAllByProductCode(String productCode) {
-        List<Order> orders = orderDAO.findAllByProductCode(productCode);
+        List<Order> orders = orderRepository.findAllByProductCode(productCode);
         if (orders == null) {
             throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
@@ -136,10 +125,9 @@ public class OrderService {
      * @return return order DTO as a response
      */
     public OrderDTO saveByCustomerId(Long customerId, OrderDTO orderDTO) {
-        Customer customer = customerDAO.findOne(customerId);
-        if (customer == null) {
-            throw new ResourceNotFoundException(CUSTOMER_NOT_FOUND);
-        }
+        Customer customer = customerRepository.findById(customerId).orElseThrow(
+                () -> new RecordNotFoundException(CUSTOMER_NOT_FOUND)
+        );
 
         Order order = modelMapper.map(orderDTO, Order.class);
         order.setCustomer(customer);
@@ -150,7 +138,10 @@ public class OrderService {
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productDAO.findByCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode());
+            Product product = productRepository.findByProductCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode())
+                    .orElseThrow(
+                            () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
+                    );
             orderDetails.setOrder(order);
             orderDetails.setProduct(product);
             orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
@@ -160,7 +151,7 @@ public class OrderService {
 
         order.setOrderDetails(orderDetailsList);
 
-        orderDAO.save(order);
+        orderRepository.save(order);
 
         return orderDTO;
     }
@@ -174,14 +165,13 @@ public class OrderService {
      * @return return order DTO as a response
      */
     public OrderDTO updateByCustomerId(Long customerId, Long orderId, OrderDTO orderDTO) {
-        Customer customer = customerDAO.findOne(customerId);
-        if (customer == null) {
-            throw new ResourceNotFoundException(CUSTOMER_NOT_FOUND);
-        }
-        Order order = orderDAO.findOne(orderId);
-        if (order == null) {
-            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
-        }
+        Customer customer = customerRepository.findById(customerId).orElseThrow(
+                () -> new RecordNotFoundException(CUSTOMER_NOT_FOUND)
+        );
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
+                );
         order.setCustomer(customer);
         order.setOrderDate(orderDTO.getOrderDate());
         order.setRequiredDate(orderDTO.getRequiredDate());
@@ -194,7 +184,10 @@ public class OrderService {
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productDAO.findByCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode());
+            Product product = productRepository.findByProductCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode())
+                    .orElseThrow(
+                            () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
+                    );
             orderDetails.setOrder(order);
             orderDetails.setProduct(product);
             orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
@@ -204,32 +197,8 @@ public class OrderService {
 
         order.setOrderDetails(orderDetailsList);
 
-        orderDAO.update(order);
+        orderRepository.save(order);
 
-        return orderDTO;
-    }
-
-    /**
-     * Method to delete order by number taken from the REST controller
-     *
-     * @param orderId get oder number from th REST controller
-     * @return Order entity as a response
-     */
-    // FIXME: Set OrderDetailsDTO to the OrderDTO as a response
-    public OrderDTO deleteById(Long orderId) {
-        Order order = orderDAO.findOne(orderId);
-        if (order == null) {
-            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
-        }
-
-        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
-
-        List<OrderDetails> orderDetails = orderDetailsDAO.findAllByOrderId(orderId);
-        List<OrderDetailsDTO> orderDetailsDTOList = ObjectMapperUtils.mapAll(orderDetails, OrderDetailsDTO.class);
-
-        orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-
-        orderDAO.delete(order);
         return orderDTO;
     }
 
@@ -243,11 +212,11 @@ public class OrderService {
     // FIXME: So that it was able to delete entity by customer and order numbers
     public OrderDTO deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
 
-        Order order = orderDAO.findOne(orderId);
-        if (order == null) {
-            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
-        }
-        orderDAO.delete(order);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
+                );
+        orderRepository.delete(order);
 
         return modelMapper.map(order, OrderDTO.class);
     }
@@ -266,7 +235,7 @@ public class OrderService {
             OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
             List<OrderDetails> orderDetailsList =
-                    orderDetailsDAO.findAllByOrderId(orderDTO.getOrderId());
+                    orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 
             List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
             orderDetailsList.forEach(orderDetails ->
