@@ -19,8 +19,7 @@ import java.util.List;
 @ApiIgnore
 @RestController
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-@RequestMapping(value = "/users",
-        produces = {"application/json", "application/xml"})
+@RequestMapping(value = "/users", produces = "application/json")
 public class ApiUserController {
 
     @Autowired
@@ -31,7 +30,7 @@ public class ApiUserController {
         return new ResponseEntity<>(apiUSerService.getAllUsers(), HttpStatus.OK);
     }
 
-    @PostMapping(consumes = {"application/json", "application/xml"})
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         user.setUserRoles(Collections.singletonList(new UserRoles("USER")));
         User newUser = apiUSerService.saveUser(user);

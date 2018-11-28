@@ -19,8 +19,7 @@ import java.util.List;
         consumes = "application/json, application/xml"
 )
 @RestController
-@RequestMapping(value = "/api/v1",
-        produces = {"application/json", "application/xml"})
+@RequestMapping(value = "/api/v1", produces = "application/json")
 public class OrderController {
 
     @Autowired
@@ -70,8 +69,7 @@ public class OrderController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @PostMapping(value = "/customers/{customerId}/orders",
-            consumes = {"application/json", "application/xml"})
+    @PostMapping(value = "/customers/{customerId}/orders", consumes = "application/json")
     public ResponseEntity<OrderDTO> createOrder(@ApiParam(value = "Customer ID who created order", required = true)
                                                 @PathVariable("customerId") Long customerId,
                                                 @ApiParam(value = "Saved order", required = true)
@@ -85,8 +83,7 @@ public class OrderController {
                     @ApiResponse(code = 404, message = "Invalid customer or order ID")
             }
     )
-    @PutMapping(value = "/customers/{customerId}/orders/{orderId}",
-            consumes = {"application/json", "application/xml"})
+    @PutMapping(value = "/customers/{customerId}/orders/{orderId}", consumes = "application/json")
     public ResponseEntity<OrderDTO> updateRecord(@ApiParam(value = "Customer ID whose order should be updated", required = true)
                                                  @PathVariable("customerId") Long customerId,
                                                  @ApiParam(value = "Order ID which should be updated", required = true)

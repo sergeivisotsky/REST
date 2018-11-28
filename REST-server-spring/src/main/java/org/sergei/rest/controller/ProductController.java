@@ -19,8 +19,7 @@ import java.util.List;
         consumes = "application/json, application/xml"
 )
 @RestController
-@RequestMapping(value = "/api/v1/products",
-        produces = {"application/json", "application/xml"})
+@RequestMapping(value = "/api/v1/products", produces = "application/json")
 public class ProductController {
 
     @Autowired
@@ -45,7 +44,7 @@ public class ProductController {
     }
 
     @ApiOperation("Add a new product")
-    @PostMapping(consumes = {"application/json", "application/xml"})
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<ProductDTO> saveProduct(@ApiParam(value = "Saved product", required = true)
                                                   @RequestBody ProductDTO productDTO) {
         productService.save(productDTO);
@@ -59,7 +58,7 @@ public class ProductController {
                     @ApiResponse(code = 404, message = "Invalid product code")
             }
     )
-    @PutMapping(value = "/{productCode}", consumes = {"application/json", "application/xml"})
+    @PutMapping(value = "/{productCode}", consumes = "application/json")
     public ResponseEntity<ProductDTO> updateProductByCode(@ApiParam(value = "Updated product code", required = true)
                                                           @PathVariable("productCode") String productCode,
                                                           @ApiParam(value = "Updated product", required = true)

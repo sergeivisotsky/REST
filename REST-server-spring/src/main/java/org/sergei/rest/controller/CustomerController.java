@@ -21,8 +21,7 @@ import java.util.List;
         consumes = "application/json, application/xml"
 )
 @RestController
-@RequestMapping(value = "/api/v1/customers",
-        produces = {"application/json", "application/xml"})
+@RequestMapping(value = "/api/v1/customers", produces = "application/json")
 public class CustomerController {
 
     @Autowired
@@ -47,7 +46,7 @@ public class CustomerController {
     }
 
     @ApiOperation("Add a new customer")
-    @PostMapping(consumes = {"application/json", "application/xml"})
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<CustomerDTO> saveCustomer(@ApiParam(value = "Saved customer", required = true)
                                                     @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.save(customerDTO), HttpStatus.CREATED);
@@ -59,7 +58,7 @@ public class CustomerController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @PutMapping(value = "/{customerId}", consumes = {"application/json", "application/xml"})
+    @PutMapping(value = "/{customerId}", consumes = "application/json")
     public ResponseEntity<CustomerDTO> updateRecord(@ApiParam(value = "Customer ID which should be updated", required = true)
                                                     @PathVariable("customerId") Long customerId,
                                                     @ApiParam(value = "Updated customer", required = true)

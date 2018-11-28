@@ -30,8 +30,7 @@ import java.util.stream.Collectors;
         consumes = "application/json, application/xml"
 )
 @RestController
-@RequestMapping(value = "/api/v1/customers",
-        produces = {"application/json", "application/xml"})
+@RequestMapping(value = "/api/v1/customers", produces = "application/json")
 public class PhotoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
