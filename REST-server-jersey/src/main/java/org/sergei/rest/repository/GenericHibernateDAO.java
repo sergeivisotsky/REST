@@ -1,4 +1,4 @@
-package org.sergei.rest.dao;
+package org.sergei.rest.repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

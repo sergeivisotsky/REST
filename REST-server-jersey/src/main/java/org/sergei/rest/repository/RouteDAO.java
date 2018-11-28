@@ -1,4 +1,4 @@
-package org.sergei.rest.dao;
+package org.sergei.rest.repository;
 
 import org.sergei.rest.model.Route;
 

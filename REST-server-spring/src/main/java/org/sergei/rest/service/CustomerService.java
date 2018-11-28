@@ -1,7 +1,7 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.dao.CustomerRepository;
+import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;

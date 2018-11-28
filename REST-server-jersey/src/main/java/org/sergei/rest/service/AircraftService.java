@@ -1,6 +1,6 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.dao.AircraftDAO;
+import org.sergei.rest.repository.AircraftDAO;
 import org.sergei.rest.dto.AircraftDTO;
 import org.sergei.rest.model.Aircraft;
 

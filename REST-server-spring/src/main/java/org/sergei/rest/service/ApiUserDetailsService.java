@@ -1,6 +1,6 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.dao.UserRepository;
+import org.sergei.rest.repository.UserRepository;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

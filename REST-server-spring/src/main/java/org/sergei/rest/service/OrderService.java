@@ -1,7 +1,7 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.dao.*;
+import org.sergei.rest.repository.*;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.RecordNotFoundException;

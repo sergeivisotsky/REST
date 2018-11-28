@@ -1,8 +1,8 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.dao.CustomerRepository;
-import org.sergei.rest.dao.PhotoRepository;
+import org.sergei.rest.repository.CustomerRepository;
+import org.sergei.rest.repository.PhotoRepository;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
@@ -188,7 +188,6 @@ public class PhotoService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
-        ;
 
         PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
 

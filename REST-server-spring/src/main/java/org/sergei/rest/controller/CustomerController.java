@@ -2,7 +2,6 @@ package org.sergei.rest.controller;
 
 import io.swagger.annotations.*;
 import org.sergei.rest.dto.CustomerDTO;
-import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

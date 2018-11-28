@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Sergei Visotsky
  */
 
-package org.sergei.rest.dao;
+package org.sergei.rest.repository;
 
 import org.sergei.rest.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

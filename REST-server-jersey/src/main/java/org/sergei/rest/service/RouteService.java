@@ -1,6 +1,6 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.dao.RouteDAO;
+import org.sergei.rest.repository.RouteDAO;
 import org.sergei.rest.dto.RouteDTO;
 import org.sergei.rest.model.Route;
 

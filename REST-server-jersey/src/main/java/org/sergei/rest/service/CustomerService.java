@@ -1,6 +1,6 @@
 package org.sergei.rest.service;
 
-import org.sergei.rest.dao.CustomerDAO;
+import org.sergei.rest.repository.CustomerDAO;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.model.Customer;
 

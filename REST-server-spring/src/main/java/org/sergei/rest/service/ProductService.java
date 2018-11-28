@@ -1,7 +1,7 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.dao.ProductRepository;
+import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.dto.ProductDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Product;
@@ -38,7 +38,7 @@ public class ProductService {
     public ProductDTO findByCode(String productCode) {
         Product product = productRepository.findByProductCode(productCode)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException("Product with this code not found")
+                        () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
         return modelMapper.map(product, ProductDTO.class);
     }
@@ -53,7 +53,7 @@ public class ProductService {
     public ProductDTO update(String productCode, ProductDTO productDTO) {
         Product product = productRepository.findByProductCode(productCode)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException("Product with this code not found")
+                        () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
 
         product.setProductCode(productCode);
@@ -71,7 +71,7 @@ public class ProductService {
     public ProductDTO delete(String productCode) {
         Product product = productRepository.findByProductCode(productCode)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException("Product with this code not found")
+                        () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
         productRepository.delete(product);
         return modelMapper.map(product, ProductDTO.class);
