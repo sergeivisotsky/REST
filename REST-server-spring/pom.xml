@@ -78,11 +78,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>${com.fasterxml.jackson-version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>${com.fasterxml.jackson-version}</version>
-        </dependency>
 
         <!-- AspectJ -->
         <dependency>

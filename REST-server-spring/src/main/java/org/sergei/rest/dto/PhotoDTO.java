@@ -12,25 +12,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Sergei Visotsky, 2018
  */
 @ApiModel(value = "Photo", description = "All photo meta data")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class PhotoDTO {
-    @XmlElement
+
     private Long photoId;
-
-    @XmlElement
     private Long customerId;
-
-    @XmlElement
     private String fileName;
-
-    @XmlElement
     private String fileUrl;
-
-    @XmlElement
     private String fileType;
-
-    @XmlElement
     private Long fileSize;
 
     public PhotoDTO() {

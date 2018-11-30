@@ -12,20 +12,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Sergei Visotsky, 2018
  */
 @ApiModel(value = "Customer model", description = "Customer data")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class CustomerDTO {
 
-    @XmlElement
     private Long customerId;
-
-    @XmlElement
     private String firstName;
-
-    @XmlElement
     private String lastName;
-
-    @XmlElement
     private Integer age;
 
     public CustomerDTO() {

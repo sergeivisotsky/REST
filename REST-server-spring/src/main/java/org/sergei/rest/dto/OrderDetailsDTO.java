@@ -13,22 +13,12 @@ import java.math.BigDecimal;
  */
 @ApiModel(value = "OrderDetails", description = "All oder details data")
 @JsonRootName("orderDetails")
-@XmlRootElement(name = "orderDetails")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderDetailsDTO {
 
-    @XmlElement
-    @XmlTransient
     @JsonIgnore
     private Long orderId;
-
-    @XmlElement
     private String productCode;
-
-    @XmlElement
     private Integer quantityOrdered;
-
-    @XmlElement
     private BigDecimal price;
 
     public OrderDetailsDTO() {

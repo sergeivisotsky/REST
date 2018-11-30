@@ -15,39 +15,24 @@ import java.util.List;
  * @author Sergei Visotsky, 2018
  */
 @ApiModel(value = "Order", description = "All order data")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderDTO {
 
-    @XmlElement
     private Long orderId;
-
-    @XmlElement
     private Long customerId;
 
-    @XmlElement
-    @XmlSchemaType(name = "date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
-    @XmlElement
-    @XmlSchemaType(name = "date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date requiredDate;
 
-    @XmlElement
-    @XmlSchemaType(name = "date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date shippedDate;
-
-    @XmlElement
     private String status;
 
-    @XmlElementWrapper(name = "orderDetails")
-    @XmlElement(name = "orderDetailsInfo")
     @JsonProperty("orderDetails")
     private List<OrderDetailsDTO> orderDetailsDTO = new LinkedList<>();
 

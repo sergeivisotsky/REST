@@ -13,23 +13,12 @@ import java.math.BigDecimal;
  * @author Sergei Visotsky, 2018
  */
 @ApiModel(value = "Product", description = "All product meta data")
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class ProductDTO {
 
-    @XmlElement
     private String productCode;
-
-    @XmlElement
     private String productName;
-
-    @XmlElement
     private String productLine;
-
-    @XmlElement
     private String productVendor;
-
-    @XmlElement
     private BigDecimal price;
 
     public ProductDTO() {
