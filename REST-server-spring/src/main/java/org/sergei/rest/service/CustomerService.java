@@ -33,7 +33,7 @@ public class CustomerService {
      * @return List of customer DTOs list
      */
     public List<CustomerDTO> findAll() {
-        List<CustomerDTO> customerDTOResponse = new LinkedList<>();
+        List<CustomerDTO> customerDTOList = new LinkedList<>();
 
         List<Customer> customers = customerRepository.findAll();
 
@@ -44,14 +44,14 @@ public class CustomerService {
             customerDTO.setLastName(customer.getLastName());
             customerDTO.setAge(customer.getAge());
 
-            customerDTOResponse.add(customerDTO);
+            customerDTOList.add(customerDTO);
         }
 
-        return customerDTOResponse;
+        return customerDTOList;
     }
 
     /**
-     * Get customer by number
+     * Get customer by id
      *
      * @param customerId get customer number param from REST controller
      * @return Customer DTO response
@@ -79,7 +79,7 @@ public class CustomerService {
     //  TODO: Save customer and his orders with details in a single request body
 
     /**
-     * Update customer by customer number
+     * Update customer by customer id
      *
      * @param customerId  get customer number from the REST controller
      * @param customerDTO get customer as a request body
@@ -102,7 +102,7 @@ public class CustomerService {
     }
 
     /**
-     * Delete customer by number
+     * Delete customer by id
      *
      * @param customerId get customer number from the REST controller
      * @return Updated customer response

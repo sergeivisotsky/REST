@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.security.oauth2.provider.token.AccessTokenConverter.CLIENT_ID;
+import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
  * @author Sergei Visotsky, 2018
@@ -36,15 +37,29 @@ public class SwaggerConfig {
     private static final String CLIENT_SECRET = "client_secret";
 
     @Bean
-    public Docket api() {
+    public Docket customerApiV1() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("customer-api-v1")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("org.sergei.rest.controller"))
-                .paths(PathSelectors.any())
+                .paths(regex("/api/v1/customers*"))
                 .build()
                 .securitySchemes(Collections.singletonList(securitySchema()))
                 .securityContexts(Collections.singletonList(securityContext()))
-                .apiInfo(apiInfo());
+                .apiInfo(new ApiInfoBuilder().version("1.0").title("Customer API").description("REST API documentation for customers V1.0").build());
+    }
+
+    @Bean
+    public Docket customerApiV2() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("customer-api-v2")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("org.sergei.rest.controller"))
+                .paths(regex("/api/v2/customers*"))
+                .build()
+                .securitySchemes(Collections.singletonList(securitySchema()))
+                .securityContexts(Collections.singletonList(securityContext()))
+                .apiInfo(new ApiInfoBuilder().version("2.0").title("Customer API").description("REST API documentation for customers V2.0").build());
     }
 
     private ApiInfo apiInfo() {

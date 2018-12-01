@@ -29,4 +29,7 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     @Query("SELECT p FROM Photo p WHERE p.customer.customerId = :customerId AND p.photoId = :photoId")
     Optional<Photo> findByCustomerIdAndPhotoId(@Param("customerId") Long customerId,
                                                @Param("photoId") Long photoId);
+
+    @Query("SELECT p.fileUrl FROM Photo p WHERE p.customer.customerId = :customerId")
+    List<String> findFileUrlByCustomerId(Long customerId);
 }

@@ -2,7 +2,9 @@ package org.sergei.rest.controller;
 
 import io.swagger.annotations.*;
 import org.sergei.rest.dto.CustomerDTO;
+import org.sergei.rest.dto.CustomerExtendedDTO;
 import org.sergei.rest.service.CustomerService;
+import org.sergei.rest.service.CustomerServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +18,29 @@ import java.util.List;
  */
 @Api(
         value = "/api/v1/customers",
-        produces = "application/json, application/xml",
-        consumes = "application/json, application/xml"
+        produces = "application/json",
+        consumes = "application/json"
 )
 @RestController
-@RequestMapping(value = "/api/v1/customers", produces = "application/json")
+@RequestMapping(value = "/api", produces = "application/json")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CustomerServiceV2 customerServiceV2;
+
     @ApiOperation("Gel all customers")
-    @GetMapping
+    @GetMapping("/v1/customers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
         return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
+    }
+
+    @ApiOperation("Gel all customers")
+    @GetMapping("/v2/customers")
+    public ResponseEntity<List<CustomerExtendedDTO>> getAllCustomersV2() {
+        return new ResponseEntity<>(customerServiceV2.findAllV2(), HttpStatus.OK);
     }
 
     @ApiOperation("Get customer by ID")
@@ -38,14 +49,26 @@ public class CustomerController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @GetMapping("/{customerId}")
+    @GetMapping("/v1/customers/{customerId}")
     public ResponseEntity<CustomerDTO> getCustomerById(@ApiParam(value = "Customer ID which should be found", required = true)
                                                        @PathVariable("customerId") Long customerId) {
         return new ResponseEntity<>(customerService.findOne(customerId), HttpStatus.OK);
     }
 
+    @ApiOperation("Get customer by ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
+    @GetMapping("/v2/customers/{customerId}")
+    public ResponseEntity<CustomerExtendedDTO> getCustomerByIdV2(@ApiParam(value = "Customer ID which should be found", required = true)
+                                                                 @PathVariable("customerId") Long customerId) {
+        return new ResponseEntity<>(customerServiceV2.findOneV1p1(customerId), HttpStatus.OK);
+    }
+
     @ApiOperation("Add a new customer")
-    @PostMapping(consumes = "application/json")
+    @PostMapping(value = {"/v1/customers", "/v2/customers"}, consumes = "application/json")
     public ResponseEntity<CustomerDTO> saveCustomer(@ApiParam(value = "Saved customer", required = true)
                                                     @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.save(customerDTO), HttpStatus.CREATED);
@@ -57,7 +80,7 @@ public class CustomerController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @PutMapping(value = "/{customerId}", consumes = "application/json")
+    @PutMapping(value = {"/v1/customers/{customerId}", "/v2/customers/{customerId}"}, consumes = "application/json")
     public ResponseEntity<CustomerDTO> updateRecord(@ApiParam(value = "Customer ID which should be updated", required = true)
                                                     @PathVariable("customerId") Long customerId,
                                                     @ApiParam(value = "Updated customer", required = true)
@@ -71,7 +94,7 @@ public class CustomerController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @DeleteMapping("/{customerId}")
+    @DeleteMapping({"/v1/customers/{customerId}", "/v2/customers/{customerId}"})
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CustomerDTO> deleteCustomerById(@ApiParam(value = "Customer ID which should be deleted", required = true)
                                                           @PathVariable("customerId") Long customerId) {
