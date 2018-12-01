@@ -5,3 +5,6 @@ REST API implementations
  * REST-server - REST API implementation using Spring Boot
  * REST-server-jersey - REST API implementation using Jersey
  * REST-client-spring - REST API client using Spring and 2 clients using JavaScript
+ 
+ ## Fixme
+ * Fix Swagger versioning in REST-server-spring module
