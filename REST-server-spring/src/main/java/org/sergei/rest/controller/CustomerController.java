@@ -25,11 +25,14 @@ import java.util.List;
 @RequestMapping(value = "/api", produces = "application/json")
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+    private final CustomerServiceV2 customerServiceV2;
 
     @Autowired
-    private CustomerServiceV2 customerServiceV2;
+    public CustomerController(CustomerService customerService, CustomerServiceV2 customerServiceV2) {
+        this.customerService = customerService;
+        this.customerServiceV2 = customerServiceV2;
+    }
 
     @ApiOperation("Gel all customers")
     @GetMapping("/v1/customers")
@@ -64,7 +67,7 @@ public class CustomerController {
     @GetMapping("/v2/customers/{customerId}")
     public ResponseEntity<CustomerExtendedDTO> getCustomerByIdV2(@ApiParam(value = "Customer ID which should be found", required = true)
                                                                  @PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(customerServiceV2.findOneV1p1(customerId), HttpStatus.OK);
+        return new ResponseEntity<>(customerServiceV2.findOneV2(customerId), HttpStatus.OK);
     }
 
     @ApiOperation("Add a new customer")

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.service;
 
 import org.sergei.rest.dto.CustomerExtendedDTO;
@@ -20,7 +16,7 @@ import java.util.List;
  * @since 12/1/2018
  *
  * <pre>
- *     v1.1 for customer restful webservice service layer
+ *     v2 for customer restful webservice service layer
  * </pre>
  */
 @Service
@@ -71,7 +67,7 @@ public class CustomerServiceV2 {
      * @param customerId get customer number param from REST controller
      * @return Customer DTO response
      */
-    public CustomerExtendedDTO findOneV1p1(Long customerId) {
+    public CustomerExtendedDTO findOneV2(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
