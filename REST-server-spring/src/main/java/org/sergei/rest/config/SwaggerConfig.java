@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Sergei Visotsky
- */
-
 package org.sergei.rest.config;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +33,18 @@ public class SwaggerConfig {
     private static final String CLIENT_SECRET = "client_secret";
 
     @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("org.sergei.rest.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .securitySchemes(Collections.singletonList(securitySchema()))
+                .securityContexts(Collections.singletonList(securityContext()))
+                .apiInfo(apiInfo());
+    }
+
+    /*@Bean
     public Docket customerApiV1() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("customer-api-v1")
@@ -60,7 +68,7 @@ public class SwaggerConfig {
                 .securitySchemes(Collections.singletonList(securitySchema()))
                 .securityContexts(Collections.singletonList(securityContext()))
                 .apiInfo(new ApiInfoBuilder().version("2.0").title("Customer API").description("REST API documentation for customers V2.0").build());
-    }
+    }*/
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
