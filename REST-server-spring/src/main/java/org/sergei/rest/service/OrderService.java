@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.sergei.rest.repository.*;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
-import org.sergei.rest.exceptions.RecordNotFoundException;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
@@ -83,7 +82,7 @@ public class OrderService {
     public OrderDTO findOneByCustomerIdAndOrderId(Long customerId, Long orderId) {
         customerRepository.findById(customerId)
                 .orElseThrow(
-                        () -> new RecordNotFoundException(CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
         return findOne(orderId);
     }
@@ -126,7 +125,7 @@ public class OrderService {
      */
     public OrderDTO saveByCustomerId(Long customerId, OrderDTO orderDTO) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
-                () -> new RecordNotFoundException(CUSTOMER_NOT_FOUND)
+                () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
         );
 
         Order order = modelMapper.map(orderDTO, Order.class);
@@ -166,7 +165,7 @@ public class OrderService {
      */
     public OrderDTO updateByCustomerId(Long customerId, Long orderId, OrderDTO orderDTO) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
-                () -> new RecordNotFoundException(CUSTOMER_NOT_FOUND)
+                () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
         );
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(
