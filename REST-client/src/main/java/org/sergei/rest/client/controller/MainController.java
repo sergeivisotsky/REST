@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Sergei Visotsky, 2018
  */
 @Controller
-@RequestMapping("/")
 public class MainController {
 
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping
+    @GetMapping("/")
     public String welcome(Model model) {
         final Long customerId = 2L;
 
