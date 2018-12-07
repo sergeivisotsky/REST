@@ -1,9 +1,5 @@
 server:
   port: 9091
-
-###
-# Database credentials for MySQL
-###
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -24,10 +20,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-
-###
-# Security configuration
-###
 security:
   oauth2:
     resource:

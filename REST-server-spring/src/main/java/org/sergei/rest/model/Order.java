@@ -49,9 +49,8 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long orderId, Customer customer, Date orderDate,
+    public Order(Customer customer, Date orderDate,
                  Date requiredDate, Date shippedDate, String status) {
-        this.orderId = orderId;
         this.customer = customer;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;

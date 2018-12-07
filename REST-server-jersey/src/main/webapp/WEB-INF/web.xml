@@ -38,7 +38,7 @@
 
     <servlet>
         <servlet-name>SwaggerDoc</servlet-name>
-        <servlet-class>org.sergei.rest.config.SwaggerConfig</servlet-class>
+        <servlet-class>SwaggerConfig</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

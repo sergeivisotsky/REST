@@ -37,8 +37,7 @@ public class OrderDetails implements Serializable {
     public OrderDetails() {
     }
 
-    public OrderDetails(Long detailsId, Product product, Integer quantityOrdered, BigDecimal price, Order order) {
-        this.detailsId = detailsId;
+    public OrderDetails(Product product, Integer quantityOrdered, BigDecimal price, Order order) {
         this.product = product;
         this.quantityOrdered = quantityOrdered;
         this.price = price;
