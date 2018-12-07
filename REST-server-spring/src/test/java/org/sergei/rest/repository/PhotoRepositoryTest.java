@@ -81,7 +81,7 @@ public class PhotoRepositoryTest {
         customerRepository.save(customer);
         Photo photo = new Photo(customer, "testFileName", "http://test.com/test.jpg", "jpg", 120L);
         photoRepository.save(photo);
-        Iterable<Photo> foundPhotos = photoRepository.findAllPhotosByCustomerId(1L);
+        Iterable<Photo> foundPhotos = photoRepository.findAllPhotosByCustomerId(customer.getCustomerId());
         assertThat(foundPhotos).hasSize(1);
     }
 
