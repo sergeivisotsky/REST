@@ -32,11 +32,11 @@ public class MainController {
 
     @GetMapping("/angular")
     public String angularClient() {
-        return "redirect:html/angular-client.html";
+        return "redirect:templates/angular-client.html";
     }
 
     @GetMapping("/jquery")
     public String jqueryClient() {
-        return "redirect:html/jquery-client.html";
+        return "redirect:templates/jquery-client.html";
     }
 }

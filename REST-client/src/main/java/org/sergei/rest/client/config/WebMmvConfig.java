@@ -10,11 +10,4 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMmvConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/html/**", "/js/**")
-                .addResourceLocations("/WEB-INF/html/", "/WEB-INF/js/");
-    }
 }
