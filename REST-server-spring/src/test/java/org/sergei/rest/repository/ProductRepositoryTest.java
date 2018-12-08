@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
  * @author Sergei Visotsky
  * @since 12/7/2018
  */
-@Ignore
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -47,6 +46,7 @@ public class ProductRepositoryTest {
         assertTrue(productList.isEmpty());
     }
 
+    @Ignore
     @Test
     public void saveProductThanGetOk() {
         Product product = new Product("Test name", "Testing", "Test case", PRICE);

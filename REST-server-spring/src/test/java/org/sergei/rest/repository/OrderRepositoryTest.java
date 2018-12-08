@@ -111,9 +111,9 @@ public class OrderRepositoryTest {
         product.setProductCode("LV_50");
         productRepository.save(product);
         Order order = new Order(customer, TESTING_DATE, TESTING_DATE, TESTING_DATE, "pending");
+        orderRepository.save(order);
         OrderDetails orderDetails = new OrderDetails(product, 5, PRICE, order);
         orderDetailsRepository.save(orderDetails);
-        orderRepository.save(order);
         Iterable<Order> foundOrders = orderRepository.findAllByProductCode(order.getOrderDetails().get(0).getProduct().getProductCode());
         assertThat(foundOrders).isNotEmpty();
         assertEquals(customer.getCustomerId(), ((List<Order>) foundOrders).get(0).getCustomer().getCustomerId());
