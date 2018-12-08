@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Code inspection & quality gate') {
             steps {
-                echo '-=- analyzing code -=-'
+                echo '-=- run code inspection & check quality gate -=-'
                 sh 'mvn sonar:sonar'
             }
         }
