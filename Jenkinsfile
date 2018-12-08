@@ -6,6 +6,16 @@ pipeline {
     }
 
     stages {
+
+        stage('Code analise') {
+            steps {
+                echo '-=- analyzing code -=-'
+                sh 'mvn sonar:sonar ' +
+                        '-Dsonar.host.url=http://79.135.149.36:9000 ' +
+                        '-Dsonar.login=cd75a80bd9903c713d937241dd880a1056e5b925'
+            }
+        }
+
         stage('Compilation') {
             steps {
                 echo '-=- compiling project -=-'
