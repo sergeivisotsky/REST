@@ -33,7 +33,7 @@ public class CustomerServiceV2 extends CustomerService {
 
         List<Customer> customers = customerRepository.findAll();
 
-        for (Customer customer : customers) {
+        customers.forEach(customer -> {
             CustomerDTOV2 customerDTOV2 = new CustomerDTOV2();
             customerDTOV2.setCustomerId(customer.getCustomerId());
             customerDTOV2.setFirstName(customer.getFirstName());
@@ -41,23 +41,10 @@ public class CustomerServiceV2 extends CustomerService {
             customerDTOV2.setAge(customer.getAge());
 
             customerDTOList.add(customerDTOV2);
-        }
+        });
 
         return customerDTOList;
     }
-
-    /**
-     * Find all customers using pagination
-     *
-     * @param page
-     * @param size
-     * @return
-     */
-    /*public Page<CustomerDTO> findPaginated(int page, int size) {
-        Page<Customer> customers = customerRepository.findAllV2(PageRequest.of(page, size));
-        Page<CustomerDTO> customerDTOPage = modelMapper.map(customers, (Type) CustomerDTO.class);
-        return customerDTOPage;
-    }*/
 
     /**
      * Get customer by id
