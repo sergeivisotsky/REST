@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;

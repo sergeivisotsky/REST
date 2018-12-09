@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 
 /**
