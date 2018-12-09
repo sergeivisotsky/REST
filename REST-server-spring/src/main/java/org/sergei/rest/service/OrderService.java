@@ -21,17 +21,17 @@ import java.util.List;
  * @author Sergei Visotsky, 2018
  */
 @Service
-public class OrderService {
+public class OrderService<T> {
 
-    private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
-    private static final String ORDER_NOT_FOUND = "Order with this ID not found";
-    private static final String PRODUCT_NOT_FOUND = "Product with this ID not found";
+    protected static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
+    protected static final String ORDER_NOT_FOUND = "Order with this ID not found";
+    protected static final String PRODUCT_NOT_FOUND = "Product with this ID not found";
 
-    private final ModelMapper modelMapper;
-    private final OrderRepository orderRepository;
-    private final OrderDetailsRepository orderDetailsRepository;
-    private final CustomerRepository customerRepository;
-    private final ProductRepository productRepository;
+    protected final ModelMapper modelMapper;
+    protected final OrderRepository orderRepository;
+    protected final OrderDetailsRepository orderDetailsRepository;
+    protected final CustomerRepository customerRepository;
+    protected final ProductRepository productRepository;
 
     @Autowired
     public OrderService(ModelMapper modelMapper, OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository,

@@ -2,9 +2,7 @@ package org.sergei.rest.controller;
 
 import io.swagger.annotations.*;
 import org.sergei.rest.dto.CustomerDTO;
-import org.sergei.rest.dto.CustomerExtendedDTO;
 import org.sergei.rest.service.CustomerService;
-import org.sergei.rest.service.CustomerServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,25 +23,13 @@ import java.util.List;
 @RequestMapping(value = "/api", produces = "application/json")
 public class CustomerController {
 
-    private final CustomerService customerService;
-    private final CustomerServiceV2 customerServiceV2;
-
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerServiceV2 customerServiceV2) {
-        this.customerService = customerService;
-        this.customerServiceV2 = customerServiceV2;
-    }
+    private CustomerService customerService;
 
     @ApiOperation("Gel all customers")
     @GetMapping("/v1/customers")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
         return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
-    }
-
-    @ApiOperation("Gel all customers")
-    @GetMapping("/v2/customers")
-    public ResponseEntity<List<CustomerExtendedDTO>> getAllCustomersV2() {
-        return new ResponseEntity<>(customerServiceV2.findAllV2(), HttpStatus.OK);
     }
 
     @ApiOperation("Get customer by ID")
@@ -56,18 +42,6 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> getCustomerById(@ApiParam(value = "Customer ID which should be found", required = true)
                                                        @PathVariable("customerId") Long customerId) {
         return new ResponseEntity<>(customerService.findOne(customerId), HttpStatus.OK);
-    }
-
-    @ApiOperation("Get customer by ID")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 404, message = "Invalid customer ID")
-            }
-    )
-    @GetMapping("/v2/customers/{customerId}")
-    public ResponseEntity<CustomerExtendedDTO> getCustomerByIdV2(@ApiParam(value = "Customer ID which should be found", required = true)
-                                                                 @PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(customerServiceV2.findOneV2(customerId), HttpStatus.OK);
     }
 
     @ApiOperation("Add a new customer")

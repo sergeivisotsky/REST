@@ -1,10 +1,10 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
+import org.sergei.rest.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,9 @@ import java.util.List;
 @Service
 public class CustomerService {
 
-    private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
-
-    private final ModelMapper modelMapper;
-    private final CustomerRepository customerRepository;
+    protected static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
+    protected final ModelMapper modelMapper;
+    protected final CustomerRepository customerRepository;
 
     @Autowired
     public CustomerService(ModelMapper modelMapper, CustomerRepository customerRepository) {
@@ -37,7 +36,7 @@ public class CustomerService {
 
         List<Customer> customers = customerRepository.findAll();
 
-        for (Customer customer : customers) {
+        customers.forEach(customer -> {
             CustomerDTO customerDTO = new CustomerDTO();
             customerDTO.setCustomerId(customer.getCustomerId());
             customerDTO.setFirstName(customer.getFirstName());
@@ -45,7 +44,7 @@ public class CustomerService {
             customerDTO.setAge(customer.getAge());
 
             customerDTOList.add(customerDTO);
-        }
+        });
 
         return customerDTOList;
     }

@@ -38,7 +38,7 @@ public class CustomerRESTController {
     @RequestMapping(value = "/{customer}",  method = RequestMethod.GET, 
     produces = {"application/json", "application/xml"})
     public @ResponseBody Customer getCustomerById(@PathVariable("customer") Long customer) {
-        return customerService.getCustomerById(customer);
+        return customerServiceV2.getCustomerById(customer);
     }
 }
 ```
@@ -52,7 +52,7 @@ Starting from Spring 5.xx annotation `@RestController` appeared which includes `
 public class CustomerRESTController {
     @GetMapping(value = "/{customer}", produces = {"application/json", "application/xml"})
     public Customer getCustomerById(@PathVariable("customer") Long customer) {
-        return customerService.getCustomerById(customer);
+        return customerServiceV2.getCustomerById(customer);
     }
 }
 ```
