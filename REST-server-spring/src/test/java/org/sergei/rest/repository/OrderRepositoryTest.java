@@ -7,7 +7,7 @@ import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.model.OrderDetails;
 import org.sergei.rest.model.Product;
-import org.sergei.rest.test.config.WebSecurityConfigTest;
+import org.sergei.rest.testconfig.WebSecurityConfigTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

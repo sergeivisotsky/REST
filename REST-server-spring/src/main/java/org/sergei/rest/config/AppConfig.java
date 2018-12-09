@@ -1,4 +1,4 @@
-package org.sergei.rest.test.config;
+package org.sergei.rest.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

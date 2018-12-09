@@ -1,4 +1,4 @@
-package org.sergei.rest.test.config;
+package org.sergei.rest.testconfig;
 
 import org.springframework.context.annotation.Configuration;
 
