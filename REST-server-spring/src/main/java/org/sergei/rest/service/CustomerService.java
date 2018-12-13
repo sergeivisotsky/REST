@@ -70,9 +70,8 @@ public class CustomerService {
      */
     public CustomerDTO save(CustomerDTO customerDTO) {
         Customer customer = modelMapper.map(customerDTO, Customer.class);
-        customerRepository.save(customer);
-
-        return customerDTO;
+        Customer savedCustomer = customerRepository.save(customer);
+        return modelMapper.map(savedCustomer, CustomerDTO.class);
     }
 
     //  TODO: Save customer and his orders with details in a single request body

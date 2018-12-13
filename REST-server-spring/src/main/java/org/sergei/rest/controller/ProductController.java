@@ -47,9 +47,7 @@ public class ProductController {
     @PostMapping(value = {"/v1/products", "/v2/products"}, consumes = "application/json")
     public ResponseEntity<ProductDTO> saveProduct(@ApiParam(value = "Saved product", required = true)
                                                   @RequestBody ProductDTO productDTO) {
-        productService.save(productDTO);
-
-        return new ResponseEntity<>(productDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.save(productDTO), HttpStatus.CREATED);
     }
 
     @ApiOperation("Update product by code")

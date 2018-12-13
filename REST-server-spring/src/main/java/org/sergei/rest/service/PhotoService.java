@@ -1,13 +1,14 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.repository.CustomerRepository;
-import org.sergei.rest.repository.PhotoRepository;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Photo;
+import org.sergei.rest.repository.CustomerRepository;
+import org.sergei.rest.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -78,24 +79,7 @@ public class PhotoService {
     public PhotoDTO uploadFileByCustomerId(Long customerId, String fileDownloadUri,
                                            CommonsMultipartFile commonsMultipartFile) {
 
-        customerRepository.findById(customerId)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
-                );
         String fileName = StringUtils.cleanPath(commonsMultipartFile.getOriginalFilename());
-
-        PhotoDTO photoDTO = new PhotoDTO();
-
-        // FIXME: set photo ID properly due to it is null right now
-//        photoDTO.setPhotoId();
-        photoDTO.setCustomerId(customerId);
-        photoDTO.setFileName(commonsMultipartFile.getOriginalFilename());
-        photoDTO.setFileUrl(fileDownloadUri);
-        photoDTO.setFileType(commonsMultipartFile.getContentType());
-        photoDTO.setFileSize(commonsMultipartFile.getSize());
-
-        // ModelMapper is used to avoid manual conversion from DTO to entity using setters and getters
-        Photo photo = modelMapper.map(photoDTO, Photo.class);
 
         if (fileDownloadUri.length() > 150) {
             throw new FileStorageException("Too long file name");
@@ -112,10 +96,23 @@ public class PhotoService {
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(commonsMultipartFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            // Save file metadata into a database
-            photoRepository.save(photo);
+            Customer customer = customerRepository.findById(customerId)
+                    .orElseThrow(
+                            () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                    );
 
-            return photoDTO;
+            Photo photo = new Photo();
+
+            photo.setCustomer(customer);
+            photo.setFileName(commonsMultipartFile.getOriginalFilename());
+            photo.setFileUrl(fileDownloadUri);
+            photo.setFileType(commonsMultipartFile.getContentType());
+            photo.setFileSize(commonsMultipartFile.getSize());
+
+            // Save file metadata into a database
+            Photo savedPhoto = photoRepository.save(photo);
+
+            return modelMapper.map(savedPhoto, PhotoDTO.class);
         } catch (IOException e) {
             throw new FileStorageException("Cannot store file");
         }

@@ -1,7 +1,6 @@
 package org.sergei.rest.service;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.repository.*;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
@@ -9,6 +8,10 @@ import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.model.OrderDetails;
 import org.sergei.rest.model.Product;
+import org.sergei.rest.repository.CustomerRepository;
+import org.sergei.rest.repository.OrderDetailsRepository;
+import org.sergei.rest.repository.OrderRepository;
+import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +28,13 @@ public class OrderService<T> {
 
     protected static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
     protected static final String ORDER_NOT_FOUND = "Order with this ID not found";
-    protected static final String PRODUCT_NOT_FOUND = "Product with this ID not found";
+    private static final String PRODUCT_NOT_FOUND = "Product with this ID not found";
 
     protected final ModelMapper modelMapper;
     protected final OrderRepository orderRepository;
     protected final OrderDetailsRepository orderDetailsRepository;
     protected final CustomerRepository customerRepository;
-    protected final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
     public OrderService(ModelMapper modelMapper, OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository,
@@ -150,9 +153,8 @@ public class OrderService<T> {
 
         order.setOrderDetails(orderDetailsList);
 
-        orderRepository.save(order);
-
-        return orderDTO;
+        Order savedOrder = orderRepository.save(order);
+        return modelMapper.map(savedOrder, OrderDTO.class);
     }
 
     /**

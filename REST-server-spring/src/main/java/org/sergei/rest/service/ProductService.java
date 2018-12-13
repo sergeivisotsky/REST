@@ -56,9 +56,10 @@ public class ProductService {
      *
      * @param productDTO product to be saved
      */
-    public void save(ProductDTO productDTO) {
+    public ProductDTO save(ProductDTO productDTO) {
         Product product = modelMapper.map(productDTO, Product.class);
-        productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
     /**
