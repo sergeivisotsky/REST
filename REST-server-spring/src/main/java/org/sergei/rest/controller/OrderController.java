@@ -20,6 +20,7 @@ import java.util.List;
 )
 @RestController
 @RequestMapping(value = "/api", produces = "application/json")
+@SuppressWarnings("unchecked")
 public class OrderController {
 
     @Autowired
@@ -104,6 +105,7 @@ public class OrderController {
                                                                       @PathVariable("customerId") Long customerId,
                                                                       @ApiParam(value = "Order ID whose order should be deleted", required = true)
                                                                       @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.deleteByCustomerIdAndOrderId(customerId, orderId), HttpStatus.NO_CONTENT);
+        orderService.deleteByCustomerIdAndOrderId(customerId, orderId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

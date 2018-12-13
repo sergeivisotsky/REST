@@ -210,16 +210,8 @@ public class OrderService<T> {
      * @param orderId    get order number form the REST controller
      * @return Order entity as a response
      */
-    // FIXME: So that it was able to delete entity by customer and order numbers
-    public OrderDTO deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
-
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
-                );
-        orderRepository.delete(order);
-
-        return modelMapper.map(order, OrderDTO.class);
+    public void deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
+        orderRepository.deleteByCustomerIdAndOrderId(customerId, orderId);;
     }
 
     /**
