@@ -32,18 +32,6 @@ public class SwaggerConfig {
     private String authServer;
     private static final String CLIENT_SECRET = "client_secret";
 
-    /*@Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("org.sergei.rest.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .securitySchemes(Collections.singletonList(securitySchema()))
-                .securityContexts(Collections.singletonList(securityContext()))
-                .apiInfo(apiInfo());
-    }*/
-
     @Bean
     public Docket customerApiV1() {
         return new Docket(DocumentationType.SWAGGER_2)
