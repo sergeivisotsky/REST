@@ -11,6 +11,7 @@ import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.service.OrderService;
+import org.sergei.rest.utils.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,10 +27,10 @@ import java.util.List;
 @Service
 public class OrderServiceV2 extends OrderService {
 
-    public OrderServiceV2(ModelMapper modelMapper, OrderRepository orderRepository,
+    public OrderServiceV2(OrderRepository orderRepository,
                           OrderDetailsRepository orderDetailsRepository,
                           CustomerRepository customerRepository, ProductRepository productRepository) {
-        super(modelMapper, orderRepository, orderDetailsRepository, customerRepository, productRepository);
+        super(orderRepository, orderDetailsRepository, customerRepository, productRepository);
     }
 
     /**
@@ -44,7 +45,7 @@ public class OrderServiceV2 extends OrderService {
                         () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-        OrderDTOV2 orderDTOV2 = modelMapper.map(order, OrderDTOV2.class);
+        OrderDTOV2 orderDTOV2 = ObjectMapperUtils.map(order, OrderDTOV2.class);
 
         List<OrderDetails> orderDetailsList =
                 orderDetailsRepository.findAllByOrderId(orderDTOV2.getOrderId());
@@ -52,7 +53,7 @@ public class OrderServiceV2 extends OrderService {
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         orderDetailsList.forEach(orderDetails ->
                 orderDetailsDTOList.add(
-                        modelMapper.map(orderDetails, OrderDetailsDTO.class)
+                        ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class)
                 )
         );
 
@@ -116,7 +117,7 @@ public class OrderServiceV2 extends OrderService {
 
         for (Order order : orders) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTOV2 orderDTO = modelMapper.map(order, OrderDTOV2.class);
+            OrderDTOV2 orderDTO = ObjectMapperUtils.map(order, OrderDTOV2.class);
 
             List<OrderDetails> orderDetailsList =
                     orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -124,12 +125,12 @@ public class OrderServiceV2 extends OrderService {
             List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
             orderDetailsList.forEach(orderDetails ->
                     orderDetailsDTOList.add(
-                            modelMapper.map(orderDetails, OrderDetailsDTO.class)
+                            ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class)
                     )
             );
             for (OrderDetails orderDetails : orderDetailsList) {
                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
+                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class);
                 orderDetailsDTOList.add(orderDetailsDTO);
             }
 

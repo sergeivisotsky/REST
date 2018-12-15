@@ -30,16 +30,14 @@ public class OrderService<T> {
     protected static final String ORDER_NOT_FOUND = "Order with this ID not found";
     private static final String PRODUCT_NOT_FOUND = "Product with this ID not found";
 
-    protected final ModelMapper modelMapper;
     protected final OrderRepository orderRepository;
     protected final OrderDetailsRepository orderDetailsRepository;
     protected final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
 
     @Autowired
-    public OrderService(ModelMapper modelMapper, OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository,
+    public OrderService(OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository,
                         CustomerRepository customerRepository, ProductRepository productRepository) {
-        this.modelMapper = modelMapper;
         this.orderRepository = orderRepository;
         this.orderDetailsRepository = orderDetailsRepository;
         this.customerRepository = customerRepository;
@@ -58,7 +56,7 @@ public class OrderService<T> {
                         () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+        OrderDTO orderDTO = ObjectMapperUtils.map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
                 orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -66,7 +64,7 @@ public class OrderService<T> {
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         orderDetailsList.forEach(orderDetails ->
                 orderDetailsDTOList.add(
-                        modelMapper.map(orderDetails, OrderDetailsDTO.class)
+                        ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class)
                 )
         );
 
@@ -131,7 +129,7 @@ public class OrderService<T> {
                 () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
         );
 
-        Order order = modelMapper.map(orderDTO, Order.class);
+        Order order = ObjectMapperUtils.map(orderDTO, Order.class);
         order.setCustomer(customer);
 
         // Maps each member of collection containing requests to the class
@@ -154,7 +152,7 @@ public class OrderService<T> {
         order.setOrderDetails(orderDetailsList);
 
         Order savedOrder = orderRepository.save(order);
-        return modelMapper.map(savedOrder, OrderDTO.class);
+        return ObjectMapperUtils.map(savedOrder, OrderDTO.class);
     }
 
     /**
@@ -225,7 +223,7 @@ public class OrderService<T> {
 
         for (Order order : orders) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+            OrderDTO orderDTO = ObjectMapperUtils.map(order, OrderDTO.class);
 
             List<OrderDetails> orderDetailsList =
                     orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -233,12 +231,12 @@ public class OrderService<T> {
             List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
             orderDetailsList.forEach(orderDetails ->
                     orderDetailsDTOList.add(
-                            modelMapper.map(orderDetails, OrderDetailsDTO.class)
+                            ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class)
                     )
             );
             for (OrderDetails orderDetails : orderDetailsList) {
                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = modelMapper.map(orderDetails, OrderDetailsDTO.class);
+                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class);
                 orderDetailsDTOList.add(orderDetailsDTO);
             }
 

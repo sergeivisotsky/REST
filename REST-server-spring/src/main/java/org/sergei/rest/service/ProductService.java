@@ -18,12 +18,10 @@ import java.util.List;
 public class ProductService {
 
     protected static final String PRODUCT_NOT_FOUND = "Product with code not found";
-    protected final ModelMapper modelMapper;
     protected final ProductRepository productRepository;
 
     @Autowired
-    public ProductService(ModelMapper modelMapper, ProductRepository productRepository) {
-        this.modelMapper = modelMapper;
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -48,7 +46,7 @@ public class ProductService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
-        return modelMapper.map(product, ProductDTO.class);
+        return ObjectMapperUtils.map(product, ProductDTO.class);
     }
 
     /**
@@ -57,9 +55,9 @@ public class ProductService {
      * @param productDTO product to be saved
      */
     public ProductDTO save(ProductDTO productDTO) {
-        Product product = modelMapper.map(productDTO, Product.class);
+        Product product = ObjectMapperUtils.map(productDTO, Product.class);
         Product savedProduct = productRepository.save(product);
-        return modelMapper.map(savedProduct, ProductDTO.class);
+        return ObjectMapperUtils.map(savedProduct, ProductDTO.class);
     }
 
     /**
@@ -98,6 +96,6 @@ public class ProductService {
                         () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
         productRepository.delete(product);
-        return modelMapper.map(product, ProductDTO.class);
+        return ObjectMapperUtils.map(product, ProductDTO.class);
     }
 }

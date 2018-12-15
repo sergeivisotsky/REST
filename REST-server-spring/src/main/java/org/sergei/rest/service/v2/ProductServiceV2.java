@@ -20,8 +20,8 @@ import java.util.List;
 @Service
 public class ProductServiceV2 extends ProductService {
 
-    public ProductServiceV2(ModelMapper modelMapper, ProductRepository productRepository) {
-        super(modelMapper, productRepository);
+    public ProductServiceV2(ProductRepository productRepository) {
+        super(productRepository);
     }
 
     /**
@@ -45,6 +45,6 @@ public class ProductServiceV2 extends ProductService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
-        return modelMapper.map(product, ProductDTOV2.class);
+        return ObjectMapperUtils.map(product, ProductDTOV2.class);
     }
 }

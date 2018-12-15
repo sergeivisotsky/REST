@@ -9,6 +9,7 @@ import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Photo;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
+import org.sergei.rest.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -33,14 +34,12 @@ public class PhotoService {
 
     private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
     private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
-    private final ModelMapper modelMapper;
     private final Path fileStorageLocation;
     private final PhotoRepository photoRepository;
     private final CustomerRepository customerRepository;
 
     @Autowired
-    public PhotoService(ModelMapper modelMapper, PhotoRepository photoRepository, CustomerRepository customerRepository) {
-        this.modelMapper = modelMapper;
+    public PhotoService(PhotoRepository photoRepository, CustomerRepository customerRepository) {
         this.photoRepository = photoRepository;
         this.customerRepository = customerRepository;
         this.fileStorageLocation = Paths.get(UPL_DIR).toAbsolutePath().normalize();
@@ -61,7 +60,7 @@ public class PhotoService {
         }
         photos.forEach(photo ->
                 photoDTOList.add(
-                        modelMapper.map(photo, PhotoDTO.class)
+                        ObjectMapperUtils.map(photo, PhotoDTO.class)
                 )
         );
 
@@ -112,7 +111,7 @@ public class PhotoService {
             // Save file metadata into a database
             Photo savedPhoto = photoRepository.save(photo);
 
-            return modelMapper.map(savedPhoto, PhotoDTO.class);
+            return ObjectMapperUtils.map(savedPhoto, PhotoDTO.class);
         } catch (IOException e) {
             throw new FileStorageException("Cannot store file");
         }
@@ -186,7 +185,7 @@ public class PhotoService {
                         () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
 
-        PhotoDTO photoDTO = modelMapper.map(photo, PhotoDTO.class);
+        PhotoDTO photoDTO = ObjectMapperUtils.map(photo, PhotoDTO.class);
 
         String responseFileName = photo.getFileName();
 

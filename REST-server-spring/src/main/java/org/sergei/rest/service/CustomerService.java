@@ -5,6 +5,7 @@ import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
+import org.sergei.rest.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,10 @@ import java.util.List;
 public class CustomerService {
 
     protected static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
-    protected final ModelMapper modelMapper;
     protected final CustomerRepository customerRepository;
 
     @Autowired
-    public CustomerService(ModelMapper modelMapper, CustomerRepository customerRepository) {
-        this.modelMapper = modelMapper;
+    public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
@@ -60,7 +59,7 @@ public class CustomerService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
-        return modelMapper.map(customer, CustomerDTO.class);
+        return ObjectMapperUtils.map(customer, CustomerDTO.class);
     }
 
     /**
@@ -69,9 +68,9 @@ public class CustomerService {
      * @param customerDTO get customer from the REST controller as a request body
      */
     public CustomerDTO save(CustomerDTO customerDTO) {
-        Customer customer = modelMapper.map(customerDTO, Customer.class);
+        Customer customer = ObjectMapperUtils.map(customerDTO, Customer.class);
         Customer savedCustomer = customerRepository.save(customer);
-        return modelMapper.map(savedCustomer, CustomerDTO.class);
+        return ObjectMapperUtils.map(savedCustomer, CustomerDTO.class);
     }
 
     //  TODO: Save customer and his orders with details in a single request body
@@ -111,6 +110,6 @@ public class CustomerService {
                         new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
         customerRepository.delete(customer);
-        return modelMapper.map(customer, CustomerDTO.class);
+        return ObjectMapperUtils.map(customer, CustomerDTO.class);
     }
 }

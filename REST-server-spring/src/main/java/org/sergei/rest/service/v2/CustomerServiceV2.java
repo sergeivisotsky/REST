@@ -6,6 +6,7 @@ import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.service.CustomerService;
+import org.sergei.rest.utils.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -20,8 +21,8 @@ import java.util.List;
 @Service
 public class CustomerServiceV2 extends CustomerService {
 
-    public CustomerServiceV2(ModelMapper modelMapper, CustomerRepository customerRepository) {
-        super(modelMapper, customerRepository);
+    public CustomerServiceV2(CustomerRepository customerRepository) {
+        super(customerRepository);
     }
 
     /***
@@ -57,6 +58,6 @@ public class CustomerServiceV2 extends CustomerService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
-        return modelMapper.map(customer, CustomerDTOV2.class);
+        return ObjectMapperUtils.map(customer, CustomerDTOV2.class);
     }
 }
