@@ -1,6 +1,5 @@
 package org.sergei.rest.service;
 
-import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.FileNotFoundException;
 import org.sergei.rest.exceptions.FileStorageException;

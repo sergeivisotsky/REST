@@ -1,6 +1,5 @@
 package org.sergei.rest.service;
 
-import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.OrderDTO;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
@@ -209,7 +208,8 @@ public class OrderService<T> {
      * @return Order entity as a response
      */
     public void deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
-        orderRepository.deleteByCustomerIdAndOrderId(customerId, orderId);;
+        orderRepository.deleteByCustomerIdAndOrderId(customerId, orderId);
+        ;
     }
 
     /**

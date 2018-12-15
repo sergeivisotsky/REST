@@ -1,6 +1,5 @@
 package org.sergei.rest.service.v2;
 
-import org.modelmapper.ModelMapper;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.dto.v2.OrderDTOV2;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
