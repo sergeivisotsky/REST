@@ -4,7 +4,7 @@ import org.sergei.rest.dto.ProductDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
-import org.sergei.rest.utils.ObjectMapperUtils;
+import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class ProductService {
      */
     public List<ProductDTO> findAll() {
         List<Product> products = productRepository.findAll();
-        return ObjectMapperUtils.mapAll(products, ProductDTO.class);
+        return ObjectMapperUtil.mapAll(products, ProductDTO.class);
     }
 
     /**
@@ -45,7 +45,7 @@ public class ProductService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
-        return ObjectMapperUtils.map(product, ProductDTO.class);
+        return ObjectMapperUtil.map(product, ProductDTO.class);
     }
 
     /**
@@ -54,9 +54,9 @@ public class ProductService {
      * @param productDTO product to be saved
      */
     public ProductDTO save(ProductDTO productDTO) {
-        Product product = ObjectMapperUtils.map(productDTO, Product.class);
+        Product product = ObjectMapperUtil.map(productDTO, Product.class);
         Product savedProduct = productRepository.save(product);
-        return ObjectMapperUtils.map(savedProduct, ProductDTO.class);
+        return ObjectMapperUtil.map(savedProduct, ProductDTO.class);
     }
 
     /**
@@ -95,6 +95,6 @@ public class ProductService {
                         () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
         productRepository.delete(product);
-        return ObjectMapperUtils.map(product, ProductDTO.class);
+        return ObjectMapperUtil.map(product, ProductDTO.class);
     }
 }

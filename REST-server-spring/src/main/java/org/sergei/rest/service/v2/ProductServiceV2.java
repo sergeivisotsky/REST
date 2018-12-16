@@ -5,7 +5,7 @@ import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.service.ProductService;
-import org.sergei.rest.utils.ObjectMapperUtils;
+import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class ProductServiceV2 extends ProductService {
      */
     public List<ProductDTOV2> findAllV2() {
         List<Product> products = productRepository.findAll();
-        return ObjectMapperUtils.mapAll(products, ProductDTOV2.class);
+        return ObjectMapperUtil.mapAll(products, ProductDTOV2.class);
     }
 
     /**
@@ -44,6 +44,6 @@ public class ProductServiceV2 extends ProductService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
                 );
-        return ObjectMapperUtils.map(product, ProductDTOV2.class);
+        return ObjectMapperUtil.map(product, ProductDTOV2.class);
     }
 }

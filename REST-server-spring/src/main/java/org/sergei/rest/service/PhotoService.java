@@ -8,7 +8,7 @@ import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Photo;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
-import org.sergei.rest.utils.ObjectMapperUtils;
+import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -59,7 +59,7 @@ public class PhotoService {
         }
         photos.forEach(photo ->
                 photoDTOList.add(
-                        ObjectMapperUtils.map(photo, PhotoDTO.class)
+                        ObjectMapperUtil.map(photo, PhotoDTO.class)
                 )
         );
 
@@ -110,7 +110,7 @@ public class PhotoService {
             // Save file metadata into a database
             Photo savedPhoto = photoRepository.save(photo);
 
-            return ObjectMapperUtils.map(savedPhoto, PhotoDTO.class);
+            return ObjectMapperUtil.map(savedPhoto, PhotoDTO.class);
         } catch (IOException e) {
             throw new FileStorageException("Cannot store file");
         }
@@ -184,7 +184,7 @@ public class PhotoService {
                         () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
 
-        PhotoDTO photoDTO = ObjectMapperUtils.map(photo, PhotoDTO.class);
+        PhotoDTO photoDTO = ObjectMapperUtil.map(photo, PhotoDTO.class);
 
         String responseFileName = photo.getFileName();
 

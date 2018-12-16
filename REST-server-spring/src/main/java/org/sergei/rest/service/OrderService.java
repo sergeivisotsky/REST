@@ -11,7 +11,7 @@ import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
-import org.sergei.rest.utils.ObjectMapperUtils;
+import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +55,7 @@ public class OrderService<T> {
                         () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-        OrderDTO orderDTO = ObjectMapperUtils.map(order, OrderDTO.class);
+        OrderDTO orderDTO = ObjectMapperUtil.map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
                 orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -63,7 +63,7 @@ public class OrderService<T> {
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         orderDetailsList.forEach(orderDetails ->
                 orderDetailsDTOList.add(
-                        ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class)
+                        ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
                 )
         );
 
@@ -128,11 +128,11 @@ public class OrderService<T> {
                 () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
         );
 
-        Order order = ObjectMapperUtils.map(orderDTO, Order.class);
+        Order order = ObjectMapperUtil.map(orderDTO, Order.class);
         order.setCustomer(customer);
 
         // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = ObjectMapperUtils
+        List<OrderDetails> orderDetailsList = ObjectMapperUtil
                 .mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
 
         int counter = 0;
@@ -151,7 +151,7 @@ public class OrderService<T> {
         order.setOrderDetails(orderDetailsList);
 
         Order savedOrder = orderRepository.save(order);
-        return ObjectMapperUtils.map(savedOrder, OrderDTO.class);
+        return ObjectMapperUtil.map(savedOrder, OrderDTO.class);
     }
 
     /**
@@ -177,7 +177,7 @@ public class OrderService<T> {
         order.setStatus(orderDTO.getStatus());
 
         // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = ObjectMapperUtils
+        List<OrderDetails> orderDetailsList = ObjectMapperUtil
                 .mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
 
         int counter = 0;
@@ -223,7 +223,7 @@ public class OrderService<T> {
 
         for (Order order : orders) {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTO orderDTO = ObjectMapperUtils.map(order, OrderDTO.class);
+            OrderDTO orderDTO = ObjectMapperUtil.map(order, OrderDTO.class);
 
             List<OrderDetails> orderDetailsList =
                     orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -231,12 +231,12 @@ public class OrderService<T> {
             List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
             orderDetailsList.forEach(orderDetails ->
                     orderDetailsDTOList.add(
-                            ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class)
+                            ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
                     )
             );
             for (OrderDetails orderDetails : orderDetailsList) {
                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtils.map(orderDetails, OrderDetailsDTO.class);
+                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class);
                 orderDetailsDTOList.add(orderDetailsDTO);
             }
 

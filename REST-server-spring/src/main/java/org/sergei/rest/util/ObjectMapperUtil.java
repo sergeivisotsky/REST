@@ -1,4 +1,4 @@
-package org.sergei.rest.utils;
+package org.sergei.rest.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * @author Sergei Visotsky, 2018
  */
-public class ObjectMapperUtils {
+public class ObjectMapperUtil {
     private static ModelMapper modelMapper;
 
     /**
@@ -26,7 +26,7 @@ public class ObjectMapperUtils {
     /**
      * Hide from public usage.
      */
-    private ObjectMapperUtils() {
+    private ObjectMapperUtil() {
     }
 
     /**

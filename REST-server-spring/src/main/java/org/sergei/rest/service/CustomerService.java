@@ -4,7 +4,7 @@ import org.sergei.rest.dto.CustomerDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
-import org.sergei.rest.utils.ObjectMapperUtils;
+import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +58,7 @@ public class CustomerService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
-        return ObjectMapperUtils.map(customer, CustomerDTO.class);
+        return ObjectMapperUtil.map(customer, CustomerDTO.class);
     }
 
     /**
@@ -67,9 +67,9 @@ public class CustomerService {
      * @param customerDTO get customer from the REST controller as a request body
      */
     public CustomerDTO save(CustomerDTO customerDTO) {
-        Customer customer = ObjectMapperUtils.map(customerDTO, Customer.class);
+        Customer customer = ObjectMapperUtil.map(customerDTO, Customer.class);
         Customer savedCustomer = customerRepository.save(customer);
-        return ObjectMapperUtils.map(savedCustomer, CustomerDTO.class);
+        return ObjectMapperUtil.map(savedCustomer, CustomerDTO.class);
     }
 
     //  TODO: Save customer and his orders with details in a single request body
@@ -109,6 +109,6 @@ public class CustomerService {
                         new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
                 );
         customerRepository.delete(customer);
-        return ObjectMapperUtils.map(customer, CustomerDTO.class);
+        return ObjectMapperUtil.map(customer, CustomerDTO.class);
     }
 }
