@@ -7,15 +7,13 @@ import org.sergei.rest.controller.PhotoController;
 import org.sergei.rest.dto.v2.CustomerDTOV2;
 import org.sergei.rest.service.v2.CustomerServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
@@ -45,6 +43,33 @@ public class CustomerControllerV2 {
     @GetMapping("/v2/customers")
     public ResponseEntity<Resources<CustomerDTOV2>> getAllCustomersV2() {
         List<CustomerDTOV2> customerDTOList = customerServiceV2.findAllV2();
+        customerDTOList.forEach(customer -> {
+            Link link = ControllerLinkBuilder.linkTo(
+                    ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
+                            .getCustomerByIdV2(customer.getCustomerId())).withSelfRel();
+            Link ordersLink = ControllerLinkBuilder.linkTo(
+                    ControllerLinkBuilder.methodOn(OrderController.class)
+                            .getOrdersByCustomerId(customer.getCustomerId())).withRel("orders");
+            Link photoLink = ControllerLinkBuilder.linkTo(
+                    ControllerLinkBuilder.methodOn(PhotoController.class)
+                            .findAllCustomerPhotos(customer.getCustomerId())).withRel("photos");
+            customer.add(link);
+            customer.add(ordersLink);
+            customer.add(photoLink);
+        });
+        Resources<CustomerDTOV2> resources = new Resources<>(customerDTOList);
+        String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
+        resources.add(new Link(uriString, "self"));
+        return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
+
+    @ApiOperation("Gel all customers opaginated")
+    @GetMapping(value = "/v2/customers", params = {"page", "size"})
+    public ResponseEntity<Resources<CustomerDTOV2>> getAllCustomersPaginatedV2(@ApiParam(value = "Number of page", required = true)
+                                                                               @RequestParam("page") int page,
+                                                                               @ApiParam(value = "Number of elements per page", required = true)
+                                                                               @RequestParam("size") int size) {
+        Page<CustomerDTOV2> customerDTOList = customerServiceV2.findAllPaginatedV2(page, size);
         customerDTOList.forEach(customer -> {
             Link link = ControllerLinkBuilder.linkTo(
                     ControllerLinkBuilder.methodOn(CustomerControllerV2.class)

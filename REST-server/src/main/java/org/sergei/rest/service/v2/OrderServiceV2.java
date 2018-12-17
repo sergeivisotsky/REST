@@ -11,6 +11,8 @@ import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.service.OrderService;
 import org.sergei.rest.util.ObjectMapperUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +20,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * V2 of order service
+ *
  * @author Sergei Visotsky
  * @since 12/9/2018
- * <p>
- * V2 of order service
  */
 @Service
 public class OrderServiceV2 extends OrderService {
@@ -92,6 +94,21 @@ public class OrderServiceV2 extends OrderService {
     }
 
     /**
+     * Get all orders by customer number paginated
+     *
+     * @param customerId customer number form the REST controller
+     * @return List of order DTOs
+     */
+    public Page<OrderDTOV2> findAllByCustomerIdPaginatedV2(Long customerId, int page, int size) {
+        Page<Order> orders = orderRepository.findAllByCustomerPaginatedId(customerId, PageRequest.of(page, size));
+        if (orders == null) {
+            throw new ResourceNotFoundException(ORDER_NOT_FOUND);
+        }
+
+        return findOrdersByListWithParamPaginatedV2(orders);
+    }
+
+    /**
      * Get all orders by product code
      *
      * @param productCode get product code from the REST controller
@@ -106,15 +123,13 @@ public class OrderServiceV2 extends OrderService {
     }
 
     /**
-     * Util method to get order by specific parameter
+     * Util method to get order by specific parameter paginated
      *
      * @param orders Gets list of the order entities
      * @return List of the order DTOs
      */
-    private List<OrderDTOV2> findOrdersByListWithParamV2(List<Order> orders) {
-        List<OrderDTOV2> orderDTOList = new LinkedList<>();
-
-        for (Order order : orders) {
+    private Page<OrderDTOV2> findOrdersByListWithParamPaginatedV2(Page<Order> orders) {
+        orders.forEach(order -> {
             // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
             OrderDTOV2 orderDTO = ObjectMapperUtil.map(order, OrderDTOV2.class);
 
@@ -127,15 +142,50 @@ public class OrderServiceV2 extends OrderService {
                             ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
                     )
             );
-            for (OrderDetails orderDetails : orderDetailsList) {
+
+            orderDetailsList.forEach(orderDetails -> {
                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                 OrderDetailsDTO orderDetailsDTO = ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class);
                 orderDetailsDTOList.add(orderDetailsDTO);
-            }
+            });
+
+            orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
+        });
+        return ObjectMapperUtil.mapAllPages(orders, OrderDTOV2.class);
+    }
+
+    /**
+     * Util method to get order by specific parameter
+     *
+     * @param orders Gets list of the order entities
+     * @return List of the order DTOs
+     */
+    private List<OrderDTOV2> findOrdersByListWithParamV2(List<Order> orders) {
+        List<OrderDTOV2> orderDTOList = new LinkedList<>();
+
+        orders.forEach(order -> {
+            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+            OrderDTOV2 orderDTO = ObjectMapperUtil.map(order, OrderDTOV2.class);
+
+            List<OrderDetails> orderDetailsList =
+                    orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
+
+            List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
+            orderDetailsList.forEach(orderDetails ->
+                    orderDetailsDTOList.add(
+                            ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
+                    )
+            );
+
+            orderDetailsList.forEach(orderDetails -> {
+                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class);
+                orderDetailsDTOList.add(orderDetailsDTO);
+            });
 
             orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
             orderDTOList.add(orderDTO);
-        }
+        });
 
         return orderDTOList;
     }

@@ -6,15 +6,17 @@ import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.service.ProductService;
 import org.sergei.rest.util.ObjectMapperUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
+ * V2 of product service
+ *
  * @author Sergei Visotsky
  * @since 12/9/2018
- * <p>
- * V2 of product service
  */
 @Service
 public class ProductServiceV2 extends ProductService {
@@ -31,6 +33,16 @@ public class ProductServiceV2 extends ProductService {
     public List<ProductDTOV2> findAllV2() {
         List<Product> products = productRepository.findAll();
         return ObjectMapperUtil.mapAll(products, ProductDTOV2.class);
+    }
+
+    /**
+     * Find all products paginated
+     *
+     * @return list of found product DTO
+     */
+    public Page<ProductDTOV2> findAllPaginatedV2(int page, int size) {
+        Page<Product> products = productRepository.findAll(PageRequest.of(page, size));
+        return ObjectMapperUtil.mapAllPages(products, ProductDTOV2.class);
     }
 
     /**

@@ -6,6 +6,8 @@ import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.service.CustomerService;
 import org.sergei.rest.util.ObjectMapperUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -24,8 +26,9 @@ public class CustomerServiceV2 extends CustomerService {
         super(customerRepository);
     }
 
-    /***
+    /**
      * Get all customers
+     *
      * @return List of customer DTOs list
      */
     public List<CustomerDTOV2> findAllV2() {
@@ -44,6 +47,16 @@ public class CustomerServiceV2 extends CustomerService {
         });
 
         return customerDTOList;
+    }
+
+    /**
+     * Get all customers paginated
+     *
+     * @return List of customer DTOs list
+     */
+    public Page<CustomerDTOV2> findAllPaginatedV2(int page, int size) {
+        Page<Customer> customers = customerRepository.findAll(PageRequest.of(page, size));
+        return ObjectMapperUtil.mapAllPages(customers, CustomerDTOV2.class);
     }
 
     /**

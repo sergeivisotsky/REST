@@ -4,6 +4,7 @@ import io.swagger.annotations.*;
 import org.sergei.rest.dto.v2.OrderDTOV2;
 import org.sergei.rest.service.v2.OrderServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
@@ -15,10 +16,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 /**
+ * V2 of order controller
+ *
  * @author Sergei Visotsky
  * @since 12/9/2018
- * <p>
- * V2 of order controller
  */
 @Api(
         value = "/api/v2/customers/{customerId}/orders",
@@ -32,7 +33,7 @@ public class OrderControllerV2 {
     @Autowired
     private OrderServiceV2 orderServiceV2;
 
-    @ApiOperation("Get all order by customer number")
+    @ApiOperation("Get all order by customer ID")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
@@ -42,6 +43,33 @@ public class OrderControllerV2 {
     public ResponseEntity<Resources<OrderDTOV2>> getOrdersByCustomerIdV2(@ApiParam(value = "Customer ID whose orders should be found", required = true)
                                                                          @PathVariable("customerId") Long customerId) {
         List<OrderDTOV2> orderDTOV2List = orderServiceV2.findAllByCustomerIdV2(customerId);
+        orderDTOV2List.forEach(orderDTOV2 -> {
+            Link link = ControllerLinkBuilder.linkTo(
+                    ControllerLinkBuilder.methodOn(OrderControllerV2.class)
+                            .getOrderByCustomerAndOrderIdV2(orderDTOV2.getCustomerId(), orderDTOV2.getOrderId())).withSelfRel();
+
+            orderDTOV2.add(link);
+        });
+        Resources<OrderDTOV2> resources = new Resources<>(orderDTOV2List);
+        String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
+        resources.add(new Link(uriString, "self"));
+        return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
+
+    @ApiOperation("Get all order by customer ID paginated")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = "Invalid customer ID")
+            }
+    )
+    @GetMapping(value = "/v2/customers/{customerId}/orders", params = {"page", "size"})
+    public ResponseEntity<Resources<OrderDTOV2>> getOrdersByCustomerIdPaginatedV2(@ApiParam(value = "Customer ID whose orders should be found", required = true)
+                                                                                  @PathVariable("customerId") Long customerId,
+                                                                                  @ApiParam(value = "Number of page", required = true)
+                                                                                  @RequestParam("page") int page,
+                                                                                  @ApiParam(value = "Number of elements per page", required = true)
+                                                                                  @RequestParam("size") int size) {
+        Page<OrderDTOV2> orderDTOV2List = orderServiceV2.findAllByCustomerIdPaginatedV2(customerId, page, size);
         orderDTOV2List.forEach(orderDTOV2 -> {
             Link link = ControllerLinkBuilder.linkTo(
                     ControllerLinkBuilder.methodOn(OrderControllerV2.class)

@@ -2,6 +2,7 @@ package org.sergei.rest.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.data.domain.Page;
 
 import java.util.Collection;
 import java.util.List;
@@ -55,6 +56,19 @@ public class ObjectMapperUtil {
         return entityList.stream()
                 .map(entity -> map(entity, outCLass))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Maps {@code entityClass} taken from pagination to the {@code outClass}
+     *
+     * @param entityList page with entity classes
+     * @param outClass   DTO in which should be converted {@code outClass}
+     * @param <D>        {@code entityClass}
+     * @param <T>        {@code DTO class}
+     * @return list of mapped DTOs
+     */
+    public static <D, T> Page<D> mapAllPages(final Page<T> entityList, Class<D> outClass) {
+        return entityList.map(entity -> map(entity, outClass));
     }
 
     /**
