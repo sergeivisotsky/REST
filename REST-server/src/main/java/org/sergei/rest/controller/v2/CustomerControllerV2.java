@@ -1,22 +1,19 @@
 package org.sergei.rest.controller.v2;
 
 import io.swagger.annotations.*;
-import org.sergei.rest.controller.CustomerController;
-import org.sergei.rest.controller.OrderController;
-import org.sergei.rest.controller.PhotoController;
 import org.sergei.rest.dto.v2.CustomerDTOV2;
 import org.sergei.rest.service.v2.CustomerServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
+
+import static org.sergei.rest.controller.util.LinkUtil.setLinksForAllCustomers;
+import static org.sergei.rest.controller.util.LinkUtil.setLinksForCustomer;
 
 /**
  * @author Sergei Visotsky
@@ -41,53 +38,19 @@ public class CustomerControllerV2 {
 
     @ApiOperation("Gel all customers")
     @GetMapping("/v2/customers")
-    public ResponseEntity<Resources<CustomerDTOV2>> getAllCustomersV2() {
+    public ResponseEntity<Resources> getAllCustomersV2() {
         List<CustomerDTOV2> customerDTOList = customerServiceV2.findAllV2();
-        customerDTOList.forEach(customer -> {
-            Link link = ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
-                            .getCustomerByIdV2(customer.getCustomerId())).withSelfRel();
-            Link ordersLink = ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(OrderController.class)
-                            .getOrdersByCustomerId(customer.getCustomerId())).withRel("orders");
-            Link photoLink = ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(PhotoController.class)
-                            .findAllCustomerPhotos(customer.getCustomerId())).withRel("photos");
-            customer.add(link);
-            customer.add(ordersLink);
-            customer.add(photoLink);
-        });
-        Resources<CustomerDTOV2> resources = new Resources<>(customerDTOList);
-        String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
-        resources.add(new Link(uriString, "self"));
-        return new ResponseEntity<>(resources, HttpStatus.OK);
+        return new ResponseEntity<>(setLinksForAllCustomers(customerDTOList), HttpStatus.OK);
     }
 
     @ApiOperation("Gel all customers opaginated")
     @GetMapping(value = "/v2/customers", params = {"page", "size"})
-    public ResponseEntity<Resources<CustomerDTOV2>> getAllCustomersPaginatedV2(@ApiParam(value = "Number of page", required = true)
-                                                                               @RequestParam("page") int page,
-                                                                               @ApiParam(value = "Number of elements per page", required = true)
-                                                                               @RequestParam("size") int size) {
+    public ResponseEntity<Resources> getAllCustomersPaginatedV2(@ApiParam(value = "Number of page", required = true)
+                                                                @RequestParam("page") int page,
+                                                                @ApiParam(value = "Number of elements per page", required = true)
+                                                                @RequestParam("size") int size) {
         Page<CustomerDTOV2> customerDTOList = customerServiceV2.findAllPaginatedV2(page, size);
-        customerDTOList.forEach(customer -> {
-            Link link = ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
-                            .getCustomerByIdV2(customer.getCustomerId())).withSelfRel();
-            Link ordersLink = ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(OrderController.class)
-                            .getOrdersByCustomerId(customer.getCustomerId())).withRel("orders");
-            Link photoLink = ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(PhotoController.class)
-                            .findAllCustomerPhotos(customer.getCustomerId())).withRel("photos");
-            customer.add(link);
-            customer.add(ordersLink);
-            customer.add(photoLink);
-        });
-        Resources<CustomerDTOV2> resources = new Resources<>(customerDTOList);
-        String uriString = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
-        resources.add(new Link(uriString, "self"));
-        return new ResponseEntity<>(resources, HttpStatus.OK);
+        return new ResponseEntity<>(setLinksForAllCustomers(customerDTOList), HttpStatus.OK);
     }
 
     @ApiOperation("Get customer by ID")
@@ -100,20 +63,6 @@ public class CustomerControllerV2 {
     public ResponseEntity<CustomerDTOV2> getCustomerByIdV2(@ApiParam(value = "Customer ID which should be found", required = true)
                                                            @PathVariable("customerId") Long customerId) {
         CustomerDTOV2 customerDTOV2 = customerServiceV2.findOneV2(customerId);
-        Link link = ControllerLinkBuilder.linkTo(CustomerController.class).withSelfRel();
-        Link ordersLink = ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(OrderController.class)
-                        .getOrdersByCustomerId(customerId)).withRel("orders");
-        Link photoLink = ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(PhotoController.class)
-                        .findAllCustomerPhotos(customerDTOV2.getCustomerId())).withRel("photos");
-        Link allCustomers = ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
-                        .getAllCustomersV2()).withRel("allCustomers");
-        customerDTOV2.add(link);
-        customerDTOV2.add(ordersLink);
-        customerDTOV2.add(photoLink);
-        customerDTOV2.add(allCustomers);
-        return new ResponseEntity<>(customerDTOV2, HttpStatus.OK);
+        return new ResponseEntity<>(setLinksForCustomer(customerDTOV2, customerId), HttpStatus.OK);
     }
 }
