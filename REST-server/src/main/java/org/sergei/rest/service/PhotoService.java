@@ -176,7 +176,7 @@ public class PhotoService {
      * @param customerId get customer number from the REST controller
      * @param photoId    get photo IR from the REST controller
      * @return photo DTO as a response
-     * @throws IOException
+     * @throws IOException Input-output exception
      */
     public PhotoDTO deleteById(Long customerId, Long photoId) throws IOException {
         Photo photo = photoRepository.findByCustomerIdAndPhotoId(customerId, photoId)

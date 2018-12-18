@@ -11,10 +11,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * This class creates a set of GrantedAuthority instances that represent roles that the user has in the system.
+ *
  * @author Sergei Visotsky, 2018
- * <pre>
- *    This class creates a set of GrantedAuthority instances that represent roles that the user has in the system.
- * </pre>
  */
 public class ApiUserDetails implements UserDetails {
 

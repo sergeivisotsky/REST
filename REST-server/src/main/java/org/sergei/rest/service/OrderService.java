@@ -205,11 +205,9 @@ public class OrderService<T> {
      *
      * @param customerId get customer number form the REST controller
      * @param orderId    get order number form the REST controller
-     * @return Order entity as a response
      */
     public void deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
         orderRepository.deleteByCustomerIdAndOrderId(customerId, orderId);
-        ;
     }
 
     /**

@@ -72,8 +72,6 @@ public class CustomerService {
         return ObjectMapperUtil.map(savedCustomer, CustomerDTO.class);
     }
 
-    //  TODO: Save customer and his orders with details in a single request body
-
     /**
      * Update customer by customer id
      *
