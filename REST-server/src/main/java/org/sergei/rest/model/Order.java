@@ -43,7 +43,6 @@ public class Order implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    // TODO: ON DELETE CASCADE programmatically
     private Customer customer;
 
     public Order() {

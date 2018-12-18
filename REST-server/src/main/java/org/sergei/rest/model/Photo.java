@@ -20,7 +20,6 @@ public class Photo implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id")
-    // TODO: ON DELETE CASCADE programmatically
     private Customer customer;
 
     @Column(name = "file_name", nullable = false)

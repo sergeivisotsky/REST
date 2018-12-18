@@ -21,7 +21,6 @@ public class OrderDetails implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id")
-    // TODO: ON DELETE CASCADE programmatically
     private Order order;
 
     @ManyToOne(optional = false)
