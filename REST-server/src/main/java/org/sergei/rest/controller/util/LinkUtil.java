@@ -21,7 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public final class LinkUtil {
 
     /**
-     * Hide from public access
+     * Hide from public use
      */
     private LinkUtil() {
     }
