@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test for {@link CustomerController}
  *
  * @author Sergei Visotsky
- * @since 2.0.2
  * Created on 12/7/2018
  */
 @Ignore

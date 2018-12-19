@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
  * Test for {@link PhotoRepository}
  *
  * @author Sergei Visotsky
- * @since 2.0.2
  * Created on 12/7/2018
  */
 @RunWith(SpringRunner.class)

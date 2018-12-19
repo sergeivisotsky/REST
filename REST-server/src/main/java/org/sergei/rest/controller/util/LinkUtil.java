@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * @author Sergei Visotsky
- * @since 2.2.0
  * Created on 12/18/2018
  */
 public final class LinkUtil {

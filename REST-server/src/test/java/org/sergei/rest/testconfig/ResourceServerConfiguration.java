@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 
 /**
  * @author Sergei Visotsky
- * @since 2.0.2
  * Created on 12/7/2018
  */
 @Configuration

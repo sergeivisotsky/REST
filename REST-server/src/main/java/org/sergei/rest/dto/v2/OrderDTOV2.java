@@ -16,7 +16,6 @@ import java.util.List;
  * V2 of order DTO
  *
  * @author Sergei Visotsky
- * @since 2.0.2
  * Created on 12/9/2018
  */
 @ApiModel(value = "Order V2", description = "All order data")

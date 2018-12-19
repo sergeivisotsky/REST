@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
  * V2 of photo service
  *
  * @author Sergei Visotsky
- * @since 2.0.2
  * Created on 12/9/2018
  */
 @Service
