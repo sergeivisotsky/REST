@@ -14,10 +14,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Sergei Visotsky
- * @since 12/9/2018
- * <p>
  * V2 of customer service
+ *
+ * @author Sergei Visotsky
+ * @since 2.0.2
+ * Created on 12/9/2018
  */
 @Service
 public class CustomerServiceV2 extends CustomerService {

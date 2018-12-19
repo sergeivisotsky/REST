@@ -19,7 +19,8 @@ import static org.sergei.rest.controller.util.LinkUtil.setLinksForAllProducts;
  * V2 of product controller
  *
  * @author Sergei Visotsky
- * @since 12/9/2018
+ * @since 2.0.2
+ * Created on 12/9/2018
  */
 @Api(
         value = "/api/v2/products",

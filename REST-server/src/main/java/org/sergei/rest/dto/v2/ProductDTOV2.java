@@ -7,10 +7,11 @@ import org.springframework.hateoas.ResourceSupport;
 import java.math.BigDecimal;
 
 /**
- * @author Sergei Visotsky
- * @since 12/9/2018
- * <p>
  * V2 of product DTO
+ *
+ * @author Sergei Visotsky
+ * @since 2.0.2
+ * Created on 12/9/2018
  */
 @ApiModel(value = "Product V2", description = "All product meta data")
 public class ProductDTOV2 extends ResourceSupport {
@@ -25,7 +26,7 @@ public class ProductDTOV2 extends ResourceSupport {
     }
 
     public ProductDTOV2(String productCode, String productName,
-                      String productLine, String productVendor, BigDecimal price) {
+                        String productLine, String productVendor, BigDecimal price) {
         this.productCode = productCode;
         this.productName = productName;
         this.productLine = productLine;

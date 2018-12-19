@@ -13,10 +13,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Sergei Visotsky
- * @since 12/9/2018
- * <p>
  * V2 of order DTO
+ *
+ * @author Sergei Visotsky
+ * @since 2.0.2
+ * Created on 12/9/2018
  */
 @ApiModel(value = "Order V2", description = "All order data")
 public class OrderDTOV2 extends ResourceSupport {
@@ -44,8 +45,8 @@ public class OrderDTOV2 extends ResourceSupport {
     }
 
     public OrderDTOV2(Long orderId, Long customerId,
-                    Date orderDate, Date requiredDate, Date shippedDate,
-                    String status, List<OrderDetailsDTO> orderDetailsDTO) {
+                      Date orderDate, Date requiredDate, Date shippedDate,
+                      String status, List<OrderDetailsDTO> orderDetailsDTO) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.orderDate = orderDate;

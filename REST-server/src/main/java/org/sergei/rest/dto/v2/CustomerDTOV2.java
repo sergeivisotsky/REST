@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.hateoas.ResourceSupport;
 
 /**
- * @author Sergei Visotsky
- * @since 12/9/2018
- * <p>
  * V2 of customer DTO
+ * @author Sergei Visotsky
+ * @since 2.0.2
+ * Created on 12/9/2018
  */
 @ApiModel(value = "Customer model V2", description = "Customer data")
 public class CustomerDTOV2 extends ResourceSupport {
