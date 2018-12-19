@@ -10,7 +10,6 @@ import java.math.BigDecimal;
  * V2 of product DTO
  *
  * @author Sergei Visotsky
- * Created on 12/9/2018
  */
 @ApiModel(value = "Product V2", description = "All product meta data")
 public class ProductDTOV2 extends ResourceSupport {

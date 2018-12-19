@@ -19,7 +19,6 @@ import static org.sergei.rest.controller.util.LinkUtil.setLinksForCustomer;
  * V2 of customer controller
  *
  * @author Sergei Visotsky
- * Created on 12/9/2018
  */
 @Api(
         value = "/api/v2/customers",

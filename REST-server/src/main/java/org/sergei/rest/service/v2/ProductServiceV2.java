@@ -16,7 +16,6 @@ import java.util.List;
  * V2 of product service
  *
  * @author Sergei Visotsky
- * Created on 12/9/2018
  */
 @Service
 public class ProductServiceV2 extends ProductService {

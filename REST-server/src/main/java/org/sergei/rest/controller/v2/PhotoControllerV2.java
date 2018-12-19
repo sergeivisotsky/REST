@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
  * V2 of photo controller
  *
  * @author Sergei Visotsky
- * Created on 12/17/2018
  */
 @Api(
         value = "/api/v2/customers/{customerId}/photos",

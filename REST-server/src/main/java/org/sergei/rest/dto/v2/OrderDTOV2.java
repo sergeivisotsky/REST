@@ -16,7 +16,6 @@ import java.util.List;
  * V2 of order DTO
  *
  * @author Sergei Visotsky
- * Created on 12/9/2018
  */
 @ApiModel(value = "Order V2", description = "All order data")
 public class OrderDTOV2 extends ResourceSupport {

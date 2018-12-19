@@ -7,7 +7,6 @@ import org.springframework.hateoas.ResourceSupport;
 /**
  * V2 of customer DTO
  * @author Sergei Visotsky
- * Created on 12/9/2018
  */
 @ApiModel(value = "Customer model V2", description = "Customer data")
 public class CustomerDTOV2 extends ResourceSupport {

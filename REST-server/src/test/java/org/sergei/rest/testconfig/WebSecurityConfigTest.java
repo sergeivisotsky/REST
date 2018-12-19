@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * Security config for test cases
  *
  * @author Sergei Visotsky
- * Created on 12/7/2018
  */
 @Configuration
 @EnableWebSecurity

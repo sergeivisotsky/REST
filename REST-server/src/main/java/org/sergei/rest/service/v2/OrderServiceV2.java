@@ -23,7 +23,6 @@ import java.util.List;
  * V2 of order service
  *
  * @author Sergei Visotsky
- * Created on 12/9/2018
  */
 @Service
 public class OrderServiceV2 extends OrderService {

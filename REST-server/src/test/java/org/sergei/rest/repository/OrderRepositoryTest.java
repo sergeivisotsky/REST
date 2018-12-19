@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
  * Test for {@link OrderRepository}
  *
  * @author Sergei Visotsky
- * Created on 12/7/2018
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
