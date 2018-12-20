@@ -28,7 +28,7 @@ import org.springframework.web.filter.CorsFilter;
 import javax.sql.DataSource;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 @Configuration
 @EnableWebSecurity

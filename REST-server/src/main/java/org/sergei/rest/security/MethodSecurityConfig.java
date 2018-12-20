@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  *
  * <pre>
  *      This class needs so that it was able to delegate roles fot the API resources.
