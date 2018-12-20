@@ -6,6 +6,7 @@ import org.sergei.rest.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class ProductController {
     }
 
     @ApiOperation("Add a new product")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(value = {"/v1/products", "/v2/products"}, consumes = "application/json")
     public ResponseEntity<ProductDTO> saveProduct(@ApiParam(value = "Saved product", required = true)
                                                   @RequestBody ProductDTO productDTO) {
@@ -56,6 +58,7 @@ public class ProductController {
                     @ApiResponse(code = 404, message = "Invalid product code")
             }
     )
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping(value = {"/v1/products/{productCode}", "/v2/products/{productCode}"}, consumes = "application/json")
     public ResponseEntity<ProductDTO> updateProductByCode(@ApiParam(value = "Updated product code", required = true)
                                                           @PathVariable("productCode") String productCode,
@@ -70,6 +73,7 @@ public class ProductController {
                     @ApiResponse(code = 404, message = "Invalid product code")
             }
     )
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping({"/v1/products/{productCode}", "/v2/products/{productCode}"})
     public ResponseEntity<ProductDTO> deleteProductByCode(@ApiParam(value = "Deleted product", required = true)
                                                           @PathVariable("productCode") String productCode) {
