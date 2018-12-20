@@ -3,7 +3,7 @@ package org.sergei.rest.dto;
 import org.springframework.http.HttpStatus;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 public class ApiErrorDTO {
     private HttpStatus status;

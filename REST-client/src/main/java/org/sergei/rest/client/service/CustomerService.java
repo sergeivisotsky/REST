@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 @Service
 public class CustomerService {

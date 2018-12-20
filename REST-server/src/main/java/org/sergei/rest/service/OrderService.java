@@ -20,10 +20,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 @Service
-public class OrderService<T> {
+public class OrderService {
 
     protected static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
     protected static final String ORDER_NOT_FOUND = "Order with this ID not found";

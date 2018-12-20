@@ -1,7 +1,7 @@
 package org.sergei.rest.client.pojo;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 public class CustomerVO {
     private Long customerId;

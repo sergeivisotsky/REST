@@ -3,7 +3,7 @@ package org.sergei.rest.dto;
 import java.util.Date;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 public class ErrorDetailsDTO {
     private Date timestamp;

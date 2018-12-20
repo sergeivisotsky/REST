@@ -6,6 +6,7 @@ import org.springframework.hateoas.ResourceSupport;
 
 /**
  * V2 of customer DTO
+ *
  * @author Sergei Visotsky
  */
 @ApiModel(value = "Customer model V2", description = "Customer data")

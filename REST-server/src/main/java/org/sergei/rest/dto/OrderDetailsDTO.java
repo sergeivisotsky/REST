@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 @ApiModel(value = "OrderDetails", description = "All oder details data")
 @JsonRootName("orderDetails")

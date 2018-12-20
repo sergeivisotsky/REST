@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetails, Long> {

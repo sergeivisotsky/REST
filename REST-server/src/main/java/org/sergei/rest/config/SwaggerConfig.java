@@ -22,7 +22,7 @@ import static org.springframework.security.oauth2.provider.token.AccessTokenConv
 import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
- * @author Sergei Visotsky, 2018
+ * @author Sergei Visotsky
  */
 @Configuration
 @EnableSwagger2
