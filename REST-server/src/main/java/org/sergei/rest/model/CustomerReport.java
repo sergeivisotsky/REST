@@ -33,6 +33,7 @@ public class CustomerReport extends ResourceSupport {
     @Column(name = "last_name")
     private String lastName;
 
+    @Id
     @Column(name = "order_id")
     private Long orderId;
 
@@ -44,14 +45,4 @@ public class CustomerReport extends ResourceSupport {
 
     @Column(name = "shipped_date")
     private Date shippedDate;
-
-    @Id
-    @Column(name = "price")
-    private BigDecimal price;
-
-    @Column(name = "quantity_ordered")
-    private Integer quantityOrdered;
-
-    @Column(name = "product_code")
-    private String productCode;
 }

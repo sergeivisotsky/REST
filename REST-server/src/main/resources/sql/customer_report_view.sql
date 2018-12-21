@@ -11,14 +11,9 @@ SELECT
   `o`.`order_date` AS `order_date`,
   `o`.`required_date` AS `required_date`,
   `o`.`shipped_date` AS `shipped_date`,
-  `o`.`status` AS `status`,
-  `od`.`price` AS `price`,
-  `od`.`quantity_ordered` AS `quantity_ordered`,
-  `od`.`product_code` AS `product_code`
+  `o`.`status` AS `status`
 FROM
-  ((`rest_services`.`customers` `c`
+  (`rest_services`.`customers` `c`
     JOIN `rest_services`.`orders` `o`)
-    JOIN `rest_services`.`order_details` `od`)
 WHERE
-  ((`o`.`customer_id` = `c`.`customer_id`)
-    AND (`o`.`order_id` = `od`.`order_id`))
+  (`o`.`customer_id` = `c`.`customer_id`)

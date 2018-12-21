@@ -112,6 +112,12 @@ public final class LinkUtil {
         return orderDTOV2;
     }
 
+    /**
+     * Set links for the products
+     *
+     * @param products collection of product entity
+     * @return collection with links set
+     */
     public static Resources setLinksForAllProducts(Iterable<ProductDTOV2> products) {
         products.forEach(productDTOV2 -> {
             Link link = ControllerLinkBuilder.linkTo(
@@ -123,6 +129,12 @@ public final class LinkUtil {
         return setServletResourceLinks(products);
     }
 
+    /**
+     * Method to set links for the customer report
+     *
+     * @param customerReports Collection of elements for customer report
+     * @return collection with links set
+     */
     public static Resources setLinksForReport(List<CustomerReport> customerReports) {
         Resources reports = setServletResourceLinks(customerReports);
         Link allCustomers = ControllerLinkBuilder.linkTo(
