@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 public class JdbcTokenStoreConfig {
 
-    @Value("classpath:oauth_schema.sql")
+    @Value("classpath:sql/oauth_schema.sql")
     private Resource schemaScript;
 
     @Bean

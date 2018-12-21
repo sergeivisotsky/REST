@@ -35,7 +35,7 @@ public class CustomerControllerV2 {
         this.customerServiceV2 = customerServiceV2;
     }
 
-    @ApiOperation("Gel all customers")
+    @ApiOperation("Get all customers")
     @GetMapping("/v2/customers")
     public ResponseEntity<Resources> getAllCustomersV2() {
         List<CustomerDTOV2> customerDTOList = customerServiceV2.findAllV2();

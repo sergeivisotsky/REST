@@ -9,10 +9,13 @@ import org.sergei.rest.controller.v2.ProductControllerV2;
 import org.sergei.rest.dto.v2.CustomerDTOV2;
 import org.sergei.rest.dto.v2.OrderDTOV2;
 import org.sergei.rest.dto.v2.ProductDTOV2;
+import org.sergei.rest.model.CustomerReport;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.util.List;
 
 /**
  * @author Sergei Visotsky
@@ -118,6 +121,15 @@ public final class LinkUtil {
             productDTOV2.add(link);
         });
         return setServletResourceLinks(products);
+    }
+
+    public static Resources setLinksForReport(List<CustomerReport> customerReports) {
+        Resources<CustomerReport> reports = new Resources<>(customerReports);
+        Link link = ControllerLinkBuilder.linkTo(
+                ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
+                        .getAllCustomersV2()).withRel("allCustomers");
+        reports.add(link);
+        return setServletResourceLinks(reports);
     }
 
     /**

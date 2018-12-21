@@ -12,6 +12,8 @@ import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.util.ObjectMapperUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ import java.util.List;
  */
 @Service
 public class OrderService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
     protected static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
     protected static final String ORDER_NOT_FOUND = "Order with this ID not found";
@@ -127,7 +131,7 @@ public class OrderService {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
                 () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
         );
-
+        LOGGER.debug("Customer is: {}", customer.getCustomerId());
         Order order = ObjectMapperUtil.map(orderDTO, Order.class);
         order.setCustomer(customer);
 
