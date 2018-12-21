@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static org.sergei.rest.controller.util.LinkUtil.setLinksForReport;
-import static org.sergei.rest.controller.util.LinkUtil.setServletResourceLinks;
 
 /**
  * @author Sergei Visotsky

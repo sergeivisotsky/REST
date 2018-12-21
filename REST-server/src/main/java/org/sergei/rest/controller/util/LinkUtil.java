@@ -124,12 +124,12 @@ public final class LinkUtil {
     }
 
     public static Resources setLinksForReport(List<CustomerReport> customerReports) {
-        Resources<CustomerReport> reports = new Resources<>(customerReports);
-        Link link = ControllerLinkBuilder.linkTo(
+        Resources reports = setServletResourceLinks(customerReports);
+        Link allCustomers = ControllerLinkBuilder.linkTo(
                 ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
                         .getAllCustomersV2()).withRel("allCustomers");
-        reports.add(link);
-        return setServletResourceLinks(reports);
+        reports.add(allCustomers);
+        return reports;
     }
 
     /**
