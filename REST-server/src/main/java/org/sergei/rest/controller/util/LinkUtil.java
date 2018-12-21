@@ -15,8 +15,6 @@ import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-
 /**
  * @author Sergei Visotsky
  */
@@ -132,14 +130,19 @@ public final class LinkUtil {
     /**
      * Method to set links for the customer report
      *
+     * @param customerId      customer ID to be set in links
      * @param customerReports Collection of elements for customer report
      * @return collection with links set
      */
-    public static Resources setLinksForReport(List<CustomerReport> customerReports) {
+    public static Resources setLinksForReport(Long customerId, Iterable<CustomerReport> customerReports) {
         Resources reports = setServletResourceLinks(customerReports);
+        Link customer = ControllerLinkBuilder.linkTo(
+                ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
+                        .getCustomerByIdV2(customerId)).withRel("customer");
         Link allCustomers = ControllerLinkBuilder.linkTo(
                 ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
                         .getAllCustomersV2()).withRel("allCustomers");
+        reports.add(customer);
         reports.add(allCustomers);
         return reports;
     }

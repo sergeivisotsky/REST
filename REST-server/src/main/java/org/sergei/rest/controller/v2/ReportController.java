@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import org.sergei.rest.model.CustomerReport;
 import org.sergei.rest.repository.CustomerReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,16 @@ public class ReportController {
     @GetMapping(value = "/customers", params = "customerId")
     public ResponseEntity<Resources> getReportForCustomer(@RequestParam Long customerId) {
         List<CustomerReport> customerReport = customerReportRepository.findByCustomerId(customerId);
-        return new ResponseEntity<>(setLinksForReport(customerReport), HttpStatus.OK);
+        return new ResponseEntity<>(setLinksForReport(customerId, customerReport), HttpStatus.OK);
+    }
+
+    @ApiOperation("Get paginated report for customer")
+    @GetMapping(value = "/customers", params = {"customerId", "page", "size"})
+    public ResponseEntity<Resources> getPaginatedReportForCustomer(@RequestParam("customerId") Long customerId,
+                                                                   @RequestParam("page") int page,
+                                                                   @RequestParam("size") int size) {
+        Page<CustomerReport> customerReport =
+                customerReportRepository.findPaginatedByCustomerId(customerId, PageRequest.of(page, size));
+        return new ResponseEntity<>(setLinksForReport(customerId, customerReport), HttpStatus.OK);
     }
 }
