@@ -1,5 +1,8 @@
 package org.sergei.rest.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -9,6 +12,8 @@ import java.util.List;
 /**
  * @author Sergei Visotsky
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "orders")
 public class Order implements Serializable {
@@ -45,9 +50,6 @@ public class Order implements Serializable {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Order() {
-    }
-
     public Order(Customer customer, Date orderDate,
                  Date requiredDate, Date shippedDate, String status) {
         this.customer = customer;
@@ -55,61 +57,5 @@ public class Order implements Serializable {
         this.requiredDate = requiredDate;
         this.shippedDate = shippedDate;
         this.status = status;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public Date getRequiredDate() {
-        return requiredDate;
-    }
-
-    public void setRequiredDate(Date requiredDate) {
-        this.requiredDate = requiredDate;
-    }
-
-    public Date getShippedDate() {
-        return shippedDate;
-    }
-
-    public void setShippedDate(Date shippedDate) {
-        this.shippedDate = shippedDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<OrderDetails> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(List<OrderDetails> orderDetails) {
-        this.orderDetails = orderDetails;
     }
 }

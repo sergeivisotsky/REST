@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -11,56 +14,21 @@ import java.math.BigDecimal;
  * @author Sergei Visotsky
  */
 @ApiModel(value = "OrderDetails", description = "All oder details data")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonRootName("orderDetails")
 public class OrderDetailsDTO {
 
     @JsonIgnore
     private Long orderId;
+
+    @ApiModelProperty("Product code which was orders")
     private String productCode;
+
+    @ApiModelProperty("Quantity of the product ordered")
     private Integer quantityOrdered;
+
+    @ApiModelProperty("Order price")
     private BigDecimal price;
-
-    public OrderDetailsDTO() {
-    }
-
-    public OrderDetailsDTO(Long orderId, String productCode,
-                           Integer quantityOrdered, BigDecimal price) {
-        this.orderId = orderId;
-        this.productCode = productCode;
-        this.quantityOrdered = quantityOrdered;
-        this.price = price;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    @ApiModelProperty(hidden = true)
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getProductCode() {
-        return productCode;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
-
-    public Integer getQuantityOrdered() {
-        return quantityOrdered;
-    }
-
-    public void setQuantityOrdered(Integer quantityOrdered) {
-        this.quantityOrdered = quantityOrdered;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 }

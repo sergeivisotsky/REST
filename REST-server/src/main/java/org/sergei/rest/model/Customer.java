@@ -1,5 +1,8 @@
 package org.sergei.rest.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -8,6 +11,8 @@ import java.util.List;
 /**
  * @author Sergei Visotsky
  */
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "customers")
 public class Customer implements Serializable {
@@ -45,63 +50,12 @@ public class Customer implements Serializable {
     @JoinColumn(name = "customer_id")
     private List<Photo> photoList = new LinkedList<>();
 
-    public Customer() {
-    }
-
     public Customer(String firstName, String lastName, Integer age,
                     List<Order> orders, List<Photo> photoList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.orders = orders;
-        this.photoList = photoList;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<Photo> getPhotoList() {
-        return photoList;
-    }
-
-    public void setPhotoList(List<Photo> photoList) {
         this.photoList = photoList;
     }
 }
