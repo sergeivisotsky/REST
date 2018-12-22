@@ -5,8 +5,9 @@ REST API server and client written using Spring Boot 2
 
 ## Technologies
 * Java 8
-* Apache Maven
 * Spring Boot 2
+* JPA
+* Apache Maven
 * MySQL
 * ModelMapper
 * Swagger
