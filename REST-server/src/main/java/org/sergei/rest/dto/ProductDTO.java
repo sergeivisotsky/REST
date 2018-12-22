@@ -11,10 +11,19 @@ import java.math.BigDecimal;
 @ApiModel(value = "Product", description = "All product meta data")
 public class ProductDTO {
 
+    @ApiModelProperty("Product code")
     private String productCode;
+
+    @ApiModelProperty("Product name")
     private String productName;
+
+    @ApiModelProperty("Product line e.g. cars")
     private String productLine;
+
+    @ApiModelProperty("Product vendor e.g. Volkswagen")
     private String productVendor;
+
+    @ApiModelProperty("Car price")
     private BigDecimal price;
 
     public ProductDTO() {

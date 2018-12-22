@@ -9,9 +9,16 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Customer model", description = "Customer data")
 public class CustomerDTO {
 
+    @ApiModelProperty("Customer ID")
     private Long customerId;
+
+    @ApiModelProperty("Customer first name")
     private String firstName;
+
+    @ApiModelProperty("Customer last name")
     private String lastName;
+
+    @ApiModelProperty("Customer age")
     private Integer age;
 
     public CustomerDTO() {

@@ -9,11 +9,22 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Photo", description = "All photo meta data")
 public class PhotoDTO {
 
+    @ApiModelProperty("Photo ID")
     private Long photoId;
+
+    @ApiModelProperty("Customer ID whose photo was uploaded")
     private Long customerId;
+
+    @ApiModelProperty("Photo file name")
     private String fileName;
+
+    @ApiModelProperty("Photo file URL")
     private String fileUrl;
+
+    @ApiModelProperty("Photo file type")
     private String fileType;
+
+    @ApiModelProperty("Photo file size")
     private Long fileSize;
 
     public PhotoDTO() {
