@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -21,7 +22,9 @@ import java.util.Date;
 @Entity
 @Immutable
 @Table(name = "customer_report_view")
-public class CustomerReport extends ResourceSupport {
+public class CustomerReport extends ResourceSupport implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "customer_id")
     private Long customerId;

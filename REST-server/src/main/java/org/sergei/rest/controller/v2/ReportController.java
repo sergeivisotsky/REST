@@ -2,6 +2,7 @@ package org.sergei.rest.controller.v2;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.sergei.rest.model.CustomerReport;
 import org.sergei.rest.repository.CustomerReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,11 @@ public class ReportController {
 
     @ApiOperation("Get paginated report for customer")
     @GetMapping(value = "/customers", params = {"customerId", "page", "size"})
-    public ResponseEntity<Resources> getPaginatedReportForCustomer(@RequestParam("customerId") Long customerId,
+    public ResponseEntity<Resources> getPaginatedReportForCustomer(@ApiParam("Customer ID to find report")
+                                                                   @RequestParam("customerId") Long customerId,
+                                                                   @ApiParam("Number of page")
                                                                    @RequestParam("page") int page,
+                                                                   @ApiParam("Number of elements per page")
                                                                    @RequestParam("size") int size) {
         Page<CustomerReport> customerReport =
                 customerReportRepository.findPaginatedByCustomerId(customerId, PageRequest.of(page, size));

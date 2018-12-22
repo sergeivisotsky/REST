@@ -44,9 +44,9 @@ public class CustomerControllerV2 {
 
     @ApiOperation("Gel all customers opaginated")
     @GetMapping(value = "/v2/customers", params = {"page", "size"})
-    public ResponseEntity<Resources> getAllCustomersPaginatedV2(@ApiParam(value = "Number of page", required = true)
+    public ResponseEntity<Resources> getAllCustomersPaginatedV2(@ApiParam("Number of page")
                                                                 @RequestParam("page") int page,
-                                                                @ApiParam(value = "Number of elements per page", required = true)
+                                                                @ApiParam("Number of elements per page")
                                                                 @RequestParam("size") int size) {
         Page<CustomerDTOV2> customerDTOList = customerServiceV2.findAllPaginatedV2(page, size);
         return new ResponseEntity<>(setLinksForAllCustomers(customerDTOList), HttpStatus.OK);

@@ -35,9 +35,9 @@ public class PhotoControllerV2 {
     @GetMapping(value = "/v2/customers/{customerId}/photo", params = {"page", "size"})
     public ResponseEntity<Page<PhotoDTO>> findAllCustomerPhotosPaginated(@ApiParam(value = "Customer ID whose photos should be deleted", required = true)
                                                                          @PathVariable("customerId") Long customerId,
-                                                                         @ApiParam(value = "Number of page", required = true)
+                                                                         @ApiParam("Number of page")
                                                                          @RequestParam("page") int page,
-                                                                         @ApiParam(value = "Number of elements per page", required = true)
+                                                                         @ApiParam("Number of elements per page")
                                                                          @RequestParam("size") int size) {
         return new ResponseEntity<>(photoServiceV2.findAllPaginatedV2(customerId, page, size), HttpStatus.OK);
     }

@@ -38,7 +38,7 @@ public class OrderControllerV2 {
     )
     @GetMapping("/v2/customers/{customerId}/orders")
     public ResponseEntity getOrdersByCustomerIdV2(@ApiParam(value = "Customer ID whose orders should be found", required = true)
-                                                                         @PathVariable("customerId") Long customerId) {
+                                                  @PathVariable("customerId") Long customerId) {
         List<OrderDTOV2> orderDTOV2List = orderServiceV2.findAllByCustomerIdV2(customerId);
         return new ResponseEntity<>(setLinksForAllOrders(orderDTOV2List), HttpStatus.OK);
     }
@@ -51,11 +51,11 @@ public class OrderControllerV2 {
     )
     @GetMapping(value = "/v2/customers/{customerId}/orders", params = {"page", "size"})
     public ResponseEntity getOrdersByCustomerIdPaginatedV2(@ApiParam(value = "Customer ID whose orders should be found", required = true)
-                                                                                  @PathVariable("customerId") Long customerId,
-                                                           @ApiParam(value = "Number of page", required = true)
-                                                                                  @RequestParam("page") int page,
-                                                           @ApiParam(value = "Number of elements per page", required = true)
-                                                                                  @RequestParam("size") int size) {
+                                                           @PathVariable("customerId") Long customerId,
+                                                           @ApiParam("Number of page")
+                                                           @RequestParam("page") int page,
+                                                           @ApiParam("Number of elements per page")
+                                                           @RequestParam("size") int size) {
         Page<OrderDTOV2> orderDTOV2List = orderServiceV2.findAllByCustomerIdPaginatedV2(customerId, page, size);
         return new ResponseEntity<>(setLinksForAllOrders(orderDTOV2List), HttpStatus.OK);
     }
@@ -83,7 +83,7 @@ public class OrderControllerV2 {
     )
     @GetMapping("/v2/orders")
     public ResponseEntity getOrdersByProductCodeV2(@ApiParam(value = "Code of the product which should be found", required = true)
-                                                                     @RequestParam("prod-code") String productCode) {
+                                                   @RequestParam("prod-code") String productCode) {
         List<OrderDTOV2> orderDTOV2List = orderServiceV2.findAllByProductCodeV2(productCode);
         return new ResponseEntity<>(setServletResourceLinks(orderDTOV2List), HttpStatus.OK);
     }

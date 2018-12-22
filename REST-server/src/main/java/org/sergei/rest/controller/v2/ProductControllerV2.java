@@ -41,9 +41,9 @@ public class ProductControllerV2 {
 
     @ApiOperation("Get all products paginated")
     @GetMapping(value = "/v2/products", params = {"page", "size"})
-    public ResponseEntity getAllProductsPaginatedV2(@ApiParam(value = "Number of page", required = true)
+    public ResponseEntity getAllProductsPaginatedV2(@ApiParam("Number of page")
                                                     @RequestParam("page") int page,
-                                                    @ApiParam(value = "Number of elements per page", required = true)
+                                                    @ApiParam("Number of elements per page")
                                                     @RequestParam("size") int size) {
         Page<ProductDTOV2> productDTOV2List = productServiceV2.findAllPaginatedV2(page, size);
         return new ResponseEntity<>(setLinksForAllProducts(productDTOV2List), HttpStatus.OK);

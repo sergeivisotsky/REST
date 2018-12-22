@@ -7,12 +7,10 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 /**
- * @author Sergei Visotsky
+ * This class needs so that it was able to delegate roles fot the API resources.
+ * For example allow admin to delete any resource only
  *
- * <pre>
- *      This class needs so that it was able to delegate roles fot the API resources.
- *      For example allow admin to delete any resource only
- * </pre>
+ * @author Sergei Visotsky
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
