@@ -1,4 +1,4 @@
-package org.sergei.rest.client.pojo;
+package org.sergei.rest.client.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerVO {
+public class Customer {
     private Long customerId;
     private String firstName;
     private String lastName;

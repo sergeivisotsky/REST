@@ -1,0 +1,6 @@
+server:
+    port: 9092
+management:
+    endpoint:
+        health:
+            show-details: always
