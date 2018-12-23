@@ -2,13 +2,14 @@
 REST API implementation using Spring Boot
 
 ## Technologies
- * Java 8
- * Apache Maven
- * Spring Boot 2
- * MySQL
- * Jackson
- * modelmapper
- * Swagger
+* Java 8
+* Spring Boot 2
+* JPA
+* Apache Maven
+* MySQL
+* ModelMapper
+* Jackson
+* Swagger
 
 ## Spring annotation depending on version
 | Http method | Spring 4.xx | Spring 5.xx |

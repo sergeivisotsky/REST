@@ -10,4 +10,5 @@ REST API server and client written using Spring Boot 2
 * Apache Maven
 * MySQL
 * ModelMapper
+* Jackson
 * Swagger
