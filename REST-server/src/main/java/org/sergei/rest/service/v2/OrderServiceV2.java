@@ -10,7 +10,6 @@ import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.service.OrderService;
-import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.sergei.rest.util.ObjectMapperUtil.*;
 
 /**
  * V2 of order service
@@ -34,7 +35,7 @@ public class OrderServiceV2 extends OrderService {
     }
 
     /**
-     * Get order by number
+     * Get order by ID
      *
      * @param orderId get order number as a parameter from REST controller
      * @return order DTO response
@@ -45,7 +46,7 @@ public class OrderServiceV2 extends OrderService {
                         () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-        OrderDTOV2 orderDTOV2 = ObjectMapperUtil.map(order, OrderDTOV2.class);
+        OrderDTOV2 orderDTOV2 = map(order, OrderDTOV2.class);
 
         List<OrderDetails> orderDetailsList =
                 orderDetailsRepository.findAllByOrderId(orderDTOV2.getOrderId());
@@ -53,7 +54,7 @@ public class OrderServiceV2 extends OrderService {
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         orderDetailsList.forEach(orderDetails ->
                 orderDetailsDTOList.add(
-                        ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
+                        map(orderDetails, OrderDetailsDTO.class)
                 )
         );
 
@@ -63,11 +64,11 @@ public class OrderServiceV2 extends OrderService {
     }
 
     /**
-     * Get order by customer and order numbers
+     * Get order by customer and order IDs
      *
-     * @param customerId Get customer number from the REST controller
-     * @param orderId    Get order number from the REST controller
-     * @return Return order DTO reponse
+     * @param customerId Get customer ID from the REST controller
+     * @param orderId    Get order ID from the REST controller
+     * @return Return order DTO response
      */
     public OrderDTOV2 findOneByCustomerIdAndOrderIdV2(Long customerId, Long orderId) {
         customerRepository.findById(customerId)
@@ -78,9 +79,9 @@ public class OrderServiceV2 extends OrderService {
     }
 
     /**
-     * Get all orders by customer number
+     * Get all orders by customer ID
      *
-     * @param customerId customer number form the REST controller
+     * @param customerId customer ID form the REST controller
      * @return List of order DTOs
      */
     public List<OrderDTOV2> findAllByCustomerIdV2(Long customerId) {
@@ -93,9 +94,9 @@ public class OrderServiceV2 extends OrderService {
     }
 
     /**
-     * Get all orders by customer number paginated
+     * Get all orders by customer ID paginated
      *
-     * @param customerId customer number form the REST controller
+     * @param customerId customer ID form the REST controller
      * @return List of order DTOs
      */
     public Page<OrderDTOV2> findAllByCustomerIdPaginatedV2(Long customerId, int page, int size) {
@@ -128,29 +129,27 @@ public class OrderServiceV2 extends OrderService {
      * @return List of the order DTOs
      */
     private Page<OrderDTOV2> findOrdersByListWithParamPaginatedV2(Page<Order> orders) {
-        orders.forEach(order -> {
-            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTOV2 orderDTO = ObjectMapperUtil.map(order, OrderDTOV2.class);
+        orders.forEach(order ->
+                {
+                    // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                    OrderDTOV2 orderDTO = map(order, OrderDTOV2.class);
 
-            List<OrderDetails> orderDetailsList =
-                    orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
+                    List<OrderDetails> orderDetailsList =
+                            orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 
-            List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-            orderDetailsList.forEach(orderDetails ->
-                    orderDetailsDTOList.add(
-                            ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
-                    )
-            );
+                    List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
+                    orderDetailsList.forEach(orderDetails ->
+                            {
+                                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                                OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
+                                orderDetailsDTOList.add(orderDetailsDTO);
+                            }
+                    );
 
-            orderDetailsList.forEach(orderDetails -> {
-                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class);
-                orderDetailsDTOList.add(orderDetailsDTO);
-            });
-
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-        });
-        return ObjectMapperUtil.mapAllPages(orders, OrderDTOV2.class);
+                    orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
+                }
+        );
+        return mapAllPages(orders, OrderDTOV2.class);
     }
 
     /**
@@ -161,31 +160,26 @@ public class OrderServiceV2 extends OrderService {
      */
     private List<OrderDTOV2> findOrdersByListWithParamV2(List<Order> orders) {
         List<OrderDTOV2> orderDTOList = new LinkedList<>();
+        orders.forEach(order ->
+                {
+                    // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                    OrderDTOV2 orderDTO = map(order, OrderDTOV2.class);
 
-        orders.forEach(order -> {
-            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTOV2 orderDTO = ObjectMapperUtil.map(order, OrderDTOV2.class);
+                    List<OrderDetails> orderDetailsList =
+                            orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 
-            List<OrderDetails> orderDetailsList =
-                    orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
-
-            List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-            orderDetailsList.forEach(orderDetails ->
-                    orderDetailsDTOList.add(
-                            ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
-                    )
-            );
-
-            orderDetailsList.forEach(orderDetails -> {
-                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class);
-                orderDetailsDTOList.add(orderDetailsDTO);
-            });
-
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-            orderDTOList.add(orderDTO);
-        });
-
+                    List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
+                    orderDetailsList.forEach(orderDetails ->
+                            {
+                                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                                OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
+                                orderDetailsDTOList.add(orderDetailsDTO);
+                            }
+                    );
+                    orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
+                    orderDTOList.add(orderDTO);
+                }
+        );
         return orderDTOList;
     }
 }

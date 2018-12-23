@@ -11,7 +11,6 @@ import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
-import org.sergei.rest.util.ObjectMapperUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.sergei.rest.util.ObjectMapperUtil.map;
+import static org.sergei.rest.util.ObjectMapperUtil.mapAll;
 
 /**
  * @author Sergei Visotsky
@@ -59,7 +61,7 @@ public class OrderService {
                         () -> new ResourceNotFoundException(ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-        OrderDTO orderDTO = ObjectMapperUtil.map(order, OrderDTO.class);
+        OrderDTO orderDTO = map(order, OrderDTO.class);
 
         List<OrderDetails> orderDetailsList =
                 orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -67,7 +69,7 @@ public class OrderService {
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         orderDetailsList.forEach(orderDetails ->
                 orderDetailsDTOList.add(
-                        ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
+                        map(orderDetails, OrderDetailsDTO.class)
                 )
         );
 
@@ -77,11 +79,11 @@ public class OrderService {
     }
 
     /**
-     * Get order by customer and order numbers
+     * Get order by customer and order IDs
      *
-     * @param customerId Get customer number from the REST controller
-     * @param orderId    Get order number from the REST controller
-     * @return Return order DTO reponse
+     * @param customerId Get customer ID from the REST controller
+     * @param orderId    Get order ID from the REST controller
+     * @return Return order DTO response
      */
     public OrderDTO findOneByCustomerIdAndOrderId(Long customerId, Long orderId) {
         customerRepository.findById(customerId)
@@ -92,9 +94,9 @@ public class OrderService {
     }
 
     /**
-     * Get all orders by customer number
+     * Get all orders by customer ID
      *
-     * @param customerId customer number form the REST controller
+     * @param customerId customer ID form the REST controller
      * @return List of order DTOs
      */
     public List<OrderDTO> findAllByCustomerId(Long customerId) {
@@ -132,12 +134,11 @@ public class OrderService {
                 () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
         );
         LOGGER.debug("Customer is: {}", customer.getCustomerId());
-        Order order = ObjectMapperUtil.map(orderDTO, Order.class);
+        Order order = map(orderDTO, Order.class);
         order.setCustomer(customer);
 
         // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = ObjectMapperUtil
-                .mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
+        List<OrderDetails> orderDetailsList = mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -155,14 +156,14 @@ public class OrderService {
         order.setOrderDetails(orderDetailsList);
 
         Order savedOrder = orderRepository.save(order);
-        return ObjectMapperUtil.map(savedOrder, OrderDTO.class);
+        return map(savedOrder, OrderDTO.class);
     }
 
     /**
-     * Update order by customer and order numbers
+     * Update order by customer and order IDs
      *
-     * @param customerId get customer number form the REST controller
-     * @param orderId    get order number form the REST controller
+     * @param customerId get customer ID form the REST controller
+     * @param orderId    get order ID form the REST controller
      * @param orderDTO   Get order DTO request body
      * @return return order DTO as a response
      */
@@ -181,8 +182,7 @@ public class OrderService {
         order.setStatus(orderDTO.getStatus());
 
         // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = ObjectMapperUtil
-                .mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
+        List<OrderDetails> orderDetailsList = mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
@@ -207,8 +207,8 @@ public class OrderService {
     /**
      * Delete order method
      *
-     * @param customerId get customer number form the REST controller
-     * @param orderId    get order number form the REST controller
+     * @param customerId get customer ID form the REST controller
+     * @param orderId    get order ID form the REST controller
      */
     public void deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
         orderRepository.deleteByCustomerIdAndOrderId(customerId, orderId);
@@ -222,30 +222,27 @@ public class OrderService {
      */
     private List<OrderDTO> findOrdersByListWithParam(List<Order> orders) {
         List<OrderDTO> orderDTOList = new LinkedList<>();
+        orders.forEach(order ->
+                {
+                    // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                    OrderDTO orderDTO = map(order, OrderDTO.class);
 
-        for (Order order : orders) {
-            // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-            OrderDTO orderDTO = ObjectMapperUtil.map(order, OrderDTO.class);
+                    List<OrderDetails> orderDetailsList =
+                            orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 
-            List<OrderDetails> orderDetailsList =
-                    orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
+                    List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
+                    orderDetailsList.forEach(orderDetails ->
+                            {
+                                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                                OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
+                                orderDetailsDTOList.add(orderDetailsDTO);
+                            }
+                    );
 
-            List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-            orderDetailsList.forEach(orderDetails ->
-                    orderDetailsDTOList.add(
-                            ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class)
-                    )
-            );
-            for (OrderDetails orderDetails : orderDetailsList) {
-                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                OrderDetailsDTO orderDetailsDTO = ObjectMapperUtil.map(orderDetails, OrderDetailsDTO.class);
-                orderDetailsDTOList.add(orderDetailsDTO);
-            }
-
-            orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-            orderDTOList.add(orderDTO);
-        }
-
+                    orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
+                    orderDTOList.add(orderDTO);
+                }
+        );
         return orderDTOList;
     }
 }
