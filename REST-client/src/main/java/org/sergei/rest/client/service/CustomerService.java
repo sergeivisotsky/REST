@@ -21,7 +21,7 @@ public class CustomerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
-    private static final String REST_RESORUSE_URI = "http://localhost:9091/api/v2";
+    private static final String REST_RESOURCE_URI = "http://localhost:9091/api/v2";
     private static final String AUTH_SERVER = "http://localhost:9091/oauth/token";
     private static final String PASSWORD_GRANT = "?grant_type=password&username=admin&password=123456";
     private static final String ACCESS_TOKEN = "?access_token=";
@@ -95,7 +95,7 @@ public class CustomerService {
         AuthTokenInfo tokenInfo = sendTokenRequest();
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         ResponseEntity<Customer> customerResponseEntity =
-                restTemplate.exchange(REST_RESORUSE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
+                restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
                         HttpMethod.GET, request, Customer.class);
         System.out.println(customerResponseEntity.getBody());
         return customerResponseEntity;
