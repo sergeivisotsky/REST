@@ -104,7 +104,6 @@ public class OrderService {
         if (orders == null) {
             throw new ResourceNotFoundException(ORDER_NOT_FOUND);
         }
-
         return findOrdersByListWithParam(orders);
     }
 
@@ -224,8 +223,11 @@ public class OrderService {
         List<OrderDTO> orderDTOList = new LinkedList<>();
         orders.forEach(order ->
                 {
+                    LOGGER.debug("Customer ID who made order in entity: {}", order.getCustomer().getCustomerId());
                     // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                     OrderDTO orderDTO = map(order, OrderDTO.class);
+                    orderDTO.setCustomerId(order.getCustomer().getCustomerId());
+                    LOGGER.debug("Customer ID who made order in DTO: {}", orderDTO.getCustomerId());
 
                     List<OrderDetails> orderDetailsList =
                             orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -235,6 +237,8 @@ public class OrderService {
                             {
                                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                                 OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
+                                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
+                                LOGGER.debug("Product code in order details: {}", orderDetailsDTO.getProductCode());
                                 orderDetailsDTOList.add(orderDetailsDTO);
                             }
                     );

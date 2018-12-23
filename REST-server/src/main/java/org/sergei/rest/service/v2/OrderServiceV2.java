@@ -133,6 +133,7 @@ public class OrderServiceV2 extends OrderService {
                 {
                     // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                     OrderDTOV2 orderDTO = map(order, OrderDTOV2.class);
+                    orderDTO.setCustomerId(order.getCustomer().getCustomerId());
 
                     List<OrderDetails> orderDetailsList =
                             orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
@@ -142,6 +143,7 @@ public class OrderServiceV2 extends OrderService {
                             {
                                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                                 OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
+                                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
                                 orderDetailsDTOList.add(orderDetailsDTO);
                             }
                     );
@@ -163,21 +165,23 @@ public class OrderServiceV2 extends OrderService {
         orders.forEach(order ->
                 {
                     // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                    OrderDTOV2 orderDTO = map(order, OrderDTOV2.class);
+                    OrderDTOV2 orderDTOV2 = map(order, OrderDTOV2.class);
+                    orderDTOV2.setCustomerId(order.getCustomer().getCustomerId());
 
                     List<OrderDetails> orderDetailsList =
-                            orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
+                            orderDetailsRepository.findAllByOrderId(orderDTOV2.getOrderId());
 
                     List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
                     orderDetailsList.forEach(orderDetails ->
                             {
                                 // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                                 OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
+                                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
                                 orderDetailsDTOList.add(orderDetailsDTO);
                             }
                     );
-                    orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-                    orderDTOList.add(orderDTO);
+                    orderDTOV2.setOrderDetailsDTO(orderDetailsDTOList);
+                    orderDTOList.add(orderDTOV2);
                 }
         );
         return orderDTOList;
