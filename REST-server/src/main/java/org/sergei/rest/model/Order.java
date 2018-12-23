@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,13 +27,13 @@ public class Order implements Serializable {
     private Long orderId;
 
     @Column(name = "order_date", nullable = false)
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
     @Column(name = "required_date", nullable = false)
-    private Date requiredDate;
+    private LocalDateTime requiredDate;
 
     @Column(name = "shipped_date", nullable = false)
-    private Date shippedDate;
+    private LocalDateTime shippedDate;
 
     @Column(name = "status", nullable = false)
     private String status;
@@ -50,8 +50,8 @@ public class Order implements Serializable {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Order(Customer customer, Date orderDate,
-                 Date requiredDate, Date shippedDate, String status) {
+    public Order(Customer customer, LocalDateTime orderDate,
+                 LocalDateTime requiredDate, LocalDateTime shippedDate, String status) {
         this.customer = customer;
         this.orderDate = orderDate;
         this.requiredDate = requiredDate;

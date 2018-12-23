@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,17 +31,19 @@ public class OrderDTO {
     @ApiModelProperty("Date when order was made")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
     @ApiModelProperty("Date when order should be delivered")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date requiredDate;
+    private LocalDateTime requiredDate;
 
     @ApiModelProperty("Date when order was delivered")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date shippedDate;
+    private LocalDateTime shippedDate;
+
+    @ApiModelProperty("Order status e.g. pending/delivered")
     private String status;
 
     @ApiModelProperty("List of order details")

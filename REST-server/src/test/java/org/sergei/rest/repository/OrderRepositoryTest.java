@@ -18,8 +18,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -39,7 +40,8 @@ import static org.junit.Assert.assertTrue;
 @EntityScan(basePackages = "org.sergei.rest.model")
 public class OrderRepositoryTest {
 
-    private static final Date TESTING_DATE = new Date(2018, 11, 12, 16, 25, 44);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final LocalDateTime TESTING_DATE = LocalDateTime.parse("2018-09-09 09:24:00", FORMATTER);
     private static final BigDecimal PRICE = new BigDecimal(1200);
 
     @Autowired

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -51,13 +52,13 @@ public class CustomerReport extends ResourceSupport implements Serializable {
 
     @ApiModelProperty("Date when order was made")
     @Column(name = "order_date")
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
     @ApiModelProperty("Date when order should be delivered")
     @Column(name = "required_date")
-    private Date requiredDate;
+    private LocalDateTime requiredDate;
 
     @ApiModelProperty("Date when order was delivered")
     @Column(name = "shipped_date")
-    private Date shippedDate;
+    private LocalDateTime shippedDate;
 }
