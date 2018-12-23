@@ -24,3 +24,7 @@ security:
   oauth2:
     resource:
       accessTokenUri: http://localhost:9091/oauth/token
+management:
+  endpoint:
+    health:
+      show-details: always

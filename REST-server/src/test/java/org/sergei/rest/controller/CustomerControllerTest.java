@@ -7,6 +7,7 @@ import org.sergei.rest.RestServerApplication;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.testconfig.ResourceServerConfiguration;
+import org.sergei.rest.testconfig.WebSecurityConfigTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = RestServerApplication.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = {ResourceServerConfiguration.class})
+@ContextConfiguration(classes = {ResourceServerConfiguration.class, WebSecurityConfigTest.class})
 @EnableJpaRepositories(basePackages = "org.sergei.rest.repository")
 @EntityScan(basePackages = "org.sergei.rest.model")
 public class CustomerControllerTest {
@@ -57,10 +58,10 @@ public class CustomerControllerTest {
                 get(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerId").isNotEmpty())
-                .andExpect(jsonPath("$.firstName").value(firstName))
-                .andExpect(jsonPath("$.lastName").value(lastName))
-                .andExpect(jsonPath("$.age").value(age));
+                .andExpect(jsonPath("$[0].customerId").isNotEmpty())
+                .andExpect(jsonPath("$[0].firstName").value(firstName))
+                .andExpect(jsonPath("$[0].lastName").value(lastName))
+                .andExpect(jsonPath("$[0].age").value(age));
     }
 
     private Customer setupCustomer(String firstName, String lastName, int age) {
