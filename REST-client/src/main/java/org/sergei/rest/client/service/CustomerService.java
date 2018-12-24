@@ -106,10 +106,7 @@ public class CustomerService {
     public ResponseEntity<Customer> getCustomerByNumber(Long customerId) {
         AuthTokenInfo tokenInfo = sendTokenRequest();
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
-        ResponseEntity<Customer> customerResponseEntity =
-                restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
-                        HttpMethod.GET, request, Customer.class);
-        LOGGER.debug("Customer response body: {}", Objects.requireNonNull(customerResponseEntity.getBody()).toString());
-        return customerResponseEntity;
+        return restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
+                HttpMethod.GET, request, Customer.class);
     }
 }
