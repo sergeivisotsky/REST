@@ -27,10 +27,12 @@ public class CustomerService {
     private static final String ACCESS_TOKEN = "?access_token=";
 
     private final RestTemplate restTemplate;
+    private final HttpHeaders httpHeaders;
 
     @Autowired
-    public CustomerService(RestTemplate restTemplate) {
+    public CustomerService(RestTemplate restTemplate, HttpHeaders httpHeaders) {
         this.restTemplate = restTemplate;
+        this.httpHeaders = httpHeaders;
     }
 
     /**
@@ -38,10 +40,9 @@ public class CustomerService {
      *
      * @return return headers
      */
-    private static HttpHeaders getHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        return headers;
+    private HttpHeaders getHeaders() {
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        return httpHeaders;
     }
 
     /**
@@ -49,7 +50,7 @@ public class CustomerService {
      *
      * @return headers with Authorization header added
      */
-    private static HttpHeaders getHeadersWithClientCredentials() {
+    private HttpHeaders getHeadersWithClientCredentials() {
         String plainClientCredentials = "trusted-client:trusted-client-secret";
         String base64ClientCredentials = new String(Base64.encodeBase64(plainClientCredentials.getBytes()));
 
@@ -61,11 +62,10 @@ public class CustomerService {
     /**
      * Send a POST request [on /oauth/token] to get an access_token, which will then be send with each request.
      *
-     * @return access token
+     * @return access token for each request
      */
     @SuppressWarnings("unchecked")
-    private static AuthTokenInfo sendTokenRequest() {
-        RestTemplate restTemplate = new RestTemplate();
+    private AuthTokenInfo sendTokenRequest() {
 
         HttpEntity<String> request = new HttpEntity<>(getHeadersWithClientCredentials());
         ResponseEntity<Object> response = restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT, HttpMethod.POST, request, Object.class);
@@ -80,7 +80,7 @@ public class CustomerService {
             tokenInfo.setExpiresIn((int) map.get("expires_in"));
             tokenInfo.setScope((String) map.get("scope"));
         } else {
-            LOGGER.debug("User does not exists");
+            LOGGER.debug("User does not exist");
         }
         return tokenInfo;
     }
