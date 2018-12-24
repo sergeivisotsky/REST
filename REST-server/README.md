@@ -11,25 +11,6 @@ REST API implementation using Spring Boot
 * Jackson
 * Swagger
 
-## Setup
-
-* Setup your database driver dependency.
-
-_Example for MySQL:_
-```xml
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <scope>runtime</scope>
-</dependency>
-```
-
-1. Open `application.yml` file and setup your database url and credentials
-2. Change database name in `oauth_schem.sql`
-3. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case)
-4. Keep in mind that application port and port in `security.oauth2.resource.accessTokenUri` property might be changed in your case
-5. Open `logback-spring.xml` setup directory where all your logging files are going to saved
-
 ## API documentation
 For endpoint documentation is used Swagger which is accessible by the url - `http://localhost:8080/docs` which redirects to the `http://localhost:8080/swagger-ui.html`.
 
@@ -64,3 +45,24 @@ In case if access token is expired refresh token should be used to renew access 
 * Method: `POST`
 * Content-Type: `application/x-www-form-urlencoded`
 * Content-Options: `grant_type=refresh_token&refresh_token=REFRESH_TOKEN`
+
+## Setup
+* Setup your database driver dependency.
+
+_Example for MySQL:_
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+1. Open `application.yml` file and setup your database url and credentials
+2. Change database name in `oauth_schem.sql`
+3. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case)
+4. Keep in mind that application port and port in `security.oauth2.resource.accessTokenUri` property might be changed in your case
+5. Open `logback-spring.xml` setup directory where all your logging files are going to saved
+
+## Run
+* Perform command `mvn spring-boot:run` or compile project in .jar and perform command `java -jar REST-server-VERSION.jar`
