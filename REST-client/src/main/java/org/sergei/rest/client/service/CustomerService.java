@@ -102,13 +102,13 @@ public class CustomerService {
      * @param customerId ID of the customer to be found
      * @return customer entity
      */
-    public ResponseEntity<Customer> getCustomerByNumber(Long customerId) throws NullPointerException {
+    public ResponseEntity<Customer> getCustomerByNumber(Long customerId) {
         AuthTokenInfo tokenInfo = sendTokenRequest();
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         ResponseEntity<Customer> customerResponseEntity =
                 restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
                         HttpMethod.GET, request, Customer.class);
-        System.out.println(customerResponseEntity.getBody());
+        LOGGER.debug(String.valueOf(customerResponseEntity.getBody()));
         return customerResponseEntity;
     }
 }
