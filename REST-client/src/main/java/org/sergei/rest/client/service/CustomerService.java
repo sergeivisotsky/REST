@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.Objects;
 
 /**
  * @author Sergei Visotsky
