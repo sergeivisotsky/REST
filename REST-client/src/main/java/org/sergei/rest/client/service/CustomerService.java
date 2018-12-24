@@ -102,7 +102,7 @@ public class CustomerService {
      * @param customerId ID of the customer to be found
      * @return customer entity
      */
-    public ResponseEntity<Customer> getCustomerByNumber(Long customerId) {
+    public ResponseEntity<Customer> getCustomerByNumber(Long customerId) throws NullPointerException {
         AuthTokenInfo tokenInfo = sendTokenRequest();
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         ResponseEntity<Customer> customerResponseEntity =
