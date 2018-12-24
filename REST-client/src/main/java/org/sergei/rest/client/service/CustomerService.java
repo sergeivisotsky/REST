@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 /**
  * @author Sergei Visotsky
@@ -108,7 +109,7 @@ public class CustomerService {
         ResponseEntity<Customer> customerResponseEntity =
                 restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
                         HttpMethod.GET, request, Customer.class);
-        LOGGER.debug(String.valueOf(customerResponseEntity.getBody()));
+        LOGGER.debug("Customer response body: {}", Objects.requireNonNull(customerResponseEntity.getBody()).toString());
         return customerResponseEntity;
     }
 }
