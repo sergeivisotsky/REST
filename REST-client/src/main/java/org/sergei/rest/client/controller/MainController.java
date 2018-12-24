@@ -38,14 +38,4 @@ public class MainController {
 
         return "index";
     }
-
-    @GetMapping("/angular")
-    public String angularClient() {
-        return "redirect:templates/angular-client.html";
-    }
-
-    @GetMapping("/jquery")
-    public String jqueryClient() {
-        return "redirect:templates/jquery-client.html";
-    }
 }
