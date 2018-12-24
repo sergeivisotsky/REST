@@ -6,6 +6,7 @@ import org.sergei.rest.client.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,8 +24,16 @@ public class CustomerService {
 
     private static final String REST_RESOURCE_URI = "http://localhost:9091/api/v2";
     private static final String AUTH_SERVER = "http://localhost:9091/oauth/token";
-    private static final String PASSWORD_GRANT = "?grant_type=password&username=admin&password=123456";
+    private static final String PASSWORD_GRANT = "?grant_type=password";
+    private static final String USERNAME = "&username=";
+    private static final String PASSWORD = "&password=";
     private static final String ACCESS_TOKEN = "?access_token=";
+
+    @Value("${oauth.username}")
+    private String usernameValue;
+
+    @Value("${oauth.password}")
+    private String passwordValue;
 
     private final RestTemplate restTemplate;
     private final HttpHeaders httpHeaders;
@@ -68,7 +77,9 @@ public class CustomerService {
     private AuthTokenInfo sendTokenRequest() {
 
         HttpEntity<String> request = new HttpEntity<>(getHeadersWithClientCredentials());
-        ResponseEntity<Object> response = restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT, HttpMethod.POST, request, Object.class);
+        ResponseEntity<Object> response =
+                restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT + USERNAME + usernameValue + PASSWORD + passwordValue,
+                        HttpMethod.POST, request, Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) response.getBody();
         AuthTokenInfo tokenInfo = null;
 
