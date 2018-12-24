@@ -25,7 +25,7 @@ Client ID and client secret should be provided in headers as a basic auth.
 * Content-Options: `username=USERNAME&password=PASSWORD&grant_type=GRANT_TYPE`
 
 _Response:_
-```
+```json
 {
     "access_token": "29ff004b-98d8-4127-85a7-286913cff240",
     "token_type": "bearer",
