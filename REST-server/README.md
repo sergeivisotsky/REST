@@ -11,7 +11,27 @@ REST API implementation using Spring Boot
 * Jackson
 * Swagger
 
-For api documentation is used Swagger which is accessible by the url - `http://localhost:8080/docs` which redirects to the `http://localhost:8080/swagger-ui.html`.
+## Setup
+
+* Setup your database driver dependency.
+
+_Example for MySQL:_
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+1. Open `application.yml` file and setup your database url and credentials
+2. Change database name in `oauth_schem.sql`
+3. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case)
+4. Keep in mind that application port and port in `security.oauth2.resource.accessTokenUri` property might be changed in your case
+5. Open `logback-spring.xml` setup directory where all your logging files are going to saved
+
+## API documentation
+For endpoint documentation is used Swagger which is accessible by the url - `http://localhost:8080/docs` which redirects to the `http://localhost:8080/swagger-ui.html`.
 
 ## Authentication
 To access any resource authentication should be performed. By performing this request with such a parameters access_token is retrieved.
@@ -23,7 +43,7 @@ Client ID and client secret should be provided in headers as a basic auth.
 * Content-Type: `application/x-www-form-urlencoded`
 * Content-Options: `username=USERNAME&password=PASSWORD&grant_type=GRANT_TYPE`
 
-_response_
+_Response:_
 ```
 {
     "access_token": "29ff004b-98d8-4127-85a7-286913cff240",

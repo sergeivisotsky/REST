@@ -12,3 +12,6 @@ REST API server and client written using Spring Boot 2
 * ModelMapper
 * Jackson
 * Swagger
+
+## Setup
+Setup guides for each REST server and client are located in each modules' README.
