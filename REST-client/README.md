@@ -12,4 +12,4 @@ Client of the RESTful service
 2. Open `logback-spring.xml` setup directory where all your logging files are going to saved
 
 ## Run
-* Perform command `mvn spring-boot:run` or compile project in .jar and perform command `java -jar rest-client-VERSION.jar`
+* Perform command `mvn spring-boot:run` or compile project in .jar and perform command `java -jar target/rest-client-VERSION.jar`
