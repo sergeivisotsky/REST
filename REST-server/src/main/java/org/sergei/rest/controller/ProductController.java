@@ -64,7 +64,7 @@ public class ProductController {
                                                           @PathVariable("productCode") String productCode,
                                                           @ApiParam(value = "Updated product", required = true)
                                                           @RequestBody ProductDTO productDTO) {
-        return new ResponseEntity<>(productService.update(productCode, productDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(productService.update(productCode, productDTO), HttpStatus.OK);
     }
 
     @ApiOperation("Delete product by code")

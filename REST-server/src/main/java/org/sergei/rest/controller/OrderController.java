@@ -91,7 +91,7 @@ public class OrderController {
                                                  @PathVariable("orderId") Long orderId,
                                                  @ApiParam(value = "Updated order", required = true)
                                                  @RequestBody OrderDTO orderDTO) {
-        return new ResponseEntity<>(orderService.updateByCustomerId(customerId, orderId, orderDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(orderService.updateByCustomerId(customerId, orderId, orderDTO), HttpStatus.OK);
     }
 
     @ApiOperation("Delete order by customer and order numbers")

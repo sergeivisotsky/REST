@@ -62,7 +62,7 @@ public class CustomerController {
                                                     @PathVariable("customerId") Long customerId,
                                                     @ApiParam(value = "Updated customer", required = true)
                                                     @RequestBody CustomerDTO customerDTO) {
-        return new ResponseEntity<>(customerService.update(customerId, customerDTO), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(customerService.update(customerId, customerDTO), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete customer by number", notes = "Operation allowed for ADMIN only")
