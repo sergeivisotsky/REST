@@ -44,22 +44,28 @@ public class ProductController {
         return new ResponseEntity<>(productService.findByCode(productCode), HttpStatus.OK);
     }
 
-    @ApiOperation("Add a new product")
+    @ApiOperation(value = "Add a new product", notes = "Operation allowed for ADMIN only")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PostMapping(value = {"/v1/products", "/v2/products"}, consumes = "application/json")
+    @PostMapping(value = {
+            "/v1/products",
+            "/v2/products"
+    }, consumes = "application/json")
     public ResponseEntity<ProductDTO> saveProduct(@ApiParam(value = "Saved product", required = true)
                                                   @RequestBody ProductDTO productDTO) {
         return new ResponseEntity<>(productService.save(productDTO), HttpStatus.CREATED);
     }
 
-    @ApiOperation("Update product by code")
+    @ApiOperation(value = "Update product by code", notes = "Operation allowed for ADMIN only")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 404, message = "Invalid product code")
             }
     )
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PutMapping(value = {"/v1/products/{productCode}", "/v2/products/{productCode}"}, consumes = "application/json")
+    @PutMapping(value = {
+            "/v1/products/{productCode}",
+            "/v2/products/{productCode}"
+    }, consumes = "application/json")
     public ResponseEntity<ProductDTO> updateProductByCode(@ApiParam(value = "Updated product code", required = true)
                                                           @PathVariable("productCode") String productCode,
                                                           @ApiParam(value = "Updated product", required = true)
@@ -67,14 +73,17 @@ public class ProductController {
         return new ResponseEntity<>(productService.update(productCode, productDTO), HttpStatus.OK);
     }
 
-    @ApiOperation("Delete product by code")
+    @ApiOperation(value = "Delete product by code", notes = "Operation allowed for ADMIN only")
     @ApiResponses(
             value = {
                     @ApiResponse(code = 404, message = "Invalid product code")
             }
     )
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping({"/v1/products/{productCode}", "/v2/products/{productCode}"})
+    @DeleteMapping({
+            "/v1/products/{productCode}",
+            "/v2/products/{productCode}"
+    })
     public ResponseEntity<ProductDTO> deleteProductByCode(@ApiParam(value = "Deleted product", required = true)
                                                           @PathVariable("productCode") String productCode) {
         return new ResponseEntity<>(productService.delete(productCode), HttpStatus.NO_CONTENT);

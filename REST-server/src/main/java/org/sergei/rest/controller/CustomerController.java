@@ -45,7 +45,10 @@ public class CustomerController {
     }
 
     @ApiOperation("Add a new customer")
-    @PostMapping(value = {"/v1/customers", "/v2/customers"}, consumes = "application/json")
+    @PostMapping(value = {
+            "/v1/customers",
+            "/v2/customers"
+    }, consumes = "application/json")
     public ResponseEntity<CustomerDTO> saveCustomer(@ApiParam(value = "Saved customer", required = true)
                                                     @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.save(customerDTO), HttpStatus.CREATED);
@@ -57,7 +60,10 @@ public class CustomerController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @PutMapping(value = {"/v1/customers/{customerId}", "/v2/customers/{customerId}"}, consumes = "application/json")
+    @PutMapping(value = {
+            "/v1/customers/{customerId}",
+            "/v2/customers/{customerId}"
+    }, consumes = "application/json")
     public ResponseEntity<CustomerDTO> updateRecord(@ApiParam(value = "Customer ID which should be updated", required = true)
                                                     @PathVariable("customerId") Long customerId,
                                                     @ApiParam(value = "Updated customer", required = true)
@@ -71,7 +77,10 @@ public class CustomerController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @DeleteMapping({"/v1/customers/{customerId}", "/v2/customers/{customerId}"})
+    @DeleteMapping({
+            "/v1/customers/{customerId}",
+            "/v2/customers/{customerId}"
+    })
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CustomerDTO> deleteCustomerById(@ApiParam(value = "Customer ID which should be deleted", required = true)
                                                           @PathVariable("customerId") Long customerId) {

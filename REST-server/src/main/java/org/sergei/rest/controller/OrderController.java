@@ -70,7 +70,10 @@ public class OrderController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @PostMapping(value = {"/v1/customers/{customerId}/orders", "/v2/customers/{customerId}/orders"}, consumes = "application/json")
+    @PostMapping(value = {
+            "/v1/customers/{customerId}/orders",
+            "/v2/customers/{customerId}/orders"
+    }, consumes = "application/json")
     public ResponseEntity<OrderDTO> createOrder(@ApiParam(value = "Customer ID who created order", required = true)
                                                 @PathVariable("customerId") Long customerId,
                                                 @ApiParam(value = "Saved order", required = true)
@@ -84,7 +87,10 @@ public class OrderController {
                     @ApiResponse(code = 404, message = "Invalid customer or order ID")
             }
     )
-    @PutMapping(value = {"/v1/customers/{customerId}/orders/{orderId}", "/v2/customers/{customerId}/orders/{orderId}"}, consumes = "application/json")
+    @PutMapping(value = {
+            "/v1/customers/{customerId}/orders/{orderId}",
+            "/v2/customers/{customerId}/orders/{orderId}"
+    }, consumes = "application/json")
     public ResponseEntity<OrderDTO> updateRecord(@ApiParam(value = "Customer ID whose order should be updated", required = true)
                                                  @PathVariable("customerId") Long customerId,
                                                  @ApiParam(value = "Order ID which should be updated", required = true)
@@ -100,7 +106,10 @@ public class OrderController {
                     @ApiResponse(code = 404, message = "Invalid customer or order ID")
             }
     )
-    @DeleteMapping({"/v1/customers/{customerId}/orders/{orderId}", "/v2/customers/{customerId}/orders/{orderId}"})
+    @DeleteMapping({
+            "/v1/customers/{customerId}/orders/{orderId}",
+            "/v2/customers/{customerId}/orders/{orderId}"
+    })
     public ResponseEntity<OrderDTO> deleteOrderByCustomerIdAndOrderId(@ApiParam(value = "Customer ID whose order should be deleted", required = true)
                                                                       @PathVariable("customerId") Long customerId,
                                                                       @ApiParam(value = "Order ID whose order should be deleted", required = true)

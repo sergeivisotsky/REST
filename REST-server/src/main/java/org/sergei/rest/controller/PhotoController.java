@@ -44,7 +44,10 @@ public class PhotoController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @GetMapping({"/v1/customers/{customerId}/photo", "/v2/customers/{customerId}/photo"})
+    @GetMapping({
+            "/v1/customers/{customerId}/photo",
+            "/v2/customers/{customerId}/photo"
+    })
     public ResponseEntity<List<PhotoDTO>> findAllCustomerPhotos(@ApiParam(value = "Customer ID whose photos should be deleted", required = true)
                                                                 @PathVariable("customerId") Long customerId) {
         return new ResponseEntity<>(photoService.findAll(customerId), HttpStatus.OK);
@@ -56,7 +59,10 @@ public class PhotoController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @PostMapping({"/v1/customers/{customerId}/photo", "/v2/customers/{customerId}/photo"})
+    @PostMapping({
+            "/v1/customers/{customerId}/photo",
+            "/v2/customers/{customerId}/photo"
+    })
     @ResponseStatus(HttpStatus.CREATED)
     public PhotoDTO uploadPhoto(@ApiParam(value = "Customer ID who uploads photo", required = true)
                                 @PathVariable("customerId") Long customerId,
@@ -76,7 +82,10 @@ public class PhotoController {
                     @ApiResponse(code = 404, message = "Invalid customer ID")
             }
     )
-    @PostMapping({"/v1/customers/{customerId}/photos", "/v2/customers/{customerId}/photos"})
+    @PostMapping({
+            "/v1/customers/{customerId}/photos",
+            "/v2/customers/{customerId}/photos"
+    })
     @ResponseStatus(HttpStatus.CREATED)
     public List<PhotoDTO> uploadMultiplePhotos(@ApiParam(value = "Customer ID who uploads photos", required = true)
                                                @PathVariable("customerId") Long customerId,
@@ -96,7 +105,8 @@ public class PhotoController {
     @GetMapping(value = {
             "/v1/customers/{customerId}/photo/{fileName:.+}",
             "/v2/customers/{customerId}/photo/{fileName:.+}"},
-            produces = {"image/jpeg", "image/png"})
+            produces = {"image/jpeg", "image/png"}
+    )
     public ResponseEntity<Resource> downloadPhotoByName(@ApiParam(value = "Customer ID whose photos should be downloaded", required = true)
                                                         @PathVariable("customerId") Long customerId,
                                                         @ApiParam(value = "File name which should be downloaded", required = true)
@@ -131,7 +141,8 @@ public class PhotoController {
     @GetMapping(value = {
             "/v1/customers/{customerId}/photos/{photoId}",
             "/v2/customers/{customerId}/photos/{photoId}"},
-            produces = {"image/jpeg", "image/png"})
+            produces = {"image/jpeg", "image/png"}
+    )
     public ResponseEntity<Resource> downloadPhotoById(@ApiParam(value = "Customer ID whose photos should be downloaded", required = true)
                                                       @PathVariable("customerId") Long customerId,
                                                       @ApiParam(value = "Photo ID which should be downloaded", required = true)
@@ -163,7 +174,10 @@ public class PhotoController {
                     @ApiResponse(code = 404, message = "Invalid customer or photo ID")
             }
     )
-    @DeleteMapping({"/v1/customers/{customerId}/photos/{photoId}", "/v2/customers/{customerId}/photos/{photoId}"})
+    @DeleteMapping({
+            "/v1/customers/{customerId}/photos/{photoId}",
+            "/v2/customers/{customerId}/photos/{photoId}"
+    })
     public ResponseEntity<PhotoDTO> deletePhotoById(@ApiParam(value = "Customer ID whose photos should be deleted", required = true)
                                                     @PathVariable("customerId") Long customerId,
                                                     @ApiParam(value = "Photo ID which should be deleted", required = true)
