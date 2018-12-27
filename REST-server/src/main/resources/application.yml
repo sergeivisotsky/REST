@@ -1,5 +1,13 @@
 server:
   port: 9091
+  http:
+    port: 1000
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:tls/keystore.p12
+    key-store-password: keyStoreSecret
+    key-alias: tomcat
 spring:
   main:
     allow-bean-definition-overriding: true

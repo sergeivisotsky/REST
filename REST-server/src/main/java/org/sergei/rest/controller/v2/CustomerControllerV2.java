@@ -42,7 +42,7 @@ public class CustomerControllerV2 {
         return new ResponseEntity<>(setLinksForAllCustomers(customerDTOList), HttpStatus.OK);
     }
 
-    @ApiOperation("Gel all customers opaginated")
+    @ApiOperation("Gel all customers paginated")
     @GetMapping(value = "/v2/customers", params = {"page", "size"})
     public ResponseEntity<Resources> getAllCustomersPaginatedV2(@ApiParam("Number of page")
                                                                 @RequestParam("page") int page,
