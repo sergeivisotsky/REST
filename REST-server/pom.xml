@@ -7,8 +7,8 @@
     <artifactId>rest-server</artifactId>
     <packaging>jar</packaging>
 
-    <name>rest-server-spring</name>
-    <description>REST service realization using Spring Boot</description>
+    <name>rest-server</name>
+    <description>REST service realization</description>
 
     <parent>
         <groupId>org.sergei</groupId>
