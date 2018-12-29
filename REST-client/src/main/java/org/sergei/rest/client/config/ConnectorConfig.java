@@ -11,10 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * This class is used to provide redirect from HTTP to HTTPS
+ *
  * @author Sergei Visotsky
  */
 @Configuration
 public class ConnectorConfig {
+
+    private static final String USER_CONSTRAINT = "CONFIDENTIAL";
 
     @Value("${server.port}")
     private int sslPort;
@@ -28,7 +32,7 @@ public class ConnectorConfig {
             @Override
             protected void postProcessContext(Context context) {
                 SecurityConstraint securityConstraint = new SecurityConstraint();
-                securityConstraint.setUserConstraint("CONFIDENTIAL");
+                securityConstraint.setUserConstraint(USER_CONSTRAINT);
                 SecurityCollection collection = new SecurityCollection();
                 collection.addPattern("/*");
                 securityConstraint.addCollection(collection);
