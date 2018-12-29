@@ -22,8 +22,8 @@ public class CustomerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
-    private static final String REST_RESOURCE_URI = "http://localhost:9091/api/v2";
-    private static final String AUTH_SERVER = "http://localhost:9091/oauth/token";
+    private static final String REST_RESOURCE_URI = "https://localhost:8099/api/v2";
+    private static final String AUTH_SERVER = "https://localhost:8099/oauth/token";
     private static final String PASSWORD_GRANT = "?grant_type=password";
     private static final String USERNAME = "&username=";
     private static final String PASSWORD = "&password=";
