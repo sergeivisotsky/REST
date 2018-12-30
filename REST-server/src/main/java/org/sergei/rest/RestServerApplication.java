@@ -19,7 +19,7 @@ public class RestServerApplication {
     }
 
     @RestController
-    class WelcomeEntry {
+    class WelcomeController {
         @GetMapping("/")
         public String welcome() {
             return "Flights";
