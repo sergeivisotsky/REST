@@ -35,7 +35,7 @@ Command for operation described below:
 keytool -import -trustcacerts -keystore "%JAVA_HOME%/jre/lib/security/cacerts" -storepass changeit -alias KEYSTORE_ENTRY -import -file public-certificate.pem
 ```
 
-* `changeit` default password fir cacerts
+* `changeit` default password fоr cacerts
 
 You can use openssl also.
 
