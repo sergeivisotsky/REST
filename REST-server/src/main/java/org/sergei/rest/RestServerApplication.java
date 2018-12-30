@@ -2,9 +2,11 @@ package org.sergei.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Sergei Visotsky, 2018
@@ -16,17 +18,16 @@ public class RestServerApplication {
         SpringApplication.run(RestServerApplication.class, args);
     }
 
-    @Controller
+    @RestController
     class WelcomeEntry {
         @GetMapping("/")
-        @ResponseBody
         public String welcome() {
-            return "REST";
+            return "Flights";
         }
 
         @GetMapping("/docs")
-        public String docsRedirect() {
-            return "redirect:swagger-ui.html";
+        public void docsRedirect(HttpServletResponse response) throws IOException {
+            response.sendRedirect("swagger-ui.html");
         }
     }
 }
