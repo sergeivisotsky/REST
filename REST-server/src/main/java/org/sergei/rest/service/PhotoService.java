@@ -37,6 +37,7 @@ public class PhotoService {
 
     private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
     private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
+    private static final String PHOTO_NOT_FOUND = "Photo with this ID not found";
     private final Path fileStorageLocation;
     protected final PhotoRepository photoRepository;
     protected final CustomerRepository customerRepository;
@@ -191,7 +192,7 @@ public class PhotoService {
     public PhotoDTO deleteById(Long customerId, Long photoId) throws IOException {
         Photo photo = photoRepository.findByCustomerIdAndPhotoId(customerId, photoId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(PHOTO_NOT_FOUND)
                 );
 
         PhotoDTO photoDTO = ObjectMapperUtil.map(photo, PhotoDTO.class);
