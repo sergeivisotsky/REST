@@ -179,8 +179,8 @@ public class PhotoController {
             }
     )
     @DeleteMapping({
-            "/v1/customers/{customerId}/photos/{photoId}",
-            "/v2/customers/{customerId}/photos/{photoId}"
+            "/v1/customers/{customerId}/photo/{photoId}",
+            "/v2/customers/{customerId}/photo/{photoId}"
     })
     public ResponseEntity<PhotoDTO> deletePhotoById(@ApiParam(value = "Customer ID whose photos should be deleted", required = true)
                                                     @PathVariable("customerId") Long customerId,
