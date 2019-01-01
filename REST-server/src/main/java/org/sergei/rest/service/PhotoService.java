@@ -9,6 +9,8 @@ import org.sergei.rest.model.Photo;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
 import org.sergei.rest.util.ObjectMapperUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -31,11 +33,13 @@ import java.util.List;
 @Service
 public class PhotoService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PhotoService.class);
+
     private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
     private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
     private final Path fileStorageLocation;
-    private final PhotoRepository photoRepository;
-    private final CustomerRepository customerRepository;
+    protected final PhotoRepository photoRepository;
+    protected final CustomerRepository customerRepository;
 
     @Autowired
     public PhotoService(PhotoRepository photoRepository, CustomerRepository customerRepository) {
@@ -45,23 +49,29 @@ public class PhotoService {
     }
 
     /**
-     * Method to find all photos by customer number
+     * Method to find all photos by customer ID
      *
-     * @param customerId get customer number from the REST controller
+     * @param customerId get customer ID as an input parameter
      * @return list of the photo DTOs as a response
      */
     public List<PhotoDTO> findAll(Long customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                );
+        LOGGER.debug("Customer ID in model: {}", customer.getCustomerId());
         List<PhotoDTO> photoDTOList = new LinkedList<>();
 
-        List<Photo> photos = photoRepository.findAllPhotosByCustomerId(customerId);
+        List<Photo> photos = photoRepository.findAllPhotosByCustomerId(customer.getCustomerId());
         if (photos == null) {
-            throw new ResourceNotFoundException("Invalid customer ID or photos not found");
+            throw new ResourceNotFoundException("No photo found for this customer");
         }
-        photos.forEach(photo ->
-                photoDTOList.add(
-                        ObjectMapperUtil.map(photo, PhotoDTO.class)
-                )
-        );
+        photos.forEach(photo -> {
+            PhotoDTO photoDTO = ObjectMapperUtil.map(photo, PhotoDTO.class);
+            photoDTO.setCustomerId(customer.getCustomerId());
+            photoDTOList.add(photoDTO);
+            LOGGER.debug("Customer ID in photoDTO: {}", photoDTO.getCustomerId());
+        });
 
         return photoDTOList;
     }
@@ -185,10 +195,9 @@ public class PhotoService {
                 );
 
         PhotoDTO photoDTO = ObjectMapperUtil.map(photo, PhotoDTO.class);
-
         String responseFileName = photo.getFileName();
 
-        // Delete photo from temp storage
+        // Delete photo from the file storage
         Path targetLocation = this.fileStorageLocation.resolve(responseFileName);
         Files.deleteIfExists(targetLocation);
 

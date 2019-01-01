@@ -22,8 +22,12 @@ import java.util.List;
 @RequestMapping(value = "/users", produces = "application/json")
 public class ApiUserController {
 
+    private final ApiUserService apiUSerService;
+
     @Autowired
-    private ApiUserService apiUSerService;
+    public ApiUserController(ApiUserService apiUSerService) {
+        this.apiUSerService = apiUSerService;
+    }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {

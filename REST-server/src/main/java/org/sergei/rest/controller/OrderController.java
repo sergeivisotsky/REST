@@ -23,8 +23,12 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class OrderController {
 
+    private final OrderService orderService;
+
     @Autowired
-    private OrderService orderService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @ApiOperation("Get all order by customer number")
     @ApiResponses(

@@ -20,8 +20,12 @@ public class MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
+    private final CustomerService customerService;
+
     @Autowired
-    private CustomerService customerService;
+    public MainController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @GetMapping("/")
     public String welcome(Model model) {

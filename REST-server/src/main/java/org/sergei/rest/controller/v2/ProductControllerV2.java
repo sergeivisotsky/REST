@@ -29,8 +29,12 @@ import static org.sergei.rest.controller.util.LinkUtil.setLinksForAllProducts;
 @RequestMapping(value = "/api", produces = "application/json")
 public class ProductControllerV2 {
 
+    private final ProductServiceV2 productServiceV2;
+
     @Autowired
-    private ProductServiceV2 productServiceV2;
+    public ProductControllerV2(ProductServiceV2 productServiceV2) {
+        this.productServiceV2 = productServiceV2;
+    }
 
     @ApiOperation("Get all products")
     @GetMapping("/v2/products")

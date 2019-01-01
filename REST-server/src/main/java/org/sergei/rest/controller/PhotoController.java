@@ -35,8 +35,12 @@ public class PhotoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
 
+    private final PhotoService photoService;
+
     @Autowired
-    private PhotoService photoService;
+    public PhotoController(PhotoService photoService) {
+        this.photoService = photoService;
+    }
 
     @ApiOperation("Get all photos fot the customer")
     @ApiResponses(

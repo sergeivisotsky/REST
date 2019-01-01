@@ -32,8 +32,12 @@ import static org.sergei.rest.controller.util.LinkUtil.setLinksForReport;
 @RequestMapping(value = "/api/v2/reports", produces = "application/json")
 public class ReportController {
 
+    private final CustomerReportRepository customerReportRepository;
+
     @Autowired
-    private CustomerReportRepository customerReportRepository;
+    public ReportController(CustomerReportRepository customerReportRepository) {
+        this.customerReportRepository = customerReportRepository;
+    }
 
     @ApiOperation("Get report for customer")
     @GetMapping(value = "/customers", params = "customerId")

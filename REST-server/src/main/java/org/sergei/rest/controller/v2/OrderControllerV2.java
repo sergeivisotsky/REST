@@ -27,8 +27,12 @@ import static org.sergei.rest.controller.util.LinkUtil.*;
 @RequestMapping(value = "/api", produces = "application/json")
 public class OrderControllerV2 {
 
+    private final OrderServiceV2 orderServiceV2;
+
     @Autowired
-    private OrderServiceV2 orderServiceV2;
+    public OrderControllerV2(OrderServiceV2 orderServiceV2) {
+        this.orderServiceV2 = orderServiceV2;
+    }
 
     @ApiOperation("Get all order by customer ID")
     @ApiResponses(

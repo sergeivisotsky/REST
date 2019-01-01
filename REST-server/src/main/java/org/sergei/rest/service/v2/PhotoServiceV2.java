@@ -3,7 +3,9 @@ package org.sergei.rest.service.v2;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Photo;
+import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
+import org.sergei.rest.service.PhotoService;
 import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,10 +18,11 @@ import org.springframework.stereotype.Service;
  * @author Sergei Visotsky
  */
 @Service
-public class PhotoServiceV2 {
+public class PhotoServiceV2 extends PhotoService {
 
-    @Autowired
-    private PhotoRepository photoRepository;
+    public PhotoServiceV2(PhotoRepository photoRepository, CustomerRepository customerRepository) {
+        super(photoRepository, customerRepository);
+    }
 
     /**
      * Method to find all photos by customer number paginated

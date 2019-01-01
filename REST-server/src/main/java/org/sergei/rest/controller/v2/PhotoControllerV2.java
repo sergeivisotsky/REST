@@ -23,8 +23,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api", produces = "application/json")
 public class PhotoControllerV2 {
 
+    private final PhotoServiceV2 photoServiceV2;
+
     @Autowired
-    private PhotoServiceV2 photoServiceV2;
+    public PhotoControllerV2(PhotoServiceV2 photoServiceV2) {
+        this.photoServiceV2 = photoServiceV2;
+    }
 
     @ApiOperation("Get all photos for the customer paginated")
     @ApiResponses(

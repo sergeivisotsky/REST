@@ -23,8 +23,12 @@ import java.util.List;
 @RequestMapping(value = "/api", produces = "application/json")
 public class CustomerController {
 
+    private final CustomerService customerService;
+
     @Autowired
-    private CustomerService customerService;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @ApiOperation("Gel all customers")
     @GetMapping("/v1/customers")
