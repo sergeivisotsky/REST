@@ -7,7 +7,6 @@ import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
 import org.sergei.rest.service.PhotoService;
 import org.sergei.rest.util.ObjectMapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
