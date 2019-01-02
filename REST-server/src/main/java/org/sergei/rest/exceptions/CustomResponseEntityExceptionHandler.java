@@ -17,13 +17,11 @@ import java.util.Date;
 /**
  * @author Sergei Visotsky
  */
-@ControllerAdvice
 @RestController
+@ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ResponseBody
     protected final ResponseEntity<ErrorDetailsDTO> handleResourceNotFoundException(ResourceNotFoundException e,
                                                                                     WebRequest request) {
         ErrorDetailsDTO errorDetailsDTO = new ErrorDetailsDTO(new Date(), e.getMessage(), request.getDescription(false));
@@ -31,8 +29,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler(FileNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ResponseBody
     protected final ResponseEntity<ErrorDetailsDTO> handleFileNotFoundException(FileNotFoundException e,
                                                                                 WebRequest request) {
         ErrorDetailsDTO errorDetailsDTO = new ErrorDetailsDTO(new Date(), e.getMessage(), request.getDescription(false));
@@ -40,16 +36,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler(FileStorageException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    @ResponseBody
     protected final ResponseEntity<ErrorDetailsDTO> handleTooLongFileNameException(FileStorageException e,
                                                                                    WebRequest request) {
         ErrorDetailsDTO errorDetailsDTO = new ErrorDetailsDTO(new Date(), e.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetailsDTO, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
                                                              HttpStatus status, WebRequest request) {
@@ -59,8 +51,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return new ResponseEntity<>(apiErrorDTO, new HttpHeaders(), apiErrorDTO.getStatus());
     }
 
-    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-    @ResponseBody
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
                                                                      HttpHeaders headers, HttpStatus status,
@@ -71,8 +61,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return new ResponseEntity<>(apiErrorDTO, new HttpHeaders(), apiErrorDTO.getStatus());
     }
 
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    @ResponseBody
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
                                                                       HttpHeaders headers, HttpStatus status,
@@ -83,8 +71,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return new ResponseEntity<>(apiErrorDTO, new HttpHeaders(), apiErrorDTO.getStatus());
     }
 
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    @ResponseBody
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
