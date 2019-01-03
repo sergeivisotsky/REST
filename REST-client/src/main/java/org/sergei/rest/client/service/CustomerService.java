@@ -84,7 +84,7 @@ public class CustomerService {
 
         HttpEntity<String> request = new HttpEntity<>(getHeadersWithClientCredentials());
         ResponseEntity<Object> response =
-                restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT + USERNAME + usernameValue + PASSWORD + passwordValue,
+                this.restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT + USERNAME + usernameValue + PASSWORD + passwordValue,
                         HttpMethod.POST, request, Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) response.getBody();
         AuthTokenInfo tokenInfo = null;
@@ -111,7 +111,7 @@ public class CustomerService {
     public ResponseEntity<Customer> getCustomerByNumber(Long customerId) {
         AuthTokenInfo tokenInfo = sendTokenRequest();
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
-        return restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
+        return this.restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
                 HttpMethod.GET, request, Customer.class);
     }
 }
