@@ -110,6 +110,7 @@ public class CustomerService {
      */
     public ResponseEntity<Customer> getCustomerByNumber(Long customerId) {
         AuthTokenInfo tokenInfo = sendTokenRequest();
+        LOGGER.debug("Token info: {}", tokenInfo.toString());
         HttpEntity<String> request = new HttpEntity<>(getHeaders());
         return this.restTemplate.exchange(REST_RESOURCE_URI + "/customers/" + customerId + ACCESS_TOKEN + tokenInfo.getAccessToken(),
                 HttpMethod.GET, request, Customer.class);
