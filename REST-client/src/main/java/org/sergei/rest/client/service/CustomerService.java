@@ -71,7 +71,7 @@ public class CustomerService {
     /**
      * Send a POST request [on /oauth/token] to get an access_token, which will then be send with each request.
      *
-     * @return access token for each request
+     * @return access token to access resources
      */
     @SuppressWarnings("unchecked")
     private AuthTokenInfo sendTokenRequest() {
