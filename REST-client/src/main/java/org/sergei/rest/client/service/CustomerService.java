@@ -29,6 +29,12 @@ public class CustomerService {
     private static final String PASSWORD = "&password=";
     private static final String ACCESS_TOKEN = "?access_token=";
 
+    @Value("${oauth.client-id}")
+    private String clientId;
+
+    @Value("${oauth.client-secret}")
+    private String clientSecret;
+
     @Value("${oauth.username}")
     private String usernameValue;
 
@@ -60,7 +66,7 @@ public class CustomerService {
      * @return headers with Authorization header added
      */
     private HttpHeaders getHeadersWithClientCredentials() {
-        String plainClientCredentials = "trusted-client:trusted-client-secret";
+        String plainClientCredentials = clientId + ":" + clientSecret;
         String base64ClientCredentials = new String(Base64.encodeBase64(plainClientCredentials.getBytes()));
 
         HttpHeaders headers = getHeaders();

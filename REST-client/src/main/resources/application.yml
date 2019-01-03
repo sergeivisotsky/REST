@@ -13,5 +13,7 @@ management:
     health:
       show-details: always
 oauth:
+  client-id: trusted-client
+  client-secret: trusted-client-secret
   username: admin
   password: 123456
