@@ -1,5 +1,6 @@
 package org.sergei.rest.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
@@ -36,11 +38,4 @@ public class Product implements Serializable {
 
     @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
-
-    public Product(String productName, String productLine, String productVendor, BigDecimal price) {
-        this.productName = productName;
-        this.productLine = productLine;
-        this.productVendor = productVendor;
-        this.price = price;
-    }
 }

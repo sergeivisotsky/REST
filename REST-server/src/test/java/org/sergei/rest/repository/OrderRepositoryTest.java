@@ -108,8 +108,7 @@ public class OrderRepositoryTest {
     public void findOrdersByProductCode_thenGetOk() {
         Customer customer = new Customer("John", "Smith", 25, Collections.emptyList(), Collections.emptyList());
         customerRepository.save(customer);
-        Product product = new Product("Test name", "Testing", "Test case", PRICE);
-        product.setProductCode("LV_50");
+        Product product = new Product("LV_50", "Test name", "Testing", "Test case", PRICE);
         productRepository.save(product);
         Order order = new Order(customer, TESTING_DATE, TESTING_DATE, TESTING_DATE, "pending");
         orderRepository.save(order);

@@ -48,7 +48,7 @@ public class ProductRepositoryTest {
     @Ignore
     @Test
     public void saveProductThanGetOk() {
-        Product product = new Product("Test name", "Testing", "Test case", PRICE);
+        Product product = new Product("LV_01", "Test name", "Testing", "Test case", PRICE);
         product.setProductCode("LV_50");
         productRepository.save(product);
         Iterable<Product> foundProducts = productRepository.findAll();
