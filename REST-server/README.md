@@ -70,6 +70,7 @@ _Example for MySQL:_
 3. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case)
 4. Keep in mind that application port and port in `security.oauth2.resource.accessTokenUri` property might be changed in your case
 5. Open `logback-spring.xml` setup directory where all your logging files are going to saved
+6. Go to the class `PhotoService` and change the value of the final field `UPLOAD_DIR`
 
 ## Run
 * Perform command `mvn spring-boot:run` or compile project in .jar and perform command `java -jar target/REST-server-VERSION.jar`
