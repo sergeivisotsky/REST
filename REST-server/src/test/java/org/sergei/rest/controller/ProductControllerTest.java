@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Test case for {@link ProductController}
+ * Test for {@link ProductController}
  *
  * @author Sergei Visotsky
  */

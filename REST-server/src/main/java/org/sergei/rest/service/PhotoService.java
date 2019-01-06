@@ -35,7 +35,7 @@ public class PhotoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PhotoService.class);
 
-    private static final String UPL_DIR = "D:/Program files/servers/apache-tomcat-9.0.10_API/webapps/media";
+    private static final String UPLOAD_DIR = "D:/Users/Sergei/Desktop/rest-api-multipart";
     private static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";
     private static final String PHOTO_NOT_FOUND = "Photo with this ID not found";
     private final Path fileStorageLocation;
@@ -46,7 +46,7 @@ public class PhotoService {
     public PhotoService(PhotoRepository photoRepository, CustomerRepository customerRepository) {
         this.photoRepository = photoRepository;
         this.customerRepository = customerRepository;
-        this.fileStorageLocation = Paths.get(UPL_DIR).toAbsolutePath().normalize();
+        this.fileStorageLocation = Paths.get(UPLOAD_DIR).toAbsolutePath().normalize();
     }
 
     /**
@@ -121,7 +121,10 @@ public class PhotoService {
             // Save file metadata into a database
             Photo savedPhoto = photoRepository.save(photo);
 
-            return ObjectMapperUtil.map(savedPhoto, PhotoDTO.class);
+            PhotoDTO savedPhotoDTO = ObjectMapperUtil.map(savedPhoto, PhotoDTO.class);
+            savedPhotoDTO.setCustomerId(savedPhoto.getCustomer().getCustomerId());
+
+            return savedPhotoDTO;
         } catch (IOException e) {
             throw new FileStorageException("Cannot store file");
         }
