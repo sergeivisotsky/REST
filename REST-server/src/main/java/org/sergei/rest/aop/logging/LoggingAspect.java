@@ -43,7 +43,7 @@ public class LoggingAspect {
 
     @Pointcut("execution(* org.sergei.rest.repository.*.*(..))" +
             " || execution(* org.sergei.rest.service.*.*(..))" +
-            " || execution(* org.sergei.restō.controller.*.*(..))")
+            " || execution(* org.sergei.rest.controller.*.*(..))")
     public void parameterLoggingPointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
