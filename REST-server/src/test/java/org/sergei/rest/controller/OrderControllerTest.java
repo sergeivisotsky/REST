@@ -105,9 +105,9 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$[0].shippedDate").value("2018-09-30"))
                 .andExpect(jsonPath("$[0].status").value(status))
                 .andExpect(jsonPath("$[0].orderDetails").isEmpty())
-                /*.andExpect(jsonPath("$[0].orderDetails[0].productCode").value(productCode))
+                .andExpect(jsonPath("$[0].orderDetails[0].productCode").value(productCode))
                 .andExpect(jsonPath("$[0].orderDetails[0].quantityOrdered").value(quantityOrdered))
-                .andExpect(jsonPath("$[0].orderDetails[0].price").value(orderPrice))*/;
+                .andExpect(jsonPath("$[0].orderDetails[0].price").value(orderPrice));
 
     }
 

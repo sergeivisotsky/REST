@@ -6,6 +6,7 @@ import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.service.CustomerService;
 import org.sergei.rest.util.ObjectMapperUtil;
+import org.sergei.rest.util.ServiceConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class CustomerServiceV2 extends CustomerService {
     public CustomerDTOV2 findOneV2(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(CUSTOMER_NOT_FOUND)
+                        new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
                 );
         return ObjectMapperUtil.map(customer, CustomerDTOV2.class);
     }

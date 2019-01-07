@@ -4,6 +4,7 @@ import org.sergei.rest.dto.v2.ProductDTOV2;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
+import org.sergei.rest.util.ServiceConstants;
 import org.sergei.rest.service.ProductService;
 import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.data.domain.Page;
@@ -53,7 +54,7 @@ public class ProductServiceV2 extends ProductService {
     public ProductDTOV2 findByCodeV2(String productCode) {
         Product product = productRepository.findByProductCode(productCode)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(PRODUCT_NOT_FOUND)
+                        () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
                 );
         return ObjectMapperUtil.map(product, ProductDTOV2.class);
     }
