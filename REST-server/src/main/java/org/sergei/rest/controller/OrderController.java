@@ -53,7 +53,7 @@ public class OrderController {
                                                                  @PathVariable("customerId") Long customerId,
                                                                  @ApiParam(value = "Order ID which should be found", required = true)
                                                                  @PathVariable("orderId") Long orderId) {
-        return new ResponseEntity<>(orderService.findOneByCustomerIdAndOrderId(customerId, orderId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findOne(customerId, orderId), HttpStatus.OK);
     }
 
     @ApiOperation("Get all orders with specific product code")

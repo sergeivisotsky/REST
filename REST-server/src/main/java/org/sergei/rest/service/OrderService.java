@@ -49,45 +49,39 @@ public class OrderService {
     /**
      * Get order by number
      *
-     * @param orderId get order number as a parameter from REST controller
+     * @param customerId Get customer ID from the REST controller
+     * @param orderId    get order number as a parameter from REST controller
      * @return order DTO response
      */
-    private OrderDTO findOne(Long orderId) {
+    public OrderDTO findOne(Long customerId, Long orderId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                );
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(
                         () -> new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTO orderDTO = map(order, OrderDTO.class);
+        orderDTO.setCustomerId(customer.getCustomerId());
 
         List<OrderDetails> orderDetailsList =
                 orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 
         List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
         orderDetailsList.forEach(orderDetails ->
-                orderDetailsDTOList.add(
-                        map(orderDetails, OrderDetailsDTO.class)
-                )
+                {
+                    // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
+                    OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
+                    orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
+                    orderDetailsDTOList.add(orderDetailsDTO);
+                }
         );
 
         orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
 
         return orderDTO;
-    }
-
-    /**
-     * Get order by customer and order IDs
-     *
-     * @param customerId Get customer ID from the REST controller
-     * @param orderId    Get order ID from the REST controller
-     * @return Return order DTO response
-     */
-    public OrderDTO findOneByCustomerIdAndOrderId(Long customerId, Long orderId) {
-        customerRepository.findById(customerId)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
-                );
-        return findOne(orderId);
     }
 
     /**
@@ -133,22 +127,7 @@ public class OrderService {
         Order order = map(orderDTO, Order.class);
         order.setCustomer(customer);
 
-        // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
-
-        int counter = 0;
-        for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productRepository.findByProductCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode())
-                    .orElseThrow(
-                            () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
-                    );
-            orderDetails.setOrder(order);
-            orderDetails.setProduct(product);
-            orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
-            orderDetails.setPrice(orderDTO.getOrderDetailsDTO().get(counter).getPrice());
-            counter++;
-        }
-
+        List<OrderDetails> orderDetailsList = setOrderDetailsList(order, orderDTO);
         order.setOrderDetails(orderDetailsList);
 
         Order savedOrder = orderRepository.save(order);
@@ -178,20 +157,7 @@ public class OrderService {
         order.setStatus(orderDTO.getStatus());
 
         // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
-
-        int counter = 0;
-        for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productRepository.findByProductCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode())
-                    .orElseThrow(
-                            () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
-                    );
-            orderDetails.setOrder(order);
-            orderDetails.setProduct(product);
-            orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
-            orderDetails.setPrice(orderDTO.getOrderDetailsDTO().get(counter).getPrice());
-            counter++;
-        }
+        List<OrderDetails> orderDetailsList = setOrderDetailsList(order, orderDTO);
 
         order.setOrderDetails(orderDetailsList);
 
@@ -208,6 +174,33 @@ public class OrderService {
      */
     public void deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
         orderRepository.deleteByCustomerIdAndOrderId(customerId, orderId);
+    }
+
+    /**
+     * Method to map order details list DTO to entity list
+     *
+     * @param order    entity
+     * @param orderDTO payload DTO
+     * @return list with details
+     */
+    private List<OrderDetails> setOrderDetailsList(Order order, OrderDTO orderDTO) {
+        // Maps each member of collection containing requests to the class
+        List<OrderDetails> orderDetailsList = mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
+
+        int counter = 0;
+        for (OrderDetails orderDetails : orderDetailsList) {
+            Product product = productRepository.findByProductCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode())
+                    .orElseThrow(
+                            () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
+                    );
+            orderDetails.setOrder(order);
+            orderDetails.setProduct(product);
+            orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
+            orderDetails.setPrice(orderDTO.getOrderDetailsDTO().get(counter).getPrice());
+            counter++;
+        }
+
+        return orderDetailsList;
     }
 
     /**
