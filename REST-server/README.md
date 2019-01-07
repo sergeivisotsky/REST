@@ -14,13 +14,6 @@ REST API implementation using Spring Boot
 ## API documentation
 For endpoint documentation is used Swagger which is accessible by the url - `http://localhost:8080/docs` which redirects to the `http://localhost:8080/swagger-ui.html`.
 
-## TLS / SSL
-Resource is using self-signed TLS/SSL PKCS12 certificate.
-
-To generate this certificate the command `keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650` should be performed or you can use openssl also.
-
-NOTE: Self-signed certificates are not verified by any certification agency and due to this every browser shows warning that they are not secured and consequently are not applicable for production and can be used for dev purposes only.
-
 ## Authentication
 To access any resource authentication should be performed. By performing this request with such a parameters access_token is retrieved.
 
