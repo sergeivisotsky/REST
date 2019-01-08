@@ -9,7 +9,6 @@ import org.sergei.rest.model.Photo;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
 import org.sergei.rest.util.ObjectMapperUtil;
-import org.sergei.rest.util.ServiceConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class PhotoService {
     public List<PhotoDTO> findAll(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
         LOGGER.debug("Customer ID in model: {}", customer.getCustomerId());
         List<PhotoDTO> photoDTOList = new LinkedList<>();
@@ -106,7 +105,7 @@ public class PhotoService {
 
             Customer customer = customerRepository.findById(customerId)
                     .orElseThrow(
-                            () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                            () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                     );
 
             Photo photo = new Photo();
@@ -141,7 +140,7 @@ public class PhotoService {
         // Get filename by customer number written in database
         Photo photo = photoRepository.findPhotoByCustomerIdAndFileName(customerId, fileName)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
 
         Path filePath = this.fileStorageLocation.resolve(photo.getFileName()).normalize();
@@ -167,7 +166,7 @@ public class PhotoService {
         // Get filename by customer id written in database
         Photo photo = photoRepository.findByCustomerIdAndPhotoId(customerId, photoId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
 
         String responseFileName = photo.getFileName();
@@ -194,7 +193,7 @@ public class PhotoService {
     public PhotoDTO deleteById(Long customerId, Long photoId) throws IOException {
         Photo photo = photoRepository.findByCustomerIdAndPhotoId(customerId, photoId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.PHOTO_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.PHOTO_NOT_FOUND)
                 );
 
         PhotoDTO photoDTO = ObjectMapperUtil.map(photo, PhotoDTO.class);

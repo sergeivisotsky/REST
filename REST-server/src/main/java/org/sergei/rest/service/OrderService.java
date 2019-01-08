@@ -11,7 +11,6 @@ import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
-import org.sergei.rest.util.ServiceConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +54,11 @@ public class OrderService {
     public OrderDTO findOne(Long customerId, Long orderId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTO orderDTO = map(order, OrderDTO.class);
@@ -92,7 +91,7 @@ public class OrderService {
     public List<OrderDTO> findAll(Long customerId) {
         List<Order> orders = orderRepository.findAllByCustomerId(customerId);
         if (orders == null) {
-            throw new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND);
+            throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
         return findOrdersByListWithParam(orders);
     }
@@ -106,7 +105,7 @@ public class OrderService {
     public List<OrderDTO> findAllByProductCode(String productCode) {
         List<Order> orders = orderRepository.findAllByProductCode(productCode);
         if (orders == null) {
-            throw new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND);
+            throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
         return findOrdersByListWithParam(orders);
     }
@@ -120,7 +119,7 @@ public class OrderService {
      */
     public OrderDTO save(Long customerId, OrderDTO orderDTO) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
-                () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
         );
         LOGGER.debug("Customer is: {}", customer.getCustomerId());
         Order order = map(orderDTO, Order.class);
@@ -144,11 +143,11 @@ public class OrderService {
     public OrderDTO update(Long customerId, Long orderId, OrderDTO orderDTO) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.ORDER_NOT_FOUND)
                 );
         order.setCustomer(customer);
         order.setOrderDate(orderDTO.getOrderDate());
@@ -197,7 +196,7 @@ public class OrderService {
         for (OrderDetails orderDetails : orderDetailsList) {
             Product product = productRepository.findByProductCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode())
                     .orElseThrow(
-                            () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
+                            () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
                     );
             orderDetails.setOrder(order);
             orderDetails.setProduct(product);

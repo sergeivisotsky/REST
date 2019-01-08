@@ -1,16 +1,16 @@
-package org.sergei.rest.util;
+package org.sergei.rest.service;
 
 /**
- * ServiceConstants to be used in service layer
+ * Constants to be used in service layer
  *
  * @author Sergei Visotsky
  */
-public final class ServiceConstants {
+public final class Constants {
 
     /**
-     * Hide from the public use
+     * Hide from the public access
      */
-    private ServiceConstants() {
+    private Constants() {
     }
 
     public static final String CUSTOMER_NOT_FOUND = "Customer with this ID not found";

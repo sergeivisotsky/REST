@@ -10,7 +10,7 @@ import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.service.OrderService;
-import org.sergei.rest.util.ServiceConstants;
+import org.sergei.rest.service.Constants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class OrderServiceV2 extends OrderService {
     private OrderDTOV2 findOneV2(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTOV2 orderDTOV2 = map(order, OrderDTOV2.class);
@@ -75,7 +75,7 @@ public class OrderServiceV2 extends OrderService {
     public OrderDTOV2 findOneByCustomerIdAndOrderIdV2(Long customerId, Long orderId) {
         customerRepository.findById(customerId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
         return findOneV2(orderId);
     }
@@ -89,7 +89,7 @@ public class OrderServiceV2 extends OrderService {
     public List<OrderDTOV2> findAllByCustomerIdV2(Long customerId) {
         List<Order> orders = orderRepository.findAllByCustomerId(customerId);
         if (orders == null) {
-            throw new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND);
+            throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
 
         return findOrdersByListWithParamV2(orders);
@@ -104,7 +104,7 @@ public class OrderServiceV2 extends OrderService {
     public Page<OrderDTOV2> findAllByCustomerIdPaginatedV2(Long customerId, int page, int size) {
         Page<Order> orders = orderRepository.findAllByCustomerPaginatedId(customerId, PageRequest.of(page, size));
         if (orders == null) {
-            throw new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND);
+            throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
 
         return findOrdersByListWithParamPaginatedV2(orders);
@@ -119,7 +119,7 @@ public class OrderServiceV2 extends OrderService {
     public List<OrderDTOV2> findAllByProductCodeV2(String productCode) {
         List<Order> orders = orderRepository.findAllByProductCode(productCode);
         if (orders == null) {
-            throw new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND);
+            throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
         return findOrdersByListWithParamV2(orders);
     }

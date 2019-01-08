@@ -5,7 +5,6 @@ import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.util.ObjectMapperUtil;
-import org.sergei.rest.util.ServiceConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class ProductService {
     public ProductDTO findByCode(String productCode) {
         Product product = productRepository.findByProductCode(productCode)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
                 );
         return ObjectMapperUtil.map(product, ProductDTO.class);
     }
@@ -69,7 +68,7 @@ public class ProductService {
     public ProductDTO update(String productCode, ProductDTO productDTO) {
         Product product = productRepository.findByProductCode(productCode)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
                 );
 
         product.setProductCode(productCode);
@@ -92,7 +91,7 @@ public class ProductService {
     public ProductDTO delete(String productCode) {
         Product product = productRepository.findByProductCode(productCode)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException(ServiceConstants.PRODUCT_NOT_FOUND)
+                        () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
                 );
         productRepository.delete(product);
         return ObjectMapperUtil.map(product, ProductDTO.class);

@@ -5,7 +5,6 @@ import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.util.ObjectMapperUtil;
-import org.sergei.rest.util.ServiceConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +55,7 @@ public class CustomerService {
     public CustomerDTO findOne(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
         return ObjectMapperUtil.map(customer, CustomerDTO.class);
     }
@@ -84,7 +83,7 @@ public class CustomerService {
 
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
         customer.setFirstName(customerDTO.getFirstName());
         customer.setLastName(customerDTO.getLastName());
@@ -104,7 +103,7 @@ public class CustomerService {
     public CustomerDTO deleteById(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                        new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
         customerRepository.delete(customer);
         return ObjectMapperUtil.map(customer, CustomerDTO.class);
