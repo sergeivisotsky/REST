@@ -1,5 +1,7 @@
 package org.sergei.rest.controller;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -112,7 +115,6 @@ public class OrderControllerTest {
 
     }
 
-    @Ignore
     @Test
     public void findOneOrder_thenReturnOk() throws Exception {
         final String firstName = "John";
@@ -147,15 +149,65 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..orderId").isNotEmpty())
                 .andExpect(jsonPath("$..customerId").isNotEmpty())
-                .andExpect(jsonPath("$..orderDate").value("2018-09-28"))
-                .andExpect(jsonPath("$..requiredDate").value("2018-09-29"))
-                .andExpect(jsonPath("$..shippedDate").value("2018-09-30"))
+                .andExpect(jsonPath("$..orderDate").value("2018-09-28T22:00:00"))
+                .andExpect(jsonPath("$..requiredDate").value("2018-09-29T22:00:00"))
+                .andExpect(jsonPath("$..shippedDate").value("2018-09-30T22:00:00"))
                 .andExpect(jsonPath("$..status").value(status))
-                .andExpect(jsonPath("$.orderDetails").isEmpty())
+                .andExpect(jsonPath("$[0].orderDetails").isEmpty())
                 /*.andExpect(jsonPath("$[0].orderDetails[0].productCode").value(productCode))
                 .andExpect(jsonPath("$[0].orderDetails[0].quantityOrdered").value(quantityOrdered))
                 .andExpect(jsonPath("$[0].orderDetails[0].price").value(orderPrice))*/;
 
+    }
+
+    @Ignore
+    @Test
+    public void postOrder_thenGetOk() throws Exception {
+        final String firstName = "John";
+        final String lastName = "Smith";
+        final int age = 20;
+        Customer customer = setupCustomer(firstName, lastName, age);
+
+        final String productCode = "LV_01";
+        final String productName = "apples";
+        final String productLine = "fruits";
+        final String productVendor = "Val Venosta";
+        final BigDecimal price = new BigDecimal(1.20);
+        Product product = setupProduct(productCode, productName, productLine, productVendor, price);
+
+        final LocalDateTime orderDate = LocalDateTime.parse("2018-09-28T22:00:00", FORMATTER);
+        final LocalDateTime requiredDate = LocalDateTime.parse("2018-09-29T22:00:00", FORMATTER);
+        final LocalDateTime shippedDate = LocalDateTime.parse("2018-09-30T22:00:00", FORMATTER);
+        final String status = "pending";
+
+        final int quantityOrdered = 1;
+        final BigDecimal orderPrice = new BigDecimal(1.20);
+
+        JSONArray jsonArray = new JSONArray()
+                .put(Integer.parseInt("productCode"), product.getProductCode())
+                .put(Integer.parseInt("quantityOrdered"), quantityOrdered)
+                .put(Integer.valueOf("price"), price);
+        JSONObject jsonObject = new JSONObject()
+                .put("orderDate", orderDate)
+                .put("requiredDate", requiredDate)
+                .put("shippedDate", shippedDate)
+                .put("status", status)
+                .put("orderDetails", jsonArray);
+        mvc.perform(
+                post(BASE_URL + "/" + customer.getCustomerId() + ORDER_URI)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                        .content(jsonObject.toString()))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.orderId").isNotEmpty())
+                .andExpect(jsonPath("$.customerId").isNotEmpty())
+                .andExpect(jsonPath("$.orderDate").value(orderDate))
+                .andExpect(jsonPath("$.requiredDate").value(requiredDate))
+                .andExpect(jsonPath("$.shippedDate").value(shippedDate))
+                .andExpect(jsonPath("$.status").value(status))
+                .andExpect(jsonPath("$.orderDetails[0].productCode").value(product.getProductCode()))
+                .andExpect(jsonPath("$.orderDetails[0].quantityOrdered").value(quantityOrdered))
+                .andExpect(jsonPath("$.orderDetails[0].price").value(price))
+        ;
     }
 
     private Order setupOrder(Customer customer, LocalDateTime orderDate,
