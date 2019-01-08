@@ -112,6 +112,9 @@ public class OrderControllerTest {
                 /*.andExpect(jsonPath("$[0].orderDetails[0].productCode").value(productCode))
                 .andExpect(jsonPath("$[0].orderDetails[0].quantityOrdered").value(quantityOrdered))
                 .andExpect(jsonPath("$[0].orderDetails[0].price").value(orderPrice))*/;
+        customerRepository.deleteAll();
+        orderRepository.deleteAll();
+        productRepository.deleteAll();
 
     }
 
@@ -157,6 +160,9 @@ public class OrderControllerTest {
                 /*.andExpect(jsonPath("$[0].orderDetails[0].productCode").value(productCode))
                 .andExpect(jsonPath("$[0].orderDetails[0].quantityOrdered").value(quantityOrdered))
                 .andExpect(jsonPath("$[0].orderDetails[0].price").value(orderPrice))*/;
+        customerRepository.deleteAll();
+        orderRepository.deleteAll();
+        productRepository.deleteAll();
 
     }
 
@@ -207,6 +213,9 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.orderDetails[0].productCode").value(product.getProductCode()))
                 .andExpect(jsonPath("$.orderDetails[0].quantityOrdered").value(quantityOrdered))
                 .andExpect(jsonPath("$.orderDetails[0].price").value(price));
+        customerRepository.deleteAll();
+        orderRepository.deleteAll();
+        productRepository.deleteAll();
     }
 
     private Order setupOrder(Customer customer, LocalDateTime orderDate,

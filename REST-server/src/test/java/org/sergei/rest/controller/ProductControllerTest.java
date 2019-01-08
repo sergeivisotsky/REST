@@ -67,6 +67,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$[0].productLine").value(productLine))
                 .andExpect(jsonPath("$[0].productVendor").value(productVendor))
                 .andExpect(jsonPath("$[0].price").value(1.2));
+        productRepository.deleteAll();
     }
 
     @Test
@@ -87,6 +88,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.productLine").value(productLine))
                 .andExpect(jsonPath("$.productVendor").value(productVendor))
                 .andExpect(jsonPath("$.price").value(1.2));
+        productRepository.deleteAll();
     }
 
     @Test
@@ -113,6 +115,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.productLine").value(productLine))
                 .andExpect(jsonPath("$.productVendor").value(productVendor))
                 .andExpect(jsonPath("$.price").value(1.2));
+        productRepository.deleteAll();
     }
 
     @Test
@@ -161,6 +164,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.productLine").value(putProductLine))
                 .andExpect(jsonPath("$.productVendor").value(putProductVendor))
                 .andExpect(jsonPath("$.price").value(3.20));
+        productRepository.deleteAll();
     }
 
     @Test
@@ -190,6 +194,7 @@ public class ProductControllerTest {
 
         mvc.perform(delete(BASE_URL + "/" + productCode))
                 .andExpect(status().isNoContent());
+        productRepository.deleteAll();
     }
 
     public Product setupProduct(String productCode, String productName,
