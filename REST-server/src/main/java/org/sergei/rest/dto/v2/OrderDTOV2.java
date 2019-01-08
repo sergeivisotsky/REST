@@ -35,19 +35,15 @@ public class OrderDTOV2 extends ResourceSupport {
     private Long customerId;
 
     @ApiModelProperty("Date when order was made")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
 
     @ApiModelProperty("Date when order should be delivered")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date requiredDate;
 
     @ApiModelProperty("Date when order was delivered")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date shippedDate;
+
+    @ApiModelProperty("Order status e.g. pending/delivered")
     private String status;
 
     @ApiModelProperty("List of order details")

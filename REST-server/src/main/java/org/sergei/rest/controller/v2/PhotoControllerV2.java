@@ -1,6 +1,7 @@
 package org.sergei.rest.controller.v2;
 
 import io.swagger.annotations.*;
+import org.sergei.rest.controller.PhotoController;
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.service.v2.PhotoServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;

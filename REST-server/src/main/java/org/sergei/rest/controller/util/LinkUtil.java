@@ -38,8 +38,8 @@ public final class LinkUtil {
                     ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
                             .getCustomerByIdV2(customer.getCustomerId())).withSelfRel();
             Link ordersLink = ControllerLinkBuilder.linkTo(
-                    ControllerLinkBuilder.methodOn(OrderController.class)
-                            .getOrdersByCustomerId(customer.getCustomerId())).withRel("orders");
+                    ControllerLinkBuilder.methodOn(OrderControllerV2.class)
+                            .getOrdersByCustomerIdV2(customer.getCustomerId())).withRel("orders");
             Link photoLink = ControllerLinkBuilder.linkTo(
                     ControllerLinkBuilder.methodOn(PhotoController.class)
                             .findAllCustomerPhotos(customer.getCustomerId())).withRel("photos");
@@ -58,10 +58,12 @@ public final class LinkUtil {
      * @return customer entity with links set
      */
     public static CustomerDTOV2 setLinksForCustomer(CustomerDTOV2 customerDTOV2, Long customerId) {
-        Link link = ControllerLinkBuilder.linkTo(CustomerController.class).withSelfRel();
+        Link link = ControllerLinkBuilder.linkTo(
+                ControllerLinkBuilder.methodOn(CustomerControllerV2.class)
+                        .getCustomerByIdV2(customerId)).withSelfRel();
         Link ordersLink = ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(OrderController.class)
-                        .getOrdersByCustomerId(customerId)).withRel("orders");
+                ControllerLinkBuilder.methodOn(OrderControllerV2.class)
+                        .getOrdersByCustomerIdV2(customerId)).withRel("orders");
         Link photoLink = ControllerLinkBuilder.linkTo(
                 ControllerLinkBuilder.methodOn(PhotoController.class)
                         .findAllCustomerPhotos(customerDTOV2.getCustomerId())).withRel("photos");

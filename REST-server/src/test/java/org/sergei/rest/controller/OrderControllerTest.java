@@ -206,8 +206,7 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.status").value(status))
                 .andExpect(jsonPath("$.orderDetails[0].productCode").value(product.getProductCode()))
                 .andExpect(jsonPath("$.orderDetails[0].quantityOrdered").value(quantityOrdered))
-                .andExpect(jsonPath("$.orderDetails[0].price").value(price))
-        ;
+                .andExpect(jsonPath("$.orderDetails[0].price").value(price));
     }
 
     private Order setupOrder(Customer customer, LocalDateTime orderDate,
