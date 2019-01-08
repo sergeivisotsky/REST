@@ -39,7 +39,7 @@ public class OrderController {
     @GetMapping("/v1/customers/{customerId}/orders")
     public ResponseEntity<List<OrderDTO>> getOrdersByCustomerId(@ApiParam(value = "Customer ID whose orders should be found", required = true)
                                                                 @PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(orderService.findAllByCustomerId(customerId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findAll(customerId), HttpStatus.OK);
     }
 
     @ApiOperation("Get order by customer and order numbers")
@@ -82,7 +82,7 @@ public class OrderController {
                                                 @PathVariable("customerId") Long customerId,
                                                 @ApiParam(value = "Saved order", required = true)
                                                 @RequestBody OrderDTO orderDTO) {
-        return new ResponseEntity<>(orderService.saveByCustomerId(customerId, orderDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(orderService.save(customerId, orderDTO), HttpStatus.CREATED);
     }
 
     @ApiOperation("Update order by customer and order numbers")
@@ -101,7 +101,7 @@ public class OrderController {
                                                  @PathVariable("orderId") Long orderId,
                                                  @ApiParam(value = "Updated order", required = true)
                                                  @RequestBody OrderDTO orderDTO) {
-        return new ResponseEntity<>(orderService.updateByCustomerId(customerId, orderId, orderDTO), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.update(customerId, orderId, orderDTO), HttpStatus.OK);
     }
 
     @ApiOperation("Delete order by customer and order numbers")

@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.sergei.rest.util.ObjectMapperUtil.map;
-import static org.sergei.rest.util.ObjectMapperUtil.mapAll;
 
 /**
  * @author Sergei Visotsky
@@ -90,7 +89,7 @@ public class OrderService {
      * @param customerId customer ID form the REST controller
      * @return List of order DTOs
      */
-    public List<OrderDTO> findAllByCustomerId(Long customerId) {
+    public List<OrderDTO> findAll(Long customerId) {
         List<Order> orders = orderRepository.findAllByCustomerId(customerId);
         if (orders == null) {
             throw new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND);
@@ -119,7 +118,7 @@ public class OrderService {
      * @param orderDTO   Get order DTO request body
      * @return return order DTO as a response
      */
-    public OrderDTO saveByCustomerId(Long customerId, OrderDTO orderDTO) {
+    public OrderDTO save(Long customerId, OrderDTO orderDTO) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
                 () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
         );
@@ -142,10 +141,11 @@ public class OrderService {
      * @param orderDTO   Get order DTO request body
      * @return return order DTO as a response
      */
-    public OrderDTO updateByCustomerId(Long customerId, Long orderId, OrderDTO orderDTO) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(
-                () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
-        );
+    public OrderDTO update(Long customerId, Long orderId, OrderDTO orderDTO) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ServiceConstants.CUSTOMER_NOT_FOUND)
+                );
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(
                         () -> new ResourceNotFoundException(ServiceConstants.ORDER_NOT_FOUND)
@@ -156,10 +156,16 @@ public class OrderService {
         order.setShippedDate(orderDTO.getShippedDate());
         order.setStatus(orderDTO.getStatus());
 
-        // Maps each member of collection containing requests to the class
+        orderDTO.setOrderId(order.getOrderId());
+        orderDTO.setCustomerId(customer.getCustomerId());
+
+        // clear existing children list so that they are removed from database
+        order.getOrderDetails().clear();
+
         List<OrderDetails> orderDetailsList = setOrderDetailsList(order, orderDTO);
 
-        order.setOrderDetails(orderDetailsList);
+        // add the new children list created above to the existing list
+        order.getOrderDetails().addAll(orderDetailsList);
 
         orderRepository.save(order);
 
@@ -177,7 +183,7 @@ public class OrderService {
     }
 
     /**
-     * Method to map order details list DTO to entity list
+     * Method to map order details list DTO to the entity list
      *
      * @param order    entity
      * @param orderDTO payload DTO
@@ -185,7 +191,7 @@ public class OrderService {
      */
     private List<OrderDetails> setOrderDetailsList(Order order, OrderDTO orderDTO) {
         // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = mapAll(orderDTO.getOrderDetailsDTO(), OrderDetails.class);
+        List<OrderDetails> orderDetailsList = orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 
         int counter = 0;
         for (OrderDetails orderDetails : orderDetailsList) {
