@@ -111,7 +111,7 @@ public class OrderService {
     }
 
     /**
-     * Save order
+     * Save order and its details
      *
      * @param customerId Get customer number from the REST controller
      * @param orderDTO   Get order DTO request body
@@ -121,15 +121,34 @@ public class OrderService {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
                 () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
         );
-        LOGGER.debug("Customer is: {}", customer.getCustomerId());
+        LOGGER.debug("Customer id: {}", customer.getCustomerId());
         Order order = map(orderDTO, Order.class);
         order.setCustomer(customer);
 
-        List<OrderDetails> orderDetailsList = setOrderDetailsList(order, orderDTO);
+        List<OrderDetails> orderDetailsList = new LinkedList<>();
+
+        final int index = 0;
+
+        OrderDetails orderDetails = new OrderDetails();
+        Product product = productRepository.findByProductCode(
+                orderDTO.getOrderDetailsDTO().get(index).getProductCode())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
+                );
+        orderDetails.setProduct(product);
+        orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(index).getQuantityOrdered());
+        orderDetails.setPrice(orderDTO.getOrderDetailsDTO().get(index).getPrice());
+        orderDetails.setOrder(order);
+        orderDetailsList.add(orderDetails);
+
         order.setOrderDetails(orderDetailsList);
 
         Order savedOrder = orderRepository.save(order);
-        return map(savedOrder, OrderDTO.class);
+
+        orderDTO.setOrderId(savedOrder.getOrderId());
+        orderDTO.setCustomerId(customer.getCustomerId());
+
+        return orderDTO;
     }
 
     /**
@@ -161,7 +180,7 @@ public class OrderService {
         // clear existing children list so that they are removed from database
         order.getOrderDetails().clear();
 
-        List<OrderDetails> orderDetailsList = setOrderDetailsList(order, orderDTO);
+        List<OrderDetails> orderDetailsList = mapOrderDetailsToDTO(order, orderDTO);
 
         // add the new children list created above to the existing list
         order.getOrderDetails().addAll(orderDetailsList);
@@ -188,7 +207,7 @@ public class OrderService {
      * @param orderDTO payload DTO
      * @return list with details
      */
-    private List<OrderDetails> setOrderDetailsList(Order order, OrderDTO orderDTO) {
+    private List<OrderDetails> mapOrderDetailsToDTO(Order order, OrderDTO orderDTO) {
         // Maps each member of collection containing requests to the class
         List<OrderDetails> orderDetailsList = orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
 

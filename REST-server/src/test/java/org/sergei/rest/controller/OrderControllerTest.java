@@ -186,19 +186,14 @@ public class OrderControllerTest {
         final LocalDateTime shippedDate = LocalDateTime.parse("2018-09-30T22:00:00", FORMATTER);
         final String status = "pending";
 
-        final int quantityOrdered = 1;
-        final BigDecimal orderPrice = new BigDecimal(1.20);
-
-        JSONArray jsonArray = new JSONArray()
-                .put(Integer.parseInt("productCode"), product.getProductCode())
-                .put(Integer.parseInt("quantityOrdered"), quantityOrdered)
-                .put(Integer.valueOf("price"), price);
+        JSONArray jsonArrayOD =
+                new JSONArray("[{\"productCode\":\"LV_01\",\"quantityOrdered\":\"1\",\"price\":\"1.20\"}]");
         JSONObject jsonObject = new JSONObject()
                 .put("orderDate", orderDate)
                 .put("requiredDate", requiredDate)
                 .put("shippedDate", shippedDate)
                 .put("status", status)
-                .put("orderDetails", jsonArray);
+                .put("orderDetails", jsonArrayOD);
         mvc.perform(
                 post(BASE_URL + "/" + customer.getCustomerId() + ORDER_URI)
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -206,13 +201,13 @@ public class OrderControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.orderId").isNotEmpty())
                 .andExpect(jsonPath("$.customerId").isNotEmpty())
-                .andExpect(jsonPath("$.orderDate").value(orderDate))
-                .andExpect(jsonPath("$.requiredDate").value(requiredDate))
-                .andExpect(jsonPath("$.shippedDate").value(shippedDate))
+                .andExpect(jsonPath("$.orderDate").value("2018-09-28T22:00:00"))
+                .andExpect(jsonPath("$.requiredDate").value("2018-09-29T22:00:00"))
+                .andExpect(jsonPath("$.shippedDate").value("2018-09-30T22:00:00"))
                 .andExpect(jsonPath("$.status").value(status))
                 .andExpect(jsonPath("$.orderDetails[0].productCode").value(product.getProductCode()))
-                .andExpect(jsonPath("$.orderDetails[0].quantityOrdered").value(quantityOrdered))
-                .andExpect(jsonPath("$.orderDetails[0].price").value(price));
+                .andExpect(jsonPath("$.orderDetails[0].quantityOrdered").value(1))
+                .andExpect(jsonPath("$.orderDetails[0].price").value(1.2));
         customerRepository.deleteAll();
         orderRepository.deleteAll();
         productRepository.deleteAll();
