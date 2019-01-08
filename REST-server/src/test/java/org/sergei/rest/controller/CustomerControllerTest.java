@@ -150,6 +150,7 @@ public class CustomerControllerTest {
         customerRepository.deleteAll();
     }
 
+    @Ignore
     @Test
     public void postCustomer_thenDelete_thenGetNoContent() throws Exception {
         final String firstName = "John";
