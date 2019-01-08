@@ -29,18 +29,12 @@ public class OrderDTO {
     private Long customerId;
 
     @ApiModelProperty("Date when order was made")
-    /*@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")*/
     private LocalDateTime orderDate;
 
     @ApiModelProperty("Date when order should be delivered")
-    /*@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")*/
     private LocalDateTime requiredDate;
 
     @ApiModelProperty("Date when order was delivered")
-    /*@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")*/
     private LocalDateTime shippedDate;
 
     @ApiModelProperty("Order status e.g. pending/delivered")
