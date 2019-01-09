@@ -36,7 +36,6 @@ import java.util.List;
 )
 @RestController
 @RequestMapping(value = "/api", produces = "application/json")
-@SuppressWarnings("unchecked")
 public class OrderController {
 
     private final OrderService orderService;
