@@ -1,4 +1,4 @@
-package org.sergei.rest.security;
+package org.sergei.rest.config.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;

@@ -1,4 +1,4 @@
-package org.sergei.rest.security;
+package org.sergei.rest.config.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

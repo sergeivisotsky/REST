@@ -1,4 +1,4 @@
-package org.sergei.rest.security;
+package org.sergei.rest.config.security;
 
 import org.sergei.rest.service.ApiUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
