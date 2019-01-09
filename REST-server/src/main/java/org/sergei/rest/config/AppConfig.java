@@ -18,6 +18,7 @@ package org.sergei.rest.config;
 
 import org.modelmapper.ModelMapper;
 import org.sergei.rest.aop.logging.LoggingAspect;
+import org.sergei.rest.aop.logging.PerformanceAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -29,6 +30,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 @Configuration
 @EnableAspectJAutoProxy
 public class AppConfig {
+
+    @Bean
+    public PerformanceAspect performanceAspect() {
+        return new PerformanceAspect();
+    }
 
     @Bean
     public LoggingAspect loggingAspect() {
