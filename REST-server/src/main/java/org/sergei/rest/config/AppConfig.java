@@ -17,8 +17,8 @@
 package org.sergei.rest.config;
 
 import org.modelmapper.ModelMapper;
-import org.sergei.rest.aop.logging.LoggingAspect;
-import org.sergei.rest.aop.logging.PerformanceAspect;
+import org.sergei.rest.aop.LoggingAspect;
+import org.sergei.rest.aop.PerformanceAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;

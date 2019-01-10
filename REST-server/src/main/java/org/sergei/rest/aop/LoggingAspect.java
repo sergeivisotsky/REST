@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.sergei.rest.aop.logging;
+package org.sergei.rest.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
