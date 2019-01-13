@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package org.sergei.rest.controller.util;
+package org.sergei.rest.controller.hateoas;
 
-import org.sergei.rest.controller.CustomerController;
-import org.sergei.rest.controller.OrderController;
 import org.sergei.rest.controller.PhotoController;
 import org.sergei.rest.controller.v2.CustomerControllerV2;
 import org.sergei.rest.controller.v2.OrderControllerV2;

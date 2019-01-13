@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.sergei.rest.controller.util.LinkUtil.setLinksForAllCustomers;
-import static org.sergei.rest.controller.util.LinkUtil.setLinksForCustomer;
+import static org.sergei.rest.controller.hateoas.LinkUtil.setLinksForAllCustomers;
+import static org.sergei.rest.controller.hateoas.LinkUtil.setLinksForCustomer;
 
 /**
  * V2 of customer controller

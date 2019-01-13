@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.sergei.rest.controller.util.LinkUtil.*;
+import static org.sergei.rest.controller.hateoas.LinkUtil.*;
 
 /**
  * V2 of order controller

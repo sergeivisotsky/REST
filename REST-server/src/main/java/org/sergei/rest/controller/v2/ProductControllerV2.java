@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.sergei.rest.controller.util.LinkUtil.setLinksForAllProducts;
+import static org.sergei.rest.controller.hateoas.LinkUtil.setLinksForAllProducts;
 
 /**
  * V2 of product controller
