@@ -18,9 +18,11 @@ package org.sergei.rest.service.v2;
 
 import org.sergei.rest.dto.PhotoDTO;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Photo;
 import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.PhotoRepository;
+import org.sergei.rest.service.Constants;
 import org.sergei.rest.service.PhotoService;
 import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.data.domain.Page;
@@ -46,11 +48,20 @@ public class PhotoServiceV2 extends PhotoService {
      * @return list of the photo DTOs as a response
      */
     public Page<PhotoDTO> findAllPaginatedV2(Long customerId, int page, int size) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
+                );
         Page<Photo> photos = photoRepository.findAllPhotosByCustomerIdPaginated(customerId, PageRequest.of(page, size));
         if (photos == null) {
             throw new ResourceNotFoundException("Invalid customer ID or photos not found");
         }
 
-        return ObjectMapperUtil.mapAllPages(photos, PhotoDTO.class);
+        Page<PhotoDTO> photoDTOS = ObjectMapperUtil.mapAllPages(photos, PhotoDTO.class);
+        photoDTOS.forEach(photoDTO -> {
+            photoDTO.setCustomerId(customer.getCustomerId());
+        });
+
+        return photoDTOS;
     }
 }
