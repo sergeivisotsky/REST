@@ -164,7 +164,7 @@ public class CustomerControllerV2Test {
                 .put("lastName", putLastName)
                 .put("age", putAge);
         mvc.perform(
-                put(BASE_URL + "/1")
+                put(BASE_URL + "/2")
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                         .content(putJsonObject.toString()))
                 .andExpect(status().isOk())
