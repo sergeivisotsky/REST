@@ -19,6 +19,7 @@ package org.sergei.rest.service.v2;
 import org.sergei.rest.dto.OrderDetailsDTO;
 import org.sergei.rest.dto.v2.OrderDTOV2;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
+import org.sergei.rest.model.Customer;
 import org.sergei.rest.model.Order;
 import org.sergei.rest.model.OrderDetails;
 import org.sergei.rest.repository.CustomerRepository;
@@ -53,18 +54,24 @@ public class OrderServiceV2 extends OrderService {
     }
 
     /**
-     * Get order by ID
+     * Get order by customer and order IDs
      *
-     * @param orderId get order number as a parameter from REST controller
-     * @return order DTO response
+     * @param customerId Get customer ID from the REST controller
+     * @param orderId    Get order ID from the REST controller
+     * @return Return order DTO response
      */
-    private OrderDTOV2 findOneV2(Long orderId) {
+    public OrderDTOV2 findOneV2(Long customerId, Long orderId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
+                );
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(
                         () -> new ResourceNotFoundException(Constants.ORDER_NOT_FOUND)
                 );
         // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
         OrderDTOV2 orderDTOV2 = map(order, OrderDTOV2.class);
+        orderDTOV2.setCustomerId(customer.getCustomerId());
 
         List<OrderDetails> orderDetailsList =
                 orderDetailsRepository.findAllByOrderId(orderDTOV2.getOrderId());
@@ -79,21 +86,6 @@ public class OrderServiceV2 extends OrderService {
         orderDTOV2.setOrderDetailsDTO(orderDetailsDTOList);
 
         return orderDTOV2;
-    }
-
-    /**
-     * Get order by customer and order IDs
-     *
-     * @param customerId Get customer ID from the REST controller
-     * @param orderId    Get order ID from the REST controller
-     * @return Return order DTO response
-     */
-    public OrderDTOV2 findOneByCustomerIdAndOrderIdV2(Long customerId, Long orderId) {
-        customerRepository.findById(customerId)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
-                );
-        return findOneV2(orderId);
     }
 
     /**
@@ -185,6 +177,7 @@ public class OrderServiceV2 extends OrderService {
                     // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                     OrderDTOV2 orderDTOV2 = map(order, OrderDTOV2.class);
                     orderDTOV2.setCustomerId(order.getCustomer().getCustomerId());
+//                    orderDTOV2.setOrderDate(order.getOrderDate());
 
                     List<OrderDetails> orderDetailsList =
                             orderDetailsRepository.findAllByOrderId(orderDTOV2.getOrderId());

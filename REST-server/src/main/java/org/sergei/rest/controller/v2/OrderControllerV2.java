@@ -91,7 +91,7 @@ public class OrderControllerV2 {
                                                                      @PathVariable("customerId") Long customerId,
                                                                      @ApiParam(value = "Order ID which should be found", required = true)
                                                                      @PathVariable("orderId") Long orderId) {
-        OrderDTOV2 orderDTOV2 = orderServiceV2.findOneByCustomerIdAndOrderIdV2(customerId, orderId);
+        OrderDTOV2 orderDTOV2 = orderServiceV2.findOneV2(customerId, orderId);
         return new ResponseEntity<>(setLinksForOneOrder(orderDTOV2), HttpStatus.OK);
     }
 

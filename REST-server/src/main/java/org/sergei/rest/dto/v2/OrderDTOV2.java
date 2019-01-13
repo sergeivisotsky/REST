@@ -28,6 +28,7 @@ import org.sergei.rest.dto.OrderDetailsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.ResourceSupport;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,13 +52,13 @@ public class OrderDTOV2 extends ResourceSupport {
     private Long customerId;
 
     @ApiModelProperty("Date when order was made")
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
     @ApiModelProperty("Date when order should be delivered")
-    private Date requiredDate;
+    private LocalDateTime requiredDate;
 
     @ApiModelProperty("Date when order was delivered")
-    private Date shippedDate;
+    private LocalDateTime shippedDate;
 
     @ApiModelProperty("Order status e.g. pending/delivered")
     private String status;

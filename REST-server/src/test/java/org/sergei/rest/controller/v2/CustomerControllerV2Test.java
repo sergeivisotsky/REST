@@ -17,7 +17,6 @@
 package org.sergei.rest.controller.v2;
 
 import org.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sergei.rest.RestServerApplication;
@@ -136,7 +135,6 @@ public class CustomerControllerV2Test {
         customerRepository.deleteAll();
     }
 
-    @Ignore
     @Test
     public void postCustomer_thenPutCustomer_thenGetOk() throws Exception {
         final String firstName = "John";
@@ -166,7 +164,7 @@ public class CustomerControllerV2Test {
                 .put("lastName", putLastName)
                 .put("age", putAge);
         mvc.perform(
-                put(BASE_URL + "/2")
+                put(BASE_URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                         .content(putJsonObject.toString()))
                 .andExpect(status().isOk())
@@ -177,7 +175,6 @@ public class CustomerControllerV2Test {
         customerRepository.deleteAll();
     }
 
-    @Ignore
     @Test
     public void postCustomer_thenDelete_thenGetNoContent() throws Exception {
         final String firstName = "John";
