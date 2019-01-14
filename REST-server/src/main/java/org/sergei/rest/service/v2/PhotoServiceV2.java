@@ -58,9 +58,7 @@ public class PhotoServiceV2 extends PhotoService {
         }
 
         Page<PhotoDTO> photoDTOS = ObjectMapperUtil.mapAllPages(photos, PhotoDTO.class);
-        photoDTOS.forEach(photoDTO -> {
-            photoDTO.setCustomerId(customer.getCustomerId());
-        });
+        photoDTOS.forEach(photoDTO -> photoDTO.setCustomerId(customer.getCustomerId()));
 
         return photoDTOS;
     }

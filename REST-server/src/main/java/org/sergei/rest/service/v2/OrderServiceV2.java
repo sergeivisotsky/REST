@@ -177,7 +177,6 @@ public class OrderServiceV2 extends OrderService {
                     // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
                     OrderDTOV2 orderDTOV2 = map(order, OrderDTOV2.class);
                     orderDTOV2.setCustomerId(order.getCustomer().getCustomerId());
-//                    orderDTOV2.setOrderDate(order.getOrderDate());
 
                     List<OrderDetails> orderDetailsList =
                             orderDetailsRepository.findAllByOrderId(orderDTOV2.getOrderId());
