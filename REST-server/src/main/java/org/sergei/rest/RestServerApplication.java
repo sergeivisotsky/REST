@@ -38,7 +38,7 @@ public class RestServerApplication {
     class WelcomeController {
         @GetMapping("/")
         public String welcome() {
-            return "Flights";
+            return "REST";
         }
 
         @GetMapping("/docs")

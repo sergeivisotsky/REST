@@ -26,6 +26,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Sergei Visotsky
@@ -41,8 +42,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o INNER JOIN OrderDetails od ON o.orderId = od.order.orderId WHERE od.product.productCode = :productCode")
     List<Order> findAllByProductCode(@Param("productCode") String productCode);
 
+    @Query("SELECT o FROM Order o WHERE o.customer.customerId = ?1 AND o.orderId = ?2")
+    Optional<Order> findByCustomerIdAndOrderId(Long customerId, Long orderId);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Order o WHERE o.customer.customerId = ?1 AND o.orderId = ?2")
-    void deleteByCustomerIdAndOrderId(Long customerId, Long orderId);
+    void delete(Long customerId, Long orderId);
 }

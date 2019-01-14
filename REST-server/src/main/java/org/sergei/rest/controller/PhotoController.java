@@ -203,6 +203,6 @@ public class PhotoController {
                                                     @ApiParam(value = "Photo ID which should be deleted", required = true)
                                                     @PathVariable("photoId") Long photoId) throws IOException {
 
-        return new ResponseEntity<>(photoService.deleteById(customerId, photoId), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(photoService.delete(customerId, photoId), HttpStatus.NO_CONTENT);
     }
 }

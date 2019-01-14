@@ -212,8 +212,17 @@ public class OrderService {
      * @param customerId get customer ID form the REST controller
      * @param orderId    get order ID form the REST controller
      */
-    public void deleteByCustomerIdAndOrderId(Long customerId, Long orderId) {
-        orderRepository.deleteByCustomerIdAndOrderId(customerId, orderId);
+    public void delete(Long customerId, Long orderId) {
+        Order order = orderRepository.findByCustomerIdAndOrderId(customerId, orderId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(Constants.ORDER_NOT_FOUND)
+                );
+        LOGGER.debug("Customer ID whose order gonna be deleted: {}", order.getCustomer().getCustomerId());
+        LOGGER.debug("Order ID which should be deleted: {}", order.getOrderId());
+        orderRepository.delete(
+                order.getCustomer().getCustomerId(),
+                order.getOrderId()
+        );
     }
 
     /**

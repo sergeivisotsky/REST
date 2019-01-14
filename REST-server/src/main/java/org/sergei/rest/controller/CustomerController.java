@@ -104,6 +104,6 @@ public class CustomerController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CustomerDTO> deleteCustomerById(@ApiParam(value = "Customer ID which should be deleted", required = true)
                                                           @PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(customerService.deleteById(customerId), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(customerService.delete(customerId), HttpStatus.NO_CONTENT);
     }
 }

@@ -133,7 +133,7 @@ public class OrderController {
                                                                       @PathVariable("customerId") Long customerId,
                                                                       @ApiParam(value = "Order ID whose order should be deleted", required = true)
                                                                       @PathVariable("orderId") Long orderId) {
-        orderService.deleteByCustomerIdAndOrderId(customerId, orderId);
+        orderService.delete(customerId, orderId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -206,7 +206,7 @@ public class PhotoService {
      * @return photo DTO as a response
      * @throws IOException Input-output exception
      */
-    public PhotoDTO deleteById(Long customerId, Long photoId) throws IOException {
+    public PhotoDTO delete(Long customerId, Long photoId) throws IOException {
         Photo photo = photoRepository.findByCustomerIdAndPhotoId(customerId, photoId)
                 .orElseThrow(
                         () -> new ResourceNotFoundException(Constants.PHOTO_NOT_FOUND)

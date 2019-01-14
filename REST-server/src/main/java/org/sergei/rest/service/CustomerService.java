@@ -116,7 +116,7 @@ public class CustomerService {
      * @param customerId get customer number from the REST controller
      * @return Updated customer response
      */
-    public CustomerDTO deleteById(Long customerId) {
+    public CustomerDTO delete(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
