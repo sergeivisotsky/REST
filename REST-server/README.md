@@ -85,12 +85,28 @@ _Example for MySQL:_
 </dependency>
 ```
 
-1. Open `application.yml` file and setup your database url and credentials
-2. Change database name in `oauth_schema.sql`
-3. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case)
-4. Keep in mind that application port and port in `security.oauth2.resource.accessTokenUri` property might be changed in your case
-5. Open `logback-spring.xml` setup directory where all your logging files are going to saved
-6. Go to the class `PhotoService` and change the value of the final field `UPLOAD_DIR`
+1. Change `server.port` for each service if needed which configs are located in the repository above and other configs that are not locates in config repository in `1.` paragraph
+2. Change `server.http.port` so that it was able to organize redirect from _HTTP_ to _HTTPS_
+3. Change database driver for your database.
+
+_Example for MySQL:_
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+4. Change the value of database driver property `spring.datasource.driver-class-name` in config file located in repo called `flight-reservation-config` for each service which communicates with database
+5. Change database url property: `spring.datasource.url`
+6. Change database url property: `spring.datasource.username`
+7. Change database url property: `spring.datasource.password`
+8. Change SQL dialect modifying this property: `spring.jpa.properties.hibernate.dialect`
+9. Change database name in `oauth_schema.sql`
+10. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case)
+11. Keep in mind that application port and port in `security.oauth2.resource.accessTokenUri` property might be changed in your case
+12. Go to the class `PhotoService` and change the value of the final field `UPLOAD_DIR`
+13. Open `logback-spring.xml` setup directory where all your logging files are going to saved
 
 ## Run
 * Perform command `mvn spring-boot:run` or compile project in .jar and perform command `java -jar target/REST-server-VERSION.jar`
