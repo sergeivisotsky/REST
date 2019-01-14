@@ -74,17 +74,6 @@ In case if access token is expired refresh token should be used to renew access 
 * Content-Options: `grant_type=refresh_token&refresh_token=REFRESH_TOKEN`
 
 ## Setup
-* Setup your database driver dependency.
-
-_Example for MySQL:_
-```xml
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <scope>runtime</scope>
-</dependency>
-```
-
 1. Change `server.port` for each service if needed which configs are located in the repository above and other configs that are not locates in config repository in `1.` paragraph
 2. Change `server.http.port` so that it was able to organize redirect from _HTTP_ to _HTTPS_
 3. Change database driver for your database.
