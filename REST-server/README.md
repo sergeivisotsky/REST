@@ -92,7 +92,7 @@ _Example for MySQL:_
 7. Change database url property: `spring.datasource.password`
 8. Change SQL dialect modifying this property: `spring.jpa.properties.hibernate.dialect`
 9. Change database name in `oauth_schema.sql`
-10. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case)
+10. To create view for customer report open file `customer_report_view.sql` and execute SQL code in your database (NOTE: MySQL dialect was used in this case due to this MySQL is preferable choice)
 11. Keep in mind that application port and port in `security.oauth2.resource.accessTokenUri` property might be changed in your case
 12. Go to the class `PhotoService` and change the value of the final field `UPLOAD_DIR`
 13. Open `logback-spring.xml` setup directory where all your logging files are going to saved
