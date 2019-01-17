@@ -54,7 +54,7 @@ public class PhotoServiceV2 extends PhotoService {
                 );
         Page<Photo> photos = photoRepository.findAllPhotosByCustomerIdPaginated(customerId, PageRequest.of(page, size));
         if (photos == null) {
-            throw new ResourceNotFoundException("Invalid customer ID or photos not found");
+            throw new ResourceNotFoundException(Constants.PHOTO_NOT_FOUND);
         }
 
         Page<PhotoDTO> photoDTOS = ObjectMapperUtil.mapAllPages(photos, PhotoDTO.class);

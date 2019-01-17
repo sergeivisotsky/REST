@@ -79,7 +79,7 @@ public class PhotoService {
 
         List<Photo> photos = photoRepository.findAllPhotosByCustomerId(customer.getCustomerId());
         if (photos == null) {
-            throw new ResourceNotFoundException("No photo found for this customer");
+            throw new ResourceNotFoundException(Constants.PHOTO_NOT_FOUND);
         }
         photos.forEach(photo -> {
             PhotoDTO photoDTO = ObjectMapperUtil.map(photo, PhotoDTO.class);
