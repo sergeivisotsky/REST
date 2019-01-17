@@ -166,7 +166,7 @@ public class PhotoService {
         if (resource.exists()) {
             return resource;
         } else {
-            throw new FileNotFoundException("File not found");
+            throw new FileNotFoundException(Constants.FILE_NOT_FOUND);
         }
     }
 
@@ -194,7 +194,7 @@ public class PhotoService {
         if (resource.exists()) {
             return resource;
         } else {
-            throw new FileNotFoundException("File not found");
+            throw new FileNotFoundException(Constants.FILE_NOT_FOUND);
         }
     }
 

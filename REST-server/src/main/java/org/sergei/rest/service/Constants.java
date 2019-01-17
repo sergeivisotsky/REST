@@ -33,5 +33,6 @@ public final class Constants {
     public static final String ORDER_NOT_FOUND = "Order with this ID not found";
     public static final String PRODUCT_NOT_FOUND = "Product with this ID not found";
     public static final String PHOTO_NOT_FOUND = "Photo with this ID not found";
+    public static final String FILE_NOT_FOUND = "File not found";
 
 }
