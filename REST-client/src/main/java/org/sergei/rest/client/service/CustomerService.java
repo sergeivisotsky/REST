@@ -17,6 +17,7 @@
 package org.sergei.rest.client.service;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.sergei.rest.client.properties.OauthClientProperties;
 import org.sergei.rest.client.model.AuthTokenInfo;
 import org.sergei.rest.client.model.Customer;
 import org.sergei.rest.client.properties.OauthClientProperties;
