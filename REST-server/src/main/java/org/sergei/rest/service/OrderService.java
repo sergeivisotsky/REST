@@ -27,6 +27,7 @@ import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
+import org.sergei.rest.service.util.ServiceComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +51,16 @@ public class OrderService {
     protected final OrderDetailsRepository orderDetailsRepository;
     protected final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
+    protected final ServiceComponent serviceComponent;
 
     @Autowired
     public OrderService(OrderRepository orderRepository, OrderDetailsRepository orderDetailsRepository,
-                        CustomerRepository customerRepository, ProductRepository productRepository) {
+                        CustomerRepository customerRepository, ProductRepository productRepository, ServiceComponent serviceComponent) {
         this.orderRepository = orderRepository;
         this.orderDetailsRepository = orderDetailsRepository;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
+        this.serviceComponent = serviceComponent;
     }
 
     /**
@@ -109,7 +112,7 @@ public class OrderService {
         if (orders == null) {
             throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
-        return findOrdersByListWithParam(orders);
+        return serviceComponent.findOrdersByListWithParam(orders);
     }
 
     /**
@@ -123,7 +126,7 @@ public class OrderService {
         if (orders == null) {
             throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
-        return findOrdersByListWithParam(orders);
+        return serviceComponent.findOrdersByListWithParam(orders);
     }
 
     /**
@@ -196,7 +199,7 @@ public class OrderService {
         // clear existing children list so that they are removed from database
         order.getOrderDetails().clear();
 
-        List<OrderDetails> orderDetailsList = mapOrderDetailsToDTO(order, orderDTO);
+        List<OrderDetails> orderDetailsList = serviceComponent.mapOrderDetailsToDTO(order, orderDTO);
 
         // add the new children list created above to the existing list
         order.getOrderDetails().addAll(orderDetailsList);
@@ -223,69 +226,5 @@ public class OrderService {
                 order.getCustomer().getCustomerId(),
                 order.getOrderId()
         );
-    }
-
-    /**
-     * Method to map order details list DTO to the entity list
-     *
-     * @param order    entity
-     * @param orderDTO payload DTO
-     * @return list with details
-     */
-    private List<OrderDetails> mapOrderDetailsToDTO(Order order, OrderDTO orderDTO) {
-        // Maps each member of collection containing requests to the class
-        List<OrderDetails> orderDetailsList = orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
-
-        int counter = 0;
-        for (OrderDetails orderDetails : orderDetailsList) {
-            Product product = productRepository.findByProductCode(orderDTO.getOrderDetailsDTO().get(counter).getProductCode())
-                    .orElseThrow(
-                            () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
-                    );
-            orderDetails.setOrder(order);
-            orderDetails.setProduct(product);
-            orderDetails.setQuantityOrdered(orderDTO.getOrderDetailsDTO().get(counter).getQuantityOrdered());
-            orderDetails.setPrice(orderDTO.getOrderDetailsDTO().get(counter).getPrice());
-            counter++;
-        }
-
-        return orderDetailsList;
-    }
-
-    /**
-     * Util method to get order by specific parameter
-     *
-     * @param orders Gets list of the order entities
-     * @return List of the order DTOs
-     */
-    private List<OrderDTO> findOrdersByListWithParam(List<Order> orders) {
-        List<OrderDTO> orderDTOList = new LinkedList<>();
-        orders.forEach(order ->
-                {
-                    LOGGER.debug("Customer ID who made order in entity: {}", order.getCustomer().getCustomerId());
-                    // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                    OrderDTO orderDTO = map(order, OrderDTO.class);
-                    orderDTO.setCustomerId(order.getCustomer().getCustomerId());
-                    LOGGER.debug("Customer ID who made order in DTO: {}", orderDTO.getCustomerId());
-
-                    List<OrderDetails> orderDetailsList =
-                            orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
-
-                    List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-                    orderDetailsList.forEach(orderDetails ->
-                            {
-                                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                                OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
-                                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-                                LOGGER.debug("Product code in order details: {}", orderDetailsDTO.getProductCode());
-                                orderDetailsDTOList.add(orderDetailsDTO);
-                            }
-                    );
-
-                    orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-                    orderDTOList.add(orderDTO);
-                }
-        );
-        return orderDTOList;
     }
 }

@@ -26,18 +26,18 @@ import org.sergei.rest.repository.CustomerRepository;
 import org.sergei.rest.repository.OrderDetailsRepository;
 import org.sergei.rest.repository.OrderRepository;
 import org.sergei.rest.repository.ProductRepository;
-import org.sergei.rest.service.OrderService;
 import org.sergei.rest.service.Constants;
+import org.sergei.rest.service.OrderService;
+import org.sergei.rest.service.util.ServiceComponent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.sergei.rest.util.ObjectMapperUtil.map;
-import static org.sergei.rest.util.ObjectMapperUtil.mapAllPages;
 
 /**
  * V2 of order service
@@ -47,10 +47,14 @@ import static org.sergei.rest.util.ObjectMapperUtil.mapAllPages;
 @Service
 public class OrderServiceV2 extends OrderService {
 
+
+    @Autowired
     public OrderServiceV2(OrderRepository orderRepository,
                           OrderDetailsRepository orderDetailsRepository,
-                          CustomerRepository customerRepository, ProductRepository productRepository) {
-        super(orderRepository, orderDetailsRepository, customerRepository, productRepository);
+                          CustomerRepository customerRepository,
+                          ProductRepository productRepository,
+                          ServiceComponent serviceComponent) {
+        super(orderRepository, orderDetailsRepository, customerRepository, productRepository, serviceComponent);
     }
 
     /**
@@ -100,7 +104,7 @@ public class OrderServiceV2 extends OrderService {
             throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
 
-        return findOrdersByListWithParamV2(orders);
+        return serviceComponent.findOrdersByListWithParamV2(orders);
     }
 
     /**
@@ -115,7 +119,7 @@ public class OrderServiceV2 extends OrderService {
             throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
 
-        return findOrdersByListWithParamPaginatedV2(orders);
+        return serviceComponent.findOrdersByListWithParamPaginatedV2(orders);
     }
 
     /**
@@ -129,71 +133,6 @@ public class OrderServiceV2 extends OrderService {
         if (orders == null) {
             throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);
         }
-        return findOrdersByListWithParamV2(orders);
-    }
-
-    /**
-     * Util method to get order by specific parameter paginated
-     *
-     * @param orders Gets list of the order entities
-     * @return List of the order DTOs
-     */
-    private Page<OrderDTOV2> findOrdersByListWithParamPaginatedV2(Page<Order> orders) {
-        orders.forEach(order ->
-                {
-                    // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                    OrderDTOV2 orderDTO = map(order, OrderDTOV2.class);
-                    orderDTO.setCustomerId(order.getCustomer().getCustomerId());
-
-                    List<OrderDetails> orderDetailsList =
-                            orderDetailsRepository.findAllByOrderId(orderDTO.getOrderId());
-
-                    List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-                    orderDetailsList.forEach(orderDetails ->
-                            {
-                                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                                OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
-                                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-                                orderDetailsDTOList.add(orderDetailsDTO);
-                            }
-                    );
-
-                    orderDTO.setOrderDetailsDTO(orderDetailsDTOList);
-                }
-        );
-        return mapAllPages(orders, OrderDTOV2.class);
-    }
-
-    /**
-     * Util method to get order by specific parameter
-     *
-     * @param orders Gets list of the order entities
-     * @return List of the order DTOs
-     */
-    private List<OrderDTOV2> findOrdersByListWithParamV2(List<Order> orders) {
-        List<OrderDTOV2> orderDTOList = new LinkedList<>();
-        orders.forEach(order ->
-                {
-                    // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                    OrderDTOV2 orderDTOV2 = map(order, OrderDTOV2.class);
-                    orderDTOV2.setCustomerId(order.getCustomer().getCustomerId());
-
-                    List<OrderDetails> orderDetailsList =
-                            orderDetailsRepository.findAllByOrderId(orderDTOV2.getOrderId());
-
-                    List<OrderDetailsDTO> orderDetailsDTOList = new ArrayList<>();
-                    orderDetailsList.forEach(orderDetails ->
-                            {
-                                // ModelMapper is used to avoid manual conversion from entity to DTO using setters and getters
-                                OrderDetailsDTO orderDetailsDTO = map(orderDetails, OrderDetailsDTO.class);
-                                orderDetailsDTO.setProductCode(orderDetails.getProduct().getProductCode());
-                                orderDetailsDTOList.add(orderDetailsDTO);
-                            }
-                    );
-                    orderDTOV2.setOrderDetailsDTO(orderDetailsDTOList);
-                    orderDTOList.add(orderDTOV2);
-                }
-        );
-        return orderDTOList;
+        return serviceComponent.findOrdersByListWithParamV2(orders);
     }
 }
