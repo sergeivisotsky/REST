@@ -15,5 +15,5 @@ management:
 oauth:
   client-id: trusted-client
   client-secret: trusted-client-secret
-  username-value: admin
-  password-value: 123456
+  username: admin
+  password: 123456

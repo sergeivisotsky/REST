@@ -91,7 +91,7 @@ public class CustomerService {
         HttpEntity<String> request = new HttpEntity<>(getHeadersWithClientCredentials());
         ResponseEntity<Object> response =
                 this.restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT + USERNAME +
-                                oauthClientProperties.getUsernameValue() + PASSWORD + oauthClientProperties.getPasswordValue(),
+                                oauthClientProperties.getUsername() + PASSWORD + oauthClientProperties.getPassword(),
                         HttpMethod.POST, request, Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) response.getBody();
         AuthTokenInfo tokenInfo = null;

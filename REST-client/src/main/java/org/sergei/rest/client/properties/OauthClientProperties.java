@@ -35,6 +35,6 @@ import org.springframework.context.annotation.Configuration;
 public class OauthClientProperties {
     private String clientId;
     private String clientSecret;
-    private String usernameValue;
-    private String passwordValue;
+    private String username;
+    private String password;
 }
