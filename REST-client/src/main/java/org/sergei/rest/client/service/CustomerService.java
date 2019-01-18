@@ -19,7 +19,7 @@ package org.sergei.rest.client.service;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.sergei.rest.client.model.AuthTokenInfo;
 import org.sergei.rest.client.model.Customer;
-import org.sergei.rest.client.properties.OauthClientProperties;
+import org.sergei.rest.client.properties.OAuthClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +47,10 @@ public class CustomerService {
 
     private final RestTemplate restTemplate;
     private final HttpHeaders httpHeaders;
-    private final OauthClientProperties oauthClientProperties;
+    private final OAuthClientProperties oauthClientProperties;
 
     @Autowired
-    public CustomerService(RestTemplate restTemplate, HttpHeaders httpHeaders, OauthClientProperties oauthClientProperties) {
+    public CustomerService(RestTemplate restTemplate, HttpHeaders httpHeaders, OAuthClientProperties oauthClientProperties) {
         this.restTemplate = restTemplate;
         this.httpHeaders = httpHeaders;
         this.oauthClientProperties = oauthClientProperties;
