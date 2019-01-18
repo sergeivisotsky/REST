@@ -22,12 +22,15 @@ import org.sergei.rest.model.Product;
 import org.sergei.rest.repository.ProductRepository;
 import org.sergei.rest.service.Constants;
 import org.sergei.rest.service.ProductService;
-import org.sergei.rest.util.ObjectMapperUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+
+import static org.sergei.rest.util.ObjectMapperUtil.*;
 
 /**
  * V2 of product service
@@ -48,7 +51,7 @@ public class ProductServiceV2 extends ProductService {
      */
     public List<ProductDTOV2> findAllV2() {
         List<Product> products = productRepository.findAll();
-        return ObjectMapperUtil.mapAll(products, ProductDTOV2.class);
+        return mapAll(products, ProductDTOV2.class);
     }
 
     /**
@@ -58,7 +61,7 @@ public class ProductServiceV2 extends ProductService {
      */
     public Page<ProductDTOV2> findAllPaginatedV2(int page, int size) {
         Page<Product> products = productRepository.findAll(PageRequest.of(page, size));
-        return ObjectMapperUtil.mapAllPages(products, ProductDTOV2.class);
+        return mapAllPages(products, ProductDTOV2.class);
     }
 
     /**
@@ -72,6 +75,33 @@ public class ProductServiceV2 extends ProductService {
                 .orElseThrow(
                         () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
                 );
-        return ObjectMapperUtil.map(product, ProductDTOV2.class);
+        return map(product, ProductDTOV2.class);
+    }
+
+    /**
+     * Method to patch product (e.g. update obne or many fields)
+     *
+     * @param productCode which should be patched
+     * @param params      parameters that should be patched
+     * @return patched product entity as a JSON response
+     */
+    public ProductDTOV2 patch(String productCode, Map<String, Object> params) {
+        Product product = productRepository.findByProductCode(productCode)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(Constants.PRODUCT_NOT_FOUND)
+                );
+        if (params.get("productName") != null) {
+            product.setProductName(String.valueOf(params.get("productName")));
+        }
+        if (params.get("productLine") != null) {
+            product.setProductLine(String.valueOf(params.get("productLine")));
+        }
+        if (params.get("productVendor") != null) {
+            product.setProductVendor(String.valueOf(params.get("productVendor")));
+        }
+        if (params.get("price") != null) {
+            product.setPrice(BigDecimal.valueOf(Long.parseLong(String.valueOf(params.get("price")))));
+        }
+        return map(productRepository.save(product), ProductDTOV2.class);
     }
 }

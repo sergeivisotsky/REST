@@ -164,6 +164,20 @@ public final class LinkUtil {
     }
 
     /**
+     * Set links for the product JSON response
+     *
+     * @param productDTOV2 product entity to set links
+     * @return entity with links set
+     */
+    public static ProductDTOV2 setLinksForProduct(ProductDTOV2 productDTOV2) {
+        Link link = ControllerLinkBuilder.linkTo(
+                ControllerLinkBuilder.methodOn(ProductControllerV2.class)
+                        .getProductByCodeV2(productDTOV2.getProductCode())).withSelfRel();
+        productDTOV2.add(link);
+        return productDTOV2;
+    }
+
+    /**
      * Set HATEOAS links from servlet context
      *
      * @param <E>        Generic entity

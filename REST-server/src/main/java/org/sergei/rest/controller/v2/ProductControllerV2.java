@@ -18,6 +18,7 @@ package org.sergei.rest.controller.v2;
 
 import io.swagger.annotations.*;
 import org.sergei.rest.dto.v2.ProductDTOV2;
+import org.sergei.rest.service.Constants;
 import org.sergei.rest.service.v2.ProductServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,8 +29,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.sergei.rest.controller.hateoas.LinkUtil.setLinksForAllProducts;
+import static org.sergei.rest.controller.hateoas.LinkUtil.setLinksForProduct;
 
 /**
  * V2 of product controller
@@ -72,17 +75,27 @@ public class ProductControllerV2 {
     @ApiOperation("Get product by code")
     @ApiResponses(
             value = {
-                    @ApiResponse(code = 404, message = "Invalid product code")
+                    @ApiResponse(code = 404, message = Constants.PRODUCT_NOT_FOUND)
             }
     )
     @GetMapping("/v2/products/{productCode}")
     public ResponseEntity<ProductDTOV2> getProductByCodeV2(@ApiParam(value = "Product code which should be found", required = true)
                                                            @PathVariable("productCode") String productCode) {
         ProductDTOV2 productDTOV2 = productServiceV2.findByCodeV2(productCode);
-        Link link = ControllerLinkBuilder.linkTo(
-                ControllerLinkBuilder.methodOn(ProductControllerV2.class)
-                        .getProductByCodeV2(productDTOV2.getProductCode())).withSelfRel();
-        productDTOV2.add(link);
-        return new ResponseEntity<>(productDTOV2, HttpStatus.OK);
+        return new ResponseEntity<>(setLinksForProduct(productDTOV2), HttpStatus.OK);
+    }
+
+    @ApiOperation("Update one or many fields of the product")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = Constants.PRODUCT_NOT_FOUND)
+            }
+    )
+    @PatchMapping("/v2/products/{productCode}")
+    public ResponseEntity<ProductDTOV2> patchProduct(@ApiParam(value = "Product code which should be parsed", required = true)
+                                                     @PathVariable("productCode") String productCode,
+                                                     @RequestBody Map<String, Object> params) {
+        ProductDTOV2 productDTOV2 = productServiceV2.patch(productCode, params);
+        return new ResponseEntity<>(setLinksForProduct(productDTOV2), HttpStatus.OK);
     }
 }

@@ -18,6 +18,7 @@ package org.sergei.rest.controller.v2;
 
 import io.swagger.annotations.*;
 import org.sergei.rest.dto.v2.CustomerDTOV2;
+import org.sergei.rest.service.Constants;
 import org.sergei.rest.service.v2.CustomerServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.sergei.rest.controller.hateoas.LinkUtil.setLinksForAllCustomers;
 import static org.sergei.rest.controller.hateoas.LinkUtil.setLinksForCustomer;
@@ -71,13 +73,27 @@ public class CustomerControllerV2 {
     @ApiOperation("Get customer by ID")
     @ApiResponses(
             value = {
-                    @ApiResponse(code = 404, message = "Invalid customer ID")
+                    @ApiResponse(code = 404, message = Constants.CUSTOMER_NOT_FOUND)
             }
     )
     @GetMapping("/v2/customers/{customerId}")
     public ResponseEntity<CustomerDTOV2> getCustomerByIdV2(@ApiParam(value = "Customer ID which should be found", required = true)
                                                            @PathVariable("customerId") Long customerId) {
         CustomerDTOV2 customerDTOV2 = customerServiceV2.findOneV2(customerId);
+        return new ResponseEntity<>(setLinksForCustomer(customerDTOV2, customerId), HttpStatus.OK);
+    }
+
+    @ApiOperation("Update one or many customer fields")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 404, message = Constants.CUSTOMER_NOT_FOUND)
+            }
+    )
+    @PatchMapping("/v2/customers/{customerId}")
+    public ResponseEntity<CustomerDTOV2> patchCustomer(@ApiParam(value = "Customer ID which should be patched", required = true)
+                                                       @PathVariable("customerId") Long customerId,
+                                                       @RequestBody Map<String, Object> params) {
+        CustomerDTOV2 customerDTOV2 = customerServiceV2.patch(customerId, params);
         return new ResponseEntity<>(setLinksForCustomer(customerDTOV2, customerId), HttpStatus.OK);
     }
 }

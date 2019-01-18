@@ -20,15 +20,18 @@ import org.sergei.rest.dto.v2.CustomerDTOV2;
 import org.sergei.rest.exceptions.ResourceNotFoundException;
 import org.sergei.rest.model.Customer;
 import org.sergei.rest.repository.CustomerRepository;
+import org.sergei.rest.service.Constants;
 import org.sergei.rest.service.CustomerService;
 import org.sergei.rest.util.ObjectMapperUtil;
-import org.sergei.rest.service.Constants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import static org.sergei.rest.util.ObjectMapperUtil.map;
 
 /**
  * V2 of customer service
@@ -86,6 +89,31 @@ public class CustomerServiceV2 extends CustomerService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
                 );
-        return ObjectMapperUtil.map(customer, CustomerDTOV2.class);
+        return map(customer, CustomerDTOV2.class);
+    }
+
+    /**
+     * Method to patch customer (e.g. update one or multiple customer fields)
+     *
+     * @param customerId which should be patched
+     * @param params     params that should be patched
+     * @return patched customer entity as a response
+     */
+    public CustomerDTOV2 patch(Long customerId, Map<String, Object> params) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(Constants.CUSTOMER_NOT_FOUND)
+                );
+        if (params.get("fistName") != null) {
+            customer.setFirstName(String.valueOf(params.get("firstName")));
+        }
+        if (params.get("lastName") != null) {
+            customer.setLastName(String.valueOf(params.get("lastName")));
+        }
+        if (params.get("age") != null) {
+            customer.setAge(Integer.valueOf(String.valueOf(params.get("age"))));
+        }
+
+        return map(customerRepository.save(customer), CustomerDTOV2.class);
     }
 }
