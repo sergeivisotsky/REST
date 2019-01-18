@@ -17,12 +17,12 @@
 package org.sergei.rest.client.service;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.sergei.rest.client.properties.OauthClientProperties;
 import org.sergei.rest.client.model.AuthTokenInfo;
 import org.sergei.rest.client.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -45,7 +45,7 @@ public class CustomerService {
     private static final String PASSWORD = "&password=";
     private static final String ACCESS_TOKEN = "?access_token=";
 
-    @Value("${oauth.client-id}")
+    /*@Value("${oauth.client-id}")
     private String clientId;
 
     @Value("${oauth.client-secret}")
@@ -55,15 +55,17 @@ public class CustomerService {
     private String usernameValue;
 
     @Value("${oauth.password}")
-    private String passwordValue;
+    private String passwordValue;*/
 
     private final RestTemplate restTemplate;
     private final HttpHeaders httpHeaders;
+    private final OauthClientProperties oauthClientProperties;
 
     @Autowired
-    public CustomerService(RestTemplate restTemplate, HttpHeaders httpHeaders) {
+    public CustomerService(RestTemplate restTemplate, HttpHeaders httpHeaders, OauthClientProperties oauthClientProperties) {
         this.restTemplate = restTemplate;
         this.httpHeaders = httpHeaders;
+        this.oauthClientProperties = oauthClientProperties;
     }
 
     /**
@@ -82,7 +84,7 @@ public class CustomerService {
      * @return headers with Authorization header added
      */
     private HttpHeaders getHeadersWithClientCredentials() {
-        String plainClientCredentials = clientId + ":" + clientSecret;
+        String plainClientCredentials = oauthClientProperties.getClientId() + ":" + oauthClientProperties.getClientSecret();
         String base64ClientCredentials = new String(Base64.encodeBase64(plainClientCredentials.getBytes()));
 
         HttpHeaders headers = getHeaders();
@@ -100,7 +102,8 @@ public class CustomerService {
 
         HttpEntity<String> request = new HttpEntity<>(getHeadersWithClientCredentials());
         ResponseEntity<Object> response =
-                this.restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT + USERNAME + usernameValue + PASSWORD + passwordValue,
+                this.restTemplate.exchange(AUTH_SERVER + PASSWORD_GRANT + USERNAME +
+                                oauthClientProperties.getUsernameValue() + PASSWORD + oauthClientProperties.getPasswordValue(),
                         HttpMethod.POST, request, Object.class);
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) response.getBody();
         AuthTokenInfo tokenInfo = null;
