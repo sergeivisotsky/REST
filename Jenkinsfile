@@ -33,8 +33,12 @@ pipeline {
         }
         stage('Code inspection & quality gate') {
             steps {
-                echo '-=- run code inspection & check quality gate -=-'
-                sh 'mvn sonar:sonar'
+                withSonarQubeEnv('sergei-sonar') {
+                    echo '-=- run code inspection & check quality gate -=-'
+                    sh 'mvn sonar:sonar ' +
+                            '-Dsonar.host.url=http://79.135.149.36:9000 ' +
+                            '-Dsonar.login=b18abeedf7353813275264a410d0acbc771219cd'
+                }
             }
         }
     }
