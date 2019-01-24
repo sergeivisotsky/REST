@@ -39,7 +39,8 @@ keytool -import -trustcacerts -keystore "%JAVA_HOME%/jre/lib/security/cacerts" -
 
 You can use openssl also.
 
-NOTE: Self-signed certificates are not verified by any certification agency and due to this every browser shows warning that they are not secured and consequently are not applicable for production and can be used for dev purposes only.
+**__NOTE: Self-signed certificates are not verified by any certification agency and due to this every browser shows 
+warning that they are not secured and consequently are not applicable for production and can be used for dev purposes only.__**
 
 ## Setup
 Setup guides for each REST server and client are located in each modules' README.
