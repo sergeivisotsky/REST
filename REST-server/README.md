@@ -98,4 +98,4 @@ _Example for MySQL:_
 13. Open `logback-spring.xml` setup directory where all your logging files are going to saved
 
 ## Run
-* Perform command `$ ./mvn spring-boot:run` or compile project in .jar and perform command `java -jar target/REST-server-VERSION.jar`
+* Perform command `$ ./mvnw spring-boot:run` or compile project in .jar and perform command `java -jar target/REST-server-VERSION.jar`
