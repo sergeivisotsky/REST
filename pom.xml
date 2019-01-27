@@ -6,7 +6,7 @@
 
     <groupId>org.sergei</groupId>
     <artifactId>REST_API</artifactId>
-    <version>2.3.4-SNAPSHOT</version>
+    <version>2.3.4</version>
     <packaging>pom</packaging>
 
     <name>REST API Service</name>
