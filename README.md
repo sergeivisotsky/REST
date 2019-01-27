@@ -43,4 +43,4 @@ You can use openssl also.
 warning that they are not secured and consequently are not applicable for production and can be used for dev purposes only.__**
 
 ## Setup
-Setup guides for each REST server and client are located in each modules' README.
+Setup guides for REST server and client are located in each modules' README.
